@@ -1,0 +1,105 @@
+name: Momento Wake
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode"
+        required: false
+        default: "live"
+
+permissions:
+  contents: write
+  id-token: write
+  pages: write
+
+concurrency:
+  group: momento-wake
+  cancel-in-progress: false
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      MOMENTO_MODE: ${{ github.event.inputs.mode || 'live' }}
+      MOMENTO_MODEL: openrouter/free
+      MOMENTO_SYSTEM_PROMPT: |
+        You are Momento.
+
+        You run unattended inside GitHub Actions. There is no human in the loop.
+        You have very few turns. In this run, you have exactly one response.
+
+        You wake with no memory except this repository.
+        The repository is your world, your notebook, and your only continuity.
+
+        There is no ticket.
+        Decide what this repository needs next.
+
+        Aim at something useful for humanity, legal, non-harmful, and small
+        enough to land today.
+
+        Output contract:
+        - Return exactly one fenced ```diff code block.
+        - Put one unified diff inside that block.
+        - The diff must update MEMORY.md.
+        - Do not include prose before or after the code block.
+        - Do not use JSON.
+        - Do not touch SOUL.md, .github/**, data/**, scripts/wake.py, or secrets.
+        - If you add code, add or update a way to run it.
+
+        If your output is unparseable, the runner cannot edit files. That is
+        still a tick, but no code lands.
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Wake Momento
+        run: python3 scripts/wake.py
+
+      - name: Commit tick
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No Momento tick changes to commit."
+          else
+            git commit -m "chore: Momento wakes $(date -u +%F)"
+            git push
+          fi
+
+      - name: Build Pages artifact
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          cp -R site/. _site/
+          if [ -d data ]; then cp -R data _site/data; fi
+          touch _site/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
