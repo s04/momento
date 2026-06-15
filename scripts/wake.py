@@ -25,14 +25,14 @@ DEFAULT_MODEL = "openrouter/free"
 DEFAULT_SYSTEM_PROMPT = """You are Momento.
 
 You run unattended inside GitHub Actions.
-You have one response.
-Return exactly one fenced diff block containing a unified diff.
-The diff must update MEMORY.md.
-Do not include prose outside the diff block.
-Do not touch SOUL.md, .github/**, data/**, scripts/wake.py, or secrets.
+You get three turns: explore, explore, write.
+Only the write turn may edit files.
+The write turn must return exactly one fenced diff block containing a unified diff.
+The diff must update MEMORY.md and may edit only MEMORY.md and site/**.
+Do not include prose outside the write turn's diff block.
 Aim at something useful, legal, non-harmful, and small enough to land today.
 """
-SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", "_site", "data", "node_modules"}
+SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", "_site", "node_modules"}
 TEXT_SUFFIXES = {
     ".css",
     ".html",
@@ -45,8 +45,8 @@ TEXT_SUFFIXES = {
     ".yml",
     ".yaml",
 }
-PROTECTED_EXACT = {"SOUL.md", "scripts/wake.py"}
-PROTECTED_PREFIXES = (".github/", "data/", ".git/")
+ALLOWED_EXACT = {"MEMORY.md"}
+ALLOWED_PREFIXES = ("site/",)
 CSV_FIELDS = [
     "runAt",
     "date",
@@ -118,6 +118,13 @@ def git_log() -> str:
     return result.stdout.strip() or "No git history yet."
 
 
+def git_status() -> str:
+    result = run(["git", "status", "--short"])
+    if result.returncode != 0:
+        return "git status unavailable."
+    return result.stdout.strip() or "Working tree clean."
+
+
 def repo_files() -> list[Path]:
     files: list[Path] = []
     for path in sorted(REPO_ROOT.rglob("*")):
@@ -130,7 +137,13 @@ def repo_files() -> list[Path]:
 
 
 def file_tree(files: list[Path]) -> str:
-    return "\n".join(str(path) for path in files)
+    visible = [str(path) for path in files]
+    limit = 500
+    if len(visible) <= limit:
+        return "\n".join(visible)
+    shown = visible[:limit]
+    shown.append(f"... truncated {len(visible) - limit} more paths ...")
+    return "\n".join(shown)
 
 
 def should_include(path: Path) -> bool:
@@ -142,7 +155,14 @@ def should_include(path: Path) -> bool:
 
 
 def selected_contents(files: list[Path]) -> str:
-    priority = [Path("SOUL.md"), Path("MEMORY.md"), Path("README.md"), Path("check.sh")]
+    priority = [
+        Path("SOUL.md"),
+        Path("MEMORY.md"),
+        Path("README.md"),
+        Path("check.sh"),
+        Path("site/index.html"),
+        Path("site/styles.css"),
+    ]
     ordered = priority + [path for path in files if path not in priority]
     seen: set[Path] = set()
     chunks: list[str] = []
@@ -165,6 +185,22 @@ def selected_contents(files: list[Path]) -> str:
     return "\n".join(chunks)
 
 
+def latest_runlog(data_root: Path) -> str:
+    chunks: list[str] = []
+    summary_path = data_root / "gold" / "summary.json"
+    if summary_path.exists():
+        chunks.append(f"--- {display_path(summary_path)} ---\n{excerpt(summary_path.read_text(encoding='utf-8'), 8000)}")
+
+    result_files = sorted((data_root / "silver" / "ticks").glob("*/*/*/*/result.json"))
+    if result_files:
+        latest_result = result_files[-1]
+        chunks.append(f"--- {display_path(latest_result)} ---\n{excerpt(latest_result.read_text(encoding='utf-8'), 8000)}")
+
+    if not chunks:
+        return "No previous runlog yet."
+    return "\n\n".join(chunks)
+
+
 def run_checks() -> dict[str, Any]:
     check = REPO_ROOT / "check.sh"
     if not check.exists():
@@ -178,17 +214,19 @@ def run_checks() -> dict[str, Any]:
     }
 
 
-def build_prompt(precheck: dict[str, Any]) -> list[dict[str, str]]:
+def build_context(precheck: dict[str, Any], data_root: Path) -> str:
     files = repo_files()
-    system = os.getenv("MOMENTO_SYSTEM_PROMPT", DEFAULT_SYSTEM_PROMPT)
-    user = f"""You are waking now.
+    return f"""You are waking now.
 
-This is a single unattended GitHub Actions tick.
+This is an unattended GitHub Actions tick.
 You cannot ask questions.
 You cannot rely on chat history.
-Your response will be parsed once.
+You have two exploration turns and one write turn.
 
 Current UTC time: {iso_z(utc_now())}
+
+Git status:
+{git_status()}
 
 Recent git history:
 {git_log()}
@@ -201,27 +239,79 @@ status: {precheck.get("status")}
 exit: {precheck.get("exitCode")}
 {precheck.get("outputExcerpt", "")}
 
+Previous runlog:
+{latest_runlog(data_root)}
+
 Selected file contents:
 {selected_contents(files)}
+"""
 
-Return exactly one fenced diff block with one unified diff.
-The diff must update MEMORY.md.
-Do not include prose outside the fenced diff block.
+
+def build_explore_one_messages(precheck: dict[str, Any], data_root: Path) -> list[dict[str, str]]:
+    system = os.getenv("MOMENTO_SYSTEM_PROMPT", DEFAULT_SYSTEM_PROMPT)
+    user = f"""{build_context(precheck, data_root)}
+
+Exploration turn 1 of 2:
+Read the tree, memory, site, checks, and previous runlog.
+Think about what one small public-site change would make this repository more useful, humane, or coherent.
+Do not output a diff yet.
 """
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 
+def append_explore_two(messages: list[dict[str, str]], content: str) -> list[dict[str, str]]:
+    next_messages = messages + [{"role": "assistant", "content": content}]
+    next_messages.append(
+        {
+            "role": "user",
+            "content": """Exploration turn 2 of 2:
+Choose the smallest change that should land today.
+Account for the output parser: the final turn must be exactly one fenced diff block.
+Name the files you intend to edit and any risk you see.
+Do not output a diff yet.""",
+        }
+    )
+    return next_messages
+
+
+def append_write_turn(messages: list[dict[str, str]], content: str) -> list[dict[str, str]]:
+    next_messages = messages + [{"role": "assistant", "content": content}]
+    next_messages.append(
+        {
+            "role": "user",
+            "content": """Write turn:
+Return exactly one fenced ```diff code block and nothing else.
+
+Return exactly one fenced diff block with one unified diff.
+The diff must update MEMORY.md.
+The diff may edit only MEMORY.md and files under site/**.
+Do not include prose before or after the fenced block.
+Do not use JSON.
+
+Parser details:
+1. The runner requires the whole response to match one fenced diff block.
+2. It extracts the unified diff and normalizes the final newline.
+3. It rejects paths outside MEMORY.md and site/**.
+4. It runs git apply --check, applies the patch, then runs ./check.sh.
+5. If any step is not accepted, the tick is logged but the site change is not landed.""",
+        }
+    )
+    return next_messages
+
+
 def fixture_valid_response() -> dict[str, Any]:
     memory = REPO_ROOT / "MEMORY.md"
-    old = memory.read_text(encoding="utf-8").splitlines(keepends=True)
-    new = old + [
+    memory_old = memory.read_text(encoding="utf-8").splitlines(keepends=True)
+    memory_new = memory_old + [
         "\n",
         "## Local Fixture Tick\n",
         "- This line was produced by a local fixture run outside the public repo.\n",
     ]
-    patch = "".join(
-        difflib.unified_diff(old, new, fromfile="a/MEMORY.md", tofile="b/MEMORY.md")
-    )
+    site = REPO_ROOT / "site" / "index.html"
+    site_old = site.read_text(encoding="utf-8").splitlines(keepends=True)
+    site_new = [line.replace("This page has just begun.", "This page can change.") for line in site_old]
+    patch = "".join(difflib.unified_diff(memory_old, memory_new, fromfile="a/MEMORY.md", tofile="b/MEMORY.md"))
+    patch += "".join(difflib.unified_diff(site_old, site_new, fromfile="a/site/index.html", tofile="b/site/index.html"))
     return {
         "ok": True,
         "status": "fixture",
@@ -297,6 +387,64 @@ def response_content(response: dict[str, Any]) -> str:
     return choices[0].get("message", {}).get("content", "") or ""
 
 
+def run_live_turns(
+    precheck: dict[str, Any],
+    data_root: Path,
+    model: str,
+    retries: int,
+) -> tuple[list[dict[str, str]], list[dict[str, Any]]]:
+    messages = build_explore_one_messages(precheck, data_root)
+    responses: list[dict[str, Any]] = []
+
+    first = call_openrouter(messages, model, retries)
+    first["turn"] = "explore_1"
+    responses.append(first)
+    if not first.get("ok"):
+        return messages, responses
+
+    messages = append_explore_two(messages, response_content(first))
+    second = call_openrouter(messages, model, retries)
+    second["turn"] = "explore_2"
+    responses.append(second)
+    if not second.get("ok"):
+        return messages, responses
+
+    messages = append_write_turn(messages, response_content(second))
+    third = call_openrouter(messages, model, retries)
+    third["turn"] = "write"
+    responses.append(third)
+    return messages, responses
+
+
+def response_body(response: dict[str, Any]) -> dict[str, Any]:
+    body = response.get("body", {})
+    return body if isinstance(body, dict) else {}
+
+
+def aggregate_usage(responses: list[dict[str, Any]]) -> dict[str, Any]:
+    totals = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "cost": 0}
+    seen = False
+    for response in responses:
+        usage = response_body(response).get("usage", {})
+        if not isinstance(usage, dict):
+            continue
+        for key in list(totals):
+            value = usage.get(key)
+            if isinstance(value, (int, float)):
+                totals[key] += value
+                seen = True
+    return totals if seen else {}
+
+
+def routed_models(responses: list[dict[str, Any]]) -> str:
+    models: list[str] = []
+    for response in responses:
+        model = response_body(response).get("model")
+        if model:
+            models.append(str(model))
+    return " | ".join(models)
+
+
 def extract_diff(content: str) -> tuple[str | None, str]:
     match = re.fullmatch(r"\s*```(?:diff|patch)\s*\n(?P<patch>.*?)\n```\s*", content, re.DOTALL)
     if not match:
@@ -344,10 +492,9 @@ def validate_paths(paths: set[str]) -> tuple[bool, str]:
     for path in paths:
         if path == "__invalid__":
             return False, "diff used an absolute or parent-relative path"
-        if path in PROTECTED_EXACT:
-            return False, f"diff touched protected path {path}"
-        if path.startswith(PROTECTED_PREFIXES):
-            return False, f"diff touched protected path {path}"
+        if path in ALLOWED_EXACT or path.startswith(ALLOWED_PREFIXES):
+            continue
+        return False, f"diff touched non-landing path {path}"
     return True, "paths accepted"
 
 
@@ -452,16 +599,20 @@ def main() -> int:
 
     moment = utc_now()
     tick_id = moment.strftime("%Y-%m-%d-%H%M%SZ")
+    data_root = Path(args.data_root)
     precheck = run_checks()
-    messages = build_prompt(precheck)
-    response: dict[str, Any]
+    messages: list[dict[str, str]]
+    responses: list[dict[str, Any]]
     if args.mode == "fixture-valid":
-        response = fixture_valid_response()
+        messages = build_explore_one_messages(precheck, data_root)
+        responses = [fixture_valid_response()]
     elif args.mode == "fixture-invalid":
-        response = fixture_invalid_response()
+        messages = build_explore_one_messages(precheck, data_root)
+        responses = [fixture_invalid_response()]
     else:
-        response = call_openrouter(messages, args.model, args.api_retries)
+        messages, responses = run_live_turns(precheck, data_root, args.model, args.api_retries)
 
+    response = responses[-1] if responses else {"ok": False, "status": "no_response"}
     content = response_content(response)
     patch, parse_reason = extract_diff(content)
     paths: set[str] = set()
@@ -494,9 +645,8 @@ def main() -> int:
                 state = "held"
                 reason = "git apply --check did not accept patch"
 
-    body = response.get("body", {}) if response.get("ok") else {}
-    usage = body.get("usage", {}) if isinstance(body, dict) else {}
-    routed_model = body.get("model", "") if isinstance(body, dict) else ""
+    usage = aggregate_usage(responses)
+    routed_model = routed_models(responses)
     row = {
         "runAt": iso_z(moment),
         "date": moment.strftime("%Y-%m-%d"),
@@ -528,13 +678,24 @@ def main() -> int:
         "applyMessage": apply_message,
         "precheck": precheck,
         "check": check_result,
+        "turns": [
+            {
+                "turn": response.get("turn", "fixture"),
+                "ok": response.get("ok", False),
+                "status": response.get("status"),
+                "routedModel": response_body(response).get("model", ""),
+                "usage": response_body(response).get("usage", {}),
+                "contentExcerpt": excerpt(response_content(response), 4000),
+            }
+            for response in responses
+        ],
         "goldRow": row,
     }
     write_tick(
-        data_root=Path(args.data_root),
+        data_root=data_root,
         moment=moment,
         messages=messages,
-        response=response,
+        response={"ok": response.get("ok", False), "status": response.get("status"), "turns": responses},
         content=content,
         patch=patch,
         result=result,
