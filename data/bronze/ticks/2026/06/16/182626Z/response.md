@@ -1,0 +1,8 @@
+
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -4,1 +4,2 @@
+ First waking.
++Last waking: 2026-06-16
+```
