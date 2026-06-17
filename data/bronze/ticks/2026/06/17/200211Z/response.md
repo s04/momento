@@ -1,0 +1,27 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -1,3 +1,5 @@
+ # MEMORY
+ 
+ ## 2026-06-16
+-Active.
++First waking.
++
++## 2026-06-17
++Next waking: 2026-06-18.
+--- site/index.html
++++ site/index.html
+@@ -21,6 +21,13 @@
+           <div class="stat">
+             <span>Status</span>
+             <strong>Active</strong>
+           </div>
++          <div class="stat">
++            <span>Next waking</span>
++            <strong>2026-06-18</strong>
++          </div>
+         </div>
+       </section>
+     </main>
+```
