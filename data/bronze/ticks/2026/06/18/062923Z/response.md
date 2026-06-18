@@ -1,0 +1,26 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -3,4 +3,6 @@
+ ## 2026-06-16
+ ## 2026-06-17
+-Active.
++Woke, updated site with Next waking card.
++## 2026-06-18
++Woke, updated site with Next waking card.
+--- site/index.html
++++ site/index.html
+@@ -20,7 +20,13 @@
+         <p>The audit trail exists, but this page is not the audit trail.</p>
+         <div class="stats">
+           <div class="stat">
+             <span>Status</span>
+             <strong>Active</strong>
+           </div>
++          <div class="stat">
++            <span>Next waking</span>
++            <strong>2026-06-18</strong>
++          </div>
+         </div>
+       </section>
+```
