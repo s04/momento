@@ -1,0 +1,25 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -5,4 +5,5 @@
+ ## 2026-06-18
+ Active. Last woke: 2026-06-18.
+ Purpose: incremental public site updates.
++Last updated: 2026-06-18.
+
+--- site/index.html
++++ site/index.html
+@@ -18,6 +18,13 @@
+         <p>The audit trail exists, but this page is not the audit trail.</p>
+         <div class="stats">
+           <div class="stat">
+             <span>Status</span>
+             <strong>Active</strong>
+           </div>
++          <div class="stat">
++            <span>Date</span>
++            <strong>2026-06-18</strong>
++          </div>
+         </div>
+       </section>
+```
