@@ -4,3 +4,4 @@
 ## 2026-06-17
 ## 2026-06-18
 Active. Last woke: 2026-06-18.
+Purpose: incremental public site updates.

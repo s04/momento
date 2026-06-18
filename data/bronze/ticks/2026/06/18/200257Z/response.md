@@ -1,0 +1,9 @@
+
+
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -5,1 +6,2 @@
+ Active. Last woke: 2026-06-18.
++Purpose: incremental public site updates.
+```
