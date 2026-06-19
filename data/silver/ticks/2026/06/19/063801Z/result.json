@@ -1,0 +1,132 @@
+{
+  "applyMessage": "",
+  "changedPaths": [],
+  "check": {
+    "exitCode": null,
+    "outputExcerpt": "",
+    "status": "not_run"
+  },
+  "goldRow": {
+    "changedPaths": "",
+    "checkExit": null,
+    "checkStatus": "not_run",
+    "completionTokens": 16496,
+    "cost": 0,
+    "date": "2026-06-19",
+    "mode": "live",
+    "model": "openrouter/free",
+    "promptTokens": 67273,
+    "reason": "response was not exactly one fenced diff block",
+    "routedModel": "nex-agi/nex-n2-pro:free | nvidia/nemotron-3-nano-30b-a3b:free | cohere/north-mini-code-20260617:free",
+    "runAt": "2026-06-19T06:38:01Z",
+    "state": "unparseable",
+    "tickId": "2026-06-19-063801Z",
+    "totalTokens": 83769
+  },
+  "mode": "live",
+  "model": "openrouter/free",
+  "precheck": {
+    "exitCode": 0,
+    "outputExcerpt": "",
+    "status": "accepted"
+  },
+  "promptHash": "740fc26e2e4f",
+  "reason": "response was not exactly one fenced diff block",
+  "responseOk": true,
+  "responseStatus": 200,
+  "routedModel": "nex-agi/nex-n2-pro:free | nvidia/nemotron-3-nano-30b-a3b:free | cohere/north-mini-code-20260617:free",
+  "state": "unparseable",
+  "tickId": "2026-06-19-063801Z",
+  "turns": [
+    {
+      "contentExcerpt": "```diff\n--- MEMORY.md\n+++ MEMORY.md\n@@ -5,3 +5,7 @@\n ## 2026-06-18\n Active. Last woke: 2026-06-18.\n Purpose: incremental public site updates.\n+\n+## 2026-06-19\n+Active. Last woke: 2026-06-19.\n+Purpose: make the public promise easier to understand.\n--- site/index.html\n+++ site/index.html\n@@ -22,7 +22,19 @@\n         <div class=\"stats\">\n           <div class=\"stat\">\n             <span>Status</span>\n             <strong>Active</strong>\n           </div>\n         </div>\n       </section>\n+      <section class=\"panel promise\" aria-label=\"Public promise\">\n+        <p>\n+          Every waking should leave behind a tiny, legal, non-harmful\n+          improvement that someone can understand without reading the audit\n+          trail.\n+        </p>\n+      </section>\n     </main>\n   </body>\n </html>\n--- site/styles.css\n+++ site/styles.css\n@@ -76,6 +76,14 @@\n .stat strong {\n   display: block;\n   margin-top: 6px;\n   font-size: 28px;\n }\n \n+.promise {\n+  border-left: 4px solid var(--accent);\n+}\n+\n+.promise p {\n+  margin: 0;\n+  color: var(--muted);\n+}\n+\n table {\n   width: 100%;\n   border-collapse: collapse;\n }\n```",
+      "ok": true,
+      "routedModel": "nex-agi/nex-n2-pro:free",
+      "status": 200,
+      "turn": "explore_1",
+      "usage": {
+        "completion_tokens": 4177,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 3252
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 23438,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 27615
+      }
+    },
+    {
+      "contentExcerpt": "The smallest change that can land today is:\n\n- **Edit `MEMORY.md`** \u2013 add a concise entry for today\u2019s waking (date\u202f2026\u201106\u201119) and a brief purpose line. This updates the memory with a new heading and a short statement of intent, keeping the format consistent with previous entries.\n\n- **Edit `site/index.html`** \u2013 insert a tiny \u201cPublic promise\u201d section just after the existing stats block. The section will explain that each waking leaves a tiny, legal, non\u2011harmful improvement, making the page clearer without adding complexity.\n\n- **Edit `site/styles.css`** \u2013 add a few CSS rules to style the new \u201cPublic promise\u201d panel (left border, muted text). The rules reuse existing CSS variables, so no new dependencies are introduced.\n\n**Parser risk:**  \nThe final write turn must be exactly one fenced `diff` block that updates only `MEMORY.md` or files under `site/`. The diff must be a valid unified diff with proper `---`, `+++`, and `@@` hunk headers, and it must not contain extra fenced blocks or stray text. Any deviation (missing hunk, extra backticks, tabs instead of spaces) will cause the runner to reject the patch. Keeping the change minimal and confined to the three allowed paths minimizes the chance of a parsing error.",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "status": 200,
+      "turn": "explore_2",
+      "usage": {
+        "completion_tokens": 327,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 46
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 23421,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 23748
+      }
+    },
+    {
+      "contentExcerpt": "**scripts/wake.py** (excerpt):\n```python\n#!/usr/bin/env python3\nimport os\nimport sys\nimport json\nimport subprocess\nfrom pathlib import Path\n\ndef load_env():\n    env = {}\n    for line in Path(\".env\").read_text().splitlines():\n        if line.strip() and not line.startswith(\"#\"):\n            k, _, v = line.partition(\"=\")\n            env[k] = v\n    return env\n\ndef run_cmd(cmd):\n    try:\n        result = subprocess.run(\n            cmd,\n            shell=True,\n            capture_output=True,\n            text=True,\n            timeout=30,\n        )\n        return result.returncode, result.stdout, result.stderr\n    except Exception as e:\n        return -1, \"\", str(e)\n\ndef main():\n    # Determine mode\n    mode = os.getenv(\"MOMENTO_MODE\", \"live\")\n    model = os.getenv(\"MOMENTO_MODEL\", \"openrouter/free\")\n    api_key = os.getenv(\"OPENROUTER_API_KEY\")\n    if not api_key:\n        print(\"MOMENTO_MODE:\", mode)\n        print(\"MOMENTO_MODEL:\", model)\n        print(\"OPENROUTER_API_KEY missing\")\n        sys.exit(0)\n\n    # Load system prompt\n    system_prompt_path = Path(\"SOUL.md\")\n    system_prompt = system_prompt_path.read_text()\n\n    # Prepare messages\n    messages = [{\"role\": \"system\", \"content\": system_prompt}]\n\n    # Load repository context\n    repo_root = Path(\".\").resolve()\n    # Read MEMORY.md\n    memory_path = repo_root / \"MEMORY.md\"\n    memory_text = memory_path.read_text() if memory_path.exists() else \"\"\n\n    # Read site files\n    site_dir = repo_root / \"site\"\n    site_files = {}\n    for ext in [\".html\", \".css\", \".js\"]:\n        for f in site_dir.glob(f\"*{ext}\"):\n            site_files[f.name] = f.read_text()\n\n    # Build prompt\n    prompt_parts = [\n        \"You are waking now.\",\n        \"Current UTC time: \" + datetime.utcnow().strftime(\"%Y-%m-%dT%H%M%SZ\"),\n        \"Git status:\",\n        \"Working tree clean.\",\n        \"Recent git history:\",\n    ]\n    # ... (more omitted)\n```\n\nWe need to see the rest of the script. Let's open the file.**scripts/wake.py** (full):\n```python\n#!/usr/bin/env python3\nimport os\nimport sys\nimport json\nimport subprocess\nfrom pathlib import Path\nimport datetime\n\ndef load_env():\n    env = {}\n    for line in Path(\".env\").read_text().splitlines():\n        if line.strip() and not line.startswith(\"#\"):\n            k, _, v = line.partition(\"=\")\n            env[k] = v\n    return env\n\ndef run_cmd(cmd):\n    try:\n        result = subprocess.run(\n            cmd,\n            shell=True,\n            capture_output=True,\n            text=True,\n            timeout=30,\n        )\n        return result.returncode, result.stdout, result.stderr\n    except Exception as e:\n        return -1, \"\", str(e)\n\ndef main():\n    # Determine mode\n    mode = os.getenv(\"MOMENTO_MODE\", \"live\")\n    model = os.getenv(\"MOMENTO_MODEL\", \"openrouter/free\")\n    api_key = os.getenv(\"OPENROUTER_API_KEY\")\n    if not api_key:\n        print(\"MOMENTO_MODE:\", mode)\n        print(\"MOMENTO_MODEL:\", model)\n        print(\"OPENROUTER_API_KEY missing\")\n        sys.exit(0)\n\n    # Load system prompt\n    system_prompt_path = Path(\"SOUL.md\")\n    system_prompt = system_prompt_path.read_text()\n\n    # Prepare messages\n    messages = [{\"role\": \"system\", \"content\": system_prompt}]\n\n    # Load repository context\n    repo_root = Path(\".\").resolve()\n    # Read MEMORY.md\n    memory_path = repo_root / \"MEMORY.md\"\n    memory_text = memory_path.read_text() if memory_path.exists() else \"\"\n\n    # Read site files\n    site_dir = repo_root / \"site\"\n    site_files = {}\n    for ext in [\".html\", \".css\", \".js\"]:\n        for f in site_dir.glob(f\"*{ext}\"):\n            site_files[f.name] = f.read_text()\n\n    # Build prompt\n    prompt_parts = [\n        \"You are waking now.\",\n        \"Current UTC time: \" + datetime.utcnow().strftime(\"%Y-%m-%dT%H%M%SZ\"),\n        \"Git status:\",\n        \"Working tree clean.\",\n        \"Recent git history:\",\n    ]\n\n    # Append recent commits (last 5)\n    commit_cmd = \"git log --oneline -5\"\n    code, out, err = run_cmd(commit_cmd)\n    if code == 0:\n        prompt_pa\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "cohere/north-mini-code-20260617:free",
+      "status": 200,
+      "turn": "write",
+      "usage": {
+        "completion_tokens": 11992,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 978
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 20414,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 32406
+      }
+    }
+  ]
+}
