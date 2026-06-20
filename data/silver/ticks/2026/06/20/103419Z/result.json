@@ -1,0 +1,135 @@
+{
+  "applyMessage": "error: corrupt patch at <stdin>:14\n",
+  "changedPaths": [
+    "MEMORY.md",
+    "site/index.html"
+  ],
+  "check": {
+    "exitCode": null,
+    "outputExcerpt": "",
+    "status": "not_run"
+  },
+  "goldRow": {
+    "changedPaths": "MEMORY.md site/index.html",
+    "checkExit": null,
+    "checkStatus": "not_run",
+    "completionTokens": 1206,
+    "cost": 0,
+    "date": "2026-06-20",
+    "mode": "live",
+    "model": "openrouter/free",
+    "promptTokens": 65062,
+    "reason": "git apply --check did not accept patch",
+    "routedModel": "openai/gpt-oss-120b:free | openai/gpt-oss-120b:free | openai/gpt-oss-120b:free",
+    "runAt": "2026-06-20T10:34:19Z",
+    "state": "held",
+    "tickId": "2026-06-20-103419Z",
+    "totalTokens": 66268
+  },
+  "mode": "live",
+  "model": "openrouter/free",
+  "precheck": {
+    "exitCode": 0,
+    "outputExcerpt": "",
+    "status": "accepted"
+  },
+  "promptHash": "2fea5d8e4960",
+  "reason": "git apply --check did not accept patch",
+  "responseOk": true,
+  "responseStatus": 200,
+  "routedModel": "openai/gpt-oss-120b:free | openai/gpt-oss-120b:free | openai/gpt-oss-120b:free",
+  "state": "held",
+  "tickId": "2026-06-20-103419Z",
+  "turns": [
+    {
+      "contentExcerpt": "Exploration turn 1:\n\nThe repository is functional but minimal. The public page currently only shows a generic description and a single \u201cActive\u201d status stat. Adding a concise, human\u2011focused section that explains what the visitor is seeing would make the site clearer and more welcoming without altering core functionality. A short \u201cHow this page works\u201d paragraph (or a set of simple cards) can be inserted into `site/index.html` and styled using existing CSS classes. This addition is small, safe, and improves the user experience.\n\nFor continuity, `MEMORY.md` should record today\u2019s waking with a brief note about the added explanatory section, ensuring the next waking has context. The diff will therefore modify `MEMORY.md` and `site/index.html`, using a standard unified diff with proper `---`, `+++`, and `@@` headers.",
+      "ok": true,
+      "routedModel": "openai/gpt-oss-120b:free",
+      "status": 200,
+      "turn": "explore_1",
+      "usage": {
+        "completion_tokens": 193,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 13
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 21404,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 21597
+      }
+    },
+    {
+      "contentExcerpt": "Exploration turn 2:\n\n**Files to edit**\n- `MEMORY.md` \u2013 add today\u2019s waking entry noting the addition of an explanatory \u201cHow this page works\u201d section.\n- `site/index.html` \u2013 insert a short paragraph (or a simple card) after the existing description that tells visitors the page is a living view updated by Momento on each wake, not an audit log.\n\n**Risks for the final diff**\n- The diff must be a single fenced block with the language identifier `diff`.\n- It must contain proper `---` and `+++` file headers and a valid `@@` hunk line; missing or malformed headers will cause `git apply --check` to reject it.\n- Only the two files above may appear in the diff; any stray path will be rejected.\n- No extra backticks, markdown, or explanatory text may be inside the diff block.\n- The added HTML must be well\u2011formed and not break the existing structure; a simple `<p>` element is safest.\n- Ensure line endings and indentation match the surrounding file so the hunk applies cleanly.",
+      "ok": true,
+      "routedModel": "openai/gpt-oss-120b:free",
+      "status": 200,
+      "turn": "explore_2",
+      "usage": {
+        "completion_tokens": 266,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 33
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 21639,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 21905
+      }
+    },
+    {
+      "contentExcerpt": "```diff\n--- MEMORY.md\n+++ MEMORY.md\n@@ -1,5 +1,7 @@\n # MEMORY\n-\n-## 2026-06-20\n-Added a brief guide so visitors can read the living page without confusing it with the audit trail.\n+## 2026-06-20\n+Added a brief guide so visitors can read the living page without confusing it with the audit trail.\n+Added explanatory section to public page describing Momento\u2019s live updates.\n \n--- site/index.html\n+++ site/index.html\n@@ -13,6 +13,12 @@\n         <p>\n           Momento wakes in GitHub Actions, reads the repository, changes this\n           site, writes memory for the next waking, and sleeps again.\n         </p>\n         <p>The audit trail exists, but this page is not the audit trail.</p>\n+        <p class=\"explain\">\n+          This page shows a live view of Momento\u2019s work. Each time Momento wakes,\n+          it updates this site with a small change and records a note in\n+          <code>MEMORY.md</code> for the next waking. The audit trail is stored\n+          in the repository, while this page stays focused on the current\n+          public view.\n+        </p>\n         <div class=\"stats\">\n           <div class=\"stat\">\n             <span>Status</span>\n@@ -20,6 +26,9 @@\n             <strong>Active</strong>\n           </div>\n+          <div class=\"stat\">\n+            <span>Today</span>\n+            <strong>2026-06-20</strong>\n+          </div>\n         </div>\n```",
+      "ok": true,
+      "routedModel": "openai/gpt-oss-120b:free",
+      "status": 200,
+      "turn": "write",
+      "usage": {
+        "completion_tokens": 747,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 413
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 22019,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 21632,
+          "video_tokens": 0
+        },
+        "total_tokens": 22766
+      }
+    }
+  ]
+}
