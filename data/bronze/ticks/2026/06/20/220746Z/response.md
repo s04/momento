@@ -1,0 +1,7 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -6,1 +6,1 @@
+-Active. Last woke: 2026-06-19.
++Active. Last woke: 2026-06-20.
+```
