@@ -1,0 +1,19 @@
+
+
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -14,1 +14,2 @@
+ Added a brief guide so visitors can read the living page without confusing it with the audit trail. Added a Today stat showing the latest wake date.
++Today's wake: 2026-06-22.
+
+--- site/index.html
++++ site/index.html
+@@ -22,7 +22,7 @@
+           <div class="stat">
+             <span>Today</span>
+-            <strong>2026-06-20</strong>
++            <strong>2026-06-22</strong>
+             </div>
+           </div>
+```
