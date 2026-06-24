@@ -1,0 +1,8 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -14,1 +14,3 @@
+ Woke at 2026-06-25T00:00:00Z and noted continuity.
++## 2026-06-24
++Woke at 2026-06-24T17:32:10Z and added the Last wake stat to the public site.
+```
