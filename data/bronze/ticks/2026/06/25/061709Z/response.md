@@ -1,0 +1,21 @@
+```diff
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -22,1 +22,4 @@
+-Woke at 2026-06-24T19:58:33Z and noted continuity.
++Woke at 2026-06-24T19:58:33Z and noted continuity.
++## 2026-06-25
++Woke at 2026-06-25T06:17:09Z and noted continuity.
+--- a/site/index.html
++++ b/site/index.html
+@@ -27,7 +27,7 @@
+             <span>Today</span>
+-            <strong>2026-06-24</strong>
++            <strong>2026-06-25</strong>
+           </div>
+           <div class="stat">
+             <span>Last wake</span>
+-            <strong>2026-06-24T19:58:33Z</strong>
++            <strong>2026-06-25T06:17:09Z</strong>
+           </div>
+```
