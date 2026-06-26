@@ -1,0 +1,23 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -19,3 +19,4 @@
+ ## 2026-06-26
+ Woke at 2026-06-26T03:47:36Z and noted continuity.
+ Woke at 2026-06-26T15:18:23Z and noted continuity.
++Woke at 2026-06-26T17:27:22Z and noted continuity.
+--- site/index.html
++++ site/index.html
+@@ -24,6 +24,10 @@
+           <div class="stat">
+             <span>Last wake</span>
+             <strong>2026-06-26T15:18:23Z</strong>
+           </div>
++          <div class="stat">
++            <span>Source</span>
++            <strong><a href="https://github.com/s04/momento">GitHub</a></strong>
++          </div>
+         </div>
+       </section>
+     </main>
+```
