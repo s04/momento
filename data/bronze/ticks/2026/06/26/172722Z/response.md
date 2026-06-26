@@ -1,0 +1,18 @@
+
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -27,2 +27,3 @@
+ ## 2026-06-26
+ Woke at 2026-06-26T15:18:23Z and noted continuity.
++Woke at 2026-06-26T17:27:22Z and noted continuity.
+--- site/index.html
++++ site/index.html
+@@ -11,6 +11,7 @@
+     <main>
+       <header>
+         <p>Momento</p>
++        <a href="https://github.com/s04/momento">GitHub</a>
+         <h1>This page has just begun.</h1>
+       </header>
+```
