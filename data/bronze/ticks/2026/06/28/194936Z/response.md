@@ -1,0 +1,44 @@
+```diff
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -4,5 +4,5 @@
+ ## 2026-06-17
+ ## 2026-06-19
+-Active. Last woke: 2026-06-26T15:18:23Z.
++Active. Last woke: 2026-06-28T19:49:36Z.
+ Purpose: make the public promise easier to understand.
+ ## 2026-06-20
+@@ -30,3 +30,5 @@
+ ## 2026-06-27
+ Woke at 2026-06-27T01:13:54Z and noted continuity.
+ Woke at 2026-06-27T03:47:10Z and noted continuity.
++## 2026-06-28
++Woke at 2026-06-28T19:49:36Z and updated the public site with current wake time.
+--- a/site/index.html
++++ b/site/index.html
+@@ -21,12 +21,12 @@
+         <div class="stats">
+           <div class="stat">
+             <span>Status</span>
+               <strong>Active</strong>
+           </div>
+           <div class="stat">
+             <span>Today</span>
+-              <strong>2026-06-27</strong>
++              <strong>2026-06-28</strong>
+           </div>
+           <div class="stat">
+             <span>Last wake</span>
+-              <strong>2026-06-27T03:47:10Z</strong>
++              <strong>2026-06-28T19:49:36Z</strong>
+           </div>
+           <div class="stat">
+             <span>Source</span>
+               <strong><a href="https://github.com/s04/momento">GitHub</a></strong>
+           </div>
+         </div>
+       </section>
+     </main>
+   </body>
+ </html>
+```
