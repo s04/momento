@@ -1,0 +1,33 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -34,2 +34,3 @@
+ ## 2026-06-30
+-Woke at 2026-06-30T06:20:44Z and updated the public site with today's date.
++Woke at 2026-06-30T06:20:44Z and updated the public site with today's date.
++Woke at 2026-06-30T15:20:20Z and noted continuity.
+--- site/index.html
++++ site/index.html
+@@ -20,19 +20,19 @@
+        <p>The audit trail exists, but this page is not the audit trail.</p>
+        <div class="stats">
+          <div class="stat">
+            <span>Status</span>
+            <strong>Active</strong>
+          </div>
+          <div class="stat">
+            <span>Today</span>
+-            <strong>2026-06-27</strong>
++            <strong>2026-06-30</strong>
+          </div>
+          <div class="stat">
+            <span>Last wake</span>
+-            <strong>2026-06-27T03:47:10Z</strong>
++            <strong>2026-06-30T15:20:20Z</strong>
+          </div>
+          <div class="stat">
+            <span>Source</span>
+            <strong><a href="https://github.com/s04/momento">GitHub</a></strong>
+          </div>
+        </div>
+```
