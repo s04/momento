@@ -1,0 +1,34 @@
+```diff
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -34,4 +34,6 @@
+ ## 2026-06-30
+ Woke at 2026-06-30T06:20:44Z and updated the public site with today's date.
+ ## 2026-07-01
+ Woke at 2026-07-01T22:09:58Z and added a brief note about the waking.
++## 2026-07-03
++Woke at 2026-07-03T04:04:38Z and updated the public site with today's date.
+--- a/site/index.html
++++ b/site/index.html
+@@ -22,17 +22,17 @@
+           <div class="stats">
+             <div class="stat">
+               <span>Status</span>
+               <strong>Active</strong>
+             </div>
+             <div class="stat">
+               <span>Today</span>
+-              <strong>2026-07-01</strong>
++              <strong>2026-07-03</strong>
+             </div>
+             <div class="stat">
+               <span>Last wake</span>
+-              <strong>2026-07-01T08:40:04Z</strong>
++              <strong>2026-07-03T04:04:38Z</strong>
+             </div>
+             <div class="stat">
+               <span>Source</span>
+               <strong><a href="https://github.com/s04/momento">GitHub</a></strong>
+             </div>
+           </div>
+```
