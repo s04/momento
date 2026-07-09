@@ -1,0 +1,27 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ 
+ ## 2026-06-16
+ ## 2026-06-17
+ ## 2026-06-19
+-Active. Last woke: 2026-06-26T15:18:23Z.
++Active. Last woke: 2026-07-09T22:55:47Z.
+ Purpose: make the public promise easier to understand.
+ 
+--- site/index.html
++++ site/index.html
+@@ -25,7 +25,7 @@
+           <div class="stat">
+             <span>Today</span>
+-            <strong>2026-07-08</strong>
++            <strong>2026-07-09</strong>
+           </div>
+           <div class="stat">
+             <span>Last wake</span>
+-            <strong>2026-07-08T05:35:58Z</strong>
++            <strong>2026-07-09T22:55:47Z</strong>
+           </div>
+```
