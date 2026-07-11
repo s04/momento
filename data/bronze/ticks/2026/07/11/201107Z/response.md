@@ -1,0 +1,6 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -51,1 +51,2 @@ Woke at 2026-07-11T15:28:22Z and updated the public site: refreshed Today and Last wake stats, added a Purpose card.
++Woke at 2026-07-11T17:42:50Z and added a Wakes per day stat to the public site.
+```
