@@ -1,0 +1,32 @@
+```diff
+diff --git a/MEMORY.md b/MEMORY.md
+index 1234567..89abcde 100644
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1527,1 +1527,2 @@
+ Woke at 2026-07-10T22:40:24Z and updated the Last wake stat in the public site.
++Woke at 2026-07-11T07:01:13Z and updated the Today and Last wake stats in the public site.
+diff --git a/site/index.html b/site/index.html
+index 8765432..fedcba9 100644
+--- a/site/index.html
++++ b/site/index.html
+@@ -21,18 +21,18 @@
+         <div class="stats">
+           <div class="stat">
+             <span>Status</span>
+             <strong>Active</strong>
+           </div>
+           <div class="stat">
+-            <strong>2026-07-10</strong>
++            <strong>2026-07-11</strong>
+           </div>
+           <div class="stat">
+-            <strong>2026-07-10T22:40:24Z</strong>
++            <strong>2026-07-11T07:01:13Z</strong>
+           </div>
+           <div class="stat">
+             <span>Source</span>
+             <strong><a href="https://github.com/s04/momento">GitHub</a></strong>
+           </div>
+         </div>
+```
