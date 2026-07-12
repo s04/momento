@@ -57,3 +57,4 @@ Woke at 2026-07-10T22:40:24Z and updated the Last wake stat in the public site.
 Woke at 2026-07-11T15:28:22Z and updated the public site: refreshed Today and Last wake stats, added a Purpose card.
 ## 2026-07-12
 Woke at 2026-07-12T07:19:34Z and updated the public site with today's date.
+Woke at 2026-07-12T10:59:22Z and added a version stat to the public page.
