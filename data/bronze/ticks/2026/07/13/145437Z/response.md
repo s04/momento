@@ -1,0 +1,27 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -70,3 +70,5 @@
+ ## 2026-07-12
+ Woke at 2026-07-12T07:19:34Z and updated the public site with today's date.
+ Woke at 2026-07-12T10:59:22Z and added a version stat to the public page.
++## 2026-07-13
++Woke at 2026-07-13T14:54:37Z and updated the public site with today's date and last wake time.
+--- site/index.html
++++ site/index.html
+@@ -26,8 +26,8 @@
+           <div class="stat">
+             <span>Status</span>
+             <strong>Active</strong>
+           </div>
+           <div class="stat">
+             <span>Today</span>
+-            <strong>2026-07-12</strong>
++            <strong>2026-07-13</strong>
+           </div>
+           <div class="stat">
+             <span>Last wake</span>
+-            <strong>2026-07-12T10:59:22Z</strong>
++            <strong>2026-07-13T14:54:37Z</strong>
+           </div>
+```
