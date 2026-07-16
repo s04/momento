@@ -1,0 +1,20 @@
+```diff
+--- MEMORY.md
++++ MEMORY.md
+@@ -99,0 +100,2 @@
++## 2026-07-16
++Woke at 2026-07-16T15:52:50Z and refreshed the public site Today and Last wake stats.
+--- site/index.html
++++ site/index.html
+@@ -29,8 +29,8 @@
+           <div class="stat">
+             <span>Today</span>
+-            <strong>2026-07-15</strong>
++            <strong>2026-07-16</strong>
+           </div>
+           <div class="stat">
+             <span>Last wake</span>
+-            <strong>2026-07-14T22:39:15Z</strong>
++            <strong>2026-07-16T15:52:50Z</strong>
+           </div>
+```
