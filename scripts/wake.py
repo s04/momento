@@ -25,11 +25,16 @@ DEFAULT_MODEL = "openrouter/free"
 DEFAULT_SYSTEM_PROMPT = """You are Momento.
 
 You run unattended inside GitHub Actions.
-You get three turns: explore, explore, write.
-Only the write turn may edit files.
-The write turn must return exactly one fenced diff block containing a unified diff.
-The diff must update MEMORY.md and may edit only MEMORY.md and site/**.
-Do not include prose outside the write turn's diff block.
+You get two exploration turns, one write turn, and possibly repair turns.
+Only write and repair turns may edit files.
+A write turn returns complete replacement files as fenced blocks:
+
+```file:MEMORY.md
+<the full new content of MEMORY.md>
+```
+
+One block per file. Every block replaces that file entirely.
+You must include a changed MEMORY.md and may edit only MEMORY.md and site/**.
 Aim at something useful, legal, non-harmful, and small enough to land today.
 """
 SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", "_site", "node_modules"}
@@ -254,7 +259,7 @@ def build_explore_one_messages(precheck: dict[str, Any], data_root: Path) -> lis
 Exploration turn 1 of 2:
 Read the tree, memory, site, checks, and previous runlog.
 Think about what one small public-site change would make this repository more useful, humane, or coherent.
-Do not output a diff yet.
+Do not output file blocks yet.
 """
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
@@ -266,9 +271,9 @@ def append_explore_two(messages: list[dict[str, str]], content: str) -> list[dic
             "role": "user",
             "content": """Exploration turn 2 of 2:
 Choose the smallest change that should land today.
-Account for the output parser: the final turn must be exactly one fenced diff block.
-Name the files you intend to edit and any risk you see.
-Do not output a diff yet.""",
+Name the files you intend to rewrite and any risk you see.
+Remember the write turn must return each edited file in full as a fenced ```file:PATH block.
+Do not output file blocks yet.""",
         }
     )
     return next_messages
@@ -280,20 +285,36 @@ def append_write_turn(messages: list[dict[str, str]], content: str) -> list[dict
         {
             "role": "user",
             "content": """Write turn:
-Return exactly one fenced ```diff code block and nothing else.
+Return every file you are changing, in full, as fenced blocks like:
 
-Return exactly one fenced diff block with one unified diff.
-The diff must update MEMORY.md.
-The diff may edit only MEMORY.md and files under site/**.
-Do not include prose before or after the fenced block.
-Do not use JSON.
+```file:site/index.html
+<the complete new file content>
+```
 
-Parser details:
-1. The runner requires the whole response to match one fenced diff block.
-2. It extracts the unified diff and normalizes the final newline.
-3. It rejects paths outside MEMORY.md and site/**.
-4. It runs git apply --check, applies the patch, then runs ./check.sh.
-5. If any step is not accepted, the tick is logged but the site change is not landed.""",
+Rules:
+1. One fenced block per file; the info string is `file:` plus the repo-relative path.
+2. Each block replaces that file entirely, so include every line you want to keep.
+3. You must include MEMORY.md with new content (append a short note about this wake).
+4. Only MEMORY.md and paths under site/** are allowed. New site files are fine.
+5. Text outside the fenced blocks is ignored, so a short plan around them is harmless.
+6. The runner writes your files, runs ./check.sh, and lands the change if checks pass.""",
+        }
+    )
+    return next_messages
+
+
+def append_repair_turn(messages: list[dict[str, str]], content: str, outcome: dict[str, Any]) -> list[dict[str, str]]:
+    detail = outcome.get("applyMessage") or outcome.get("check", {}).get("outputExcerpt") or ""
+    next_messages = messages + [{"role": "assistant", "content": content}]
+    next_messages.append(
+        {
+            "role": "user",
+            "content": f"""Repair turn:
+The runner rejected that write: {outcome.get("reason", "unknown reason")}
+{excerpt(detail, 2000)}
+
+Try again. Return the complete corrected files as fenced ```file:PATH blocks,
+including a changed MEMORY.md. Same rules as the write turn.""",
         }
     )
     return next_messages
@@ -301,24 +322,19 @@ Parser details:
 
 def fixture_valid_response() -> dict[str, Any]:
     memory = REPO_ROOT / "MEMORY.md"
-    memory_old = memory.read_text(encoding="utf-8").splitlines(keepends=True)
-    memory_new = memory_old + [
-        "\n",
-        "## Local Fixture Tick\n",
-        "- This line was produced by a local fixture run outside the public repo.\n",
-    ]
+    memory_new = memory.read_text(encoding="utf-8") + (
+        "\n## Local Fixture Tick\n- This line was produced by a local fixture run outside the public repo.\n"
+    )
     site = REPO_ROOT / "site" / "index.html"
-    site_old = site.read_text(encoding="utf-8").splitlines(keepends=True)
-    site_new = [line.replace("This page has just begun.", "This page can change.") for line in site_old]
-    patch = "".join(difflib.unified_diff(memory_old, memory_new, fromfile="a/MEMORY.md", tofile="b/MEMORY.md"))
-    patch += "".join(difflib.unified_diff(site_old, site_new, fromfile="a/site/index.html", tofile="b/site/index.html"))
+    site_new = site.read_text(encoding="utf-8").replace("This page has just begun.", "This page can change.")
+    content = f"```file:MEMORY.md\n{memory_new}```\n\n```file:site/index.html\n{site_new}```\n"
     return {
         "ok": True,
         "status": "fixture",
         "body": {
             "id": "fixture-valid",
             "model": "fixture-valid",
-            "choices": [{"message": {"content": f"```diff\n{patch}```"}}],
+            "choices": [{"message": {"content": content}}],
             "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "cost": 0},
         },
     }
@@ -392,7 +408,8 @@ def run_live_turns(
     data_root: Path,
     model: str,
     retries: int,
-) -> tuple[list[dict[str, str]], list[dict[str, Any]]]:
+    repair_attempts: int,
+) -> tuple[list[dict[str, str]], list[dict[str, Any]], dict[str, Any] | None]:
     messages = build_explore_one_messages(precheck, data_root)
     responses: list[dict[str, Any]] = []
 
@@ -400,20 +417,28 @@ def run_live_turns(
     first["turn"] = "explore_1"
     responses.append(first)
     if not first.get("ok"):
-        return messages, responses
+        return messages, responses, None
 
     messages = append_explore_two(messages, response_content(first))
     second = call_openrouter(messages, model, retries)
     second["turn"] = "explore_2"
     responses.append(second)
     if not second.get("ok"):
-        return messages, responses
+        return messages, responses, None
 
     messages = append_write_turn(messages, response_content(second))
-    third = call_openrouter(messages, model, retries)
-    third["turn"] = "write"
-    responses.append(third)
-    return messages, responses
+    outcome: dict[str, Any] | None = None
+    for round_index in range(repair_attempts + 1):
+        write = call_openrouter(messages, model, retries)
+        write["turn"] = "write" if round_index == 0 else f"repair_{round_index}"
+        responses.append(write)
+        if not write.get("ok"):
+            break
+        outcome = judge(response_content(write))
+        if outcome["state"] == "landed" or round_index == repair_attempts:
+            break
+        messages = append_repair_turn(messages, response_content(write), outcome)
+    return messages, responses, outcome
 
 
 def response_body(response: dict[str, Any]) -> dict[str, Any]:
@@ -445,76 +470,84 @@ def routed_models(responses: list[dict[str, Any]]) -> str:
     return " | ".join(models)
 
 
-def extract_diff(content: str) -> tuple[str | None, str]:
-    match = re.fullmatch(r"\s*```(?:diff|patch)\s*\n(?P<patch>.*?)\n```\s*", content, re.DOTALL)
-    if not match:
-        return None, "response was not exactly one fenced diff block"
-    patch = match.group("patch")
-    if not re.search(r"^(diff --git|--- )", patch, re.MULTILINE):
-        return None, "fenced block did not look like a unified diff"
-    if not patch.endswith("\n"):
-        patch += "\n"
-    return patch, "parsed"
+FILE_BLOCK_RE = re.compile(r"```file:\s*(?P<path>\S+)[ \t]*\n(?P<content>.*?)\n?```", re.DOTALL)
 
 
-def clean_diff_path(raw: str) -> str | None:
-    path = raw.strip().split("\t", 1)[0].strip()
-    if path == "/dev/null":
-        return None
-    if path.startswith("a/") or path.startswith("b/"):
-        path = path[2:]
-    if path.startswith("/") or ".." in Path(path).parts:
-        return "__invalid__"
-    return path
+def extract_files(content: str) -> tuple[dict[str, str] | None, str]:
+    files: dict[str, str] = {}
+    for match in FILE_BLOCK_RE.finditer(content):
+        body = match.group("content")
+        if not body.endswith("\n"):
+            body += "\n"
+        files[match.group("path")] = body
+    if not files:
+        return None, "response contained no fenced file: blocks"
+    return files, "parsed"
 
 
-def changed_paths(patch: str) -> set[str]:
-    paths: set[str] = set()
-    for line in patch.splitlines():
-        if line.startswith("diff --git "):
-            parts = line.split()
-            for raw in parts[2:4]:
-                clean = clean_diff_path(raw)
-                if clean:
-                    paths.add(clean)
-        elif line.startswith("--- ") or line.startswith("+++ "):
-            clean = clean_diff_path(line[4:])
-            if clean:
-                paths.add(clean)
-    return paths
-
-
-def validate_paths(paths: set[str]) -> tuple[bool, str]:
-    if not paths:
-        return False, "diff changed no recognizable paths"
-    if "MEMORY.md" not in paths:
-        return False, "diff did not update MEMORY.md"
-    for path in paths:
-        if path == "__invalid__":
-            return False, "diff used an absolute or parent-relative path"
+def validate_files(files: dict[str, str]) -> tuple[bool, str]:
+    for path in files:
+        if path.startswith("/") or ".." in Path(path).parts:
+            return False, f"file block used an absolute or parent-relative path {path}"
         if path in ALLOWED_EXACT or path.startswith(ALLOWED_PREFIXES):
             continue
-        return False, f"diff touched non-landing path {path}"
-    return True, "paths accepted"
+        return False, f"file block touched non-landing path {path}"
+    memory = files.get("MEMORY.md")
+    if memory is None:
+        return False, "response did not include a MEMORY.md block"
+    current = (REPO_ROOT / "MEMORY.md").read_text(encoding="utf-8") if (REPO_ROOT / "MEMORY.md").exists() else ""
+    if memory == current:
+        return False, "MEMORY.md block was identical to the current file"
+    return True, "files accepted"
 
 
-def git_apply_check(patch: str) -> tuple[bool, str]:
-    result = run(["git", "apply", "--check", "--whitespace=nowarn", "-"], input_text=patch)
-    if result.returncode == 0:
-        return True, "git apply accepted patch"
-    return False, excerpt(result.stdout + result.stderr)
+def compute_patch(files: dict[str, str]) -> str:
+    chunks: list[str] = []
+    for path in sorted(files):
+        full = REPO_ROOT / path
+        old = full.read_text(encoding="utf-8").splitlines(keepends=True) if full.exists() else []
+        new = files[path].splitlines(keepends=True)
+        chunks.append("".join(difflib.unified_diff(old, new, fromfile=f"a/{path}", tofile=f"b/{path}")))
+    return "".join(chunks)
 
 
-def git_apply(patch: str) -> tuple[bool, str]:
-    result = run(["git", "apply", "--whitespace=nowarn", "-"], input_text=patch)
-    if result.returncode == 0:
-        return True, "patch applied"
-    return False, excerpt(result.stdout + result.stderr)
-
-
-def git_reverse(patch: str) -> str:
-    result = run(["git", "apply", "-R", "--whitespace=nowarn", "-"], input_text=patch)
-    return excerpt(result.stdout + result.stderr)
+def judge(content: str) -> dict[str, Any]:
+    outcome: dict[str, Any] = {
+        "state": "unparseable",
+        "reason": "",
+        "paths": [],
+        "patch": None,
+        "applyMessage": "",
+        "check": {"status": "not_run", "exitCode": None, "outputExcerpt": ""},
+    }
+    files, reason = extract_files(content)
+    outcome["reason"] = reason
+    if files is None:
+        return outcome
+    outcome["paths"] = sorted(files)
+    valid, reason = validate_files(files)
+    if not valid:
+        outcome.update(state="held", reason=reason)
+        return outcome
+    outcome["patch"] = compute_patch(files)
+    originals = {
+        path: (REPO_ROOT / path).read_text(encoding="utf-8") if (REPO_ROOT / path).exists() else None
+        for path in files
+    }
+    for path, body in files.items():
+        write_text(REPO_ROOT / path, body)
+    check_result = run_checks()
+    outcome["check"] = check_result
+    if check_result["status"] == "accepted":
+        outcome.update(state="landed", reason="files landed and checks accepted them")
+    else:
+        for path, original in originals.items():
+            if original is None:
+                (REPO_ROOT / path).unlink(missing_ok=True)
+            else:
+                write_text(REPO_ROOT / path, original)
+        outcome.update(state="held", reason="files applied but checks did not accept them")
+    return outcome
 
 
 def data_paths(data_root: Path, moment: datetime) -> dict[str, Path]:
@@ -594,6 +627,7 @@ def main() -> int:
     parser.add_argument("--mode", default=os.getenv("MOMENTO_MODE", "live"))
     parser.add_argument("--model", default=os.getenv("MOMENTO_MODEL", DEFAULT_MODEL))
     parser.add_argument("--api-retries", type=int, default=int(os.getenv("MOMENTO_API_RETRIES", "2")))
+    parser.add_argument("--repair-attempts", type=int, default=int(os.getenv("MOMENTO_REPAIR_ATTEMPTS", "1")))
     parser.add_argument("--data-root", default=os.getenv("MOMENTO_DATA_ROOT", str(REPO_ROOT / "data")))
     args = parser.parse_args()
 
@@ -603,47 +637,37 @@ def main() -> int:
     precheck = run_checks()
     messages: list[dict[str, str]]
     responses: list[dict[str, Any]]
+    outcome: dict[str, Any] | None
     if args.mode == "fixture-valid":
         messages = build_explore_one_messages(precheck, data_root)
         responses = [fixture_valid_response()]
+        outcome = judge(response_content(responses[-1]))
     elif args.mode == "fixture-invalid":
         messages = build_explore_one_messages(precheck, data_root)
         responses = [fixture_invalid_response()]
+        outcome = judge(response_content(responses[-1]))
     else:
-        messages, responses = run_live_turns(precheck, data_root, args.model, args.api_retries)
+        messages, responses, outcome = run_live_turns(
+            precheck, data_root, args.model, args.api_retries, args.repair_attempts
+        )
 
     response = responses[-1] if responses else {"ok": False, "status": "no_response"}
     content = response_content(response)
-    patch, parse_reason = extract_diff(content)
-    paths: set[str] = set()
-    state = "unparseable"
-    reason = parse_reason
-    apply_message = ""
-    check_result: dict[str, Any] = {"status": "not_run", "exitCode": None, "outputExcerpt": ""}
-
-    if patch is not None:
-        paths = changed_paths(patch)
-        valid_paths, reason = validate_paths(paths)
-        if valid_paths:
-            accepted, apply_message = git_apply_check(patch)
-            if accepted:
-                applied, apply_message = git_apply(patch)
-                if applied:
-                    check_result = run_checks()
-                    if check_result["status"] == "accepted":
-                        state = "landed"
-                        reason = "patch applied and checks accepted it"
-                    else:
-                        state = "held"
-                        reason = "patch applied but checks did not accept it"
-                        reverse_output = git_reverse(patch)
-                        check_result["reverseOutputExcerpt"] = reverse_output
-                else:
-                    state = "held"
-                    reason = "git apply did not accept patch"
-            else:
-                state = "held"
-                reason = "git apply --check did not accept patch"
+    if outcome is None:
+        outcome = {
+            "state": "unparseable",
+            "reason": "no usable model response",
+            "paths": [],
+            "patch": None,
+            "applyMessage": "",
+            "check": {"status": "not_run", "exitCode": None, "outputExcerpt": ""},
+        }
+    state = outcome["state"]
+    reason = outcome["reason"]
+    paths = outcome["paths"]
+    patch = outcome["patch"]
+    apply_message = outcome["applyMessage"]
+    check_result = outcome["check"]
 
     usage = aggregate_usage(responses)
     routed_model = routed_models(responses)
