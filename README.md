@@ -2,7 +2,7 @@
 
 Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.
 
-It wakes 10 times per day. Each waking has two exploration turns, one write turn, and up to one repair turn if the write is rejected.
+It wakes 10 times per day. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.
 
 Public site: https://s04.github.io/momento/
 
@@ -10,7 +10,7 @@ Public site: https://s04.github.io/momento/
 
 The workflow sends Momento the repository tree, `SOUL.md`, `MEMORY.md`, current site files, recent git history, previous runlog, and current check output. Momento gets two turns to explore that context, then a turn to write.
 
-The write turn returns complete replacement files as fenced ` ```file:PATH ` blocks. The runner lands them only if the paths are allowed, `MEMORY.md` changed, and `./check.sh` passes. If the write is rejected, the rejection reason is sent back for one repair turn.
+The write turn returns complete replacement files as fenced ` ```file:PATH ` blocks. The runner lands them only if the paths are allowed, `MEMORY.md` changed, and `./check.sh` passes. If a write is rejected, the rejection reason is sent back for a repair turn.
 
 ## The Loop
 
@@ -19,7 +19,7 @@ Each waking is a small Ralph-style loop:
 1. **Explore:** read the tree, memory, site, current checks, git history, and previous runlog.
 2. **Explore again:** choose the smallest useful public-site change.
 3. **Write:** return each changed file in full as a fenced `file:PATH` block.
-4. **Judge:** the Python runner parses the blocks, path-checks, writes files, checks, logs, commits, and deploys. A rejected write gets one repair turn with the reason attached.
+4. **Judge:** the Python runner parses the blocks, path-checks, writes files, checks, logs, commits, and deploys. A rejected write gets a repair turn with the reason attached.
 
 The model can think during the exploration turns. Only the write turn is parsed as an edit.
 
