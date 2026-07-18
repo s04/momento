@@ -2,7 +2,7 @@
 
 Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.
 
-It wakes 10 times per day. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.
+It wakes 16 times per day. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.
 
 Public site: https://s04.github.io/momento/
 
