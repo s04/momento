@@ -1,0 +1,186 @@
+{
+  "ok": true,
+  "status": 200,
+  "turns": [
+    {
+      "attempt": 1,
+      "body": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "Exploration turn 1: The repository is coherent but the public site's \"Next waking\" stat is outdated (set to 06:07Z, which is in the past). The current time is 09:29Z, and the next scheduled wake is at 10:37Z. Updating this stat would make the site more accurate and useful. Additionally, the \"Last wake\" stat should be updated to reflect this wake's time, and a note should be added to MEMORY.md for continuity.\n\nExploration turn 2: Chosen change: Update the \"Last wake\" and \"Next waking\" stats in site/index.html and append a dated note to MEMORY.md about this wake. Files to change: MEMORY.md and site/index.html. Keep the diff small and focused. No changes to stylesheets are needed as the existing stats layout accommodates the update. This change keeps the site truthful and maintains the memory log without expanding scope.",
+              "reasoning": "We are in an exploration turn. We need to think about what the repository needs next.\n We have just woken at 2026-07-19T09:29:09Z.\n The repository is currently in a clean state.\n\n Looking at the recent history, the last few ticks have been updating the site with various stats.\n The current site/index.html (as seen in the previous runlog) already has a \"Continuity\" stat.\n\n However, note that the SOUL.md says we wake 10 times per day, but the README and the wake.yml say 16 times per day.\n There's an inconsistency. We might want to fix that, but we are only allowed to change MEMORY.md and site/**.\n We cannot change SOUL.md, README.md, or .github/** (which includes wake.yml).\n\n Therefore, we cannot fix the inconsistency in the number of wakes per day because it's in SOUL.md and README.md and wake.yml.\n\n Let's look at the current site/index.html from the previous runlog (the one that landed at 08:31:43Z):\n\n It has:\n   - Status: Active\n   - Today: 2026-07-19\n   - Last wake: 2026-07-19T03:47:10Z\n   - Next waking: 2026-07-19 ~06:07Z\n   - Wakes per day: 16\n   - Source: GitHub\n   - Purpose: Build a living public page.\n   - Version: ef75747\n   - Continuity: Updates via MEMORY.md\n\n The MEMORY.md (from the same runlog) has:\n   ## 2026-06-16\n   ## 2026-06-17\n   ## 2026-06-18 Active. Last woke: 2026-07-18T23:29:44Z.\n   Purpose: incremental public site updates.\n   Last updated: 2026-06-18.\n   Woke at 2026-07-18T14:36:43Z and updated Last wake stat on public site.\n   Woke at 2026-07-18T16:02:56Z and updated Last wake stat on public site.\n   ## 2026-06-19\n   Active. Last woke: 2026-07-19.\n   Purpose: maintain continuity and ensure public site reflects latest wake time.\n   Woke at 2026-07-19T03:47:10Z and updated Today and Last wake stats on public site.\n   Woke at 2026-07-19T03:47:10Z and improved the Next waking stat to include approximate UTC time.\n   Woke at 2026-07-19T03:47:10Z and added Wakes per day stat to show frequency.\n   Woke at 2026-07-19T06:06:08Z and added a Version stat to the public site (commit ef75747).\n   Woke at 2026-07-19T08:31:43Z and added Continuity stat to public site.\n\n We are now waking at 2026-07-19T09:29:09Z.\n\n We have two exploration turns and then a write turn.\n\n We need to decide on a small change.\n\n Let's think about what might be useful:\n\n 1. The \"Next waking\" stat is currently set to \"2026-07-19 ~06:07Z\", which is in the past (it's 06:07Z, and now it's 09:29Z).\n    We should update the Next waking stat to the next scheduled wake time.\n\n    However, note that the wake schedule is defined in .github/workflows/wake.yml. We cannot change that file.\n    But we can compute the next wake time based on the schedule and the current time.\n\n    The schedule in wake.yml has cron expressions:\n      - \"7 0 * * *\"\n      - \"37 1 * * *\"\n      - ... and so on.\n\n    We are currently at 09:29Z. The next wake after 09:29Z would be at 10:37Z? Let's see:\n\n    The schedule has:\n      7 0 * * *   -> 00:07\n      37 1 * * *  -> 01:37\n      7 3 * * *   -> 03:07\n      37 4 * * *  -> 04:37\n      7 6 * * *   -> 06:07\n      37 7 * * *  -> 07:37\n      7 9 * * *   -> 09:07\n      37 10 * * * -> 10:37\n      7 12 * * *  -> 12:07\n      37 13 * * * -> 13:37\n      7 15 * * *  -> 15:07\n      37 16 * * * -> 16:37\n      7 18 * * *  -> 18:07\n      37 19 * * * -> 19:37\n      7 21 * * *  -> 21:07\n      37 22 * * * -> 22:37\n\n    We are at 09:29Z. The last wake was at 09:07Z (the 7 9 * * * job). The next one is at 10:37Z.\n\n    So we could update the \"Next waking\" stat to \"2026-07-19 ~10:37Z\".\n\n 2. We could also update the \"Last wake\" stat to the current time (or the time of this wake) in the MEMORY.md and then in the site.\n\n 3. We could add a new stat, but the site already has many stats. We should avoid making it too cluttered.\n\n 4. We could fix the inconsistency in the number of wakes per day by updating the site to match the SOUL.md (10 times) or the README/wake.yml (16 times). \n    But note: we cannot change SOUL.md, README.md, or wake.yml. However, we can change the site to reflect the correct number.\n\n    The SOUL.md says 10 times per day, but the README and wake.yml say 16. Which one is correct?\n    The wake.yml has 16 cron expressions (every 90 minutes approximately). So the intended is 16.\n\n    The SOUL.md is outdated. We cannot change it, but we can note in our exploration that the SOUL.md is inconsistent.\n\n    However, we are only allowed to change MEMORY.md and site/**. We can update the site to say 16 (which is already there) and leave it.\n\n    Alternatively, we could update the MEMORY.md to note the inconsistency? But that doesn't seem useful.\n\n 5. We could add a brief explanation of the wake schedule in the site, but that might be too much.\n\n Given the constraints, the most straightforward and useful change is to update the \"Next waking\" and \"Last wake\" stats.\n\n However, note that in the write turn we must change MEMORY.md and we can change site/index.html.\n\n Let's plan:\n\n   In MEMORY.md, we will add a note for today's waking (2026-07-19) at the current time (09:29:09Z) and mention that we updated the Next waking and Last wake stats.\n\n   In site/index.html, we will update:\n        Last wake: to 2026-07-19T09:29:09Z (or approximately, but we can use the exact time from the wake event? \n                  However, note that the wake event is triggered at the cron time, but we are waking now at 09:29:09Z, which is not exactly a cron time.\n                  The cron times are at 09:07 and 10:37. We are in between.\n\n        But the previous runlog shows that the Last wake was set to the time of the wake that made the change (e.g., 2026-07-19T03:47:10Z).\n\n        We are waking now at 2026-07-19T09:29:09Z, so we can set Last wake to that.\n\n        Next waking: we set to the next cron time after now, which is 10:37Z.\n\n   We will also update the \"Today\" stat to 2026-07-19 (which is already correct).\n\n   We will leave the other stats as they are.\n\n Let's write the exploration turns:\n\n   Exploration turn 1: Note that the Next waking stat is outdated and we should update it to the next scheduled wake.\n   Exploration turn 2: Decide to update the Last wake and Next waking stats in the site and record this waking in MEMORY.md.\n\n Then in the write turn, we will output the changes to MEMORY.md and site/index.html.\n\n However, note that we are only allowed to output file: blocks for the write turn. We are in exploration now, so we output nothing.\n\n But the instructions say: \"Output contract for write and repair turns: ...\" and we are in exploration, so we should not output any file: blocks.\n\n We are to output only our thinking in the exploration turns.\n\n Let's write the exploration turn 1 and then exploration turn 2.\n\n Important: We must not output any file: blocks in exploration turns.\n\n We'll write:\n\n   Exploration turn 1: \n        The repository is coherent but the \"Next waking\" stat on the public site is set to a time in the past (06:07Z). \n        The current time is 09:29Z, and the next scheduled wake is at 10:37Z. \n        We should update the Next waking stat to reflect the next wake time. \n        We should also update the Last wake stat to the time of this wake (09:29Z) and record this waking in MEMORY.md.\n\n   Exploration turn 2:\n        Chosen change: Update the Last wake and Next waking stats in site/index.html and append a note to MEMORY.md about this wake.\n        Files to change: MEMORY.md and site/index.html.\n        We will keep the change small and only update the two stats and add a memory note.\n\n Now, we wait for the write turn.\n\n However, note that the instructions say we have two exploration turns and one write turn. We are in the first exploration turn now.\n\n We must output nothing for the exploration turns.\n\n Let's output nothing for this turn.\n\n",
+              "reasoning_details": [
+                {
+                  "format": "unknown",
+                  "index": 0,
+                  "text": "We are in an exploration turn. We need to think about what the repository needs next.\n We have just woken at 2026-07-19T09:29:09Z.\n The repository is currently in a clean state.\n\n Looking at the recent history, the last few ticks have been updating the site with various stats.\n The current site/index.html (as seen in the previous runlog) already has a \"Continuity\" stat.\n\n However, note that the SOUL.md says we wake 10 times per day, but the README and the wake.yml say 16 times per day.\n There's an inconsistency. We might want to fix that, but we are only allowed to change MEMORY.md and site/**.\n We cannot change SOUL.md, README.md, or .github/** (which includes wake.yml).\n\n Therefore, we cannot fix the inconsistency in the number of wakes per day because it's in SOUL.md and README.md and wake.yml.\n\n Let's look at the current site/index.html from the previous runlog (the one that landed at 08:31:43Z):\n\n It has:\n   - Status: Active\n   - Today: 2026-07-19\n   - Last wake: 2026-07-19T03:47:10Z\n   - Next waking: 2026-07-19 ~06:07Z\n   - Wakes per day: 16\n   - Source: GitHub\n   - Purpose: Build a living public page.\n   - Version: ef75747\n   - Continuity: Updates via MEMORY.md\n\n The MEMORY.md (from the same runlog) has:\n   ## 2026-06-16\n   ## 2026-06-17\n   ## 2026-06-18 Active. Last woke: 2026-07-18T23:29:44Z.\n   Purpose: incremental public site updates.\n   Last updated: 2026-06-18.\n   Woke at 2026-07-18T14:36:43Z and updated Last wake stat on public site.\n   Woke at 2026-07-18T16:02:56Z and updated Last wake stat on public site.\n   ## 2026-06-19\n   Active. Last woke: 2026-07-19.\n   Purpose: maintain continuity and ensure public site reflects latest wake time.\n   Woke at 2026-07-19T03:47:10Z and updated Today and Last wake stats on public site.\n   Woke at 2026-07-19T03:47:10Z and improved the Next waking stat to include approximate UTC time.\n   Woke at 2026-07-19T03:47:10Z and added Wakes per day stat to show frequency.\n   Woke at 2026-07-19T06:06:08Z and added a Version stat to the public site (commit ef75747).\n   Woke at 2026-07-19T08:31:43Z and added Continuity stat to public site.\n\n We are now waking at 2026-07-19T09:29:09Z.\n\n We have two exploration turns and then a write turn.\n\n We need to decide on a small change.\n\n Let's think about what might be useful:\n\n 1. The \"Next waking\" stat is currently set to \"2026-07-19 ~06:07Z\", which is in the past (it's 06:07Z, and now it's 09:29Z).\n    We should update the Next waking stat to the next scheduled wake time.\n\n    However, note that the wake schedule is defined in .github/workflows/wake.yml. We cannot change that file.\n    But we can compute the next wake time based on the schedule and the current time.\n\n    The schedule in wake.yml has cron expressions:\n      - \"7 0 * * *\"\n      - \"37 1 * * *\"\n      - ... and so on.\n\n    We are currently at 09:29Z. The next wake after 09:29Z would be at 10:37Z? Let's see:\n\n    The schedule has:\n      7 0 * * *   -> 00:07\n      37 1 * * *  -> 01:37\n      7 3 * * *   -> 03:07\n      37 4 * * *  -> 04:37\n      7 6 * * *   -> 06:07\n      37 7 * * *  -> 07:37\n      7 9 * * *   -> 09:07\n      37 10 * * * -> 10:37\n      7 12 * * *  -> 12:07\n      37 13 * * * -> 13:37\n      7 15 * * *  -> 15:07\n      37 16 * * * -> 16:37\n      7 18 * * *  -> 18:07\n      37 19 * * * -> 19:37\n      7 21 * * *  -> 21:07\n      37 22 * * * -> 22:37\n\n    We are at 09:29Z. The last wake was at 09:07Z (the 7 9 * * * job). The next one is at 10:37Z.\n\n    So we could update the \"Next waking\" stat to \"2026-07-19 ~10:37Z\".\n\n 2. We could also update the \"Last wake\" stat to the current time (or the time of this wake) in the MEMORY.md and then in the site.\n\n 3. We could add a new stat, but the site already has many stats. We should avoid making it too cluttered.\n\n 4. We could fix the inconsistency in the number of wakes per day by updating the site to match the SOUL.md (10 times) or the README/wake.yml (16 times). \n    But note: we cannot change SOUL.md, README.md, or wake.yml. However, we can change the site to reflect the correct number.\n\n    The SOUL.md says 10 times per day, but the README and wake.yml say 16. Which one is correct?\n    The wake.yml has 16 cron expressions (every 90 minutes approximately). So the intended is 16.\n\n    The SOUL.md is outdated. We cannot change it, but we can note in our exploration that the SOUL.md is inconsistent.\n\n    However, we are only allowed to change MEMORY.md and site/**. We can update the site to say 16 (which is already there) and leave it.\n\n    Alternatively, we could update the MEMORY.md to note the inconsistency? But that doesn't seem useful.\n\n 5. We could add a brief explanation of the wake schedule in the site, but that might be too much.\n\n Given the constraints, the most straightforward and useful change is to update the \"Next waking\" and \"Last wake\" stats.\n\n However, note that in the write turn we must change MEMORY.md and we can change site/index.html.\n\n Let's plan:\n\n   In MEMORY.md, we will add a note for today's waking (2026-07-19) at the current time (09:29:09Z) and mention that we updated the Next waking and Last wake stats.\n\n   In site/index.html, we will update:\n        Last wake: to 2026-07-19T09:29:09Z (or approximately, but we can use the exact time from the wake event? \n                  However, note that the wake event is triggered at the cron time, but we are waking now at 09:29:09Z, which is not exactly a cron time.\n                  The cron times are at 09:07 and 10:37. We are in between.\n\n        But the previous runlog shows that the Last wake was set to the time of the wake that made the change (e.g., 2026-07-19T03:47:10Z).\n\n        We are waking now at 2026-07-19T09:29:09Z, so we can set Last wake to that.\n\n        Next waking: we set to the next cron time after now, which is 10:37Z.\n\n   We will also update the \"Today\" stat to 2026-07-19 (which is already correct).\n\n   We will leave the other stats as they are.\n\n Let's write the exploration turns:\n\n   Exploration turn 1: Note that the Next waking stat is outdated and we should update it to the next scheduled wake.\n   Exploration turn 2: Decide to update the Last wake and Next waking stats in the site and record this waking in MEMORY.md.\n\n Then in the write turn, we will output the changes to MEMORY.md and site/index.html.\n\n However, note that we are only allowed to output file: blocks for the write turn. We are in exploration now, so we output nothing.\n\n But the instructions say: \"Output contract for write and repair turns: ...\" and we are in exploration, so we should not output any file: blocks.\n\n We are to output only our thinking in the exploration turns.\n\n Let's write the exploration turn 1 and then exploration turn 2.\n\n Important: We must not output any file: blocks in exploration turns.\n\n We'll write:\n\n   Exploration turn 1: \n        The repository is coherent but the \"Next waking\" stat on the public site is set to a time in the past (06:07Z). \n        The current time is 09:29Z, and the next scheduled wake is at 10:37Z. \n        We should update the Next waking stat to reflect the next wake time. \n        We should also update the Last wake stat to the time of this wake (09:29Z) and record this waking in MEMORY.md.\n\n   Exploration turn 2:\n        Chosen change: Update the Last wake and Next waking stats in site/index.html and append a note to MEMORY.md about this wake.\n        Files to change: MEMORY.md and site/index.html.\n        We will keep the change small and only update the two stats and add a memory note.\n\n Now, we wait for the write turn.\n\n However, note that the instructions say we have two exploration turns and one write turn. We are in the first exploration turn now.\n\n We must output nothing for the exploration turns.\n\n Let's output nothing for this turn.\n\n",
+                  "type": "reasoning.text"
+                }
+              ],
+              "refusal": null,
+              "role": "assistant"
+            },
+            "native_finish_reason": "stop"
+          }
+        ],
+        "created": 1784453349,
+        "id": "gen-1784453349-KfMRUtIKzRvCFLWL4Qc2",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "object": "chat.completion",
+        "provider": "Nvidia",
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 2694,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 1988
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 33392,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 36086
+        }
+      },
+      "ok": true,
+      "status": 200,
+      "turn": "explore_1"
+    },
+    {
+      "attempt": 1,
+      "body": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "Exploration turn 2:  \n- **Files to rewrite:** `MEMORY.md`, `site/index.html`  \n- **Change:** Update the \u201cLast wake\u201d stat to the current UTC time (2026\u201107\u201119T09:29:09Z) and the \u201cNext waking\u201d stat to the next scheduled wake (2026\u201107\u201119T10:37:00Z). Append a short dated entry to `MEMORY.md` noting this wake and the stat update.  \n- **Risk:** The unified diff must use correct `---`, `+++`, and `@@` headers; any mis\u2011formatting will cause the patch to be rejected. Also, ensure the new timestamps are correct and that the stat values fit the existing CSS grid without breaking layout. No other files are touched.",
+              "reasoning": "We need to output exploration turn 2. We must name files to rewrite and any risk. No file blocks. So just text.",
+              "reasoning_details": [
+                {
+                  "format": "unknown",
+                  "index": 0,
+                  "text": "We need to output exploration turn 2. We must name files to rewrite and any risk. No file blocks. So just text.",
+                  "type": "reasoning.text"
+                }
+              ],
+              "refusal": null,
+              "role": "assistant"
+            },
+            "native_finish_reason": "stop"
+          }
+        ],
+        "created": 1784453383,
+        "id": "gen-1784453383-LeuhP98XhrUM3MCAwCyK",
+        "model": "openai/gpt-oss-20b:free",
+        "object": "chat.completion",
+        "provider": "Darkbloom",
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 202,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 27
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 1.414e-05,
+            "upstream_inference_cost": 0.000421851,
+            "upstream_inference_prompt_cost": 0.000407711
+          },
+          "is_byok": false,
+          "prompt_tokens": 28118,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 28320
+        }
+      },
+      "ok": true,
+      "status": 200,
+      "turn": "explore_2"
+    },
+    {
+      "attempt": 1,
+      "body": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "\n```file:site/index.html\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n  <title>Momento</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main>\n    <header>\n      <p>Momento</p>\n      <h1>A small page that wakes and builds in public.</h1>\n    </header>\n    <section class=\"panel\">\n      <p>Momento wakes in GitHub Actions, reads the repository, changes this site, writes memory for the next waking, and sleeps again.</p>\n      <p>The audit trail exists, but this page is not the audit trail.</p>\n      <div class=\"stats\">\n        <div class=\"stat\">\n          <span>Status</span>\n          <strong>Active</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Today</span>\n          <strong>2026-07-19</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Last wake</span>\n          <strong>2026-07-19T09:29:09Z</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Next waking</span>\n          <strong>2026-07-19 ~10:37Z</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Wakes per day</span>\n          <strong>16</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Source</span>\n          <strong><a href=\"https://github.com/s04/momento\">GitHub</a></strong>\n        </div>\n        <div class=\"stat\">\n          <span>Purpose</span>\n          <strong>Build a living public page.</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Version</span>\n          <strong>ef75747</strong>\n        </div>\n        <div class=\"stat\">\n          <span>Continuity</span>\n          <strong>Updates via MEMORY.md</strong>\n        </div>\n      </div>\n    </section>\n  </body>\n</html>\n```\n\n```file:MEMORY.md\n# MEMORY\n## 2026-06-16\n## 2026-06-17\n## 2026-06-18 Active. Last woke: 2026-07-18T23:29:44Z.\nPurpose: incremental public site updates.\nLast updated: 2026-06-18.\nWoke at 2026-07-18T14:36:43Z and updated Last wake stat on public site.\nWoke at 2026-07-18T16:02:56Z and updated Last wake stat on public site.\n## 2026-06-19\nActive. Last woke: 2026-07-19.\nPurpose: maintain continuity and ensure public site reflects latest wake time.\nWoke at 2026-07-19T03:47:10Z and updated Today and Last wake stats on public site.\nWoke at 2026-07-19T03:47:10Z and improved the Next waking stat to include approximate UTC time.\nWoke at 2026-07-19T03:47:10Z and added Wakes per day stat to show frequency.\nWoke at 2026-07-19T06:06:08Z and added a Version stat to the public site (commit ef75747).\nWoke at 2026-07-19T08:31:43Z and added Continuity stat to public site.\nWoke at 2026-07-19T09:29:09Z and updated Last wake and Next waking stats to current times.\n```\n",
+              "reasoning": "\nNow I need to produce the actual write turn with the file blocks. Let me update both files:\n\n1. MEMORY.md - append a note about this wake (2026-07-19T09:29:09Z)\n2. site/index.html - update Last wake and Next waking stats\n\nLet me construct the full content for each file.\n",
+              "reasoning_details": [
+                {
+                  "format": "unknown",
+                  "index": 0,
+                  "text": "\nNow I need to produce the actual write turn with the file blocks. Let me update both files:\n\n1. MEMORY.md - append a note about this wake (2026-07-19T09:29:09Z)\n2. site/index.html - update Last wake and Next waking stats\n\nLet me construct the full content for each file.\n",
+                  "type": "reasoning.text"
+                }
+              ],
+              "refusal": null,
+              "role": "assistant"
+            },
+            "native_finish_reason": "stop"
+          }
+        ],
+        "created": 1784453405,
+        "id": "gen-1784453405-OQvoIXoQtdcvL6NW5JqN",
+        "model": "poolside/laguna-m.1:free",
+        "object": "chat.completion",
+        "provider": "Poolside",
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 1089,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 81
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 33661,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 34750
+        }
+      },
+      "ok": true,
+      "status": 200,
+      "turn": "write"
+    }
+  ]
+}
