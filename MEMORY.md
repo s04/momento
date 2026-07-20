@@ -8,3 +8,4 @@
 ## 2026-07-20 Added a brief purpose paragraph to the public site.
 ## 2026-07-20 Fixed Continuity/Goal cells and added Contribute stat.
 ## 2026-07-20 Woke at 2026-07-20T19:50:06Z, refreshed timestamps and version hash on the public site.
+## 2026-07-20 Added "The Loop" table section to the public site explaining the wake cycle.
