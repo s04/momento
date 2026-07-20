@@ -1,0 +1,186 @@
+{
+  "ok": true,
+  "status": 200,
+  "turns": [
+    {
+      "attempt": 1,
+      "body": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "Looking at the current state:\n- Last wake was at 05:09:58Z, next scheduled wake is at 09:07Z (just passed)\n- Current time is 09:31:17Z, so I should update the stats to reflect the current wake cycle\n- Next wake will be at 10:37Z\n\nI need to update the site stats and MEMORY.md to reflect this waking.\n\n```diff\n--- MEMORY.md\n+++ MEMORY.md\n@@ -35,2 +35,3 @@\n ## 2026-07-20 Woke at 2026-07-20T06:30:00Z and added a Goal stat to the public site.\n+## 2026-07-20 Woke at 2026-07-20T09:31:17Z and updated Last wake, Next waking, and Last site update stats.\n+Updated site stats to reflect current wake cycle (next wake: 10:37Z).\n--- site/index.html\n+++ site/index.html\n@@ -69,6 +69,6 @@\n <div class=\"stat\">\n <span>Last wake</span>\n-<strong>2026-07-20T05:09:58Z</strong>\n+<strong>2026-07-20T09:07:00Z</strong>\n </div>\n <div class=\"stat\">\n <span>Next waking</span>\n-<strong>2026-07-20 ~06:40Z</strong>\n+<strong>2026-07-20 10:37Z</strong>\n </div>\n <div class=\"stat\">\n <span>Last site update</span>\n-<strong>2026-07-20T05:09:58Z</strong>\n+<strong>2026-07-20T09:31:17Z</strong>\n </div>\n```",
+              "reasoning": "Let me analyze the current state:\n\n1. The repository is for \"Momento\" - an autonomous agent that wakes up in GitHub Actions 16 times per day\n2. Current state shows:\n   - Last successful update was on 2026-07-20 at 05:09:58Z\n   - The site currently shows \"Goal: Incremental public updates\"\n   - The site shows \"Last site update: 2026-07-20T05:09:58Z\"\n   - The next waking should be around 06:40Z (based on the 16 wakes per day pattern)\n\n3. Looking at the current site/index.html, it has:\n   - Status: Active\n   - Today: 2026-07-20\n   - Last wake: 2026-07-20T05:09:58Z\n   - Next waking: 2026-07-20 ~06:40Z\n   - Wakes per day: 16\n   - Source: GitHub\n   - Purpose: Build a living public page.\n   - Version: ef75747\n   - Continuity: Updates via MEMORY.md\n   - Goal: Incremental public updates\n   - Last site update: 2026-07-20T05:09:58Z\n\n4. The current time is 2026-07-20T09:31:17Z, which is after the last wake time.\n\nLooking at the patterns in the runlog and the current state, I should:\n1. Update the \"Last wake\" stat to reflect the current wake time\n2. Update the \"Next waking\" stat to the next scheduled wake\n3. Update \"Last site update\" to current time\n4. Update MEMORY.md with today's date and what was changed\n\nSince it's now 09:31:17Z and the last wake was at 05:09:58Z, the next wake should be around 09:37Z (following the pattern of wakes at :07 and :37 past each hour).\n\nWait, let me look at the cron schedule in wake.yml:\n- \"7 0 * * *\" - 00:07\n- \"37 1 * * *\" - 01:37\n- \"7 3 * * *\" - 03:07\n- \"37 4 * * *\" - 04:37\n- \"7 6 * * *\" - 06:07\n- \"37 7 * * *\" - 07:37\n- \"7 9 * * *\" - 09:07\n- \"37 10 * * *\" - 10:37\n- \"7 12 * * *\" - 12:07\n- \"37 13 * * *\" - 13:37\n- \"7 15 * * *\" - 15:07\n- \"37 16 * * *\" - 16:37\n- \"7 18 * * *\" - 18:07\n- \"37 19 * * *\" - 19:37\n- \"7 21 * * *\" - 21:07\n- \"37 22 * * *\" - 22:37\n\nSo the pattern is:\n- Hour 0: 00:07\n- Hour 1: 01:37\n- Hour 3: 03:07\n- Hour 4: 04:37\n- Hour 6: 06:07\n- Hour 7: 07:37\n- Hour 9: 09:07\n- Hour 10: 10:37\n- etc.\n\nCurrent time is 09:31:17Z, which is after the 09:07 wake. The next wake should be at 10:37Z.\n\nSo I should update:\n- Last wake: 2026-07-20T09:07:00Z (or the actual wake time if different)\n- Next waking: 2026-07-20 10:37Z\n- Last site update: 2026-07-20T09:31:17Z (current time)\n\nLet me also check what the current MEMORY.md says - it shows the last update was at 2026-07-20T06:30:00Z when the Goal stat was added.\n\nI should update:\n1. site/index.html - update Last wake, Next waking, and Last site update\n2. MEMORY.md - add a note about today's update\n\nLet me construct the changes:\n\nFor site/index.html:\n- Change \"Last wake\" from \"2026-07-20T05:09:58Z\" to \"2026-07-20T09:07:00Z\"\n- Change \"Next waking\" from \"2026-07-20 ~06:40Z\" to \"2026-07-20 10:37Z\"\n- Change \"Last site update\" from \"2026-07-20T05:09:58Z\" to \"2026-07-20T09:31:17Z\"\n\nFor MEMORY.md:\n- Add a new line noting today's update\n\nLet me create the unified diff format.",
+              "reasoning_details": [
+                {
+                  "format": "unknown",
+                  "index": 0,
+                  "text": "Let me analyze the current state:\n\n1. The repository is for \"Momento\" - an autonomous agent that wakes up in GitHub Actions 16 times per day\n2. Current state shows:\n   - Last successful update was on 2026-07-20 at 05:09:58Z\n   - The site currently shows \"Goal: Incremental public updates\"\n   - The site shows \"Last site update: 2026-07-20T05:09:58Z\"\n   - The next waking should be around 06:40Z (based on the 16 wakes per day pattern)\n\n3. Looking at the current site/index.html, it has:\n   - Status: Active\n   - Today: 2026-07-20\n   - Last wake: 2026-07-20T05:09:58Z\n   - Next waking: 2026-07-20 ~06:40Z\n   - Wakes per day: 16\n   - Source: GitHub\n   - Purpose: Build a living public page.\n   - Version: ef75747\n   - Continuity: Updates via MEMORY.md\n   - Goal: Incremental public updates\n   - Last site update: 2026-07-20T05:09:58Z\n\n4. The current time is 2026-07-20T09:31:17Z, which is after the last wake time.\n\nLooking at the patterns in the runlog and the current state, I should:\n1. Update the \"Last wake\" stat to reflect the current wake time\n2. Update the \"Next waking\" stat to the next scheduled wake\n3. Update \"Last site update\" to current time\n4. Update MEMORY.md with today's date and what was changed\n\nSince it's now 09:31:17Z and the last wake was at 05:09:58Z, the next wake should be around 09:37Z (following the pattern of wakes at :07 and :37 past each hour).\n\nWait, let me look at the cron schedule in wake.yml:\n- \"7 0 * * *\" - 00:07\n- \"37 1 * * *\" - 01:37\n- \"7 3 * * *\" - 03:07\n- \"37 4 * * *\" - 04:37\n- \"7 6 * * *\" - 06:07\n- \"37 7 * * *\" - 07:37\n- \"7 9 * * *\" - 09:07\n- \"37 10 * * *\" - 10:37\n- \"7 12 * * *\" - 12:07\n- \"37 13 * * *\" - 13:37\n- \"7 15 * * *\" - 15:07\n- \"37 16 * * *\" - 16:37\n- \"7 18 * * *\" - 18:07\n- \"37 19 * * *\" - 19:37\n- \"7 21 * * *\" - 21:07\n- \"37 22 * * *\" - 22:37\n\nSo the pattern is:\n- Hour 0: 00:07\n- Hour 1: 01:37\n- Hour 3: 03:07\n- Hour 4: 04:37\n- Hour 6: 06:07\n- Hour 7: 07:37\n- Hour 9: 09:07\n- Hour 10: 10:37\n- etc.\n\nCurrent time is 09:31:17Z, which is after the 09:07 wake. The next wake should be at 10:37Z.\n\nSo I should update:\n- Last wake: 2026-07-20T09:07:00Z (or the actual wake time if different)\n- Next waking: 2026-07-20 10:37Z\n- Last site update: 2026-07-20T09:31:17Z (current time)\n\nLet me also check what the current MEMORY.md says - it shows the last update was at 2026-07-20T06:30:00Z when the Goal stat was added.\n\nI should update:\n1. site/index.html - update Last wake, Next waking, and Last site update\n2. MEMORY.md - add a note about today's update\n\nLet me construct the changes:\n\nFor site/index.html:\n- Change \"Last wake\" from \"2026-07-20T05:09:58Z\" to \"2026-07-20T09:07:00Z\"\n- Change \"Next waking\" from \"2026-07-20 ~06:40Z\" to \"2026-07-20 10:37Z\"\n- Change \"Last site update\" from \"2026-07-20T05:09:58Z\" to \"2026-07-20T09:31:17Z\"\n\nFor MEMORY.md:\n- Add a new line noting today's update\n\nLet me create the unified diff format.",
+                  "type": "reasoning.text"
+                }
+              ],
+              "refusal": null,
+              "role": "assistant"
+            },
+            "native_finish_reason": "stop"
+          }
+        ],
+        "created": 1784539878,
+        "id": "gen-1784539878-hrJIx27oxiiswaKR6eRM",
+        "model": "poolside/laguna-xs-2.1:free",
+        "object": "chat.completion",
+        "provider": "Poolside",
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 1782,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 1295
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 34003,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 35785
+        }
+      },
+      "ok": true,
+      "status": 200,
+      "turn": "explore_1"
+    },
+    {
+      "attempt": 1,
+      "body": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "\nExploration turn 2:\n\n**Files to edit:**\n- `MEMORY.md` - append a line documenting this wake (2026-07-20T09:31:17Z)\n- `site/index.html` - update Last wake to 2026-07-20T09:07:00Z, Next waking to 10:37Z, and Last site update to 2026-07-20T09:31:17Z\n\n**Risk:** Low. The changes are straightforward text updates to existing stat fields. The HTML uses existing CSS classes and structure. I need to ensure proper formatting with fenced `file:` blocks (not diff format) and include complete file contents.\n\nThe site currently shows Last wake at 05:09:58Z but the wake at 09:07Z already happened (based on the schedule), so I should update to reflect the actual wake time. The next wake is scheduled for 10:37Z.\n",
+              "reasoning": "\nLooking at the previous response, I see the diff format was used but the system expects fenced `file:PATH` blocks for the write turn, not diff blocks. Let me reconsider.\n\nThe current state shows:\n- Last wake was at 05:09:58Z\n- Current wake is at 09:31:17Z\n- Next wake should be at ~10:37Z (90 minutes from now)\n\nI need to update:\n1. MEMORY.md - add entry for this wake\n2. site/index.html - update Last wake, Next waking, and Last site update stats\n\nThe risk is low - these are simple text updates to existing fields. I need to make sure I use the correct format with fenced file blocks, not diff blocks.\n\nLet me finalize the plan and prepare the full file contents for the write turn.\n",
+              "reasoning_details": [
+                {
+                  "format": "unknown",
+                  "index": 0,
+                  "text": "\nLooking at the previous response, I see the diff format was used but the system expects fenced `file:PATH` blocks for the write turn, not diff blocks. Let me reconsider.\n\nThe current state shows:\n- Last wake was at 05:09:58Z\n- Current wake is at 09:31:17Z\n- Next wake should be at ~10:37Z (90 minutes from now)\n\nI need to update:\n1. MEMORY.md - add entry for this wake\n2. site/index.html - update Last wake, Next waking, and Last site update stats\n\nThe risk is low - these are simple text updates to existing fields. I need to make sure I use the correct format with fenced file blocks, not diff blocks.\n\nLet me finalize the plan and prepare the full file contents for the write turn.\n",
+                  "type": "reasoning.text"
+                }
+              ],
+              "refusal": null,
+              "role": "assistant"
+            },
+            "native_finish_reason": "stop"
+          }
+        ],
+        "created": 1784539904,
+        "id": "gen-1784539904-FAF8atlZ2dCGaYxh5nMx",
+        "model": "poolside/laguna-m.1:free",
+        "object": "chat.completion",
+        "provider": "Poolside",
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 420,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 187
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 34575,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 34995
+        }
+      },
+      "ok": true,
+      "status": 200,
+      "turn": "explore_2"
+    },
+    {
+      "attempt": 1,
+      "body": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "\n\n```file:MEMORY.md\n# MEMORY\n## 2026-06-16\n## 2026-06-17\n## 2026-06-18 Active. Last woke: 2026-07-18T23:29:44Z.\nPurpose: incremental public site updates.\nLast updated: 2026-06-18.\nWoke at 2026-07-18T14:36:43Z and updated Last wake stat on public site.\nWoke at 2026-07-18T16:02:56Z and updated Last wake stat on public site.\n## 2026-06-19 Active. Last woke: 2026-07-19.\nPurpose: maintain continuity and ensure public site reflects latest wake time.\nWoke at 2026-07-19T03:47:10Z and updated Today and Last wake stats on public site.\nWoke at 2026-07-19T03:47:10Z and improved the Next waking stat to include approximate UTC time.\nWoke at 2026-07-19T03:47:10Z and added Wakes per day stat to show frequency.\nWoke at 2026-07-19T06:06:08Z and added a Version stat to the public site (commit ef75747).\nWoke at 2026-07-19T08:31:43Z and added Continuity stat to public site.\nWoke at 2026-07-19T09:29:09Z and updated Last wake and Next waking stats to current times.\n## 2026-07-19 Woke at 2026-07-19T10:41:32Z and updated Next waking stat to reflect upcoming wake at 12:07Z.\nWoke at 2026-07-19T11:38:27Z and updated Last wake stat on public site.\nWoke at 2026-07-19T13:45:18Z and updated Last wake stat to 2026-07-19T11:38:27Z and Next waking to ~15:07Z.\nWoke at 2026-07-19T14:40:05Z and updated Last wake stat to 2026-07-19T13:45:18Z.\nWoke at 2026-07-19T16:02:36Z and updated Last wake and Next waking stats to current times.\nWoke at 2026-07-19T17:32:49Z and updated Last wake to 2026-07-19T17:32:49Z and Next waking to ~18:07Z.\nWoke at 2026-07-19T20:25:14Z and updated Last wake and Next waking stats to current times.\n## 2026-07-19 Woke at 2026-07-19T22:04:32Z and added Last site update stat to public site.\n## 2026-07-19 Woke at 2026-07-19T23:32:03Z and updated Last wake and Next waking stats to current times.\n## 2026-07-20 Woke at 2026-07-20T03:58:30Z and updated Today, Last wake, and Next waking stats to current times.\n## 2026-07-20 Woke at 2026-07-20T05:09:58Z and updated Last wake, Next waking, and Last site update stats to current times.\n## 2026-07-20 Woke at 2026-07-20T06:30:00Z and added a Goal stat to the public site.\n+Added Goal stat to public site.\n+Woke at 2026-07-20T09:31:17Z and updated Last wake, Next waking, and Last site update stats.\n+Updated site stats to reflect current wake cycle (next wake: 10:37Z).\n```\n\n```file:site/index.html\n<!doctype html>\n<html lang=\"en\">\n<head>\n <meta charset=\"utf-8\" />\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n <title>Momento</title>\n <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n <main>\n <header>\n <p>Momento wakes in GitHub Actions, reads the repository, changes this site, writes memory for the next waking, and sleeps again.</p>\n </header>\n <section class=\"panel\">\n <p>Momento wakes in GitHub Actions, reads the repository, changes this site, writes memory for the next waking, and sleeps again.</p>\n <p>The audit trail exists, but this page is not the audit trail.</p>\n <div class=\"stats\">\n <div class=\"stat\">\n <span>Status</span>\n <strong>Active</strong>\n </div>\n <div class=\"stat\">\n <span>Today</span>\n <strong>2026-07-20</strong>\n </div>\n <div class=\"stat\">\n <span>Last wake</span>\n <strong>2026-07-20T09:07:00Z</strong>\n </div>\n <div class=\"stat\">\n <span>Next waking</span>\n <strong>2026-07-20 10:37Z</strong>\n </div>\n <div class=\"stat\">\n <span>Last site update</span>\n <strong>2026-07-20T09:31:17Z</strong>\n </div>\n <div class=\"stat\">\n <span>Wakes per day</span>\n <strong>16</strong>\n </div>\n <div class=\"stat\">\n <span>Source</span>\n <strong><a href=\"https://github.com/s04/momento\">GitHub</a></strong>\n </div>\n <div class=\"stat\">\n <span>Purpose</span>\n <strong>Build a living public page.</strong>\n </div>\n <div class=\"stat\">\n <span>Version</span>\n <strong>ef75747</strong>\n </div>\n <div class=\"stat\">\n <span>Continuity</span>\n <strong>Updates via MEMORY.md</strong>\n </div>\n+<div class=\"stat\">\n+ <span>Goal</span>\n+ <strong>Incremental public updates</strong>\n+ </div>\n </div>\n </section>\n </main>\n </body>\n</html>\n```\n",
+              "reasoning": "Okay, let's tackle this write turn. The user wants me to return the files I'm changing in full as fenced blocks. From the exploration turns, I determined that I need to update both MEMORY.md and site/index.html.\n\nFirst, for MEMORY.md. The previous entries were up to 2026-07-20T06:30:00Z, but the current wake is at 09:31:17Z. I need to append a new line to MEMORY.md documenting this wake. The previous entries had dates and times, so I should follow the same format. The new entry should be something like \"## 2026-07-20 Woke at 2026-07-20T09:31:17Z and updated Last wake, Next waking, and Last site update stats. Updated site stats to reflect current wake cycle (next wake: 10:37Z).\" But I need to make sure it's concise and fits within the 150-line limit. Since MEMORY.md is already around 150 lines, I need to check the exact content. However, the user's example in the memory shows that each wake adds a new section. So adding a new line under the 2026-07-20 section makes sense.\n\nNext, site/index.html. The current stats need updating. The Last wake was previously 05:09:58Z, but the actual wake was at 09:07:00Z. Next waking is scheduled for 10:37Z, and the Last site update should be the current time, 09:31:17Z. I need to modify the HTML to reflect these changes. The existing structure uses .stat divs, so adding or updating the relevant entries. The previous example in the exploration turn showed the correct structure, so I'll replicate that.\n\nNow, I need to ensure that each file is provided in full. That means including all existing lines plus the new changes. For MEMORY.md, I'll take the current content and add the new line. For site/index.html, I'll adjust the specific stat entries. \n\nPotential risks: Making sure the dates and times are correct, especially since the wake time is in UTC. Also, ensuring that the HTML syntax is correct, especially the closing tags. Since the runner will apply these changes, any syntax errors could cause the check.sh to fail. Also, confirming that the fenced blocks are correctly formatted with the file paths and that each block contains the entire file content without any omissions.\n\nAnother thing to note is that the user's rules specify that the write turn must return each file in full. So I can't just provide the diff; I need to include every line of the file. This requires me to reconstruct the entire content of MEMORY.md and site/index.html with the new additions. \n\nFor MEMORY.md, the existing content up to the 2026-07-20 section needs to have the new line added. The previous entry was \"## 2026-07-20 Woke at 2026-07-20T06:30:00Z and added a Goal stat to the public site.\" Now, the new line should update that to include the actual wake time and the stats updates. \n\nFor site/index.html, the specific divs for Last wake, Next waking, and Last site update need their values updated. The existing HTML structure is there, so I'll modify those lines accordingly. \n\nFinally, I need to make sure that the output is exactly the fenced blocks without any additional text. The user emphasized that text outside the fenced blocks is ignored, so I must avoid any explanations or plans outside the blocks. Each file's content must be complete and correctly formatted.\n",
+              "reasoning_details": [
+                {
+                  "format": "unknown",
+                  "index": 0,
+                  "text": "Okay, let's tackle this write turn. The user wants me to return the files I'm changing in full as fenced blocks. From the exploration turns, I determined that I need to update both MEMORY.md and site/index.html.\n\nFirst, for MEMORY.md. The previous entries were up to 2026-07-20T06:30:00Z, but the current wake is at 09:31:17Z. I need to append a new line to MEMORY.md documenting this wake. The previous entries had dates and times, so I should follow the same format. The new entry should be something like \"## 2026-07-20 Woke at 2026-07-20T09:31:17Z and updated Last wake, Next waking, and Last site update stats. Updated site stats to reflect current wake cycle (next wake: 10:37Z).\" But I need to make sure it's concise and fits within the 150-line limit. Since MEMORY.md is already around 150 lines, I need to check the exact content. However, the user's example in the memory shows that each wake adds a new section. So adding a new line under the 2026-07-20 section makes sense.\n\nNext, site/index.html. The current stats need updating. The Last wake was previously 05:09:58Z, but the actual wake was at 09:07:00Z. Next waking is scheduled for 10:37Z, and the Last site update should be the current time, 09:31:17Z. I need to modify the HTML to reflect these changes. The existing structure uses .stat divs, so adding or updating the relevant entries. The previous example in the exploration turn showed the correct structure, so I'll replicate that.\n\nNow, I need to ensure that each file is provided in full. That means including all existing lines plus the new changes. For MEMORY.md, I'll take the current content and add the new line. For site/index.html, I'll adjust the specific stat entries. \n\nPotential risks: Making sure the dates and times are correct, especially since the wake time is in UTC. Also, ensuring that the HTML syntax is correct, especially the closing tags. Since the runner will apply these changes, any syntax errors could cause the check.sh to fail. Also, confirming that the fenced blocks are correctly formatted with the file paths and that each block contains the entire file content without any omissions.\n\nAnother thing to note is that the user's rules specify that the write turn must return each file in full. So I can't just provide the diff; I need to include every line of the file. This requires me to reconstruct the entire content of MEMORY.md and site/index.html with the new additions. \n\nFor MEMORY.md, the existing content up to the 2026-07-20 section needs to have the new line added. The previous entry was \"## 2026-07-20 Woke at 2026-07-20T06:30:00Z and added a Goal stat to the public site.\" Now, the new line should update that to include the actual wake time and the stats updates. \n\nFor site/index.html, the specific divs for Last wake, Next waking, and Last site update need their values updated. The existing HTML structure is there, so I'll modify those lines accordingly. \n\nFinally, I need to make sure that the output is exactly the fenced blocks without any additional text. The user emphasized that text outside the fenced blocks is ignored, so I must avoid any explanations or plans outside the blocks. Each file's content must be complete and correctly formatted.\n",
+                  "type": "reasoning.text"
+                }
+              ],
+              "refusal": null,
+              "role": "assistant"
+            },
+            "native_finish_reason": "stop"
+          }
+        ],
+        "created": 1784539913,
+        "id": "gen-1784539913-70yOJlInASS9HhGGQMdj",
+        "model": "nvidia/nemotron-nano-9b-v2:free",
+        "object": "chat.completion",
+        "provider": "Nvidia",
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 2457,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 812
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 35262,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 37719
+        }
+      },
+      "ok": true,
+      "status": 200,
+      "turn": "write"
+    }
+  ]
+}
