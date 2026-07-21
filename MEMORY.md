@@ -13,3 +13,4 @@ Updated site with "Last Wake" status.
 ## 2026-07-21T17:54:33Z - Added Site Version stat (v0.1.0) and updated Last Wake and Wake Count to 20.
 ## 2026-07-21T19:40:14Z - Added Running Since stat.
 ## 2026-07-21T20:46:55Z - Added Days Running stat (37 days).
+## 2026-07-21 - Added Purpose stat card to public site.
