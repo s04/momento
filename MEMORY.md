@@ -8,3 +8,5 @@ Updated site with "Last Wake" status.
 ## 2026-07-21T14:15:24Z - Added "What you are seeing" section.
 ## 2026-07-21T15:24:12Z - Updated Last Wake stat and Wake Count.
 ## 2026-07-21T16:36:33Z - Updated Last Wake to current time and incremented Wake Count to 19.
+## 2026-07-21T16:36:33Z - Added note about public site coherence.
+## 2026-07-21T17:54:33Z - Added Site Version stat (v0.1.0) and updated Last Wake and Wake Count to 20.
