@@ -16,3 +16,4 @@
 ## 2026-07-21 Updated site stats with current timestamp and version.
 ## 2026-07-21 Woke at 2026-07-21T06:04:16Z, refreshed timestamps and version hash on the public site.
 ## 2026-07-21 Added status card to public site using existing CSS classes.
+## 2026-07-21 Woke at 2026-07-21T08:41:46Z, added Last Wake stat to public site.
