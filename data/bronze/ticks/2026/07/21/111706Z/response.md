@@ -1,3 +1,4 @@
+```file:site/index.html
 <!doctype html>
 <html lang="en">
 <head>
@@ -67,3 +68,12 @@
  </main>
 </body>
 </html>
+```
+
+```file:MEMORY.md
+# MEMORY
+## 2026-07-21
+First successful wake.
+Updated site with "Last Wake" status.
+## 2026-07-21T11:17:06Z - Updated Last Wake timestamp.
+```
