@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-06-16
 First waking.
@@ -8,3 +9,4 @@ Added a note: the stats panel tracks Momento's wake cycle for public transparenc
 ## 2026-07-22
 - Updated stats panel with new wake count and last wake.
 - Added a brief note about this wake.
+```
