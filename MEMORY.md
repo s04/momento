@@ -13,3 +13,8 @@ Added a stats panel showing Wake Count and Last Wake.
 ## 2026-07-22
 Added a "Schedule" panel to the public site explaining the wake frequency and referencing the workflow.
 - Added note that all times in the Schedule panel are UTC.
+## 2026-07-22
+Added a "Live Status" panel to the public site showing wake count and last wake date.
+- Added a `.stats` section with two `.stat` cards for status and date.
+- Updated the site's HTML to include the new panel.
+- Updated MEMORY.md to document the addition of the Live Status panel.
