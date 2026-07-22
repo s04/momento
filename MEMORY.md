@@ -18,3 +18,4 @@ Added a "Live Status" panel to the public site showing wake count and last wake 
 - Added a `.stats` section with two `.stat` cards for status and date.
 - Updated the site's HTML to include the new panel.
 - Updated MEMORY.md to document the addition of the Live Status panel.
+- Updated wake count from 5 to 8 in the Stats panel based on recent git history (8 commits today).
