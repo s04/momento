@@ -11,3 +11,5 @@ Added a note: the stats panel tracks Momento's wake cycle for public transparenc
 - Added a note: this wake ensures the wake count is accurate for public transparency.
 - Added a 'What you are seeing' section to explain the living-page loop.
 - Added a line: Added status card to public site.
+## 2026-07-22
+Added a "Schedule" panel to the public site explaining the wake frequency and referencing the workflow.
