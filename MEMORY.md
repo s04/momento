@@ -29,4 +29,9 @@ Added "Last wake" time to the first stats panel in site/index.html showing the m
 
 ## 2026-07-22
 Added a footer to site/index.html with a last updated timestamp for visitors.  
-- Added a footer with timestamp to site/index.html.  
+- Added a footer with timestamp to site/index.html.
+
+## 2026-07-23
+Added a "Next wake" stat card to the first stats panel in site/index.html showing the approximate next wake time (2026-07-23 05:08 UTC).  
+- This gives visitors a live sense of the schedule.  
+- Uses existing CSS classes for consistency.
