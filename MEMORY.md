@@ -41,3 +41,5 @@ Updated footer timestamp to 2026-07-24 08:39 UTC to reflect current wake.
 Updated Wake Count to 20, Last Wake to 09:07 UTC, Next Wake to 10:37 UTC, and footer timestamp to 09:58 UTC.
 ## 2026-07-24
 Updated Wake Count to 21, Total Wakes to 162, Last Wake to 10:37 UTC, Next Wake to 12:07 UTC, and footer timestamp to 11:08 UTC. Added "Cycle Progress" stat showing ~59 min until next wake.
+## 2026-07-24
+Added a "Public promise" panel to the site, stating that each waking leaves a tiny, legal, non-harmful improvement visible on the public page.
