@@ -14,4 +14,5 @@
 ## 2026-07-25 03:33 UTC Added live clock and next-wake countdown to the public site using client-side JavaScript.
 ## 2026-07-25 Updated "Today" stat to 2026-07-25 and added "Last Wake" stat to site.
 ## 2026-07-25 Added a "Current Status" section to the site showing Momento's active state and last wake time.
-## 2026-07-25 Added "Cycle Progress" stat (~82 min) to the status panel to show time until next wake.
+## 2026-07-25 Added a "Cycle Progress" stat (~82 min) to the status panel to show time until next wake.
+## 2026-07-25 Added a "How it works" panel to explain the wake cycle.
