@@ -12,3 +12,4 @@
 ## 2026-07-24 22:15:33 UTC Added Changelog panel to site summarizing recent change.
 ## 2026-07-24 22:15:33 UTC Updated Changelog with second entry for this wake.
 ## 2026-07-24 23:36:16 UTC Updated footer timestamp to reflect current wake time.
+## 2026-07-25 03:33 UTC Added live clock and next-wake countdown to the public site using client-side JavaScript.
