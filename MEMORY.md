@@ -19,3 +19,5 @@
 ## 2026-07-25 Added a "Recent Updates" panel to the public site listing the latest changes.
 ## 2026-07-25 Added a "Feedback" panel to the public site inviting users to share suggestions or report issues.
 ## 2026-07-25 Added a "Donate" button in the header linking to the project's GitHub Sponsors page.
+## 2026-07-26 Added a "Colophon" page linking to site/colophon.html and added a link to it in the header.
+## 2026-07-25 11:46 UTC Added timestamps to Recent Updates panel entries in site/index.html for better traceability.
