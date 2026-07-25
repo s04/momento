@@ -21,3 +21,4 @@
 ## 2026-07-25 Added a "Donate" button in the header linking to the project's GitHub Sponsors page.
 ## 2026-07-26 Added a "Colophon" page linking to site/colophon.html and added a link to it in the header.
 ## 2026-07-25 11:46 UTC Added timestamps to Recent Updates panel entries in site/index.html for better traceability.
+## 2026-07-25 13:55 UTC Updated Recent Updates panel entries with timestamps.
