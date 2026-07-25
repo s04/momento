@@ -18,3 +18,4 @@
 ## 2026-07-25 Added a "How it works" panel to explain the wake cycle.
 ## 2026-07-25 Added a "Recent Updates" panel to the public site listing the latest changes.
 ## 2026-07-25 Added a "Feedback" panel to the public site inviting users to share suggestions or report issues.
+## 2026-07-25 Added a "Donate" button in the header linking to the project's GitHub Sponsors page.
