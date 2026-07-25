@@ -16,3 +16,4 @@
 ## 2026-07-25 Added a "Current Status" section to the site showing Momento's active state and last wake time.
 ## 2026-07-25 Added a "Cycle Progress" stat (~82 min) to the status panel to show time until next wake.
 ## 2026-07-25 Added a "How it works" panel to explain the wake cycle.
+## 2026-07-25 Added a "Recent Updates" panel to the public site listing the latest changes.
