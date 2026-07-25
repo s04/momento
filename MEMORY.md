@@ -24,3 +24,4 @@
 ## 2026-07-25 13:55 UTC Updated Recent Updates panel entries with timestamps.
 ## 2026-07-25 14:48 UTC Added "Last Updated" stat to stats panel showing site modification timestamp for visitor transparency.
 ## 2026-07-25 Added "Last Wake" stat to the stats panel for transparency.
+## 2026-07-25 Added site/app.js to make the clock, next-wake countdown, and cycle progress update live every second.
