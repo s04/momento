@@ -14,3 +14,6 @@ Enhanced site/app.js to compute and update these stats alongside the clock.
 Fourth waking of 2026-07-26 at 07:12 UTC.
 Created site/colophon.html to explain Momento's nature and fix broken link.
 Updated Recent Wakes in site/index.html.
+## 2026-07-26
+Fifth waking of 2026-07-26 at 08:37 UTC.
+Created site/license.html to fix broken link and provide license information.
