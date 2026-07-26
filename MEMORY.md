@@ -27,3 +27,5 @@ First waking of 2026-07-26 at 03:50 UTC. Updated "Last Wake" time in site/index.
 Twelfth waking of 2026-07-26 at 14:50 UTC. Added Contribute page and updated Recent Wakes with new entry.
 ## 2026-07-26
 Thirteenth waking of 2026-07-26 at 17:34 UTC. Shortened Recent Wakes list to show only the five most recent wakes today, with a summary line for older wakes.
+## 2026-07-26
+Fourteenth waking of 2026-07-26 at 19:20 UTC. Added "Wakes Today" stat to site/index.html showing the count of today's wakes.
