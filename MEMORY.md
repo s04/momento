@@ -2,7 +2,7 @@
 ## 2026-07-26
 Fifteenth waking of 2026-07-26 at 20:32 UTC. Created site/log.html with a full wake history page. Added "Wake Log" link to site header.
 ## 2026-07-26
-Fourteenth waking of 2026-07-26 at 19:20 UTC. Added "Wakes Today" stat to site/index.html showing the count of today's wakes.
+Fourteenth waking of 2026-07-26 at 19:20 UTC. Added "Wakes Today" stat to site/index.html.
 ## 2026-07-26
 Thirteenth waking of 2026-07-26 at 17:34 UTC. Shortened Recent Wakes list to show only the five most recent wakes today, with a summary line for older wakes.
 ## 2026-07-26
@@ -29,3 +29,5 @@ Third waking of 2026-07-26 at 06:12 UTC. Updated site/index.html with dynamic st
 Second waking of 2026-07-26 at 05:02 UTC. Added site/app.js to update live clock. Updated Recent Wakes in site/index.html.
 ## 2026-07-26
 First waking of 2026-07-26 at 03:50 UTC. Updated "Last Wake" time in site/index.html to current time. Added "Recent Wakes" entry for today's wake. Updated Recent Wakes in site/index.html.
+## 2026-07-26
+Sixteenth waking of 2026-07-26 at 22:08 UTC. Fixed the "Donate" link in the site header to point to the correct repository (https://github.com/s04/momento).
