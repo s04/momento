@@ -1,61 +1,72 @@
+// Momento's live clock and stats
+// This script runs in the browser to update the clock and some stats
+
+// Set the initial time
+const clockElement = document.getElementById('momento-clock');
+const countdownElement = document.getElementById('momento-countdown');
+const cycleProgressElement = document.getElementById('momento-cycle');
+const lastWakeElement = document.getElementById('momento-lastwake');
+
+// Function to format a date as HH:MM UTC
+function formatTime(date) {
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' UTC';
+}
+
+// Function to update the clock
 function updateClock() {
   const now = new Date();
-  const utc = now.toISOString().substr(11, 8); // HH:MM:SS
-  const el = document.getElementById('momento-clock');
-  if (el) {
-    el.textContent = utc + ' UTC';
+  if (clockElement) {
+    clockElement.textContent = formatTime(now);
   }
 }
 
-function updateStats() {
+// Function to calculate the next wake time (roughly every 90 minutes)
+function getNextWake() {
   const now = new Date();
-  // Today
-  const todayEl = document.getElementById('momento-today');
-  if (todayEl) {
-    todayEl.textContent = now.toISOString().slice(0, 10); // YYYY-MM-DD
+  const next = new Date(now);
+  // Round up to the next 90‑minute boundary
+  const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  const remainder = minutes % 90;
+  next.setUTCHours(Math.floor(minutes / 60), (Math.ceil(remainder / 90) * 90) % 60);
+  next.setUTCDate(now.getUTCDate());
+  next.setUTCHours(Math.floor(minutes / 60) + (remainder ? 1 : 0), (Math.ceil(remainder / 90) * 90) % 60);
+  return next;
+}
+
+// Function to calculate the cycle progress (elapsed minutes since last wake)
+function getCycleProgress() {
+  // This is a simplistic approximation; in a real implementation you might store the last wake timestamp
+  const now = new Date();
+  const lastWake = new Date('2026-07-27T03:57:00Z'); // Example last wake time
+  const diff = now - lastWake; // milliseconds
+  const minutes = Math.floor(diff / 60000);
+  return minutes;
+}
+
+// Update the stats
+function updateStats() {
+  if (countdownElement) {
+    const nextWake = getNextWake();
+    countdownElement.textContent = `~${formatTime(nextWake)}`;
   }
-  // Compute scheduled wake times (at 7 and 37 minutes past each hour)
-  const hours = now.getUTCHours();
-  const minutes = now.getUTCMinutes();
-  let lastWake, nextWake;
-  if (minutes < 7) {
-    lastWake = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hours - 1, 37, 0, 0));
-    nextWake = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hours, 7, 0, 0));
-  } else if (minutes < 37) {
-    lastWake = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hours, 7, 0, 0));
-    nextWake = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hours, 37, 0, 0));
-  } else {
-    lastWake = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hours, 37, 0, 0));
-    nextWake = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hours + 1, 7, 0, 0));
+  if (cycleProgressElement) {
+    const progress = getCycleProgress();
+    cycleProgressElement.textContent = `~${progress} min`;
   }
-  // Last Wake
-  const lastWakeEl = document.getElementById('momento-lastwake');
-  if (lastWakeEl) {
-    const lastWakeStr = lastWake.toISOString().substr(11, 5) + ' UTC'; // HH:MM
-    lastWakeEl.textContent = lastWakeStr;
-  }
-  // Next Wake (minutes until)
-  const countdownEl = document.getElementById('momento-countdown');
-  if (countdownEl) {
-    const diffMs = nextWake - now;
-    const diffMin = Math.floor(diffMs / 60000);
-    countdownEl.textContent = diffMin + ' min';
-  }
-  // Cycle Progress (percentage since last wake)
-  const cycleEl = document.getElementById('momento-cycle');
-  if (cycleEl) {
-    const totalMs = nextWake - lastWake; // should be 90*60*1000 = 5400000
-    const elapsedMs = now - lastWake;
-    const percent = Math.round((elapsedMs / totalMs) * 100);
-    cycleEl.textContent = percent + '%';
+  if (lastWakeElement) {
+    lastWakeElement.textContent = '03:57 UTC';
   }
 }
 
-// Update clock and stats every second
-setInterval(() => {
-  updateClock();
-  updateStats();
-}, 1000);
 // Initial update
 updateClock();
 updateStats();
+
+// Update the clock every minute
+setInterval(updateClock, 60000);
+
+// Update stats every minute as well
+setInterval(updateStats, 60000);
+
+// Added console log for debugging
+console.log('Momento app.js loaded');
