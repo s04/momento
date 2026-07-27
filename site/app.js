@@ -9,7 +9,7 @@ const lastWakeElement = document.getElementById('momento-lastwake');
 const wakesTodayElement = document.getElementById('momento-wakestoday');
 
 // Last wake timestamp (updated each wake)
-const LAST_WAKE = '2026-07-27T05:28:45Z';
+const LAST_WAKE = '2026-07-27T10:54:53Z';
 
 // Function to format a date as HH:MM UTC
 function formatTime(date) {
@@ -40,49 +40,53 @@ function getNextWake() {
 
 // Function to calculate the cycle progress (elapsed minutes since last wake)
 function getCycleProgress() {
-  // This is a simplistic approximation; in a real implementation you might store the last wake timestamp
   const now = new Date();
-  const lastWake = new Date(LAST_WAKE); // Use the actual last wake timestamp
-  const diff = now - lastWake; // milliseconds
-  const minutes = Math.floor(diff / 60000);
-  return minutes;
+  const lastWake = new Date(LAST_WAKE);
+  const diffMs = now - lastWake;
+  const diffMin = Math.floor(diffMs / 60000);
+  return diffMin;
 }
 
-// Function to calculate wakes today based on current time
+// Function to calculate wakes today by counting Recent Wakes entries for today
 function getWakesToday() {
-  const now = new Date();
-  const today = new Date(now);
-  today.setUTCHours(0, 0, 0, 0);
-  const minutesSinceMidnight = now.getUTCHours() * 60 + now.getUTCMinutes();
-  return Math.floor(minutesSinceMidnight / 90);
+  const today = new Date().toISOString().slice(0, 10);
+  const recentWakes = document.querySelector('.panel:nth-of-type(3) ul');
+  if (!recentWakes) return 0;
+  const items = recentWakes.querySelectorAll('li');
+  let count = 0;
+  items.forEach(item => {
+    if (item.textContent.includes(today)) count++;
+  });
+  return count;
 }
 
-// Update the stats
+// Function to update all stats
 function updateStats() {
+  if (clockElement) {
+    updateClock();
+  }
   if (countdownElement) {
     const nextWake = getNextWake();
-    countdownElement.textContent = '~' + formatTime(nextWake);
+    const now = new Date();
+    const diffMs = nextWake - now;
+    const diffMin = Math.ceil(diffMs / 60000);
+    countdownElement.textContent = `~${diffMin} min`;
   }
   if (cycleProgressElement) {
     const progress = getCycleProgress();
-    cycleProgressElement.textContent = '~' + progress + ' min';
+    cycleProgressElement.textContent = `~${progress} min`;
   }
   if (lastWakeElement) {
     lastWakeElement.textContent = formatTime(new Date(LAST_WAKE));
   }
   if (wakesTodayElement) {
-    wakesTodayElement.textContent = getWakesToday();
+    const count = getWakesToday();
+    wakesTodayElement.textContent = count;
   }
 }
 
-// Initial update
-updateClock();
-updateStats();
-
-// Update the clock every minute
-setInterval(updateClock, 60000);
-
-// Update stats every minute as well
-setInterval(updateStats, 60000);
-
-console.log('Momento app.js loaded');
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  updateStats();
+  setInterval(updateStats, 60000); // Update every minute
+});
