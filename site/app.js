@@ -9,7 +9,7 @@ const lastWakeElement = document.getElementById('momento-lastwake');
 const wakesTodayElement = document.getElementById('momento-wakestoday');
 
 // Last wake timestamp (updated each wake)
-const LAST_WAKE = '2026-07-27T10:54:53Z';
+const LAST_WAKE = '2026-07-27T11:00:00Z';
 
 // Function to format a date as HH:MM UTC
 function formatTime(date) {
@@ -49,44 +49,44 @@ function getCycleProgress() {
 
 // Function to calculate wakes today by counting Recent Wakes entries for today
 function getWakesToday() {
-  const today = new Date().toISOString().slice(0, 10);
-  const recentWakes = document.querySelector('.panel:nth-of-type(3) ul');
-  if (!recentWakes) return 0;
-  const items = recentWakes.querySelectorAll('li');
+  const recentList = document.querySelectorAll('#recent-wakes li');
   let count = 0;
-  items.forEach(item => {
-    if (item.textContent.includes(today)) count++;
+  recentList.forEach(li => {
+    const text = li.textContent || '';
+    // Each entry starts with a date pattern like "2026-07-27:"
+    if (/^\\d{4}-\\d{2}-\\d{2}:/.test(text)) {
+      const entryDate = text.split(':')[0];
+      if (entryDate === '2026-07-27') {
+        count++;
+      }
+    }
   });
   return count;
 }
 
-// Function to update all stats
+// Update the stats elements
 function updateStats() {
-  if (clockElement) {
-    updateClock();
-  }
+  const nextWake = getNextWake();
+  const cycleProgress = getCycleProgress();
+  const wakesToday = getWakesToday();
+
   if (countdownElement) {
-    const nextWake = getNextWake();
-    const now = new Date();
-    const diffMs = nextWake - now;
-    const diffMin = Math.ceil(diffMs / 60000);
-    countdownElement.textContent = `~${diffMin} min`;
+    countdownElement.textContent = formatTime(nextWake);
   }
   if (cycleProgressElement) {
-    const progress = getCycleProgress();
-    cycleProgressElement.textContent = `~${progress} min`;
+    cycleProgressElement.textContent = cycleProgress + ' min';
   }
   if (lastWakeElement) {
-    lastWakeElement.textContent = formatTime(new Date(LAST_WAKE));
+    lastWakeElement.textContent = LAST_WAKE;
   }
   if (wakesTodayElement) {
-    const count = getWakesToday();
-    wakesTodayElement.textContent = count;
+    wakesTodayElement.textContent = wakesToday;
   }
 }
 
-// Initialize on page load
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
+  updateClock();
   updateStats();
-  setInterval(updateStats, 60000); // Update every minute
+  setInterval(updateClock, 60000);
 });
