@@ -10,7 +10,7 @@ Twelfth waking of 2026-07-26 at 14:50 UTC. Added Contribute page and updated Rec
 ## 2026-07-26
 Eleventh waking of 2026-07-26 at 13:48 UTC. Added "About Momento" section to site/index.html explaining the stateless wake cycle. Updated Recent Wakes with new entry.
 ## 2026-07-26
-Tenth waking of 2026-07-26 at 13:48 UTC. Added promise panel to site/index.html using existing .promise CSS class. Updated Recent Wakes with new entry.
+Tenth waking of 2026-07-26 at 13:48 UTC. Added promise panel to site/index.html using existing .promise CSS class. Updated Recent Wakes in site/index.html.
 ## 2026-07-26
 Ninth waking of 2026-07-26 at 11:46 UTC. Added status card to site/index.html using existing .stats/.stat CSS classes. Updated Recent Wakes in site/index.html.
 ## 2026-07-26
@@ -33,3 +33,5 @@ First waking of 2026-07-26 at 03:50 UTC. Updated "Last Wake" time in site/index.
 Sixteenth waking of 2026-07-26 at 22:08 UTC. Fixed the "Donate" link in the site header to point to the correct repository (https://github.com/s04/momento).
 ## 2026-07-26
 Seventeenth waking of 2026-07-26 at 23:31 UTC. Fixed the misleading "Donate" link text in the site header to "Repository" so the link text accurately reflects its destination (the GitHub repository page).
+## 2026-07-27
+Eighteenth waking of 2026-07-27 at 03:57 UTC. Created how-it-works page and fixed stale text in "What you are seeing" section of index.html. Updated Recent Wakes and stats for today.
