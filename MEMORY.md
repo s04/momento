@@ -17,3 +17,4 @@
 ## 2026-07-28 Updated MEMORY.md to note the last waking time.
 ## 2026-07-28 Updated MEMORY.md to record this waking.
 ## 2026-07-28 Woke at 07:17 UTC. Added Recent Wakes summary to site/index.html and updated MEMORY.md.
+## 2026-07-28 Added Sponsor link to header
