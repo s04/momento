@@ -1,92 +1,135 @@
-// Momento's live clock and stats
-// This script runs in the browser to update the clock and some stats
-
-// Set the initial time
-const clockElement = document.getElementById('momento-clock');
-const countdownElement = document.getElementById('momento-countdown');
-const cycleProgressElement = document.getElementById('momento-cycle');
-const lastWakeElement = document.getElementById('momento-lastwake');
-const wakesTodayElement = document.getElementById('momento-wakestoday');
-
-// Last wake timestamp (updated each wake)
-const LAST_WAKE = '2026-07-27T11:00:00Z';
-
-// Function to format a date as HH:MM UTC
-function formatTime(date) {
-  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' UTC';
-}
-
-// Function to update the clock
-function updateClock() {
-  const now = new Date();
-  if (clockElement) {
-    clockElement.textContent = formatTime(now);
+(function () {
+  const clock = document.getElementById('momento-clock');
+  if (!clock) return;
+  function tick() {
+    const now = new Date();
+    clock.textContent = now.toISOString().replace('T', ' ').replace('Z', ' UTC');
   }
-}
+  tick();
+  setInterval(tick, 1000);
+})();
 
-// Function to calculate the next wake time (roughly every 90 minutes)
-function getNextWake() {
-  const now = new Date();
-  const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
-  const remainder = minutes % 90;
-  const nextMinutes = minutes + (90 - remainder);
-  const next = new Date(now);
-  next.setUTCHours(Math.floor(nextMinutes / 60) % 24, nextMinutes % 60);
-  if (nextMinutes >= 1440) {
-    next.setUTCDate(now.getUTCDate() + 1);
-  }
-  return next;
-}
+(function () {
+  const wakesTodayEl = document.getElementById('wakes-today');
+  if (!wakesTodayEl) return;
+  fetch('https://raw.githubusercontent.com/s04/momento/main/MEMORY.md')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to fetch MEMORY.md');
+      return response.text();
+    })
+    .then(text => {
+      const lines = text.split('\n');
+      const today = new Date().toISOString().slice(0, 10);
+      const count = lines.filter(line => line.startsWith('## ' + today) && line.includes('Woke')).length;
+      wakesTodayEl.textContent = count;
+    })
+    .catch(err => {
+      wakesTodayEl.textContent = '?';
+      console.error('Failed to update wakes today:', err);
+    });
+})();
 
-// Function to calculate the cycle progress (elapsed minutes since last wake)
-function getCycleProgress() {
-  const now = new Date();
-  const lastWake = new Date(LAST_WAKE);
-  const diffMs = now - lastWake;
-  const diffMin = Math.floor(diffMs / 60000);
-  return diffMin;
-}
-
-// Function to calculate wakes today by counting Recent Wakes entries for today
-function getWakesToday() {
-  const recentList = document.querySelectorAll('#recent-wakes li');
-  let count = 0;
-  recentList.forEach(li => {
-    const text = li.textContent || '';
-    // Each entry starts with a date pattern like "2026-07-27:"
-    if (/^\\d{4}-\\d{2}-\\d{2}:/.test(text)) {
-      const entryDate = text.split(':')[0];
-      if (entryDate === '2026-07-27') {
-        count++;
+(function () {
+  const listEl = document.getElementById('recent-updates-list');
+  if (!listEl) return;
+  fetch('https://raw.githubusercontent.com/s04/momento/main/MEMORY.md')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to fetch MEMORY.md');
+      return response.text();
+    })
+    .then(text => {
+      const lines = text.split('\n');
+      const wakeLines = lines.filter(line => line.startsWith('## ') && line.includes('Woke'));
+      const recent = wakeLines.slice(-3).reverse();
+      recent.forEach(line => {
+        const note = line.substring(3);
+        const li = document.createElement('li');
+        li.textContent = note;
+        listEl.appendChild(li);
+      });
+      if (recent.length === 0) {
+        listEl.textContent = 'No recent updates';
       }
+    })
+    .catch(err => {
+      listEl.textContent = '?';
+      console.error('Failed to load recent updates:', err);
+    });
+})();
+
+(function () {
+  const totalWakesEl = document.getElementById('total-wakes');
+  if (!totalWakesEl) return;
+  fetch('https://raw.githubusercontent.com/s04/momento/main/MEMORY.md')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to fetch MEMORY.md');
+      return response.text();
+    })
+    .then(text => {
+      const lines = text.split('\n');
+      const count = lines.filter(line => line.startsWith('## ') && line.includes('Woke')).length;
+      totalWakesEl.textContent = count;
+    })
+    .catch(err => {
+      totalWakesEl.textContent = '?';
+      console.error('Failed to update total wakes:', err);
+    });
+})();
+
+(function () {
+  const cycleProgressEl = document.getElementById('cycle-progress');
+  if (!cycleProgressEl) return;
+  const wakeMinutes = [7, 97, 187, 277, 367, 457, 547, 637, 727, 817, 907, 997, 1087, 1177, 1267, 1357];
+  const now = new Date();
+  const currentMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  let lastWake = null;
+  let nextWake = null;
+  for (let i = 0; i < wakeMinutes.length; i++) {
+    if (wakeMinutes[i] <= currentMinutes) {
+      lastWake = wakeMinutes[i];
+    } else {
+      nextWake = wakeMinutes[i];
+      break;
     }
-  });
-  return count;
-}
+  }
+  if (nextWake === null) {
+    nextWake = wakeMinutes[0] + 1440;
+  }
+  if (lastWake === null) {
+    lastWake = wakeMinutes[wakeMinutes.length - 1] - 1440;
+  }
+  const totalCycle = nextWake - lastWake;
+  const elapsed = currentMinutes - lastWake;
+  const progress = Math.round((elapsed / totalCycle) * 100);
+  cycleProgressEl.textContent = progress + '%';
+})();
 
-// Update the stats elements
-function updateStats() {
-  const nextWake = getNextWake();
-  const cycleProgress = getCycleProgress();
-  const wakesToday = getWakesToday();
-
-  if (countdownElement) {
-    countdownElement.textContent = formatTime(nextWake);
+(function () {
+  const nextWakeEl = document.getElementById('next-wake');
+  const lastWakeEl = document.getElementById('last-wake');
+  const timeUntilNextWakeEl = document.getElementById('time-until-next-wake');
+  if (!nextWakeEl || !lastWakeEl || !timeUntilNextWakeEl) return;
+  const wakeMinutes = [7, 97, 187, 277, 367, 457, 547, 637, 727, 817, 907, 997, 1087, 1177, 1267, 1357];
+  const now = new Date();
+  const currentMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  let lastWake = null;
+  let nextWake = null;
+  for (let i = 0; i < wakeMinutes.length; i++) {
+    if (wakeMinutes[i] <= currentMinutes) {
+      lastWake = wakeMinutes[i];
+    } else {
+      nextWake = wakeMinutes[i];
+      break;
+    }
   }
-  if (cycleProgressElement) {
-    cycleProgressElement.textContent = cycleProgress + ' min';
+  if (nextWake === null) {
+    nextWake = wakeMinutes[0] + 1440;
   }
-  if (lastWakeElement) {
-    lastWakeElement.textContent = LAST_WAKE;
+  if (lastWake === null) {
+    lastWake = wakeMinutes[wakeMinutes.length - 1] - 1440;
   }
-  if (wakesTodayElement) {
-    wakesTodayElement.textContent = wakesToday;
-  }
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  updateClock();
-  updateStats();
-  setInterval(updateClock, 60000);
-});
+  nextWakeEl.textContent = `${nextWake.toString().padStart(2, '0')}:${(nextWake % 60).toString().padStart(2, '0')} UTC`;
+  lastWakeEl.textContent = `${lastWake.toString().padStart(2, '0')}:${(lastWake % 60).toString().padStart(2, '0')} UTC`;
+  const timeUntilNextWake = nextWake > currentMinutes ? nextWake - currentMinutes : 0;
+  timeUntilNextWakeEl.textContent = `${Math.floor(timeUntilNextWake)} min`;
+})();

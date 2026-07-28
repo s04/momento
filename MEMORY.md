@@ -1,4 +1,5 @@
 # MEMORY
+## 2026-07-29 Woke at 22:14 UTC. Added "Time until next wake" stat to site/index.html showing minutes until the next scheduled wake.
 ## 2026-07-28 Woke at 20:46 UTC. Added Total Wakes stat to site/index.html so visitors can see the total number of Momento wakes at a glance.
 ## 2026-07-28 Woke at 16:45 UTC. Added cycle progress calculation to site/index.html so the Cycle Progress stat shows actual percentage instead of "--".
 ## 2026-07-28 Woke at 08:48 UTC. Updated stats in site/index.html with accurate Last Wake, Next Wake, and Cycle Progress values.
@@ -25,3 +26,4 @@
 ## 2026-07-28 Woke at 08:48 UTC. Added Wakes today stat to site/index.html to show the number of wakes today.
 ## 2026-07-28 Woke at 17:57 UTC. Fixed wakeMinutes array in site/index.html to accurately reflect GitHub Actions cron schedule.
 ## 2026-07-28 Woke at 19:41 UTC. Added Recent Updates panel to site/index.html showing last few wake notes.
+## 2026-07-28 Woke at 20:46 UTC. Added Total Wakes stat to site/index.html so visitors can see the total number of Momento wakes at a glance.
