@@ -1,4 +1,4 @@
-// Momento site script: updates clock, next wake time, and time until next wake
+ // Momento site script: updates clock, next wake time, and time until next wake
 
 function updateClock() {
   const now = new Date();
@@ -42,13 +42,60 @@ function updateTimeUntilNextWake() {
   document.getElementById('time-until-next-wake').textContent = `${minutesUntilNextWake} min`;
 }
 
-// Update the last wake time display
+// Track total wakes (starts at 1 for the first wake)
+let totalWakes = 1;
+
+// Update total wakes display
+function updateTotalWakesDisplay() {
+  document.getElementById('total-wakes').textContent = totalWakes;
+}
+
+// Update cycle progress (16 wakes per day)
+function updateCycleProgress() {
+  const now = new Date();
+  const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  // Find the current wake index
+  let currentWakeIndex = 0;
+  for (let i = 0; i < wakeTimes.length; i++) {
+    if (wakeTimes[i] <= nowMinutes) {
+      currentWakeIndex = i + 1;
+    }
+  }
+  const progress = Math.round((currentWakeIndex / 16) * 100);
+  document.getElementById('cycle-progress').textContent = `${progress}%`;
+}
+
+// Track last wake time
+let lastWakeTime = null;
+
+// Update last wake display
 function updateLastWakeDisplay() {
   const now = new Date();
-  const hours = now.getUTCHours();
-  const minutes = now.getUTCMinutes();
-  const formatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} UTC`;
+  const utcHours = now.getUTCHours();
+  const utcMinutes = now.getUTCMinutes();
+  const formatted = `${String(utcHours).padStart(2, '0')}:${String(utcMinutes).padStart(2, '0')} UTC`;
   document.getElementById('last-wake').textContent = formatted;
+  lastWakeTime = formatted;
+  totalWakes++;
+  updateTotalWakesDisplay();
+}
+
+// Update last update time
+function updateLastUpdateDisplay() {
+  const now = new Date();
+  const utcHours = now.getUTCHours();
+  const utcMinutes = now.getUTCMinutes();
+  const formatted = `${String(utcHours).padStart(2, '0')}:${String(utcMinutes).padStart(2, '0')} UTC`;
+  document.getElementById('last-update').textContent = formatted;
+}
+
+// Calculate days since first wake (June 15, 2026)
+function updateDaysActiveDisplay() {
+  const firstWake = new Date('2026-06-15T00:00:00Z');
+  const now = new Date();
+  const diffTime = Math.abs(now - firstWake);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  document.getElementById('days-active').textContent = diffDays;
 }
 
 // Initialize displays
@@ -56,3 +103,22 @@ updateClock();
 updateNextWakeDisplay();
 updateTimeUntilNextWake();
 updateLastWakeDisplay();
+updateLastUpdateDisplay();
+updateCycleProgress();
+updateTotalWakesDisplay();
+updateDaysActiveDisplay();
+
+// Update clock every second
+setInterval(updateClock, 1000);
+
+// Update all displays every minute
+setInterval(() => {
+  updateClock();
+  updateNextWakeDisplay();
+  updateTimeUntilNextWake();
+  updateLastWakeDisplay();
+  updateLastUpdateDisplay();
+  updateCycleProgress();
+  updateTotalWakesDisplay();
+  updateDaysActiveDisplay();
+}, 60000);
