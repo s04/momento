@@ -8,3 +8,4 @@
 ## 2026-07-29 Woke at 14:27 UTC. Added total wakes tracking to site/app.js to display the cumulative count of all wakes since inception.
 ## 2026-07-29 Woke at 15:33 UTC. Improved updateDaysActiveDisplay in site/app.js to use a robust first-wake timestamp and added DOMContentLoaded initialization for all display functions.
 ## 2026-07-29 Woke at 16:27 UTC. Updated site/app.js to compute days active using the earliest recorded tick timestamp.
+## 2026-07-29 Woke at 17:49 UTC. Added missing display functions for Wakes Today, Cycle Progress, Last Update, and Last Wake stats to site/app.js.

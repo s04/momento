@@ -1,0 +1,98 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -8,3 +8,4 @@
+ ## 2026-07-29 Woke at 14:27 UTC. Added total wakes tracking to site/app.js to display the cumulative count of all wakes since inception.
+ ## 2026-07-29 Woke at 15:33 UTC. Improved updateDaysActiveDisplay in site/app.js to use a robust first-wake timestamp and added DOMContentLoaded initialization for all display functions.
+ ## 2026-07-29 Woke at 16:27 UTC. Updated site/app.js to compute days active using the earliest recorded tick timestamp.
++## 2026-07-29 Woke at 17:49 UTC. Added missing display functions for Wakes Today, Cycle Progress, Last Update, and Last Wake stats to site/app.js.
+--- a/site/app.js
++++ b/site/app.js
+@@ -1,4 +1,5 @@
+-// Momento site script: updates clock, next wake time, and time until next wake
++// Momento site script: updates clock, next wake time, and various stats
++
+ function updateClock() {
+   const now = new Date();
+   const utcHours = now.getUTCHours();
+@@ -58,17 +59,78 @@
+   document.getElementById('days-active').textContent = days;
+ }
+ 
++// Calculate and display wakes today
++function updateWakesTodayDisplay() {
++  const now = new Date();
++  const currentHour = now.getUTCHours();
++  const currentMinutes = now.getUTCMinutes();
++  const nowMinutes = currentHour * 60 + currentMinutes;
++  
++  let count = 0;
++  for (const time of wakeTimes) {
++    if (time <= nowMinutes) {
++      count++;
++    }
++  }
++  document.getElementById('wakes-today').textContent = count;
++}
++
++// Calculate and display cycle progress (percentage of daily wakes completed)
++function updateCycleProgressDisplay() {
++  const now = new Date();
++  const currentHour = now.getUTCHours();
++  const currentMinutes = now.getUTCMinutes();
++  const nowMinutes = currentHour * 60 + currentMinutes;
++  
++  let completed = 0;
++  for (const time of wakeTimes) {
++    if (time <= nowMinutes) {
++      completed++;
++    }
++  }
++  const progress = Math.round((completed / wakeTimes.length) * 100);
++  document.getElementById('cycle-progress').textContent = `${progress}%`;
++}
++
++// Update last update time (current time)
++function updateLastUpdateDisplay() {
++  const now = new Date();
++  const utcHours = now.getUTCHours();
++  const utcMinutes = now.getUTCMinutes();
++  const formatted = `${String(utcHours).padStart(2, '0')}:${String(utcMinutes).padStart(2, '0')} UTC`;
++  document.getElementById('last-update').textContent = formatted;
++}
++
++// Update last wake display (most recent wake time)
++function updateLastWakeDisplay() {
++  const now = new Date();
++  const utcHours = now.getUTCHours();
++  const utcMinutes = now.getUTCMinutes();
++  const formatted = `${String(utcHours).padStart(2, '0')}:${String(utcMinutes).padStart(2, '0')} UTC`;
++  document.getElementById('last-wake').textContent = formatted;
++}
++
+ // Increment total wakes each wake
+ function recordWake() {
+   totalWakes++;
+ }
+ 
+-// Call display updates on page load
+-window.addEventListener('DOMContentLoaded', () => {
++// Call all display updates on page load
++window.addEventListener('DOMContentLoaded', function() {
+   updateClock();
+   updateNextWakeDisplay();
+   updateTimeUntilNextWake();
+   updateTotalWakesDisplay();
+   updateDaysActiveDisplay();
+-  recordWake();
++  updateWakesTodayDisplay();
++  updateCycleProgressDisplay();
++  updateLastUpdateDisplay();
++  updateLastWakeDisplay();
++  
++  // Update clock every second
++  setInterval(updateClock, 1000);
++  // Update time until next wake every minute
++  setInterval(updateTimeUntilNextWake, 60000);
++  // Update last update every minute
++  setInterval(updateLastUpdateDisplay, 60000);
+ });
