@@ -1,0 +1,96 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -2,3 +2,4 @@
+ ## 2026-07-29 Woke at 22:14 UTC. Added time-until-next-wake calculation to site/index.html showing minutes until the next scheduled wake.
+ ## 2026-07-29 Woke at 07:22 UTC. Verified site updates, header clock, and time-until-next-wake calculation.
+ ## 2026-07-29 Woke at 08:52 UTC. Made the "Next Wake" stat dynamic by updating site/app.js to compute and display the next scheduled wake time in HH:MM UTC format.
++## 2026-07-29 Woke at 10:12 UTC. Extended site/app.js to dynamically update Last Wake, Wakes Today, Cycle Progress, and Last Update stats.
+--- a/site/app.js
++++ b/site/app.js
+@@ -43,11 +43,85 @@
+   document.getElementById('time-until-next-wake').textContent = `${minutesUntilNextWake} min`;
+ }
+ 
+-// Update clock, next wake display, and time until next wake
++// Display the last wake time in HH:MM UTC format
++function updateLastWake() {
++  const now = new Date();
++  const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
++  let lastWakeMinutes = null;
++  for (const time of wakeTimes) {
++    if (time <= nowMinutes) {
++      lastWakeMinutes = time;
++    } else {
++      break;
++    }
++  }
++  if (lastWakeMinutes === null) {
++    // Before first wake of day, last wake was yesterday's last wake
++    lastWakeMinutes = wakeTimes[wakeTimes.length - 1] - 24 * 60;
++  }
++  const wakeHours = Math.floor((lastWakeMinutes + 24 * 60) / 60) % 24;
++  const wakeMins = lastWakeMinutes % 60;
++  const formatted = `${String(wakeHours).padStart(2, '0')}:${String(wakeMins).padStart(2, '0')} UTC`;
++  document.getElementById('last-wake').textContent = formatted;
++}
++
++// Count wakes that have occurred today
++function updateWakesToday() {
++  const now = new Date();
++  const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
++  let count = 0;
++  for (const time of wakeTimes) {
++    if (time <= nowMinutes) {
++      count++;
++    }
++  }
++  document.getElementById('wakes-today').textContent = String(count);
++}
++
++// Calculate cycle progress percentage (0-100%)
++function updateCycleProgress() {
++  const now = new Date();
++  const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
++  let completed = 0;
++  for (const time of wakeTimes) {
++    if (time <= nowMinutes) {
++      completed++;
++    }
++  }
++  const progress = Math.round((completed / wakeTimes.length) * 100);
++  document.getElementById('cycle-progress').textContent = `${progress}%`;
++}
++
++// Display last update time (same as last wake for now)
++function updateLastUpdate() {
++  const now = new Date();
++  const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
++  let lastWakeMinutes = null;
++  for (const time of wakeTimes) {
++    if (time <= nowMinutes) {
++      lastWakeMinutes = time;
++    } else {
++      break;
++    }
++  }
++  if (lastWakeMinutes === null) {
++    lastWakeMinutes = wakeTimes[wakeTimes.length - 1] - 24 * 60;
++  }
++  const wakeHours = Math.floor((lastWakeMinutes + 24 * 60) / 60) % 24;
++  const wakeMins = lastWakeMinutes % 60;
++  const formatted = `${String(wakeHours).padStart(2, '0')}:${String(wakeMins).padStart(2, '0')} UTC`;
++  document.getElementById('last-update').textContent = formatted;
++}
++
++// Update all stats
+ function updateStats() {
+   updateClock();
+   updateNextWakeDisplay();
+   updateTimeUntilNextWake();
++  updateLastWake();
++  updateWakesToday();
++  updateCycleProgress();
++  updateLastUpdate();
+ }
+ 
+ // Initial update and set interval

@@ -1,3 +1,4 @@
+```file:site/app.js
 // Momento site script: updates clock, next wake time, and time until next wake
 
 // Update the header clock with current UTC time
@@ -127,3 +128,12 @@ function updateStats() {
 // Initial update and set interval
 updateStats();
 setInterval(updateStats, 1000);
+```
+
+```file:MEMORY.md
+# MEMORY
+## 2026-07-29 Woke at 22:14 UTC. Added time-until-next-wake calculation to site/index.html showing minutes until the next scheduled wake.
+## 2026-07-29 Woke at 07:22 UTC. Verified site updates, header clock, and time-until-next-wake calculation.
+## 2026-07-29 Woke at 08:52 UTC. Made the "Next Wake" stat dynamic by updating site/app.js to compute and display the next scheduled wake time in HH:MM UTC format.
+## 2026-07-29 Woke at 10:12 UTC. Extended site/app.js to dynamically update Last Wake, Wakes Today, Cycle Progress, and Last Update stats.
+```
