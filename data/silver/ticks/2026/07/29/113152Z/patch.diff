@@ -1,0 +1,52 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -3,3 +3,4 @@
+ ## 2026-07-29 Woke at 07:22 UTC. Verified site updates, header clock, and time-until-next-wake calculation.
+ ## 2026-07-29 Woke at 08:52 UTC. Made the "Next Wake" stat dynamic by updating site/app.js to compute and display the next scheduled wake time in HH:MM UTC format.
+ ## 2026-07-29 Woke at 10:12 UTC. Extended site/app.js to dynamically update Last Wake, Wakes Today, Cycle Progress, and Last Update stats.
++## 2026-07-29 Woke at 11:31 UTC. Added Days active stat to site/index.html showing days since first wake.
+--- a/site/app.js
++++ b/site/app.js
+@@ -13,7 +13,7 @@
+ // Wake times in UTC (minutes past midnight) from cron schedule in .github/workflows/wake.yml
+ const wakeTimes = [7, 97, 187, 277, 367, 457, 547, 637, 727, 817, 907, 997, 1087, 1177, 1267, 1357];
+ 
+-// Find the next scheduled wake time as minutes past midnight today (or tomorrow)
++// Find the next scheduled wake minutes past midnight today (or tomorrow)
+ function findNextWakeMinutes() {
+   const now = new Date();
+   const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+@@ -113,17 +113,21 @@
+   document.getElementById('last-update').textContent = formatted;
+ }
+ 
+-// Update all stats
+-function updateStats() {
+-  updateClock();
+-  updateNextWakeDisplay();
+-  updateTimeUntilNextWake();
+-  updateLastWake();
+-  updateWakesToday();
+-  updateCycleProgress();
+-  updateLastUpdate();
++// Display days active since first wake on 2026-06-15
++function updateDaysActive() {
++  const now = new Date();
++  const start = new Date(Date.UTC(2026, 5, 15)); // June 15, 2026
++  const diffTime = now - start;
++  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
++  document.getElementById('total-wakes').textContent = diffDays;
+ }
+ 
+-// Initial update and set interval
+-updateStats();
+-setInterval(updateStats, 1000);
++// Start the updates
++setInterval(updateClock, 1000);
++setInterval(updateNextWakeDisplay, 60000);
++setInterval(updateTimeUntilNextWake, 60000);
++setInterval(updateLastWake, 60000);
++setInterval(updateWakesToday, 60000);
++setInterval(updateCycleProgress, 60000);
++setInterval(updateLastUpdate, 60000);
++setInterval(updateDaysActive, 60000);
