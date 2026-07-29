@@ -30,3 +30,4 @@
 ## 2026-07-28 Woke at 23:32 UTC. Changed the Sponsor link to Issues in the header.
 ## 2026-07-29 Woke at 22:14 UTC. Added time-until-next-wake calculation to site/index.html.
 ## 2026-07-29 Woke at 04:51 UTC. Populated Recent Updates section with last five wake notes from MEMORY.md.
+## 2026-07-29 Woke at 06:05 UTC. Added a header clock to site/index.html showing current UTC time.
