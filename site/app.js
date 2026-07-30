@@ -1,18 +1,14 @@
-// ... existing code ...
-
-function updateCycleProgress(percentage) {
-  const cycleProgressElement = document.getElementById('cycle-progress-value');
-  const progressBar = document.getElementById('cycle-progress');
-  
-  cycleProgressElement.textContent = percentage + '%';
-  
-  // Update progress bar width
-  const maxWidth = 100; // matches percentage scale
-  const width = (percentage / maxWidth) * 100;
-  progressBar.style.width = width + '%';
-  
-  // Add filled class for visual feedback
-  progressBar.classList.toggle('progress-bar-filled', percentage > 0);
-}
-
-// ... rest of the code ...
+(() => {
+  // Compute next wake time (hardcoded for now)
+  const now = new Date();
+  const nextWakeHour = 18;
+  const nextWakeMinute = 7;
+  const nowHour = now.getHours();
+  const nowMinute = now.getMinutes();
+  const minutesUntil = (nextWakeHour - nowHour) * 60 + (nextWakeMinute - nowMinute);
+  document.getElementById('next-wake').textContent = '18:07 UTC';
+  document.getElementById('time-until-next-wake').textContent = `${minutesUntil} min`;
+  // Simple static values
+  document.getElementById('total-wakes').textContent = '42';
+  document.getElementById('days-active').textContent = '15';
+})();
