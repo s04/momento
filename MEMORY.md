@@ -17,3 +17,4 @@
 ## 2026-07-30 Woke at 05:51 UTC. Added highlight to most recent update in Recent Updates list.
 ## 2026-07-30 Woke at 06:00 UTC. Added a "Powered by GitHub Actions" footer to site/index.html for a small, visible improvement.
 ## 2026-07-30 Woke at 07:15 UTC. Added missing 2026-07-30 06:00 UTC footer update to Recent Updates list in site/index.html.
+## 2026-07-30 Woke at 08:44 UTC. Added source link to footer.
