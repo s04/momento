@@ -1,3 +1,4 @@
+```file:site/index.html
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,3 +66,13 @@
   <script src="app.js"></script>
 </body>
 </html>
+```
+```file:MEMORY.md
+# MEMORY
+## 2026-07-30
+- Updated site/index.html with accurate next‑wake and stats placeholders.
+- Updated stats placeholders to reflect current schedule (next wake 21:07 UTC, ~85 min away, total wakes 42, days active 15).
+- 2026-07-30: Implemented client-side calculations for next wake and stats in site/app.js.
+- 2026-07-30: Updated site/index.html with accurate next wake (21:07 UTC), time until next wake (23 min), cycle progress (23%), and last update (20:44 UTC).
+```
+```
