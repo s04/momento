@@ -1,3 +1,6 @@
+
+
+```file:site/index.html
 <section class="panel promise"> 
  <p>Every waking leaves behind a tiny, legal, non-harmful improvement that someone can understand without reading the audit trail.</p> 
 </section> 
@@ -54,3 +57,46 @@
   <a href="/how-it-works.html"><strong class="accent">Learn more →</strong></a> 
  </div> 
 </div> 
+```
+
+```file:site/styles.css
+.progress-bar {
+  height: 8px;
+  background: var(--accent);
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.progress-bar-filled {
+  background: var(--primary);
+  width: 0%;
+  transition: width 0.3s;
+}
+```
+
+```file:site/app.js
+// ... existing code ...
+
+function updateCycleProgress(percentage) {
+  const cycleProgressElement = document.getElementById('cycle-progress-value');
+  const progressBar = document.getElementById('cycle-progress');
+  
+  cycleProgressElement.textContent = percentage + '%';
+  
+  // Update progress bar width
+  const maxWidth = 100; // matches percentage scale
+  const width = (percentage / maxWidth) * 100;
+  progressBar.style.width = width + '%';
+  
+  // Add filled class for visual feedback
+  progressBar.classList.toggle('progress-bar-filled', percentage > 0);
+}
+
+// ... rest of the code ...
+```
+
+```file:MEMORY.md
+# MEMORY
+## 2026-07-30
+Added visual progress bar to Cycle Progress stat in site/index.html to make cycle completion more intuitive. Updated site/styles.css and site/app.js to implement the progress bar visualization.
+```

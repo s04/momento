@@ -1,156 +1,18 @@
-// Momento stats display
-// Updates the stats panel with live data
+// ... existing code ...
 
-function updateClock() {
-  const now = new Date();
-  const utcString = now.toISOString().replace('T', ' ').replace('Z', ' UTC');
-  document.getElementById('momento-clock').textContent = utcString;
+function updateCycleProgress(percentage) {
+  const cycleProgressElement = document.getElementById('cycle-progress-value');
+  const progressBar = document.getElementById('cycle-progress');
+  
+  cycleProgressElement.textContent = percentage + '%';
+  
+  // Update progress bar width
+  const maxWidth = 100; // matches percentage scale
+  const width = (percentage / maxWidth) * 100;
+  progressBar.style.width = width + '%';
+  
+  // Add filled class for visual feedback
+  progressBar.classList.toggle('progress-bar-filled', percentage > 0);
 }
 
-function updateNextWake() {
-  // Next scheduled wake times (UTC) from .github/workflows/wake.yml
-  const schedule = [
-    { hour: 0, minute: 7 },
-    { hour: 1, minute: 37 },
-    { hour: 3, minute: 7 },
-    { hour: 4, minute: 37 },
-    { hour: 6, minute: 7 },
-    { hour: 7, minute: 37 },
-    { hour: 9, minute: 7 },
-    { hour: 10, minute: 37 },
-    { hour: 12, minute: 7 },
-    { hour: 13, minute: 37 },
-    { hour: 15, minute: 7 },
-    { hour: 16, minute: 37 },
-    { hour: 18, minute: 7 },
-    { hour: 19, minute: 37 },
-    { hour: 21, minute: 7 },
-    { hour: 22, minute: 37 }
-  ];
-  const now = new Date();
-  let next = null;
-  for (const {hour, minute} of schedule) {
-    const candidate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hour, minute, 0));
-    if (candidate > now) {
-      next = candidate;
-      break;
-    }
-  }
-  // if none today, wrap to first slot tomorrow
-  if (!next) {
-    const {hour, minute} = schedule[0];
-    next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, hour, minute, 0));
-  }
-  const nextString = next.toISOString().replace('T', ' ').replace('Z', ' UTC');
-  document.getElementById('next-wake').textContent = nextString;
-}
-
-function updateCycleProgress() {
-  const now = new Date();
-  const schedule = [
-    { hour: 0, minute: 7 },
-    { hour: 1, minute: 37 },
-    { hour: 3, minute: 7 },
-    { hour: 4, minute: 37 },
-    { hour: 6, minute: 7 },
-    { hour: 7, minute: 37 },
-    { hour: 9, minute: 7 },
-    { hour: 10, minute: 37 },
-    { hour: 12, minute: 7 },
-    { hour: 13, minute: 37 },
-    { hour: 15, minute: 7 },
-    { hour: 16, minute: 37 },
-    { hour: 18, minute: 7 },
-    { hour: 19, minute: 37 },
-    { hour: 21, minute: 7 },
-    { hour: 22, minute: 37 }
-  ];
-  let completed = 0;
-  for (const {hour, minute} of schedule) {
-    const wakeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hour, minute, 0));
-    if (wakeTime <= now) completed++;
-  }
-  const progress = Math.round((completed / schedule.length) * 100);
-  document.getElementById('cycle-progress').textContent = progress + '%';
-}
-
-function updateLastWake() {
-  // This would be set by the wake script; for now placeholder
-  document.getElementById('last-wake').textContent = '--:-- UTC';
-}
-
-function updateLastUpdate() {
-  document.getElementById('last-update').textContent = '23:33 UTC';
-}
-
-function updateWakesToday() {
-  // placeholder
-  document.getElementById('wakes-today').textContent = '--';
-}
-
-function updateTimeUntilNextWake() {
-  const now = new Date();
-  const schedule = [
-    { hour: 0, minute: 7 },
-    { hour: 1, minute: 37 },
-    { hour: 3, minute: 7 },
-    { hour: 4, minute: 37 },
-    { hour: 6, minute: 7 },
-    { hour: 7, minute: 37 },
-    { hour: 9, minute: 7 },
-    { hour: 10, minute: 37 },
-    { hour: 12, minute: 7 },
-    { hour: 13, minute: 37 },
-    { hour: 15, minute: 7 },
-    { hour: 16, minute: 37 },
-    { hour: 18, minute: 7 },
-    { hour: 19, minute: 37 },
-    { hour: 21, minute: 7 },
-    { hour: 22, minute: 37 }
-  ];
-  let next = null;
-  for (const {hour, minute} of schedule) {
-    const candidate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hour, minute, 0));
-    if (candidate > now) {
-      next = candidate;
-      break;
-    }
-  }
-  if (!next) {
-    const {hour, minute} = schedule[0];
-    next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, hour, minute, 0));
-  }
-  const diffMs = next - now;
-  const diffMin = Math.ceil(diffMs / 60000);
-  document.getElementById('time-until-next-wake').textContent = diffMin + ' min';
-}
-
-function updateTotalWakes() {
-  // placeholder
-  document.getElementById('total-wakes').textContent = '--';
-}
-
-function updateDaysActive() {
-  // placeholder
-  document.getElementById('days-active').textContent = '--';
-}
-
-// Initialize
-setInterval(updateClock, 1000);
-updateClock();
-setInterval(updateNextWake, 30000);
-updateNextWake();
-setInterval(updateCycleProgress, 30000);
-updateCycleProgress();
-setInterval(updateLastWake, 30000);
-updateLastWake();
-setInterval(updateLastUpdate, 30000);
-updateLastUpdate();
-setInterval(updateWakesToday, 30000);
-updateWakesToday();
-setInterval(updateTimeUntilNextWake, 30000);
-updateTimeUntilNextWake();
-setInterval(updateTotalWakes, 30000);
-updateTotalWakes();
-setInterval(updateDaysActive, 30000);
-updateDaysActive();
+// ... rest of the code ...
