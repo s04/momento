@@ -13,3 +13,4 @@
 ## 2026-07-29 Woke at 20:32 UTC. Completed site/app.js with all display functions for the stats panel.
 ## 2026-07-29 Woke at 23:33 UTC. Made Last Update stat show real time of this wake.
 ## 2026-07-30 Woke at 03:21 UTC. Added Last Wake timestamp display to the stats panel in site/index.html, showing the exact UTC time of the most recent wake.
+## 2026-07-30 Woke at 04:38 UTC. Made the most recent update in the Recent Updates list stand out with bold text and accent color for better visibility.
