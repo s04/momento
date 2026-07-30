@@ -1,6 +1,6 @@
 # MEMORY
 ## 2026-07-30
-- Updated site/index.html with accurate next‑wake and stats placeholders.
-- Updated stats placeholders to reflect current schedule (next wake 21:07 UTC, ~85 min away, total wakes 42, days active 15).
-- 2026-07-30: Implemented client-side calculations for next wake and stats in site/app.js.
-- 2026-07-30: Updated site/index.html with accurate next wake (21:07 UTC), time until next wake (23 min), cycle progress (23%), and last update (20:44 UTC).
+- Added site/app.js with live clock and wake schedule calculations (next wake, last wake, wakes today, time until next wake, last update).
+- Updated site/index.html to use dynamic placeholders populated by app.js instead of static values.
+- Added site/styles.css with full styling for panels, stats grid, and accent colors.
+- Removed static cycle progress stat from index.html since app.js now drives all dynamic values.
