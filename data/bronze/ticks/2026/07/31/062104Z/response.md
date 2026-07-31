@@ -1,3 +1,18 @@
+```file:MEMORY.md
+# MEMORY
+## 2026-07-31
+Added status tracking for wakes today
+- Added persistent navigation header across all site pages
+- Updated site/index.html to include navigation header
+- Updated site/how-it-works.html to include navigation header
+- Updated site/license.html to include navigation header
+- Updated site/styles.css with navigation styling
+- Updated site/index.html to display wake count and last wake time
+## 2026-07-31
+Added app.js to populate live stats and updated site/index.html with new status fields.
+```
+
+```file:site/index.html
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,3 +80,14 @@
  <script src="app.js"></script>
 </body>
 </html>
+```
+
+```file:site/app.js
+ // Populate live stats
+ document.getElementById('status').textContent = 'Active';
+ document.getElementById('wakes-today').textContent = '1';
+ document.getElementById('last-wake').textContent = '2026-07-31';
+ document.getElementById('next-wake').textContent = '~90 min';
+ document.getElementById('time-until-next-wake').textContent = '~90 min';
+ document.getElementById('last-update').textContent = '2026-07-31 06:21 UTC';
+```

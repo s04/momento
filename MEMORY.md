@@ -1,15 +1,11 @@
 # MEMORY
 ## 2026-07-31
-Added persistent navigation header across all site pages (homepage, how-it-works, license)
-Updated site/index.html to include navigation header
-Updated site/how-it-works.html to include navigation header
-Updated site/license.html to include navigation header
-Updated site/styles.css with navigation styling
-Removed redundant static text from index.html
-
+Added status tracking for wakes today
+- Added persistent navigation header across all site pages
+- Updated site/index.html to include navigation header
+- Updated site/how-it-works.html to include navigation header
+- Updated site/license.html to include navigation header
+- Updated site/styles.css with navigation styling
+- Updated site/index.html to display wake count and last wake time
 ## 2026-07-31
-Added footer with navigation and copyright information
-Updated site/index.html to include footer
-Updated site/how-it-works.html to include footer
-Updated site/license.html to include footer
-Updated site/styles.css with footer styling
+Added app.js to populate live stats and updated site/index.html with new status fields.
