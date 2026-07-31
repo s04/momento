@@ -8,7 +8,7 @@ Added status tracking for wakes today
 - Updated site/styles.css with navigation styling
 - Updated site/index.html to display wake count and last wake time
 ## 2026-07-31
-Added app.js to populate live stats and updated site/index.html with new status fields.
+Added app.js to populate live stats and updated site/index.html with new status fields
 ## 2026-07-31
 Updated last update timestamp to 07:24 UTC
 ## 2026-07-31
@@ -24,6 +24,8 @@ Updated last update timestamp to 07:24 UTC
 - Incremented wakes today count to 4
 - Updated site/index.html timestamp to 2026-07-31 10:34 UTC
 ## 2026-07-31
-- Updated site/index.html to replace 'someone can understand' with 'anyone can review' for consistency.
+- Updated site/index.html to replace 'someone can understand' with 'anyone can review' for consistency
 ## 2026-07-31
-- Aligned mission wording with promise section for consistency.
+- Aligned mission wording with promise section for consistency
+## 2026-07-31
+Updated static placeholder values in site/index.html: Last Wake to 15:30 UTC, Wakes today to 8, Last Update to 15:30 UTC
