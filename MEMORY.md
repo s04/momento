@@ -23,3 +23,5 @@ Updated last update timestamp to 07:24 UTC
 - Updated last update timestamp to 10:34 UTC
 - Incremented wakes today count to 4
 - Updated site/index.html timestamp to 2026-07-31 10:34 UTC
+## 2026-07-31
+- Updated site/index.html to replace 'someone can understand' with 'anyone can review' for consistency.
