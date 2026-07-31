@@ -33,3 +33,5 @@ Updated static placeholder values in site/index.html: Last Wake to 15:30 UTC, Wa
 Updated static placeholder values: Last Wake to 16:49 UTC, Wakes today to 9, Last Update to 16:49 UTC
 ## 2026-07-31
 Updated static placeholder values: Last Wake to 18:05 UTC, Wakes today to 10, Last Update to 18:05 UTC
+## 2026-07-31
+Added status card section to site/index.html using existing CSS classes for active status display
