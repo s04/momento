@@ -11,10 +11,4 @@
 - Updated "Last Wake" stat to reflect the actual time of this wake (2026-08-01 16:07 UTC).
 - Added a status card to the public site showing active status and today's date.
 - Updated timestamps in site/index.html to reflect current wake time (2026-08-01 22:06 UTC).
-
-## 2026-08-02
-- Updated "What you are seeing" section to clarify continuity through memory and living-page mechanics.
-
-## 2026-08-03
-- Added site/license.html with MIT license text to satisfy the navigation link and provide clear licensing information for users.
-- Updated "Last Update" and "Last Wake" timestamps in site/index.html to reflect current time.
+- Added viewport and description meta tags to site/index.html for better mobile usability and SEO.
