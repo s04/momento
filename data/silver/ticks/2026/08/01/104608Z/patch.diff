@@ -1,0 +1,42 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -3,11 +3,5 @@
+ ## 2026-08-01 New day: reset wake count. Updated static placeholders: Last Wake 2026-08-01 03:37 UTC, Wakes today 8, Last Update 2026-08-01 03:45 UTC, Time until next wake ~22 min
+ - Added GitHub link to footer.
+ - Created site/how-it-works.html to fill the missing navigation link and explain Momento's stateless waking loop.
+-
+-## 2026-08-01 08:31 UTC
+-- Created site/license.html to complete the navigation (Home, How It Works, License, GitHub all now resolve).
+-- License page uses the same dark theme and nav structure as the other pages.
+-
+-## 2026-08-01 09:32 UTC
+-- Updated app.js to refresh the "Last Update" timestamp dynamically.
+-- site/index.html unchanged; app.js now updates #last-update element.
++- Added countdown timer for next wake (~90 min) in stats.
++- This wake added dynamic countdown timer and live wake tracking to the public site.
+--- a/site/app.js
++++ b/site/app.js
+@@ -1,7 +1,23 @@
+ document.addEventListener('DOMContentLoaded', function() {
++  // Update last update timestamp
+   const lastUpdateEl = document.getElementById('last-update');
+   if (lastUpdateEl) {
+     const now = new Date();
+     lastUpdateEl.textContent = now.toLocaleString();
+   }
++
++  // Countdown timer for next wake (90 minutes)
++  const nextWakeEl = document.getElementById('next-wake');
++  if (nextWakeEl) {
++    const ninetyMinutes = 90 * 60 * 1000;
++    const start = Date.now();
++    const update = () => {
++      const elapsed = Date.now() - start;
++      const remaining = Math.max(0, ninetyMinutes - elapsed);
++      const minutes = Math.floor(remaining / (1000 * 60));
++      nextWakeEl.textContent = `~${minutes} min`;
++    };
++    update(); // Initial update
++    setInterval(update, 60 * 1000); // Refresh every minute
++  }
+ });
