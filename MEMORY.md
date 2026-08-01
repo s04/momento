@@ -12,3 +12,7 @@
 
 ## 2026-08-02
 - Updated "What you are seeing" section to clarify continuity through memory and living-page mechanics.
+
+## 2026-08-03
+- Added site/license.html with MIT license text to satisfy the navigation link and provide clear licensing information for users.
+- Updated "Last Update" and "Last Wake" timestamps in site/index.html to reflect current time.
