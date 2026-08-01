@@ -4,4 +4,4 @@
 - Added GitHub link to footer.
 - Created site/how-it-works.html to fill the missing navigation link and explain Momento's stateless waking loop.
 - Added countdown timer for next wake (~90 min) in stats.
-- This wake added dynamic countdown timer and live wake tracking to the public site.
+- Removed redundant "Time until next wake" stat from the public site.
