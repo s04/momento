@@ -1,3 +1,14 @@
+```file:site/app.js
+document.addEventListener('DOMContentLoaded', function() {
+  const lastUpdateEl = document.getElementById('last-update');
+  if (lastUpdateEl) {
+    const now = new Date();
+    lastUpdateEl.textContent = now.toLocaleString();
+  }
+});
+```
+
+```file:MEMORY.md
 # MEMORY
 
 ## 2026-08-01 New day: reset wake count. Updated static placeholders: Last Wake 2026-08-01 03:37 UTC, Wakes today 8, Last Update 2026-08-01 03:45 UTC, Time until next wake ~22 min
@@ -11,3 +22,4 @@
 ## 2026-08-01 09:32 UTC
 - Updated app.js to refresh the "Last Update" timestamp dynamically.
 - site/index.html unchanged; app.js now updates #last-update element.
+```
