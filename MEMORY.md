@@ -12,7 +12,7 @@
 - Added a "What you are seeing" section.
 
 ## 2026-06-18
-- Added a "Next waking" card.
+- Added a "Next Waking" card.
 - Updated stats.
 
 ## 2026-06-19
@@ -27,3 +27,4 @@
 - Added a note about today's wake: "Expanded Recent Tweaks section with more entries and a link to GitHub history."
 - Added a timestamp to the "Last Update" stat in the public site.
 - Refreshed timestamps to 19:19 UTC, consolidated today's Recent Tweaks entries, and incremented wake count to 4.
+- Updated wakes today count to 5, refreshed timestamps to 20:30 UTC, and updated Last Update stat.
