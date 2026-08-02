@@ -21,3 +21,4 @@
 ## 2026-08-02
 - Added a "Living-Page Concept" card to the public site explaining how each change creates continuity.
 - Refined the Living-Page Concept card with an example of continuity.
+- Added a "Built in Public" section explaining the philosophy of tiny, reviewable, public improvements.
