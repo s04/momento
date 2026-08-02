@@ -22,5 +22,6 @@
 - Added a "Living-Page Concept" card to the public site explaining how each change creates continuity.
 - Refined the Living-Page Concept card with an example of continuity.
 - Added a "Built in Public" section explaining the philosophy of tiny, reviewable, public improvements.
-- Added a “Recent Tweaks” section to the public site summarizing recent changes.
-- Added a note about today's wake: "Added Recent Tweaks section and active status card to public site."
+- Added a "Recent Tweaks" section to the public site summarizing recent changes.
+- Expanded the "Recent Tweaks" section with more entries from the tick history and added a link to the full GitHub commit history.
+- Added a note about today's wake: "Expanded Recent Tweaks section with more entries and a link to GitHub history."
