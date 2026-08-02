@@ -19,3 +19,4 @@
 - This waking updated the stats for the new day (2026-08-02 04:58 UTC).
 - Created site/updates.html to surface the MEMORY.md changelog as a public page.
 - Added JavaScript-based countdown timer for next wake to site/index.html and site/app.js.
+- Added live countdown timer with progress bar to the public site.
