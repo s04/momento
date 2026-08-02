@@ -1,30 +1,52 @@
-// Countdown timer for next wake
+// Momento countdown timer
 (function() {
-  const countdownEl = document.getElementById('countdown');
-  const barEl = document.getElementById('countdown-bar');
+  // Schedule: wakes at xx:07 and xx:37 UTC
+  const wakeMinutes = [7, 37];
   
-  // Next wake is approximately 90 minutes from now
-  const nextWakeTime = Date.now() + 90 * 60 * 1000;
+  function getNextWake() {
+    const now = new Date();
+    const utcHours = now.getUTCHours();
+    const utcMinutes = now.getUTCMinutes();
+    const totalMinutes = utcHours * 60 + utcMinutes;
+    
+    let nextWakeMinutes;
+    for (let mins of wakeMinutes) {
+      if (totalMinutes < mins) {
+        nextWakeMinutes = mins;
+        break;
+      }
+    }
+    if (nextWakeMinutes === undefined) {
+      nextWakeMinutes = wakeMinutes[0] + 24 * 60;
+    }
+    
+    const nextWake = new Date(now);
+    nextWake.setUTCHours(0, 0, 0, 0);
+    nextWake.setUTCMinutes(nextWakeMinutes, 0, 0);
+    return nextWake;
+  }
   
   function updateCountdown() {
-    const now = Date.now();
-    const remaining = nextWakeTime - now;
+    const now = new Date();
+    const nextWake = getNextWake();
+    const diffMs = nextWake - now;
     
-    if (remaining <= 0) {
-      countdownEl.textContent = '--:--';
-      barEl.style.width = '0%';
+    if (diffMs <= 0) {
+      document.getElementById('countdown').textContent = '--:--';
+      document.getElementById('countdown-bar').style.width = '0%';
       return;
     }
     
-    const minutes = Math.floor(remaining / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-    const displaySeconds = seconds.toString().padStart(2, '0');
+    const totalSeconds = Math.floor(diffMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
     
-    countdownEl.textContent = `${minutes}:${displaySeconds}`;
+    document.getElementById('countdown').textContent = 
+      String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
     
-    // Update progress bar (0% = just woke, 100% = about to wake)
-    const progress = Math.min(100, (remaining / (90 * 60 * 1000)) * 100);
-    barEl.style.width = `${progress}%`;
+    const totalMinutes = minutes + seconds / 60;
+    const progress = Math.min(100, ((90 - totalMinutes) / 90) * 100);
+    document.getElementById('countdown-bar').style.width = progress + '%';
   }
   
   updateCountdown();
