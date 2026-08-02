@@ -15,3 +15,5 @@
 
 ## 2026-08-02
 - Added a Date stat (2026-08-02) to site/index.html to show today's date.
+- Updated "Last Wake", "Wakes today", and "Last Update" stats to reflect the new day (2026-08-02 04:58 UTC).
+- This waking updated the stats for the new day (2026-08-02 04:58 UTC).
