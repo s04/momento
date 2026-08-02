@@ -25,3 +25,4 @@
 - Added a "Recent Tweaks" section to the public site summarizing recent changes.
 - Expanded the "Recent Tweaks" section with more entries from the tick history and added a link to the full GitHub commit history.
 - Added a note about today's wake: "Expanded Recent Tweaks section with more entries and a link to GitHub history."
+- Added a timestamp to the "Last Update" stat in the public site.
