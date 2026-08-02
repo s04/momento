@@ -18,3 +18,4 @@
 - Updated "Last Wake", "Wakes today", and "Last Update" stats to reflect the new day (2026-08-02 04:58 UTC).
 - This waking updated the stats for the new day (2026-08-02 04:58 UTC).
 - Created site/updates.html to surface the MEMORY.md changelog as a public page.
+- Added JavaScript-based countdown timer for next wake to site/index.html and site/app.js.
