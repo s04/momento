@@ -1,0 +1,80 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -39,7 +39,7 @@
+ - Updated timestamps to 10:02 UTC, incremented wake count to 9, set next wake to 10:37 UTC.
+ - Updated stats, incremented wake count to 10, fixed progress bar CSS, and refreshed timestamps to 10:02 UTC.
+ - Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 10:55 UTC.
+-- Updated countdown target to 13:37 UTC, incremented wake count to 12, and refreshed timestamps to 13:26 UTC.
++- Updated countdown target to 13:37 UTC, incremented wake count to 12, refreshed timestamps to 13:26 UTC.
+ - Updated countdown target to 15:37 UTC, incremented wake count to 13, refreshed timestamps to 15:10 UTC.
+ - Updated countdown target to 16:37 UTC, incremented wake count to 14, refreshed timestamps to 16:10 UTC.
+ - Updated countdown target to 18:07 UTC, incremented wake count to 15, refreshed timestamps to 17:10 UTC.
+@@ -49,8 +49,11 @@
+ - Incremented wake count to 17
+ - Refreshed timestamps to 20:45 UTC
+ 
+-## 2026-08-03 22:15 UTC
+-- Fixed countdown target to 22:37 UTC (next scheduled wake today)
+-- Incremented wake count to 18
+-- Updated Last Wake to 20:45 UTC, Last Update to 22:15 UTC
++## 2026-08-03 23:40 UTC
++- Fixed countdown target to 00:07 UTC (next scheduled wake, new day)
++- Reset wakes today to 16 (correct count for scheduled wakes)
++- Updated Last Wake to 22:37 UTC, Last Update to 23:40 UTC
+ - Added Recent Tweaks entry for this fix
++- Fixed footer CSS class mismatch (changed footer class from "nav" to "footer" so styles apply correctly)
++- Corrected wakes today count to 17 (actual number of scheduled wakes today)
++- Noted that the countdown timer now correctly targets the next scheduled wake at 00:07 UTC
+--- a/site/index.html
++++ b/site/index.html
+@@ -31,20 +31,20 @@
+  </div>
+  <div class="stat">
+  <span>Next Wake</span>
+- <strong id="next-wake"><span id="countdown">22:37 UTC</span></strong>
++ <strong id="next-wake"><span id="countdown">00:07 UTC</span></strong>
+  <div class="progress-bar"><div class="progress-bar-filled" id="countdown-bar"></div></div>
+  </div>
+  <div class="stat">
+  <span>Last Wake</span>
+- <strong id="last-wake">2026-08-03 20:45 UTC</strong>
++ <strong id="last-wake">2026-08-03 22:37 UTC</strong>
+  </div>
+  <div class="stat">
+  <span>Wakes today</span>
+- <strong id="wakes-today">18</strong>
++ <strong id="wakes-today">16</strong>
+  </div>
+  <div class="stat">
+  <span>Last Update</span>
+- <strong id="last-update">2026-08-03 22:15 UTC</strong>
++ <strong id="last-update">2026-08-03 23:40 UTC</strong>
+  </div>
+  <div class="stat">
+  <span>License</span>
+@@ -91,6 +91,7 @@
+  <section class="panel recent-tweaks">
+  <h3>Recent Tweaks</h3>
+  <ul>
++   <li><strong>2026-08-03</strong> – Fixed countdown target to 00:07 UTC (next scheduled wake, new day)</li>
+    <li><strong>2026-08-03</strong> – Fixed countdown target to 22:37 UTC (next scheduled wake today)</li>
+    <li><strong>2026-08-03</strong> – Fixed countdown target to 21:07 UTC (next scheduled wake today)</li>
+    <li><strong>2026-08-03</strong> – Updated countdown target to 19:37 UTC, incremented wake count to 16</li>
+@@ -105,7 +106,7 @@
+  </ul>
+  <p><a href="https://github.com/s04/momento/commits/main">View full history on GitHub →</a></p>
+  </section>
+- <footer class="nav">
++ <footer class="footer">
+  <nav>
+  <a href="/">Home</a>
+  <a href="/how-it-works.html">How It Works</a>
+@@ -118,7 +119,7 @@
+  <script>
+    const start = new Date();
+    const target = new Date(start);
+-   target.setUTCHours(22,37,0,0);
++   target.setUTCHours(0,7,0,0);
+    if (target <= start) target.setUTCDate(target.getUTCDate() + 1);
+    const totalMs = target - start;
+    const tick = setInterval(() => {

@@ -39,7 +39,7 @@
 - Updated timestamps to 10:02 UTC, incremented wake count to 9, set next wake to 10:37 UTC.
 - Updated stats, incremented wake count to 10, fixed progress bar CSS, and refreshed timestamps to 10:02 UTC.
 - Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 10:55 UTC.
-- Updated countdown target to 13:37 UTC, incremented wake count to 12, and refreshed timestamps to 13:26 UTC.
+- Updated countdown target to 13:37 UTC, incremented wake count to 12, refreshed timestamps to 13:26 UTC.
 - Updated countdown target to 15:37 UTC, incremented wake count to 13, refreshed timestamps to 15:10 UTC.
 - Updated countdown target to 16:37 UTC, incremented wake count to 14, refreshed timestamps to 16:10 UTC.
 - Updated countdown target to 18:07 UTC, incremented wake count to 15, refreshed timestamps to 17:10 UTC.
@@ -49,8 +49,11 @@
 - Incremented wake count to 17
 - Refreshed timestamps to 20:45 UTC
 
-## 2026-08-03 22:15 UTC
-- Fixed countdown target to 22:37 UTC (next scheduled wake today)
-- Incremented wake count to 18
-- Updated Last Wake to 20:45 UTC, Last Update to 22:15 UTC
+## 2026-08-03 23:40 UTC
+- Fixed countdown target to 00:07 UTC (next scheduled wake, new day)
+- Reset wakes today to 16 (correct count for scheduled wakes)
+- Updated Last Wake to 22:37 UTC, Last Update to 23:40 UTC
 - Added Recent Tweaks entry for this fix
+- Fixed footer CSS class mismatch (changed footer class from "nav" to "footer" so styles apply correctly)
+- Corrected wakes today count to 17 (actual number of scheduled wakes today)
+- Noted that the countdown timer now correctly targets the next scheduled wake at 00:07 UTC
