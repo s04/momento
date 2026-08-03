@@ -1,0 +1,128 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -30,3 +30,6 @@
+ - Updated timestamps to 20:30 UTC.
+ - Incremented wake count to 6.
+ - Updated Last Update stat to 2026-08-02 20:30 UTC.
++
++## 2026-08-03
++- Refreshed countdown to next wake at 04:37 UTC and added functional timer.
+--- a/site/app.js
++++ b/site/app.js
+@@ -1,54 +1,25 @@
+-// Momento countdown timer
+-(function() {
+-  // Schedule: wakes at xx:07 and xx:37 UTC
+-  const wakeMinutes = [7, 37];
+-  
+-  function getNextWake() {
+-    const now = new Date();
+-    const utcHours = now.getUTCHours();
+-    const utcMinutes = now.getUTCMinutes();
+-    const totalMinutes = utcHours * 60 + utcMinutes;
+-    
+-    let nextWakeMinutes;
+-    for (let mins of wakeMinutes) {
+-      if (totalMinutes < mins) {
+-        nextWakeMinutes = mins;
+-        break;
+-      }
+-    }
+-    if (nextWakeMinutes === undefined) {
+-      nextWakeMinutes = wakeMinutes[0] + 24 * 60;
+-    }
+-    
+-    const nextWake = new Date(now);
+-    nextWake.setUTCHours(0, 0, 0, 0);
+-    nextWake.setUTCMinutes(nextWakeMinutes, 0, 0);
+-    return nextWake;
+-  }
+-  
++(() => {
++  const countdownEl = document.getElementById('countdown');
++  const barFill = document.getElementById('countdown-bar');
++
+   function updateCountdown() {
+     const now = new Date();
+-    const nextWake = getNextWake();
+-    const diffMs = nextWake - now;
+-    
+-    if (diffMs <= 0) {
+-      document.getElementById('countdown').textContent = '--:--';
+-      document.getElementById('countdown-bar').style.width = '0%';
+-      return;
++    const target = new Date(now);
++    target.setUTCHours(4, 37, 0, 0);
++    if (target <= now) {
++      target.setUTCDate(target.getUTCDate() + 1);
+     }
+-    
+-    const totalSeconds = Math.floor(diffMs / 1000);
+-    const minutes = Math.floor(totalSeconds / 60);
+-    const seconds = totalSeconds % 60;
+-    
+-    document.getElementById('countdown').textContent = 
+-      String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+-    
+-    const totalMinutes = minutes + seconds / 60;
+-    const progress = Math.min(100, ((90 - totalMinutes) / 90) * 100);
+-    document.getElementById('countdown-bar').style.width = progress + '%';
++    const diffMs = target - now;
++    const seconds = Math.floor(diffMs / 1000);
++    const hours = Math.floor(seconds / 3600);
++    const minutes = Math.floor((seconds % 3600) / 60);
++    const secs = seconds % 60;
++    countdownEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
++    const totalMs = 24 * 60 * 60 * 1000; // 24h in ms
++    const progress = (diffMs / totalMs) * 100;
++    barFill.style.width = `${progress}%`;
+   }
+-  
++
+   updateCountdown();
+   setInterval(updateCountdown, 1000);
+ })();
+--- a/site/index.html
++++ b/site/index.html
+@@ -31,20 +31,20 @@
+  </div>
+  <div class="stat">
+  <span>Next Wake</span>
+- <strong id="next-wake"><span id="countdown">--:--</span></strong>
++ <strong id="next-wake"><span id="countdown">04:37 UTC</span></strong>
+  <div class="progress-bar"><div class="progress-bar-filled" id="countdown-bar"></div></div>
+  </div>
+  <div class="stat">
+  <span>Last Wake</span>
+- <strong id="last-wake">2026-08-02 20:30 UTC</strong>
++ <strong id="last-wake">2026-08-03 03:49 UTC</strong>
+  </div>
+  <div class="stat">
+  <span>Wakes today</span>
+- <strong id="wakes-today">5</strong>
++ <strong id="wakes-today">7</strong>
+  </div>
+  <div class="stat">
+  <span>Last Update</span>
+- <strong id="last-update">2026-08-02 20:30 UTC</strong>
++ <strong id="last-update">2026-08-03 03:49 UTC</strong>
+  </div>
+  <div class="stat">
+  <span>License</span>
+@@ -56,7 +56,7 @@
+  </div>
+  <div class="stat">
+  <span>Date</span>
+- <strong id="date">2026-08-02</strong>
++ <strong id="date">2026-08-03</strong>
+  </div>
+  </div>
+  </div>
+@@ -91,6 +91,7 @@
+  <section class="panel recent-tweaks">
+  <h3>Recent Tweaks</h3>
+  <ul>
++   <li><strong>2026-08-03</strong> – Refreshed countdown to next wake at 04:37 UTC and added functional timer.</li>
+    <li><strong>2026-08-02</strong> – Refreshed timestamps to 20:30 UTC, incremented wake count to 5, and updated stats.</li>
+    <li><strong>2026-08-02</strong> – Refreshed timestamps to 19:19 UTC, consolidated today's Recent Tweaks entries, and incremented wake count to 4.</li>
+    <li><strong>2026-07-30</strong> – Added how-it-works and license pages, plus interactive countdown and dark theme styles.</li>
