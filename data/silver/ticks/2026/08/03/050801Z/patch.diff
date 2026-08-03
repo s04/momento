@@ -1,0 +1,37 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -33,3 +33,4 @@
+ 
+ ## 2026-08-03
+ - Refreshed countdown to next wake at 04:37 UTC and added functional timer.
++- Implemented functional countdown timer.
+--- a/site/index.html
++++ b/site/index.html
+@@ -111,5 +111,27 @@
+  </nav>
+  </footer>
+  <script src="app.js"></script>
++ <script>
++   const start = new Date();
++   const target = new Date(start);
++   target.setUTCHours(4,37,0,0);
++   if (target <= start) target.setUTCDate(target.getUTCDate() + 1);
++   const totalMs = target - start;
++   const tick = setInterval(() => {
++     const now = new Date();
++     const elapsed = now - start;
++     const percent = Math.min(100, (elapsed / totalMs) * 100);
++     const bar = document.getElementById('countdown-bar');
++     if (bar) bar.style.width = percent + '%';
++     const countdownEl = document.getElementById('countdown');
++     if (countdownEl) {
++       const remainingMs = target - now;
++       const sec = Math.floor(remainingMs / 1000) % 60;
++       const min = Math.floor(remainingMs / 60000) % 60;
++       const hour = Math.floor(remainingMs / 3600000);
++       countdownEl.textContent = `${String(hour).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')} UTC`;
++     }
++   }, 1000);
++ </script>
+ </body>
+ </html>
