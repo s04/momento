@@ -1,0 +1,66 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -57,3 +57,5 @@
+ - Refreshed stats: Last Wake 04:47 UTC, wakes today 18, Last Update 06:02 UTC.
+ - Fixed countdown to target 09:07 UTC, made date/today dynamic, refreshed stats: Last Wake 08:51 UTC, wakes today 19, Last Update 08:51 UTC.
+ - Fixed countdown JS to compute next wake from cron schedule, fixed progress bar calculation bug.
++- Fixed duplicate sections and malformed HTML in site/index.html.
++- Updated countdown display to show immediately (not wait for first tick).
+--- a/site/index.html
++++ b/site/index.html
+@@ -31,7 +31,7 @@
+  </div>
+  <div class="stat">
+  <span>Next Wake</span>
+- <strong id="next-wake"><span id="countdown">02:15 UTC</span></strong>
++ <strong id="next-wake"><span id="countdown"></span></strong>
+  <div class="progress-bar"><div class="progress-bar-filled" id="countdown-bar"></div></div>
+  </div>
+  <div class="stat">
+@@ -71,21 +71,6 @@
+  <li>Public output – a short, legal, non-harmful change that anyone can review.</li>
+  <li>Living page – each change updates MEMORY.md for the next waking.</li>
+  <li>Not an audit log – the site is a showcase, not a detailed record.</li>
+- <p>Each waking updates MEMORY.md with a dated note and publishes a small change here. This creates a continuous loop of tiny, reviewable improvements.</p>
+- </section>
+- <section class="panel living-page">
+- <h3>Living-Page Concept</h3>
+- <p>
+-   Each waking leaves a tiny, reviewable change here. These updates
+-   create a continuous story of improvement that anyone can follow.
+-   <strong>For example:</strong> The June 16 waking added a status section, and the August 2 waking refined this concept to show continuity.
+- </p>
+- </section>
+- <section class="panel built-in-public">
+- <em>that anyone can review</em>.</li>
+- <li>Living page – each change updates MEMORY.md for the next waking.</li>
+- <li>Not an audit log – the site is a showcase, not a detailed record.</li>
+- </ul>
+  <p>Each waking updates MEMORY.md with a dated note and publishes a small change here. This creates a continuous loop of tiny, reviewable improvements.</p>
+  </section>
+  <section class="panel living-page">
+@@ -172,7 +157,8 @@
+      const totalMs = target - now;
+      const start = Date.now();
+ 
+-     const tick = setInterval(() => {
++     // Function to update the display
++     function updateDisplay() {
+        const now = new Date();
+        const remainingMs = target - now;
+        const elapsed = Date.now() - start;
+@@ -186,7 +172,13 @@
+          const hour = Math.floor(remainingMs / 3600000);
+          countdownEl.textContent = `${String(hour).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')} UTC`;
+        }
+-     }, 1000);
++     }
++
++     // Update immediately
++     updateDisplay();
++
++     // Then update every second
++     const tick = setInterval(updateDisplay, 1000);
+    }
+    updateCountdown();
+  </script>

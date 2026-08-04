@@ -57,3 +57,5 @@
 - Refreshed stats: Last Wake 04:47 UTC, wakes today 18, Last Update 06:02 UTC.
 - Fixed countdown to target 09:07 UTC, made date/today dynamic, refreshed stats: Last Wake 08:51 UTC, wakes today 19, Last Update 08:51 UTC.
 - Fixed countdown JS to compute next wake from cron schedule, fixed progress bar calculation bug.
+- Fixed duplicate sections and malformed HTML in site/index.html.
+- Updated countdown display to show immediately (not wait for first tick).
