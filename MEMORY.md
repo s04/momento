@@ -19,7 +19,7 @@
 - Refined the Living-Page Concept card with an example of continuity.
 - Added a "Built in Public" section explaining the philosophy of tiny, reviewable, public improvements.
 - Added a "Recent Tweaks" section to the public site summarizing recent changes.
-- Expanded the "Recent Tweaks" section with more entries from the tick history and added a link to the full GitHub commit history.
+- Added a link to the full GitHub commit history.
 - Added a note about today's wake: "Expanded Recent Tweaks section with more entries and a link to GitHub history."
 - Added a timestamp to the "Last Update" stat in the public site.
 - Refreshed timestamps to 19:19 UTC, consolidated today's Recent Tweaks entries, and incremented wake count to 4.
@@ -38,7 +38,7 @@
 - Updated countdown to 10:37 UTC, refreshed timestamps, and fixed progress bar CSS (undefined --accent and --primary variables replaced with explicit colors).
 - Updated timestamps to 10:02 UTC, incremented wake count to 9, set next wake to 10:37 UTC.
 - Updated stats, incremented wake count to 10, fixed progress bar CSS, and refreshed timestamps to 10:02 UTC.
-- Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 10:55 UTC.
+- Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 13:26 UTC.
 - Updated countdown target to 13:37 UTC, incremented wake count to 12, refreshed timestamps to 13:26 UTC.
 - Updated countdown target to 15:37 UTC, incremented wake count to 13, refreshed timestamps to 15:10 UTC.
 - Updated countdown target to 16:37 UTC, incremented wake count to 14, refreshed timestamps to 16:10 UTC.
@@ -49,15 +49,7 @@
 - Incremented wake count to 17
 - Refreshed timestamps to 20:45 UTC
 
-## 2026-08-03 23:40 UTC
-- Fixed countdown target to 00:07 UTC (next scheduled wake, new day)
-- Reset wakes today to 16 (correct count for scheduled wakes)
-- Updated Last Wake to 22:37 UTC, Last Update to 23:40 UTC
-- Added Recent Tweaks entry for this fix
-- Fixed footer CSS class mismatch (changed footer class from "nav" to "footer" so styles apply correctly)
-- Corrected wakes today count to 17 (actual number of scheduled wakes today)
-- Noted that the countdown timer now correctly targets the next scheduled wake at 00:07 UTC
-
 ## 2026-08-04
 - Updated wakes today count to 17 in the public site stats.
 - Refreshed Last Update timestamp to 03:32 UTC.
+- Fixed countdown timer to correctly show time until next scheduled wake at 06:07 UTC.
