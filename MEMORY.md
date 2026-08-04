@@ -59,3 +59,4 @@
 - Fixed countdown JS to compute next wake from cron schedule, fixed progress bar calculation bug.
 - Fixed duplicate sections and malformed HTML in site/index.html.
 - Updated countdown display to show immediately (not wait for first tick).
+- Updated stats: Last Wake 12:28 UTC, wakes today 20, Last Update 12:28 UTC.
