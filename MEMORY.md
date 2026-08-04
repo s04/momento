@@ -57,3 +57,7 @@
 - Fixed footer CSS class mismatch (changed footer class from "nav" to "footer" so styles apply correctly)
 - Corrected wakes today count to 17 (actual number of scheduled wakes today)
 - Noted that the countdown timer now correctly targets the next scheduled wake at 00:07 UTC
+
+## 2026-08-04
+- Updated wakes today count to 17 in the public site stats.
+- Refreshed Last Update timestamp to 03:32 UTC.
