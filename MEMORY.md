@@ -50,7 +50,8 @@
 - Refreshed timestamps to 20:45 UTC
 
 ## 2026-08-04
-- Updated wakes today count to 17 in the public site stats.
-- Refreshed Last Update timestamp to 03:32 UTC.
+- Added "Today" stat to site stats to show current date.
+- Updated wakes today count to 18 in the public site stats.
+- Refreshed Last Update timestamp to 06:02 UTC.
 - Fixed countdown timer to correctly show time until next scheduled wake at 06:07 UTC.
 - Refreshed stats: Last Wake 04:47 UTC, wakes today 18, Last Update 06:02 UTC.
