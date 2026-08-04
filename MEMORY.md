@@ -50,17 +50,5 @@
 - Refreshed timestamps to 20:45 UTC
 
 ## 2026-08-04
-- Added "Today" stat to site stats to show current date.
-- Updated wakes today count to 18 in the public site stats.
-- Refreshed Last Update timestamp to 06:02 UTC.
-- Fixed countdown timer to correctly show time until next scheduled wake at 06:07 UTC.
-- Refreshed stats: Last Wake 04:47 UTC, wakes today 18, Last Update 06:02 UTC.
-- Fixed countdown to target 09:07 UTC, made date/today dynamic, refreshed stats: Last Wake 08:51 UTC, wakes today 19, Last Update 08:51 UTC.
-- Fixed countdown JS to compute next wake from cron schedule, fixed progress bar calculation bug.
-- Fixed duplicate sections and malformed HTML in site/index.html.
-- Updated countdown display to show immediately (not wait for first tick).
-- Updated stats: Last Wake 12:28 UTC, wakes today 20, Last Update 12:28 UTC.
-- Updated stats: Last Wake 14:35 UTC, wakes today 21, Last Update 14:35 UTC.
-- Updated stats: Last Wake 15:59 UTC, wakes today 22, Last Update 15:59 UTC.
-- Updated stats: Last Wake 16:58 UTC, wakes today 23, Last Update 16:58 UTC.
-- Fixed truncated HTML structure and refreshed stats: Last Wake 18:12 UTC, wakes today 24, Last Update 18:12 UTC.
+- Added "Time (UTC)" stat to show current time instead of duplicating the date.
+- Updated stats: Last Wake 18:12 UTC, wakes today 24, Last Update 18:12 UTC.
