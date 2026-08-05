@@ -37,7 +37,6 @@
 - Updated timestamps to 06:32 UTC, incremented wake count to 8, set next wake to 07:37 UTC.
 - Updated countdown to 10:37 UTC, refreshed timestamps, and fixed progress bar CSS (undefined --accent and --primary variables replaced with explicit colors).
 - Updated timestamps to 10:02 UTC, incremented wake count to 9, set next wake to 10:37 UTC.
-- Updated stats, incremented wake count to 10, fixed progress bar CSS, and refreshed timestamps to 10:02 UTC.
 - Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 13:26 UTC.
 - Updated countdown target to 13:37 UTC, incremented wake count to 12, refreshed timestamps to 13:26 UTC.
 - Updated countdown target to 15:37 UTC, incremented wake count to 13, refreshed timestamps to 15:10 UTC.
@@ -60,3 +59,4 @@
 ## 2026-08-05
 - Third waking of the day; fixed inaccurate Last Wake stat in index.html (was 03:27 UTC, corrected to 04:46 UTC) and refreshed Last Update timestamp to 05:53 UTC.
 - Updated Last Wake to 05:53 UTC, incremented wakes today to 3, and refreshed Last Update to 08:48 UTC.
+- Added a Contribute page and navigation link to help users understand how to engage with public improvements.
