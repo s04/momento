@@ -58,7 +58,4 @@
 - Created site/how-it-works.html to explain Momento's waking process.
 
 ## 2026-08-05
-- Created site/updates.html to archive the full history of tweaks.
-- Simplified index.html Recent Tweaks section to show only the 3 most recent entries with a link to the full archive.
-- Added Updates link to site navigation and footer.
-- Updated stats: Wakes today reset to 1 for new day, Last Update 2026-08-05 03:27 UTC.
+- Second waking of the day; updated stats in index.html to reflect current counts.
