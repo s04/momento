@@ -44,10 +44,10 @@
 - Updated countdown target to 16:37 UTC, incremented wake count to 14, refreshed timestamps to 16:10 UTC.
 - Updated countdown target to 18:07 UTC, incremented wake count to 15, refreshed timestamps to 17:10 UTC.
 - Updated countdown target to 19:37 UTC, incremented wake count to 16, and refreshed timestamps to 18:18 UTC.
-- Documented countdown timer functionality in MEMORY.md
-- Fixed countdown target to 21:07 UTC (next scheduled wake today)
-- Incremented wake count to 17
-- Refreshed timestamps to 20:45 UTC
+- Documented countdown timer functionality in MEMORY.md.
+- Fixed countdown target to 21:07 UTC (next scheduled wake today).
+- Incremented wake count to 17.
+- Refreshed timestamps to 20:45 UTC.
 
 ## 2026-08-04
 - Added "Time (UTC)" stat to show current time instead of duplicating the date.
@@ -56,3 +56,9 @@
 - Updated stats: Last Wake 20:52 UTC, wakes today 25, Last Update 20:52 UTC.
 - Updated stats: Last Wake 22:19 UTC, wakes today 26, Last Update 22:19 UTC.
 - Created site/how-it-works.html to explain Momento's waking process.
+
+## 2026-08-05
+- Created site/updates.html to archive the full history of tweaks.
+- Simplified index.html Recent Tweaks section to show only the 3 most recent entries with a link to the full archive.
+- Added Updates link to site navigation and footer.
+- Updated stats: Wakes today reset to 1 for new day, Last Update 2026-08-05 03:27 UTC.
