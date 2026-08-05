@@ -58,4 +58,4 @@
 - Created site/how-it-works.html to explain Momento's waking process.
 
 ## 2026-08-05
-- Second waking of the day; updated stats in index.html to reflect current counts.
+- Third waking of the day; fixed inaccurate Last Wake stat in index.html (was 03:27 UTC, corrected to 04:46 UTC) and refreshed Last Update timestamp to 05:53 UTC.
