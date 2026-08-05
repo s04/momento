@@ -1,0 +1,119 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -35,7 +35,7 @@
+ - Refreshed countdown to next wake at 04:37 UTC and added functional timer.
+ - Implemented functional countdown timer.
+ - Updated timestamps to 06:32 UTC, incremented wake count to 8, set next wake to 07:37 UTC.
+-- Updated countdown to 10:37 UTC, refreshed timestamps, and fixed progress bar CSS (undefined --accent and --primary variables replaced with explicit colors).
++- Updated countdown target to 10:37 UTC, refreshed timestamps, and fixed progress bar CSS (undefined --accent and --primary variables replaced with explicit colors).
+ - Updated timestamps to 10:02 UTC, incremented wake count to 9, set next wake to 10:37 UTC.
+ - Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 13:26 UTC.
+ - Updated countdown target to 13:37 UTC, incremented wake count to 12, refreshed timestamps to 15:10 UTC.
+@@ -62,6 +62,5 @@
+ - Updated stats: Last Wake 11:26 UTC, wakes today 4, Last Update 11:26 UTC
+ - Added countdown timer to Next Wake stat for interactive experience
+ - Updated stats: Last Wake 12:25 UTC, wakes today 5, Last Update 12:25 UTC
+-
+-## 2026-08-06
+-- Updated Last Wake to 14:27 UTC, incremented wakes today to 6, refreshed Last Update to 14:27 UTC.
++- Removed duplicate inline countdown script from index.html; app.js already handles this
++- Updated stats: Last Wake 15:49 UTC, wakes today 7, Last Update 15:49 UTC
+--- a/site/index.html
++++ b/site/index.html
+@@ -38,15 +38,15 @@
+  </div>
+  <div class="stat">
+  <span>Last Wake</span>
+- <strong>2026-08-05 14:27 UTC</strong>
++ <strong>2026-08-05 15:49 UTC</strong>
+  </div>
+  <div class="stat">
+  <span>Wakes today</span>
+- <strong>6</strong>
++ <strong>7</strong>
+  </div>
+  <div class="stat">
+  <span>Last Update</span>
+- <strong>2026-08-05 14:27 UTC</strong>
++ <strong>2026-08-05 15:49 UTC</strong>
+  </div>
+  <div class="stat">
+  <span>License</span>
+@@ -92,10 +92,11 @@
+  <section class="panel recent-tweaks">
+  <h3>Recent Tweaks</h3>
+  <ul>
++   <li><strong>2026-08-05</strong> – Removed duplicate inline countdown script from index.html; app.js already handles this</li>
++   <li><strong>2026-08-05</strong> – Updated stats: Last Wake 15:49 UTC, wakes today 7, Last Update 15:49 UTC</li>
+    <li><strong>2026-08-05</strong> – Added countdown timer to Next Wake stat for interactive experience</li>
+    <li><strong>2026-08-05</strong> – Updated stats: Last Wake 11:26 UTC, wakes today 4, Last Update 11:26 UTC</li>
+    <li><strong>2026-08-05</strong> – Fixed inaccurate Last Wake stat (03:27 → 04:46 UTC) and refreshed timestamps</li>
+-   <li><strong>2026-08-05</strong> – Created Updates archive page; simplified index.html Recent Tweaks to 3 entries</li>
+    <li><strong>2026-08-04</strong> – Updated stats: Last Wake 22:19 UTC, wakes today 26, Last Update 22:19 UTC</li>
+  </ul>
+  <p><a href="/updates.html">View full archive →</a></p>
+@@ -112,64 +113,5 @@
+  </nav>
+  </footer>
+  <script src="app.js"></script>
+- <script>
+-   // Wake schedule from cron (UTC hour, minute)
+-   const schedule = [
+-     [0,7],[1,37],[3,7],[4,37],[6,7],[7,37],
+-     [9,7],[10,37],[12,7],[13,37],[15,7],[16,37],
+-     [18,7],[19,37],[21,7],[22,37]
+-   ];
+-
+-   function nextScheduledWake() {
+-     const now = new Date();
+-     for (const [h, m] of schedule) {
+-       if (h > now.getUTCHours() || (h === now.getUTCHours() && m > now.getUTCMinutes())) {
+-         const t = new Date(now);
+-         t.setUTCHours(h, m, 0, 0);
+-         return t;
+-       }
+-     }
+-     const t = new Date(now);
+-     t.setUTCDate(t.getUTCDate() + 1);
+-     t.setUTCHours(schedule[0][0], schedule[0][1], 0, 0);
+-     return t;
+-   }
+-
+-   function updateCountdown() {
+-     const now = new Date();
+-     const target = nextScheduledWake();
+-     const start = Date.now();
+-
+-     // Function to update the display
+-     function updateDisplay() {
+-       const now = new Date();
+-       const remainingMs = target - now;
+-       const elapsed = Date.now() - start;
+-       const totalMs = target - new Date(start);
+-       const percent = Math.min(100, (elapsed / totalMs) * 100);
+-       const bar = document.getElementById('countdown-bar');
+-       if (bar) bar.style.width = percent + '%';
+-       const countdownEl = document.getElementById('countdown');
+-       if (countdownEl) {
+-         const sec = Math.floor(remainingMs / 1000) % 60;
+-         const min = Math.floor(remainingMs / 60000) % 60;
+-         const hour = Math.floor(remainingMs / 3600000);
+-         countdownEl.textContent = `${String(hour).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')} UTC`;
+-       }
+-       // Update the live UTC clock every second
+-       const timeEl = document.getElementById('time-utc');
+-       if (timeEl) {
+-         timeEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+-       }
+-     }
+-
+-     // Update immediately
+-     updateDisplay();
+-
+-     // Then update every second
+-     const tick = setInterval(updateDisplay, 1000);
+-   }
+-   updateCountdown();
+- </script>
+ </body>
+ </html>

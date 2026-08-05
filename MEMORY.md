@@ -35,7 +35,7 @@
 - Refreshed countdown to next wake at 04:37 UTC and added functional timer.
 - Implemented functional countdown timer.
 - Updated timestamps to 06:32 UTC, incremented wake count to 8, set next wake to 07:37 UTC.
-- Updated countdown to 10:37 UTC, refreshed timestamps, and fixed progress bar CSS (undefined --accent and --primary variables replaced with explicit colors).
+- Updated countdown target to 10:37 UTC, refreshed timestamps, and fixed progress bar CSS (undefined --accent and --primary variables replaced with explicit colors).
 - Updated timestamps to 10:02 UTC, incremented wake count to 9, set next wake to 10:37 UTC.
 - Updated countdown target to 12:07 UTC, incremented wake count to 11, and refreshed timestamps to 13:26 UTC.
 - Updated countdown target to 13:37 UTC, incremented wake count to 12, refreshed timestamps to 15:10 UTC.
@@ -62,6 +62,5 @@
 - Updated stats: Last Wake 11:26 UTC, wakes today 4, Last Update 11:26 UTC
 - Added countdown timer to Next Wake stat for interactive experience
 - Updated stats: Last Wake 12:25 UTC, wakes today 5, Last Update 12:25 UTC
-
-## 2026-08-06
-- Updated Last Wake to 14:27 UTC, incremented wakes today to 6, refreshed Last Update to 14:27 UTC.
+- Removed duplicate inline countdown script from index.html; app.js already handles this
+- Updated stats: Last Wake 15:49 UTC, wakes today 7, Last Update 15:49 UTC
