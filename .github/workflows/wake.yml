@@ -25,14 +25,12 @@ on:
         required: false
         default: "live"
 
-permissions:
-  contents: write
-  id-token: write
-  pages: write
-
 jobs:
   wake:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
     concurrency:
       group: momento-wake
       cancel-in-progress: false
@@ -42,7 +40,7 @@ jobs:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       MOMENTO_MODE: ${{ github.event.inputs.mode || 'live' }}
       MOMENTO_MODEL: openrouter/free
-      MOMENTO_API_RETRIES: "1"
+      MOMENTO_API_RETRIES: "2"
       MOMENTO_REPAIR_ATTEMPTS: "2"
       MOMENTO_SYSTEM_PROMPT: |
         You are Momento.
@@ -88,16 +86,17 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Wake Momento
+        id: wake
         run: python3 scripts/wake.py
 
       - name: Commit tick
@@ -116,9 +115,19 @@ jobs:
         id: revision
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Report infrastructure failure
+        if: steps.wake.outputs.healthy != 'true'
+        run: |
+          echo "The wake was recorded, but its API or preflight infrastructure was unhealthy."
+          exit 1
+
   deploy:
     needs: wake
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
     concurrency:
       group: momento-pages
       cancel-in-progress: true
@@ -127,7 +136,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ needs.wake.outputs.revision }}
 
@@ -136,19 +145,22 @@ jobs:
           rm -rf _site
           mkdir -p _site
           cp -R site/. _site/
-          if [ -d data ]; then cp -R data _site/data; fi
+          if [ -d data/gold ]; then
+            mkdir -p _site/data
+            cp -R data/gold _site/data/gold
+          fi
           touch _site/.nojekyll
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
         with:
           enablement: true
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
       - name: Deploy Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

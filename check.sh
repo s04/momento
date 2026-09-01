@@ -2,6 +2,7 @@
 set -euo pipefail
 
 python3 -m py_compile scripts/*.py
+python3 scripts/check_site.py
 
 if command -v node >/dev/null 2>&1 && [ -f site/app.js ]; then
   node --check site/app.js

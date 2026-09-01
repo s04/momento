@@ -38,6 +38,7 @@ You must include a changed MEMORY.md and may edit only MEMORY.md and site/**.
 Aim at something useful, legal, non-harmful, and small enough to land today.
 """
 SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", "_site", "node_modules"}
+CONTEXT_EXCLUDED_PREFIXES = (Path("data/bronze"), Path("data/silver"))
 TEXT_SUFFIXES = {
     ".css",
     ".html",
@@ -136,6 +137,8 @@ def repo_files() -> list[Path]:
         rel = path.relative_to(REPO_ROOT)
         if any(part in SKIP_DIRS for part in rel.parts):
             continue
+        if any(rel == prefix or prefix in rel.parents for prefix in CONTEXT_EXCLUDED_PREFIXES):
+            continue
         if path.is_file():
             files.append(rel)
     return files
@@ -160,14 +163,13 @@ def should_include(path: Path) -> bool:
 
 
 def selected_contents(files: list[Path]) -> str:
+    site_files = [path for path in files if path.parts and path.parts[0] == "site"]
     priority = [
         Path("SOUL.md"),
         Path("MEMORY.md"),
         Path("README.md"),
         Path("check.sh"),
-        Path("site/index.html"),
-        Path("site/styles.css"),
-    ]
+    ] + site_files
     ordered = priority + [path for path in files if path not in priority]
     seen: set[Path] = set()
     chunks: list[str] = []
@@ -622,6 +624,23 @@ def usage_value(usage: dict[str, Any], *names: str) -> Any:
     return ""
 
 
+def report_ci_status(*, healthy: bool, state: str, reason: str, tick_id: str) -> None:
+    output_path = os.getenv("GITHUB_OUTPUT")
+    if output_path:
+        with Path(output_path).open("a", encoding="utf-8") as handle:
+            handle.write(f"healthy={'true' if healthy else 'false'}\n")
+            handle.write(f"tick_state={state}\n")
+            handle.write(f"tick_id={tick_id}\n")
+    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
+    if summary_path:
+        with Path(summary_path).open("a", encoding="utf-8") as handle:
+            handle.write("## Momento wake\n\n")
+            handle.write(f"- Tick: `{tick_id}`\n")
+            handle.write(f"- State: `{state}`\n")
+            handle.write(f"- Infrastructure healthy: `{'yes' if healthy else 'no'}`\n")
+            handle.write(f"- Result: {reason}\n")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Wake Momento once.")
     parser.add_argument("--mode", default=os.getenv("MOMENTO_MODE", "live"))
@@ -725,6 +744,8 @@ def main() -> int:
         result=result,
         row=row,
     )
+    healthy = bool(response.get("ok")) and precheck.get("status") == "accepted"
+    report_ci_status(healthy=healthy, state=state, reason=reason, tick_id=tick_id)
     print(json.dumps({"tickId": tick_id, "state": state, "reason": reason}, sort_keys=True))
     return 0
 
