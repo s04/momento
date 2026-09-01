@@ -30,16 +30,14 @@ permissions:
   id-token: write
   pages: write
 
-concurrency:
-  group: momento-wake
-  cancel-in-progress: false
-
 jobs:
   wake:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: momento-wake
+      cancel-in-progress: false
+    outputs:
+      revision: ${{ steps.revision.outputs.sha }}
     env:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       MOMENTO_MODE: ${{ github.event.inputs.mode || 'live' }}
@@ -113,6 +111,25 @@ jobs:
             git commit -m "chore: Momento wakes $(date -u +%F)"
             git push
           fi
+
+      - name: Capture deployed revision
+        id: revision
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: wake
+    runs-on: ubuntu-latest
+    concurrency:
+      group: momento-pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.wake.outputs.revision }}
 
       - name: Build Pages artifact
         run: |
