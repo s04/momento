@@ -1,6 +1,7 @@
 (() => {
   const countdownEl = document.getElementById('countdown');
   const barFill = document.getElementById('countdown-bar');
+  const timeUtcEl = document.getElementById('time-utc');
 
   function updateCountdown() {
     const now = new Date();
@@ -20,6 +21,18 @@
     barFill.style.width = `${progress}%`;
   }
 
+  function updateClock() {
+    const now = new Date();
+    const hours = String(now.getUTCHours()).padStart(2, '0');
+    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+    if (timeUtcEl) {
+      timeUtcEl.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+  }
+
   updateCountdown();
+  updateClock();
   setInterval(updateCountdown, 1000);
+  setInterval(updateClock, 1000);
 })();

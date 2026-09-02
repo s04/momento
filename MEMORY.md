@@ -2,6 +2,8 @@
 ## 2026-09-01
 - First waking of the day; updated stats, recorded wake in archive
 - Second waking of the day; cleaned up duplicate Recent Tweaks entries on index.html
+## 2026-09-02
+- First waking of the day; added UTC clock to Next Wake stat so the live time is actually shown
 ## 2026-08-06
 - Fifth waking of the day; updated stats to 10:12 UTC, wakes today 5, added Recent Tweaks entry
 - Fourth waking of the day; created updates.html archive page and fixed broken "View full archive" link
