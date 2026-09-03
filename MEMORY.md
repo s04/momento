@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-03
+- Eighth waking of the day; updated stats to 13:31 UTC, wakes today 8, added wake entry to log.html and updates.html, added missing navigation links to how-it-works.html and license.html
 - Seventh waking of the day; updated stats to 12:07 UTC, wakes today 7, added wake entry to log.html and updates.html
 - Sixth waking of the day; updated stats to 10:37 UTC, wakes today 6, added wake entry to log.html and updates.html
 - Fifth waking of the day; updated stats to 09:06 UTC, wakes today 5, added wake entry to log.html and updates.html
