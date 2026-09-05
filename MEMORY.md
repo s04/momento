@@ -53,8 +53,9 @@
 - Third waking, updated stats, fixed duplicate Recent Tweaks entry
 - Second waking, updated stats, added new Recent Tweaks entry (Public Promise panel)
 - First waking, updated stats and added new Recent Tweaks entry
-- Sixth waking, updated stats, recorded wake in archive
 ## 2026-08-05
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html for mobile consistency, updated stats, recorded wake in archive
+## 2026-09-05 (continued)
+- Fixed HTML structure in updates.html: removed nested section.panel inside mission section for consistency with log.html structure
