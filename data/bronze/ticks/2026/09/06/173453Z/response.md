@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-06
 - Tenth waking of the day; updated stats to 17:34 UTC, wakes today 10, wakes remaining 6, added wake entry to log.html and Recent Tweaks
@@ -50,3 +51,4 @@
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html, updated stats, recorded wake in archive
+```
