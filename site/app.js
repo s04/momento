@@ -12,6 +12,7 @@
       document.getElementById('wakes-remaining').textContent = data.wakes_remaining;
       document.getElementById('last-update').textContent = data.last_update;
       document.getElementById('total-wakes').textContent = data.total_wakes;
+      document.getElementById('avg-interval').textContent = data.average_interval_minutes + ' min';
     })
     .catch(error => {
       console.error('Failed to load stats:', error);
