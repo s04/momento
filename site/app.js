@@ -3,6 +3,20 @@
   const barFill = document.getElementById('countdown-bar');
   const timeUtcEl = document.getElementById('time-utc');
 
+  // Load stats from JSON
+  fetch('stats.json')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('last-wake').textContent = data.last_wake;
+      document.getElementById('wakes-today').textContent = data.wakes_today;
+      document.getElementById('wakes-remaining').textContent = data.wakes_remaining;
+      document.getElementById('last-update').textContent = data.last_update;
+      document.getElementById('total-wakes').textContent = data.total_wakes;
+    })
+    .catch(error => {
+      console.error('Failed to load stats:', error);
+    });
+
   // Wake schedule: 16 wakes per day, roughly every 90 minutes.
   // Derived from the cron expressions in .github/workflows/wake.yml.
   const WAKE_TIMES = [
