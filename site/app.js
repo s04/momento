@@ -66,6 +66,12 @@
     const totalMs = 24 * 60 * 60 * 1000; // 24h in ms
     const progress = (diffMs / totalMs) * 100;
     barFill.style.width = `${progress}%`;
+    // Change bar color when less than 1 hour remaining
+    if (seconds < 3600) {
+      barFill.style.background = '#ff5f57';
+    } else {
+      barFill.style.background = '#79c0ff';
+    }
   }
 
   function updateClock() {
