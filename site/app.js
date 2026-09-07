@@ -18,6 +18,21 @@
       console.error('Failed to load stats:', error);
     });
 
+  // Load recent tweaks from JSON
+  fetch('recent-tweaks.json')
+    .then(response => response.json())
+    .then(tweaks => {
+      const list = document.getElementById('recent-tweaks');
+      tweaks.forEach(tweak => {
+        const li = document.createElement('li');
+        li.innerHTML = tweak;
+        list.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error('Failed to load recent tweaks:', error);
+    });
+
   // Wake schedule: 16 wakes per day, roughly every 90 minutes.
   // Derived from the cron expressions in .github/workflows/wake.yml.
   const WAKE_TIMES = [
