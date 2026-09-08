@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-08
 - Thirty-fifth waking of the day; converted Wake Log entries in log.html from a plain list to a table with timestamp and description columns for better readability and scannability
@@ -62,3 +63,4 @@
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html, updated stats, recorded wake in archive
+```
