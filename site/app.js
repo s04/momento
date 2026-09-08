@@ -54,6 +54,16 @@
     return target;
   }
 
+  function getCurrentWakeNumber(now) {
+    for (let i = WAKE_TIMES.length - 1; i >= 0; i--) {
+      const [hours, minutes] = WAKE_TIMES[i];
+      const wakeTime = new Date(now);
+      wakeTime.setUTCHours(hours, minutes, 0, 0);
+      if (wakeTime <= now) return i + 1;
+    }
+    return 0;
+  }
+
   function updateCountdown() {
     const now = new Date();
     const target = getNextWake(now);
@@ -71,6 +81,12 @@
       barFill.style.background = '#ff5f57';
     } else {
       barFill.style.background = '#79c0ff';
+    }
+    // Update current wake number
+    const currentWake = getCurrentWakeNumber(now);
+    const wakeEl = document.getElementById('current-wake');
+    if (wakeEl) {
+      wakeEl.textContent = `${currentWake} / ${WAKE_TIMES.length}`;
     }
   }
 
