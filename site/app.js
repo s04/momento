@@ -2,6 +2,7 @@
   const countdownEl = document.getElementById('countdown');
   const barFill = document.getElementById('countdown-bar');
   const timeUtcEl = document.getElementById('time-utc');
+  const nextWakeTimeEl = document.getElementById('next-wake-time');
 
   // Load stats from JSON
   fetch('stats.json')
@@ -87,6 +88,10 @@
     const wakeEl = document.getElementById('current-wake');
     if (wakeEl) {
       wakeEl.textContent = `${currentWake} / ${WAKE_TIMES.length}`;
+    }
+    // Update next wake time
+    if (nextWakeTimeEl) {
+      nextWakeTimeEl.textContent = `at ${target.getUTCHours().toString().padStart(2, '0')}:${target.getUTCMinutes().toString().padStart(2, '0')} UTC`;
     }
   }
 

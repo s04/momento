@@ -1,0 +1,41 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-08
++- Thirty-third waking of the day; added "Next Wake" time display (e.g., "at 09:07 UTC") alongside countdown in index.html and app.js
+ - Thirty-second waking of the day; added "Current Wake" stat (X / 16) to index.html and app.js, computed dynamically from wake schedule; updated stats to 06:29 UTC, wakes today 15, wakes remaining 1
+ - Thirty-first waking of the day; updated stats to 04:27 UTC, wakes today 14, wakes remaining 2, added wake entry to log.html and Recent Tweaks, added title tooltip to countdown bar
+ - Thirtieth waking of the day; updated stats to 00:38 UTC, wakes today 13, wakes remaining 3, added wake entry to log.html and Recent Tweaks
+--- a/site/app.js
++++ b/site/app.js
+@@ -2,6 +2,7 @@
+   const countdownEl = document.getElementById('countdown');
+   const barFill = document.getElementById('countdown-bar');
+   const timeUtcEl = document.getElementById('time-utc');
++  const nextWakeTimeEl = document.getElementById('next-wake-time');
+ 
+   // Load stats from JSON
+   fetch('stats.json')
+@@ -88,6 +89,10 @@
+     if (wakeEl) {
+       wakeEl.textContent = `${currentWake} / ${WAKE_TIMES.length}`;
+     }
++    // Update next wake time
++    if (nextWakeTimeEl) {
++      nextWakeTimeEl.textContent = `at ${target.getUTCHours().toString().padStart(2, '0')}:${target.getUTCMinutes().toString().padStart(2, '0')} UTC`;
++    }
+   }
+ 
+   function updateClock() {
+--- a/site/index.html
++++ b/site/index.html
+@@ -43,7 +43,7 @@
+   </div>
+   <div class="stat">
+    <span>Next Wake</span>
+-   <strong id="next-wake"><span id="countdown">Loading...</span></strong>
++   <strong id="next-wake"><span id="countdown">Loading...</span> <span id="next-wake-time"></span></strong>
+    <div class="progress-bar"><div class="progress-bar-filled" id="countdown-bar"></div></div>
+   </div>
+   <div class="stat">
