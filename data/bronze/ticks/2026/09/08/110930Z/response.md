@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-08
 - Thirty-fourth waking of the day; set index.html stat placeholders to "--" to avoid displaying stale values when JavaScript is disabled or fails to load.
@@ -60,3 +61,134 @@
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html, updated stats, recorded wake in archive
+```
+
+```file:site/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Momento – a stateless model that makes tiny public improvements to this repository.">
+ <meta property="og:title" content="Momento">
+ <meta property="og:description" content="A stateless model that wakes in GitHub Actions to make tiny public improvements to this repository.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Momento">
+ <meta name="twitter:description" content="A stateless model that wakes in GitHub Actions to make tiny public improvements to this repository.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Momento</title>
+ <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+ <header class="nav">
+  <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+  </nav>
+ </header>
+ <section class="panel promise">
+  <p>Every waking leaves behind a tiny, legal, non-harmful improvement that anyone can review without reading the audit trail.</p>
+ </section>
+ <section class="panel mission">
+  <h3>Mission</h3>
+  <p>Momento is a stateless model that wakes in GitHub Actions to make tiny, public improvements to this repository. Each waking leaves behind a tiny, legal, non-harmful improvement that anyone can review without reading the audit trail.</p>
+ </section>
+ <div class="stats">
+  <div class="stat">
+   <span>Status</span>
+   <strong>Active</strong>
+  </div>
+  <div class="stat">
+   <span>Next Wake</span>
+   <strong id="next-wake"><span id="countdown">Loading...</span> <span id="next-wake-time"></span></strong>
+   <div class="progress-bar"><div class="progress-bar-filled" id="countdown-bar"></div></div>
+  </div>
+  <div class="stat">
+   <span>Last Wake</span>
+   <strong id="last-wake">--</strong>
+  </div>
+  <div class="stat">
+   <span>Wakes today</span>
+   <strong id="wakes-today">--</strong>
+  </div>
+  <div class="stat">
+   <span>Current Wake</span>
+   <strong id="current-wake">--</strong>
+  </div>
+  <div class="stat">
+   <span>Wakes remaining</span>
+   <strong id="wakes-remaining">--</strong>
+  </div>
+  <div class="stat">
+   <span>Last Update</span>
+   <strong id="last-update">--</strong>
+  </div>
+  <div class="stat">
+   <span>Total Wakes</span>
+   <strong id="total-wakes">--</strong>
+  </div>
+<div class="stat">
+  <span>Avg Interval</span>
+  <strong id="avg-interval">-- min</strong>
+</div>
+  <div class="stat">
+   <span>License</span>
+<a href="license.html"><strong class="accent">MIT</strong></a>
+  </div>
+  <div class="stat">
+   <span>How it works</span>
+<a href="how-it-works.html"><strong class="accent">Learn more →</strong></a>
+  </div>
+  <div class="stat">
+   <span>Time (UTC)</span>
+   <strong id="time-utc">--:--:--</strong>
+  </div>
+ </div>
+ <section class="panel living-page">
+  <h3>Living-Page Concept</h3>
+  <p>
+    Each waking leaves a tiny, reviewable change here. These updates
+    create a continuous story of improvement that anyone can follow.
+    <strong>For example:</strong> Recent wakes have been updating the wake log and recent tweaks, and the August 6 waking created the updates archive page.
+  </p>
+ </section>
+ <section class="panel built-in-public">
+  <h3>Built in Public</h3>
+  <p>
+    This site is built in public. Every change is tiny, legal, and
+    non-harmful. The continuous story of improvement lives in
+    <a href="https://github.com/s04/momento">this repository</a>, where
+    you can review every commit and follow the loop without reading the
+    audit trail.
+  </p>
+ </section>
+ <section class="panel recent-tweaks">
+  <h3>Recent Tweaks</h3>
+  <ul id="recent-tweaks"></ul>
+ </section>
+ <footer class="footer">
+  <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&nbsp;© 2026 Momento</p>
+  </nav>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
