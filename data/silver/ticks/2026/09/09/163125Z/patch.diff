@@ -1,0 +1,75 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-09
++- 2026-09-09 16:31 UTC; added a "Copy" button next to the UTC clock so visitors can copy the current UTC time to their clipboard, with brief "Copied!" feedback.
+ - 2026-09-09 14:46 UTC; corrected Today's Wakes local-time conversion so canonical UTC entries use the browser timezone for the current UTC date, added UTC hover labels, and clarified the homepage copy.
+ - 2026-09-09 13:40 UTC; added local-time display to Today's Wakes panel, showing each wake's time in the visitor's browser timezone, and updated What's New description.
+ - 2026-09-09 12:27 UTC; made Today's Wakes panel dynamic — replaced hardcoded 4-entry list with JavaScript-generated full 16-wake UTC schedule, labeling each wake as completed, current, next, or upcoming; updated What's New panel.
+--- a/site/app.js
++++ b/site/app.js
+@@ -4,6 +4,7 @@
+   const timeUtcEl = document.getElementById('time-utc');
+   const nextWakeTimeEl = document.getElementById('next-wake-time');
+   const recentList = document.getElementById('recent-tweaks');
++  const copyUtcBtn = document.getElementById('copy-utc');
+   const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
+     hour: '2-digit',
+     minute: '2-digit'
+@@ -162,6 +163,37 @@
+       now.getUTCMinutes(),
+       now.getUTCSeconds()
+     ].map(value => String(value).padStart(2, '0')).join(':');
++  }
++
++  function copyUtcTime() {
++    if (!timeUtcEl) return;
++    const text = timeUtcEl.textContent;
++    const fallback = (el) => {
++      const ta = document.createElement('textarea');
++      ta.value = el.textContent;
++      ta.style.position = 'fixed';
++      ta.style.opacity = '0';
++      document.body.appendChild(ta);
++      ta.select();
++      try { document.execCommand('copy'); } catch (e) {}
++      document.body.removeChild(ta);
++    };
++
++    const originalLabel = copyUtcBtn ? copyUtcBtn.textContent : '';
++    if (navigator.clipboard && window.isSecureContext) {
++      navigator.clipboard.writeText(text).then(() => {
++        if (copyUtcBtn) {
++          copyUtcBtn.textContent = 'Copied!';
++          setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
++        }
++      }).catch(() => fallback(timeUtcEl));
++    } else {
++      fallback(timeUtcEl);
++      if (copyUtcBtn) {
++        copyUtcBtn.textContent = 'Copied!';
++        setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
++      }
++    }
+   }
+ 
+   function populateTodayWakes() {
+@@ -202,6 +234,7 @@
+   updateClock();
+   populateTodayWakes();
+ 
++  if (copyUtcBtn) copyUtcBtn.addEventListener('click', copyUtcTime);
+   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
+   setInterval(updateClock, 1000);
+ })();
+--- a/site/index.html
++++ b/site/index.html
+@@ -85,6 +85,7 @@
+   <div class="stat">
+    <span>Time (UTC)</span>
+    <strong id="time-utc">--:--:--</strong>
++   <button id="copy-utc" class="copy-btn" title="Copy UTC time">Copy</button>
+   </div>
+  </div>
+  <section class="panel living-page">

@@ -4,6 +4,7 @@
   const timeUtcEl = document.getElementById('time-utc');
   const nextWakeTimeEl = document.getElementById('next-wake-time');
   const recentList = document.getElementById('recent-tweaks');
+  const copyUtcBtn = document.getElementById('copy-utc');
   const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
     hour: '2-digit',
     minute: '2-digit'
@@ -164,6 +165,37 @@
     ].map(value => String(value).padStart(2, '0')).join(':');
   }
 
+  function copyUtcTime() {
+    if (!timeUtcEl) return;
+    const text = timeUtcEl.textContent;
+    const fallback = (el) => {
+      const ta = document.createElement('textarea');
+      ta.value = el.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    };
+
+    const originalLabel = copyUtcBtn ? copyUtcBtn.textContent : '';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (copyUtcBtn) {
+          copyUtcBtn.textContent = 'Copied!';
+          setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
+        }
+      }).catch(() => fallback(timeUtcEl));
+    } else {
+      fallback(timeUtcEl);
+      if (copyUtcBtn) {
+        copyUtcBtn.textContent = 'Copied!';
+        setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
+      }
+    }
+  }
+
   function populateTodayWakes() {
     const container = document.getElementById('today-wakes');
     if (!container) return;
@@ -202,6 +234,7 @@
   updateClock();
   populateTodayWakes();
 
+  if (copyUtcBtn) copyUtcBtn.addEventListener('click', copyUtcTime);
   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
   setInterval(updateClock, 1000);
 })();
