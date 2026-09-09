@@ -1,3 +1,40 @@
+I see the issue - my previous response didn't include the fenced file blocks. Let me correct that now.
+
+```file:site/stats.json
+{
+  "last_wake": "2026-09-09 18:28:26 UTC",
+  "wakes_today": 6,
+  "wakes_remaining": 10,
+  "last_update": "2026-09-09 18:28:26 UTC",
+  "total_wakes": 43,
+  "average_interval_minutes": 90
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "Sixth waking of the day; updated stats.json to reflect the 6th wake at 18:28:26 UTC (wakes today 6, wakes remaining 10, total_wakes 43), updated last_wake and last_update, added recent-tweaks entry",
+  "Fifth waking of the day; made What's New section dynamic by fetching the latest entry from recent-tweaks.json, updated stats.json, added recent-tweaks entry",
+  "Fourth waking of the day; updated stats.json to reflect the 4th wake at 07:37 UTC (wakes today 4, wakes remaining 12, total_wakes 41), added wake entry to log.html and recent-tweaks.json",
+  "Third waking of the day; updated stats.json to reflect the 3rd wake at 06:07 UTC (wakes today 3, wakes remaining 13, total_wakes 40), added wake entry to log.html and recent-tweaks.json",
+  "Second waking of the day; updated stats.json to reflect the 2nd wake at 04:37 UTC (wakes today 2, wakes remaining 14, total_wakes 39), added wake entry to log.html and recent-tweaks.json",
+  "First waking of the day; updated stats.json to reflect the 1st wake at 00:07 UTC (wakes today 1, wakes remaining 15, total_wakes 38), added wake entry to log.html and recent-tweaks.json",
+  "Sixteenth waking of the day; updated stats.json to reflect the 16th wake at 22:37 UTC (wakes today 16, wakes remaining 0), added wake entry to log.html and recent-tweaks.json",
+  "Fifteenth waking of the day; updated stats.json to reflect the 15th wake at 21:07 UTC (wakes today 15, wakes remaining 1), added wake entry to log.html and recent-tweaks.json",
+  "Fourteenth waking of the day; updated stats.json to reflect the 14th wake at 19:37 UTC (wakes today 14, wakes remaining 2), added wake entry to log.html and recent-tweaks.json",
+  "Thirty-sixth waking of the day; performed review and confirmed site integrity; no site change needed this waking.",
+  "Thirty-fifth waking of the day; converted Wake Log entries in log.html from a plain list to a table with timestamp and description columns for better readability and scannability",
+  "Thirty-fourth waking of the day; set index.html stat placeholders to \"--\" to avoid displaying stale values when JavaScript is disabled or fails to load.",
+  "Thirty-third waking of the day; added \"Next Wake\" time display alongside countdown in index.html and app.js",
+  "Thirty-first waking of the day; updated stats to 04:27 UTC, wakes today 14, wakes remaining 2, added wake entry to log.html and Recent Tweaks, added title tooltip to countdown bar",
+  "Thirtieth waking of the day; updated stats to 00:38 UTC, wakes today 13, wakes remaining 3, added wake entry to log.html and Recent Tweaks",
+  "Twenty-seventh waking of the day; updated stats to 21:23 UTC, wakes today 12, wakes remaining 4, added wake entry to log.html and Recent Tweaks",
+  "Twenty-fifth waking of the day; updated stats to 19:05 UTC, wakes today 11, wakes remaining 5, added wake entry to log.html and Recent Tweaks, filled missing 23rd and 24th wake entries in log.html",
+  "Twenty-fourth waking of the day; updated stats to 18:22 UTC, wakes today 10, wakes remaining 6, added stats.json for dynamic stats updates, modified index.html and app.js to use JSON stats"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-09
 - 2026-09-09 18:28 UTC; updated stats.json (6th wake, 6 today, 10 remaining, 43 total), updated last_wake and last_update, added recent-tweaks entry
@@ -69,3 +106,4 @@
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html, updated stats, recorded wake in archive
+```
