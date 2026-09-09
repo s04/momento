@@ -147,10 +147,42 @@
     ].map(value => String(value).padStart(2, '0')).join(':');
   }
 
+  function populateTodayWakes() {
+    const container = document.getElementById('today-wakes');
+    if (!container) return;
+
+    const now = new Date();
+    const nextWake = getNextWake(now);
+    const currentIndex = getCurrentWakeNumber(now) - 1;
+
+    container.replaceChildren();
+
+    WAKE_TIMES.forEach(([hours, minutes], index) => {
+      const item = document.createElement('li');
+      const timeLabel = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} UTC`;
+
+      if (index < currentIndex) {
+        item.className = 'wake-past';
+        item.textContent = `${timeLabel} — completed`;
+      } else if (index === currentIndex) {
+        item.className = 'wake-current';
+        item.textContent = `${timeLabel} — current`;
+      } else if (index === currentIndex + 1) {
+        item.className = 'wake-next';
+        item.textContent = `${timeLabel} — next`;
+      } else {
+        item.textContent = `${timeLabel} — upcoming`;
+      }
+
+      container.appendChild(item);
+    });
+  }
+
   loadStats();
   loadRecentTweaks();
   updateCountdown();
   updateClock();
+  populateTodayWakes();
 
   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
   setInterval(updateClock, 1000);

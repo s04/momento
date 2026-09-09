@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-09
+- 2026-09-09 12:27 UTC; made Today's Wakes panel dynamic — replaced hardcoded 4-entry list with JavaScript-generated full 16-wake UTC schedule, labeling each wake as completed, current, next, or upcoming; updated What's New panel.
 - 2026-09-09 11:13 UTC; added "Today's Wakes" panel to index.html listing the four wakes of the day.
 - 2026-09-09 08:04 UTC; recorded the fourth scheduled waking (07:37 UTC): updated stats.json, log.html, and recent-tweaks.json.
 - Third waking of the day; updated stats.json to reflect the 3rd wake at 06:07 UTC (wakes today 3, wakes remaining 13, total_wakes 40), added wake entry to log.html and recent-tweaks.json
