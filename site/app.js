@@ -4,6 +4,10 @@
   const timeUtcEl = document.getElementById('time-utc');
   const nextWakeTimeEl = document.getElementById('next-wake-time');
   const recentList = document.getElementById('recent-tweaks');
+  const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 
   const WAKE_TIMES = [
     [0, 7], [1, 37], [3, 7], [4, 37],
@@ -114,10 +118,17 @@
     return 0;
   }
 
-  function formatLocalTime(hours, minutes) {
-    const date = new Date();
-    date.setUTCHours(hours, minutes, 0, 0);
-    return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  function formatLocalTime(hours, minutes, now) {
+    const wakeDate = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      hours,
+      minutes,
+      0,
+      0
+    ));
+    return localTimeFormatter.format(wakeDate);
   }
 
   function updateCountdown() {
@@ -158,14 +169,15 @@
     if (!container) return;
 
     const now = new Date();
-    const nextWake = getNextWake(now);
     const currentIndex = getCurrentWakeNumber(now) - 1;
 
     container.replaceChildren();
 
     WAKE_TIMES.forEach(([hours, minutes], index) => {
       const item = document.createElement('li');
-      const timeLabel = formatLocalTime(hours, minutes);
+      const timeLabel = formatLocalTime(hours, minutes, now);
+      const utcLabel = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} UTC`;
+      item.title = utcLabel;
 
       if (index < currentIndex) {
         item.className = 'wake-past';
