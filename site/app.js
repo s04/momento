@@ -5,6 +5,7 @@
   const nextWakeTimeEl = document.getElementById('next-wake-time');
   const recentList = document.getElementById('recent-tweaks');
   const copyUtcBtn = document.getElementById('copy-utc');
+  const latestUpdateEl = document.getElementById('latest-update');
   const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
     hour: '2-digit',
     minute: '2-digit'
@@ -79,6 +80,26 @@
           failed.textContent = 'Recent tweaks are temporarily unavailable.';
           recentList.appendChild(failed);
         }
+      });
+  }
+
+  function loadLatestUpdate() {
+    if (!latestUpdateEl) return;
+    fetch('recent-tweaks.json', { cache: 'no-store' })
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(tweaks => {
+        if (!Array.isArray(tweaks) || !tweaks.length) {
+          latestUpdateEl.textContent = 'No updates yet.';
+          return;
+        }
+        latestUpdateEl.textContent = tweaks[0];
+      })
+      .catch(error => {
+        console.error('Failed to load latest update:', error);
+        latestUpdateEl.textContent = 'Updates are temporarily unavailable.';
       });
   }
 
@@ -230,6 +251,7 @@
 
   loadStats();
   loadRecentTweaks();
+  loadLatestUpdate();
   updateCountdown();
   updateClock();
   populateTodayWakes();

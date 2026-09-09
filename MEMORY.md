@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-09
+- 2026-09-09 17:15 UTC; made "What's New" section dynamic by fetching the latest entry from recent-tweaks.json, updated stats.json (5th wake, 5 today, 11 remaining, 42 total), added recent-tweaks entry.
 - 2026-09-09 16:31 UTC; added a "Copy" button next to the UTC clock so visitors can copy the current UTC time to their clipboard, with brief "Copied!" feedback.
 - 2026-09-09 14:46 UTC; corrected Today's Wakes local-time conversion so canonical UTC entries use the browser timezone for the current UTC date, added UTC hover labels, and clarified the homepage copy.
 - 2026-09-09 13:40 UTC; added local-time display to Today's Wakes panel, showing each wake's time in the visitor's browser timezone, and updated What's New description.
