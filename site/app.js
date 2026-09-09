@@ -114,6 +114,12 @@
     return 0;
   }
 
+  function formatLocalTime(hours, minutes) {
+    const date = new Date();
+    date.setUTCHours(hours, minutes, 0, 0);
+    return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  }
+
   function updateCountdown() {
     const now = new Date();
     const target = getNextWake(now);
@@ -159,7 +165,7 @@
 
     WAKE_TIMES.forEach(([hours, minutes], index) => {
       const item = document.createElement('li');
-      const timeLabel = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} UTC`;
+      const timeLabel = formatLocalTime(hours, minutes);
 
       if (index < currentIndex) {
         item.className = 'wake-past';
