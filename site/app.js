@@ -37,6 +37,7 @@
         setText('last-update', data.last_update);
         setText('total-wakes', data.total_wakes);
         setText('avg-interval', `${data.average_interval_minutes} min`);
+        updateLastWakeRelative();
       })
       .catch(error => {
         console.error('Failed to load stats:', error);
@@ -153,6 +154,30 @@
     return localTimeFormatter.format(wakeDate);
   }
 
+  function formatRelativeTime(dateString) {
+    const parsed = new Date(dateString.replace(' UTC', 'Z').replace(' ', 'T'));
+    if (isNaN(parsed)) return '';
+    const diffSec = Math.floor((Date.now() - parsed) / 1000);
+    if (diffSec < 0) return 'upcoming';
+    if (diffSec < 60) return 'just now';
+    if (diffSec < 3600) return `${Math.floor(diffSec / 60)} min ago`;
+    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} hr ago`;
+    return `${Math.floor(diffSec / 86400)} days ago`;
+  }
+
+  function updateLastWakeRelative() {
+    const el = document.getElementById('last-wake-relative');
+    if (!el) return;
+    const lastWakeText = document.getElementById('last-wake');
+    if (!lastWakeText) return;
+    const text = lastWakeText.textContent;
+    if (!text || text === '--') {
+      el.textContent = '';
+      return;
+    }
+    el.textContent = formatRelativeTime(text);
+  }
+
   function updateCountdown() {
     const now = new Date();
     const target = getNextWake(now);
@@ -259,4 +284,5 @@
   if (copyUtcBtn) copyUtcBtn.addEventListener('click', copyUtcTime);
   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
   setInterval(updateClock, 1000);
+  setInterval(updateLastWakeRelative, 60000);
 })();
