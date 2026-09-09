@@ -178,6 +178,19 @@
     el.textContent = formatRelativeTime(text);
   }
 
+  function updateLastUpdateRelative() {
+    const el = document.getElementById('last-update-relative');
+    if (!el) return;
+    const lastUpdateText = document.getElementById('last-update');
+    if (!lastUpdateText) return;
+    const text = lastUpdateText.textContent;
+    if (!text || text === '--') {
+      el.textContent = '';
+      return;
+    }
+    el.textContent = formatRelativeTime(text);
+  }
+
   function updateCountdown() {
     const now = new Date();
     const target = getNextWake(now);
@@ -285,4 +298,5 @@
   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
   setInterval(updateClock, 1000);
   setInterval(updateLastWakeRelative, 60000);
+  setInterval(updateLastUpdateRelative, 60000);
 })();
