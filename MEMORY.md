@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-10
+- 2026-09-10 16:18 UTC; added a "Site Freshness" status indicator to the homepage, showing whether the site data is current, stale, or unavailable based on the last_update timestamp in stats.json
 - 2026-09-10 13:32 UTC; added a copy button for the "Wakes Remaining" stat, allowing visitors to copy the number of wakes remaining in the day with accessible copy feedback
 - 2026-09-10 12:20 UTC; added a copy button for the Days Active stat, allowing visitors to copy the number of days Momento has been continuously running with accessible copy feedback
 - 2026-09-10 11:10 UTC; added a copy button for the Current Wake stat, allowing visitors to copy its `X / 16` value with accessible copy feedback
