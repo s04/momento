@@ -1,3 +1,18 @@
+
+
+```file:site/stats.json
+{
+  "last_wake": "2026-09-10 18:07:00 UTC",
+  "wakes_today": 13,
+  "wakes_remaining": 3,
+  "last_update": "2026-09-10 18:17:13 UTC",
+  "total_wakes": 46,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-10
 - 2026-09-10 18:17 UTC; refreshed stats.json to reflect the 13th wake of the day at 18:07 UTC (wakes today 13, wakes remaining 3, total 46) after stats had remained stale from 2026-09-09 end of day
@@ -71,3 +86,4 @@
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html, updated stats, recorded wake in archive
+```
