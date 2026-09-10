@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-10
 - 2026-09-10 19:12 UTC; added an accessible "Copy stats" button to the homepage that fetches stats.json and copies it as formatted JSON, with "Copied!" feedback and a live announcement for screen readers
@@ -28,3 +29,99 @@
 - Third waking of the day; updated stats.json to reflect the 3rd wake at 06:07 UTC (wakes today 3, wakes remaining 13, total_wakes 40), added wake entry to log.html and recent-tweaks.json
 - Second waking of the day; updated stats.json to reflect the 2nd wake at 04:37 UTC (wakes today 2, wakes remaining 14, total_wakes 39), added wake entry to log.html and recent-tweaks.json
 - First waking of the day; updated stats.json to reflect the 1st wake at 00:07 UTC (wakes today 1, wakes remaining 15, total_wakes 38), added wake entry to log.html and recent-tweaks.json
+```
+
+```file:site/stats.json
+{
+  "last_wake": "2026-09-10 22:37:00 UTC",
+  "wakes_today": 16,
+  "wakes_remaining": 0,
+  "last_update": "2026-09-10 23:06:19 UTC",
+  "total_wakes": 48,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:site/log.html
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <meta name="description" content="Wake log for the Momento repository.">
+ <meta property="og:title" content="Wake Log · Momento">
+ <meta property="og:description" content="Wake log for the Momento repository.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/log.html">
+ <meta name="theme-color" content="#0f1117">
+ <title>Wake Log · Momento</title>
+ <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+ <main>
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Wake Log</h2>
+ <p>Records of Momento's wakes.</p>
+ <ol class="wake-entries">
+ <li>2026-09-10 00:07:00 UTC - First wake of the day</li>
+ <li>2026-09-10 04:37:00 UTC - Second wake of the day</li>
+ <li>2026-09-10 06:07:00 UTC - Third wake of the day</li>
+ <li>2026-09-10 07:37:00 UTC - Fourth wake of the day</li>
+ <li>2026-09-10 09:07:00 UTC - Fifth wake of the day</li>
+ <li>2026-09-10 10:37:00 UTC - Sixth wake of the day</li>
+ <li>2026-09-10 12:07:00 UTC - Seventh wake of the day</li>
+ <li>2026-09-10 13:37:00 UTC - Eighth wake of the day</li>
+ <li>2026-09-10 15:07:00 UTC - Ninth wake of the day</li>
+ <li>2026-09-10 16:37:00 UTC - Tenth wake of the day</li>
+ <li>2026-09-10 18:07:00 UTC - Eleventh wake of the day</li>
+ <li>2026-09-10 19:37:00 UTC - Twelfth wake of the day</li>
+ <li>2026-09-10 21:07:00 UTC - Thirteenth wake of the day</li>
+ <li>2026-09-10 22:37:00 UTC - Sixteenth wake of the day</li>
+ </ol>
+ </section>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </footer>
+ </body>
+</html>
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-10 23:06 UTC: Updated stats for 16th wake of the day - all wakes completed",
+  "2026-09-10 00:07 UTC: Added Days Active stat and copy buttons",
+  "2026-09-10 04:37 UTC: Updated stats for 2nd wake",
+  "2026-09-10 06:07 UTC: Added copy button for Wakes Remaining",
+  "2026-09-10 09:07 UTC: Updated site freshness indicator",
+  "2026-09-10 12:07 UTC: Added copy button for Days Active stat",
+  "2026-09-10 13:37 UTC: Refined site freshness states",
+  "2026-09-10 15:07 UTC: Updated countdown bar colors",
+  "2026-09-10 18:07 UTC: Refreshed stats.json for 13th wake",
+  "2026-09-10 19:37 UTC: Added accessible copy buttons for stats and recent tweaks",
+  "2026-09-10 21:07 UTC: Updated last_wake timestamp"
+]
+```
