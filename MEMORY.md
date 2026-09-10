@@ -63,3 +63,4 @@
 - 2026-09-09 23:09 UTC; added relative time label under "Last Update" stat, mirroring the existing "Last Wake" relative time display, so visitors see how fresh the latest update is
 - 2026-09-10 00:29 UTC; added a "Days Active" stat to the homepage, computed dynamically from a new `first_wake` field in stats.json (sourced from the first waking on 2026-08-05), giving visitors a sense of how long Momento has been continuously running alongside the existing "Total Wakes" count
 - 2026-09-10 04:33 UTC; changed the UTC clock to show the full date and time (YYYY-MM-DD HH:MM:SS UTC) and updated the copy button to copy the full timestamp, making it more useful for logging and issue reports
+- 2026-09-10 06:36 UTC; renamed "Last Wake" to "Last Landing" to clarify that the stat shows the most recent accepted public change, and added an accessible live announcement for the UTC copy button so screen-reader users get feedback on copy success.

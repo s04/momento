@@ -1,0 +1,76 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -63,3 +63,4 @@
+ - 2026-09-09 23:09 UTC; added relative time label under "Last Update" stat, mirroring the existing "Last Wake" relative time display, so visitors see how fresh the latest update is
+ - 2026-09-10 00:29 UTC; added a "Days Active" stat to the homepage, computed dynamically from a new `first_wake` field in stats.json (sourced from the first waking on 2026-08-05), giving visitors a sense of how long Momento has been continuously running alongside the existing "Total Wakes" count
+ - 2026-09-10 04:33 UTC; changed the UTC clock to show the full date and time (YYYY-MM-DD HH:MM:SS UTC) and updated the copy button to copy the full timestamp, making it more useful for logging and issue reports
++- 2026-09-10 06:36 UTC; renamed "Last Wake" to "Last Landing" to clarify that the stat shows the most recent accepted public change, and added an accessible live announcement for the UTC copy button so screen-reader users get feedback on copy success.
+--- a/site/app.js
++++ b/site/app.js
+@@ -265,15 +265,25 @@
+       navigator.clipboard.writeText(text).then(() => {
+         if (copyUtcBtn) {
+           copyUtcBtn.textContent = 'Copied!';
+-          setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
+         }
++        const announcement = document.getElementById('copy-announcement');
++        if (announcement) announcement.textContent = 'Copied!';
++        setTimeout(() => {
++          if (copyUtcBtn) copyUtcBtn.textContent = originalLabel;
++          if (announcement) announcement.textContent = '';
++        }, 1500);
+       }).catch(() => fallback(timeUtcEl));
+     } else {
+       fallback(timeUtcEl);
+       if (copyUtcBtn) {
+         copyUtcBtn.textContent = 'Copied!';
+-        setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
+       }
++      const announcement = document.getElementById('copy-announcement');
++      if (announcement) announcement.textContent = 'Copied!';
++      setTimeout(() => {
++        if (copyUtcBtn) copyUtcBtn.textContent = originalLabel;
++        if (announcement) announcement.textContent = '';
++      }, 1500);
+     }
+   }
+ 
+--- a/site/index.html
++++ b/site/index.html
+@@ -47,7 +47,7 @@
+    <div class="progress-bar"><div class="progress-bar-filled" id="countdown-bar"></div></div>
+   </div>
+   <div class="stat">
+-   <span>Last Wake</span>
++   <span>Last Landing</span>
+    <strong id="last-wake">--</strong>
+    <span id="last-wake-relative" style="font-size:0.75rem;color:#8b949e;display:block;margin-top:0.25rem;"></span>
+   </div>
+@@ -92,6 +92,7 @@
+    <span>Time (UTC)</span>
+    <strong id="time-utc">--:--:--</strong>
+    <button id="copy-utc" class="copy-btn" title="Copy UTC timestamp">Copy</button>
++   <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
+   </div>
+  </div>
+  <section class="panel living-page">
+--- a/site/styles.css
++++ b/site/styles.css
+@@ -105,6 +105,17 @@
+   outline: 3px solid #79c0ff;
+   outline-offset: 3px;
+ }
++.sr-only {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0,0,0,0);
++  white-space: nowrap;
++  border: 0;
++}
+ @media (prefers-reduced-motion: reduce) {
+   .progress-bar-filled {
+     transition: none;

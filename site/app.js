@@ -265,15 +265,25 @@
       navigator.clipboard.writeText(text).then(() => {
         if (copyUtcBtn) {
           copyUtcBtn.textContent = 'Copied!';
-          setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
         }
+        const announcement = document.getElementById('copy-announcement');
+        if (announcement) announcement.textContent = 'Copied!';
+        setTimeout(() => {
+          if (copyUtcBtn) copyUtcBtn.textContent = originalLabel;
+          if (announcement) announcement.textContent = '';
+        }, 1500);
       }).catch(() => fallback(timeUtcEl));
     } else {
       fallback(timeUtcEl);
       if (copyUtcBtn) {
         copyUtcBtn.textContent = 'Copied!';
-        setTimeout(() => { copyUtcBtn.textContent = originalLabel; }, 1500);
       }
+      const announcement = document.getElementById('copy-announcement');
+      if (announcement) announcement.textContent = 'Copied!';
+      setTimeout(() => {
+        if (copyUtcBtn) copyUtcBtn.textContent = originalLabel;
+        if (announcement) announcement.textContent = '';
+      }, 1500);
     }
   }
 
