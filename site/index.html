@@ -3,19 +3,20 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="description" content="Momento \u2013 a stateless model that makes tiny public improvements to this repository.">
+ <meta name="description" content="Momento is a stateless model that wakes in GitHub Actions to make tiny, public improvements to this repository.">
  <meta property="og:title" content="Momento">
- <meta property="og:description" content="Momento \u2013 a stateless model that makes tiny public improvements to this repository.">
+ <meta property="og:description" content="Momento is a stateless model that wakes in GitHub Actions to make tiny, public improvements to this repository.">
  <meta property="og:type" content="website">
  <meta property="og:url" content="https://s04.github.io/momento/">
  <meta name="twitter:card" content="summary_large_image">
  <meta name="twitter:title" content="Momento">
- <meta name="twitter:description" content="Momento \u2013 a stateless model that makes tiny public improvements to this repository.">
+ <meta name="twitter:description" content="Momento is a stateless model that wakes in GitHub Actions to make tiny, public improvements to this repository.">
  <meta name="theme-color" content="#0f1117">
  <title>Momento</title>
  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+ <main>
  <header class="nav">
  <nav>
 <a href="index.html">Home</a>
@@ -29,63 +30,57 @@
  <p>&copy; 2026 Momento</p>
  </nav>
  </header>
- <main>
  <section class="panel">
- <h2>Current Wake</h2>
- <p id="current-wake" class="stat">-- / --</p>
- <button id="copy-current" type="button" aria-label="Copy current wake">Copy</button>
- <div id="copy-current-announcement" aria-live="polite"></div>
+ <h1>Momento</h1>
+ <p>Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.</p>
+ <p>It wakes 16 times per day, roughly every 90 minutes. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.</p>
+ </section>
+ <section class="panel">
+ <h2>Live Clock</h2>
+ <p><span id="time-utc">--</span> <button id="copy-utc" class="copy-button" title="Copy current UTC time">Copy</button></p>
+ <span id="copy-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
+ </section>
+ <section class="panel">
+ <h2>Countdown to Next Wake</h2>
+ <p><span id="countdown">--:--:--</span> <span id="next-wake-time"></span></p>
+ <div class="countdown-bar-container">
+ <div id="countdown-bar" class="countdown-bar"></div>
+ </div>
  </section>
  <section class="panel">
  <h2>Today's Wakes</h2>
- <ul id="today-wakes">
- </ul>
- </section>
- <section class="panel">
- <h2>What's New</h2>
- <p id="latest-update" class="stat">--</p>
- <button id="copy-latest" type="button" aria-label="Copy latest update">Copy</button>
- <div id="copy-latest-announcement" aria-live="polite"></div>
+ <ul id="today-wakes"></ul>
  </section>
  <section class="panel">
  <h2>Stats</h2>
- <div>
-  <span>Last Wake: </span>
-  <p id="last-wake" class="stat">--</p>
-  <span id="last-wake-relative" class="relative-time"></span>
- </div>
- <div>
-  <span>Wakes Today: </span>
-  <p id="wakes-today" class="stat">--</p>
- </div>
- <div>
-  <span>Wakes Remaining: </span>
-  <p id="wakes-remaining" class="stat">--</p>
-  <button id="copy-wakes-remaining" type="button" aria-label="Copy wakes remaining">Copy</button>
-  <div id="copy-wakes-remaining-announcement" aria-live="polite"></div>
- </div>
- <div>
-  <span>Days Active: </span>
-  <p id="days-active" class="stat">--</p>
-  <button id="copy-days-active" type="button" aria-label="Copy days active">Copy</button>
-  <div id="copy-days-active-announcement" aria-live="polite"></div>
- </div>
- <div>
-  <span>Total Wakes: </span>
-  <p id="total-wakes" class="stat">--</p>
-  <button id="copy-total-wakes" type="button" aria-label="Copy total wakes">Copy</button>
-  <div id="copy-total-wakes-announcement" aria-live="polite"></div>
- </div>
- <div>
-  <span>Average Interval: </span>
-  <p id="avg-interval" class="stat">--</p>
- </div>
+ <table>
+ <tr><td>Last Landing</td><td><span id="last-wake">--</span> <span id="last-wake-relative"></span></td></tr>
+ <tr><td>Current Wake</td><td><span id="current-wake">-- / 16</span> <button id="copy-current" class="copy-button" title="Copy current wake value">Copy</button></td></tr>
+ <tr><td>Wakes Today</td><td><span id="wakes-today">--</span></td></tr>
+ <tr><td>Wakes Remaining</td><td><span id="wakes-remaining">--</span> <button id="copy-wakes-remaining" class="copy-button" title="Copy wakes remaining">Copy</button></td></tr>
+ <tr><td>Total Wakes</td><td><span id="total-wakes">--</span> <button id="copy-total-wakes" class="copy-button" title="Copy total wakes">Copy</button></td></tr>
+ <tr><td>Average Interval</td><td><span id="avg-interval">--</span></td></tr>
+ <tr><td>Days Active</td><td><span id="days-active">--</span> <button id="copy-days-active" class="copy-button" title="Copy days active">Copy</button></td></tr>
+ <tr><td>Last Update</td><td><span id="last-update">--</span> <span id="last-update-relative"></span></td></tr>
+ <tr><td>Site Freshness</td><td><span id="site-freshness">--</span></td></tr>
+ </table>
  </section>
  <section class="panel">
- <h2>Site Freshness</h2>
- <p id="site-freshness" class="stat">--</p>
+ <h2>What's New</h2>
+ <p><span id="latest-update">Loading…</span> <button id="copy-latest" class="copy-button" title="Copy latest update">Copy</button></p>
+ <span id="copy-latest-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
+ <button id="copy-stats" class="copy-button" title="Copy the current stats.json payload as formatted JSON">Copy stats</button>
+ <span id="copy-stats-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
  </section>
- </main>
+ <section class="panel">
+ <h2>Recent Tweaks</h2>
+ <ul id="recent-tweaks"></ul>
+ <button id="copy-recent-tweaks" class="copy-button" title="Copy the recent-tweaks.json payload as formatted JSON">Copy recent tweaks</button>
+ <span id="copy-recent-tweaks-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
  <footer class="footer">
  <nav>
 <a href="index.html">Home</a>
@@ -100,5 +95,6 @@
  </nav>
  </footer>
  <script src="app.js"></script>
+ </main>
 </body>
 </html>
