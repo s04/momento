@@ -365,6 +365,45 @@
     }
   }
 
+  function copyDaysActive() {
+    const daysEl = document.getElementById('days-active');
+    if (!daysEl) return;
+    const text = daysEl.textContent.trim();
+    if (!text) return;
+
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    };
+    const copyBtn = document.getElementById('copy-days-active');
+    const originalLabel = copyBtn ? copyBtn.textContent : '';
+    const announceCopy = () => {
+      if (copyBtn) copyBtn.textContent = 'Copied!';
+      const announcement = document.getElementById('copy-days-active-announcement');
+      if (announcement) announcement.textContent = 'Copied!';
+      setTimeout(() => {
+        if (copyBtn) copyBtn.textContent = originalLabel;
+        if (announcement) announcement.textContent = '';
+      }, 1500);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
+        fallback();
+        announceCopy();
+      });
+    } else {
+      fallback();
+      announceCopy();
+    }
+  }
+
   function populateTodayWakes() {
     const container = document.getElementById('today-wakes');
     if (!container) return;
@@ -409,6 +448,8 @@
   if (copyLatestBtn) copyLatestBtn.addEventListener('click', copyLatestUpdate);
   const copyCurrentBtn = document.getElementById('copy-current');
   if (copyCurrentBtn) copyCurrentBtn.addEventListener('click', copyCurrentWake);
+  const copyDaysActiveBtn = document.getElementById('copy-days-active');
+  if (copyDaysActiveBtn) copyDaysActiveBtn.addEventListener('click', copyDaysActive);
   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
   setInterval(updateClock, 1000);
   setInterval(updateLastWakeRelative, 60000);
