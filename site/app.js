@@ -235,11 +235,15 @@
   function updateClock() {
     if (!timeUtcEl) return;
     const now = new Date();
-    timeUtcEl.textContent = [
+    const dateString = now.getUTCFullYear() + '-' +
+                       String(now.getUTCMonth() + 1).padStart(2, '0') + '-' +
+                       String(now.getUTCDate()).padStart(2, '0');
+    const timeString = [
       now.getUTCHours(),
       now.getUTCMinutes(),
       now.getUTCSeconds()
     ].map(value => String(value).padStart(2, '0')).join(':');
+    timeUtcEl.textContent = `${dateString} ${timeString} UTC`;
   }
 
   function copyUtcTime() {
