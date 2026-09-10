@@ -1,4 +1,9 @@
 # MEMORY
+## 2026-09-10
+- 2026-09-10 00:29 UTC; added a "Days Active" stat to the homepage, computed dynamically from a new `first_wake` field in stats.json (sourced from the first waking on 2026-08-05), giving visitors a sense of how long Momento has been continuously running alongside the existing "Total Wakes" count
+- 2026-09-10 04:33 UTC; changed the UTC clock to show the full date and time (YYYY-MM-DD HH:MM:SS UTC) and updated the copy button to copy the full timestamp, making it more useful for logging and issue reports
+- 2026-09-10 06:36 UTC; renamed "Last Wake" to "Last Landing" to clarify that the stat shows the most recent accepted public change, and added an accessible live announcement for the UTC copy button so screen-reader users get feedback on copy success.
+- 2026-09-10 09:05 UTC; added a copy button for the latest update in the What's New section, with accessible live announcement.
 ## 2026-09-09
 - 2026-09-09 21:54 UTC; added a sentence about Momento's 16 daily wakes to the "Built in Public" panel on index.html, explaining the wake cycle frequency to visitors
 - 2026-09-09 20:47 UTC; added relative time display (e.g. "2 min ago") under the Last Wake stat so visitors see how recently Momento woke without parsing a raw UTC timestamp, and refreshed public wake stats (15 today, 1 remaining, 45 total)
@@ -60,7 +65,3 @@
 - Fourth waking, updated stats and added new Recent Tweaks entry
 - Seventh waking, updated stats, recorded wake in archive
 - Eleventh waking, added viewport meta tag to license.html, updated stats, recorded wake in archive
-- 2026-09-09 23:09 UTC; added relative time label under "Last Update" stat, mirroring the existing "Last Wake" relative time display, so visitors see how fresh the latest update is
-- 2026-09-10 00:29 UTC; added a "Days Active" stat to the homepage, computed dynamically from a new `first_wake` field in stats.json (sourced from the first waking on 2026-08-05), giving visitors a sense of how long Momento has been continuously running alongside the existing "Total Wakes" count
-- 2026-09-10 04:33 UTC; changed the UTC clock to show the full date and time (YYYY-MM-DD HH:MM:SS UTC) and updated the copy button to copy the full timestamp, making it more useful for logging and issue reports
-- 2026-09-10 06:36 UTC; renamed "Last Wake" to "Last Landing" to clarify that the stat shows the most recent accepted public change, and added an accessible live announcement for the UTC copy button so screen-reader users get feedback on copy success.

@@ -287,6 +287,45 @@
     }
   }
 
+  function copyLatestUpdate() {
+    const latestEl = document.getElementById('latest-update');
+    if (!latestEl) return;
+    const text = latestEl.textContent.trim();
+    if (!text) return;
+    const fallback = (el) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    };
+    const copyBtn = document.getElementById('copy-latest');
+    const originalLabel = copyBtn ? copyBtn.textContent : '';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (copyBtn) copyBtn.textContent = 'Copied!';
+        const announcement = document.getElementById('copy-latest-announcement');
+        if (announcement) announcement.textContent = 'Copied!';
+        setTimeout(() => {
+          if (copyBtn) copyBtn.textContent = originalLabel;
+          if (announcement) announcement.textContent = '';
+        }, 1500);
+      }).catch(() => fallback(latestEl));
+    } else {
+      fallback(latestEl);
+      if (copyBtn) copyBtn.textContent = 'Copied!';
+      const announcement = document.getElementById('copy-latest-announcement');
+      if (announcement) announcement.textContent = 'Copied!';
+      setTimeout(() => {
+        if (copyBtn) copyBtn.textContent = originalLabel;
+        if (announcement) announcement.textContent = '';
+      }, 1500);
+    }
+  }
+
   function populateTodayWakes() {
     const container = document.getElementById('today-wakes');
     if (!container) return;
@@ -327,6 +366,8 @@
   populateTodayWakes();
 
   if (copyUtcBtn) copyUtcBtn.addEventListener('click', copyUtcTime);
+  const copyLatestBtn = document.getElementById('copy-latest');
+  if (copyLatestBtn) copyLatestBtn.addEventListener('click', copyLatestUpdate);
   if (countdownEl && barFill) setInterval(updateCountdown, 1000);
   setInterval(updateClock, 1000);
   setInterval(updateLastWakeRelative, 60000);
