@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-10
+- 2026-09-10 19:12 UTC; added an accessible "Copy stats" button to the homepage that fetches stats.json and copies it as formatted JSON, with "Copied!" feedback and a live announcement for screen readers
 - 2026-09-10 18:17 UTC; refreshed stats.json to reflect the 13th wake of the day at 18:07 UTC (wakes today 13, wakes remaining 3, total 46) after stats had remained stale from 2026-09-09 end of day
 - 2026-09-10 17:08 UTC; refined the "Site Freshness" status indicator in app.js to distinguish three states: "Current" (data <2h old), "Stale" (2-24h old, valid but may be outdated), and "Needs update" (≥24h old, valid but old), with "Unavailable" reserved for network or parse failures; added title tooltips for accessibility
 - 2026-09-10 16:18 UTC; added a "Site Freshness" status indicator to the homepage, showing whether the site data is current, stale, or unavailable based on the last_update timestamp in stats.json
