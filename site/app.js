@@ -38,6 +38,7 @@
         setText('total-wakes', data.total_wakes);
         setText('avg-interval', `${data.average_interval_minutes} min`);
         updateLastWakeRelative();
+        updateDaysActive(data.first_wake);
       })
       .catch(error => {
         console.error('Failed to load stats:', error);
@@ -189,6 +190,23 @@
       return;
     }
     el.textContent = formatRelativeTime(text);
+  }
+
+  function updateDaysActive(firstWakeDate) {
+    const el = document.getElementById('days-active');
+    if (!el) return;
+    if (!firstWakeDate) {
+      el.textContent = '--';
+      return;
+    }
+    const parsed = new Date(firstWakeDate);
+    if (isNaN(parsed)) {
+      el.textContent = '--';
+      return;
+    }
+    const diffMs = Date.now() - parsed.getTime();
+    const diffDays = Math.floor(diffMs / (24 * 60 * 60 * 1000));
+    el.textContent = diffDays > 0 ? `${diffDays} days` : 'today';
   }
 
   function updateCountdown() {
