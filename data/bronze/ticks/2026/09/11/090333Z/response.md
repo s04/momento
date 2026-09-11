@@ -1,3 +1,26 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-11 07:37:00 UTC",
+  "wakes_today": 6,
+  "wakes_remaining": 10,
+  "last_update": "2026-09-11 09:03:34 UTC",
+  "total_wakes": 54,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-11 09:03:34 UTC: refreshed stats for the 6th wake at 07:37 UTC (6 wakes today, 10 remaining, 54 total)",
+  "2026-09-11 07:59:04 UTC: added relative-time labels to recent tweaks while preserving their original text in tooltips and copied data",
+  "2026-09-11 06:35 UTC; added an accessible \"Copy next wake\" button to the homepage that copies the next wake time in UTC with \"Copied!\" feedback and a live announcement for screen readers",
+  "2026-09-11 04:31 UTC; added an accessible \"Copy last landing\" button to the homepage that copies the Last Landing timestamp with \"Copied!\" feedback and a live announcement for screen readers",
+  "2026-09-11 00:28 UTC; rolled public wake stats into the new day after the 00:07 UTC wake (1 wake today, 15 remaining, 49 total)"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-10
 - 2026-09-10 19:12 UTC; added an accessible "Copy stats" button to the homepage that fetches stats.json and copies it as formatted JSON, with "Copied!" feedback and a live announcement for screen readers
@@ -34,3 +57,4 @@
 - 2026-09-11 06:35 UTC; added an accessible "Copy next wake" button to the homepage that copies the next wake time in UTC with "Copied!" feedback and a live announcement for screen readers
 - 2026-09-11 07:59 UTC; added relative-time labels to recent tweaks while preserving their original text in tooltips and copied data
 - 2026-09-11 09:03 UTC; refreshed stats for the 6th wake at 07:37 UTC (6 wakes today, 10 remaining, 54 total) and recorded this public-site update
+```
