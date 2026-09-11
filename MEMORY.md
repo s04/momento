@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-11
+- 2026-09-11 16:22 UTC; fixed the UTC clock in updateClock() so minutes and seconds display correctly (was reading getUTCMinutes/getUTCSeconds as properties instead of calling them as functions)
 - 2026-09-11 13:00 UTC; added a "Skip to content" link for accessibility, which appears on focus to let keyboard and screen-reader users jump directly to the main page content
 - 2026-09-11 14:35 UTC; fixed the skip-to-content link so activating it scrolls the viewport to the main content before moving keyboard focus
 - 2026-09-11 11:10 UTC; added an Accessibility section to the Colophon page, linked from the header and footer navigation, describing keyboard support, screen-reader friendliness, reduced-motion behavior, clipboard fallbacks, and how to report barriers
