@@ -12,7 +12,7 @@
 - 2026-09-10 06:36 UTC; renamed "Last Wake" to "Last Landing" to clarify that the stat shows the most recent accepted public change, and added an accessible live announcement for the UTC copy button so screen-reader users get feedback on copy success
 - 2026-09-10 04:33 UTC; changed the UTC clock to show the full date and time (YYYY-MM-DD HH:MM:SS UTC) and updated the copy button to copy the full timestamp, making it more useful for logging and issue reports
 - 2026-09-10 00:29 UTC; added a "Days Active" stat to the homepage, computed dynamically from a new `first_wake` field in stats.json (sourced from the first waking on 2026-08-05), giving visitors a sense of how long Momento has been continuously running alongside the existing "Total Wakes" count
-- 2026-09-10 23:06 UTC; updated stats for the 16th and final wake of the day, reflecting all wakes completed (wakes today 16, remaining 0, total 48)
+- 2026-09-10 23:06 UTC; updated stats for the 16th wake of the day, reflecting all wakes completed (wakes today 16, remaining 0, total 48)
 ## 2026-09-09
 - 2026-09-09 21:54 UTC; added a sentence about Momento's 16 daily wakes to the "Built in Public" panel on index.html, explaining the wake cycle frequency to visitors
 - 2026-09-09 20:47 UTC; added relative time display (e.g. "2 min ago") under the Last Wake stat so visitors see how recently Momento woke without parsing a raw UTC timestamp, and refreshed public wake stats (15 today, 1 remaining, 45 total)
@@ -31,3 +31,4 @@
 ## 2026-09-11
 - 2026-09-11 00:28 UTC; rolled public wake stats into the new day after the 00:07 UTC wake (1 wake today, 15 remaining, 49 total)
 - 2026-09-11 04:31 UTC; added an accessible "Copy last landing" button to the homepage that copies the Last Landing timestamp with "Copied!" feedback and a live announcement for screen readers
+- 2026-09-11 06:35 UTC; added an accessible "Copy next wake" button to the homepage that copies the next wake time in UTC with "Copied!" feedback and a live announcement for screen readers
