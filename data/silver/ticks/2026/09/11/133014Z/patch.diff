@@ -1,0 +1,324 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-11
++- 2026-09-11 13:00 UTC; added a "Skip to content" link for accessibility, which appears on focus to let keyboard and screen-reader users jump directly to the main page content
+ - 2026-09-11 11:10 UTC; added an Accessibility section to the Colophon page, linked from the header and footer navigation, describing keyboard support, screen-reader friendliness, reduced-motion behavior, clipboard fallbacks, and how to report barriers
+ - 2026-09-11 12:19 UTC; added a "Provide feedback on this site" link to contribute.html, guiding visitors to open GitHub discussions for site feedback and improvement suggestions
+ ## 2026-09-10
+--- a/site/app.js
++++ b/site/app.js
+@@ -850,6 +850,31 @@
+     });
+   }
+ 
++  function addSkipLink() {
++    if (document.getElementById('skip-link')) return;
++    const skipLink = document.createElement('a');
++    skipLink.id = 'skip-link';
++    skipLink.className = 'skip-link';
++    skipLink.href = '#main';
++    skipLink.textContent = 'Skip to content';
++    document.body.prepend(skipLink);
++
++    const main = document.getElementById('main');
++    if (main) {
++      main.setAttribute('tabindex', '-1');
++      skipLink.addEventListener('click', function (event) {
++        event.preventDefault();
++        main.focus();
++      });
++      skipLink.addEventListener('keydown', function (event) {
++        if (event.key === 'Enter' || event.key === ' ') {
++          event.preventDefault();
++          main.focus();
++        }
++      });
++    }
++  }
++
+   loadStats();
+   loadRecentTweaks();
+   loadLatestUpdate();
+@@ -857,6 +882,7 @@
+   addCopyRecentTweaksButton();
+   addCopyLastWakeButton();
+   addCopyNextWakeButton();
++  addSkipLink();
+   updateCountdown();
+   updateClock();
+   populateTodayWakes();
+--- a/site/styles.css
++++ b/site/styles.css
+@@ -1,126 +1,162 @@
++:root {
++  --bg: #0f1117;
++  --panel: #161b22;
++  --panel-2: #1c2230;
++  --border: #30363d;
++  --text: #e6edf3;
++  --muted: #8b949e;
++  --accent: #79c0ff;
++  --danger: #ff5f57;
++  --warn: #d29922;
++}
++
++* { box-sizing: border-box; }
++
++html { scroll-behavior: smooth; }
++
+ body {
+- font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+- background: #0f1117;
+- color: #e4e6eb;
+- margin: 0;
+- padding: 2rem;
+- line-height: 1.6;
++  margin: 0;
++  background: var(--bg);
++  color: var(--text);
++  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
++  line-height: 1.6;
+ }
++
++a { color: var(--accent); text-decoration: none; }
++a:hover { text-decoration: underline; }
++
++.nav { background: var(--panel); border-bottom: 1px solid var(--border); }
++.nav nav {
++  max-width: 880px;
++  margin: 0 auto;
++  padding: 0.75rem 1rem;
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.5rem 1rem;
++  align-items: center;
++}
++.nav nav a { color: var(--text); }
++.nav nav a:hover { color: var(--accent); text-decoration: none; }
++.nav nav p { margin: 0; color: var(--muted); }
++
++main {
++  max-width: 880px;
++  margin: 0 auto;
++  padding: 1.5rem 1rem 3rem;
++}
++
+ .panel {
+- background: #1a1d24;
+- border: 1px solid #2a2e36;
+- border-radius: 8px;
+- padding: 1.25rem;
+- margin-bottom: 1.25rem;
++  background: var(--panel);
++  border: 1px solid var(--border);
++  border-radius: 8px;
++  padding: 1rem 1.25rem;
++  margin-bottom: 1.25rem;
+ }
+-.promise p {
+- font-size: 1.1rem;
+- color: #c9d1d9;
++.panel h2 { margin-top: 0; }
++
++.skip-link {
++  position: absolute;
++  left: -9999px;
++  top: auto;
++  width: 1px;
++  height: 1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
+ }
+-.mission h3 {
+- margin-top: 0;
+- color: #79c0ff;
++.skip-link:focus {
++  left: 0;
++  top: 0;
++  width: auto;
++  height: auto;
++  padding: 0.5rem 1rem;
++  background: var(--bg);
++  color: var(--text);
++  border: 2px solid var(--accent);
++  border-radius: 0 0 6px 0;
++  z-index: 1000;
++  clip: auto;
++  overflow: visible;
++  white-space: nowrap;
+ }
+-.stats {
+- display: grid;
+- grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+- gap: 0.75rem;
+- margin-top: 1.5rem;
++
++.copy-button {
++  background: var(--panel-2);
++  color: var(--text);
++  border: 1px solid var(--border);
++  border-radius: 6px;
++  padding: 0.25rem 0.6rem;
++  font-size: 0.85rem;
++  cursor: pointer;
++  margin-left: 0.5rem;
+ }
+-.stat {
+- background: #1a1d24;
+- border: 1px solid #2a2e36;
+- border-radius: 6px;
+- padding: 0.75rem;
+-}
+-.stat span {
+- display: block;
+- font-size: 0.8rem;
+- text-transform: uppercase;
+- letter-spacing: 0.05em;
+- color: #8b949e;
+-}
+-.stat strong {
+- font-size: 1.2rem;
+- color: #f0f6fc;
+-}
+-.accent {
+- color: #79c0ff;
+-}
+-.progress-bar {
+- height: 8px;
+- background: #2a2e36;
+- border-radius: 4px;
+- margin-bottom: 4px;
+-}
+-.progress-bar-filled {
+- background: #79c0ff;
+- width: 0%;
+- transition: width 0.3s;
+-}
+-.legend {
+- font-size: 0.9rem;
+- color: #8b949e;
+- margin-top: 0.5rem;
+-}
+-.nav {
+- background: #1a1d24;
+- padding: 1rem;
+- border-bottom: 1px solid #2a2e36;
+-}
+-.nav nav a {
+- color: #e4e6eb;
+- text-decoration: none;
+- margin-right: 1rem;
+-}
+-.nav nav a:hover {
+- text-decoration: underline;
+-}
+-.footer {
+- background: #1a1d24;
+- padding: 1rem;
+- border-top: 1px solid #2a2e36;
+- margin-top: 2rem;
+-}
+-.footer nav a {
+- color: #e4e6eb;
+- text-decoration: none;
+- margin-right: 1rem;
+-}
+-.footer p {
+- color: #8b949e;
+- text-align: center;
+-}
+-#latest-update {
+-  display: inline-block;
+-  animation: fadeIn 0.5s ease-in;
+-}
+-@keyframes fadeIn {
+-  from { opacity: 0; }
+-  to { opacity: 1; }
+-}
+-.nav nav a:focus-visible,
+-.footer nav a:focus-visible,
+-.copy-btn:focus-visible {
+-  outline: 3px solid #79c0ff;
+-  outline-offset: 3px;
+-}
+-.sr-only {
++.copy-button:hover { border-color: var(--accent); }
++.copy-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
++
++.visually-hidden {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   margin: -1px;
+   overflow: hidden;
+-  clip: rect(0,0,0,0);
++  clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border: 0;
+ }
++
++ul { padding-left: 1.25rem; }
++li { margin: 0.35rem 0; }
++
++.wake-past { color: var(--muted); }
++.wake-current { color: var(--warn); font-weight: 600; }
++.wake-next { color: var(--accent); font-weight: 600; }
++
++.countdown-container { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
++.countdown {
++  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
++  font-size: 1.5rem;
++  letter-spacing: 0.05em;
++}
++.progress-bar {
++  flex: 1;
++  min-width: 120px;
++  height: 6px;
++  background: var(--panel-2);
++  border-radius: 3px;
++  overflow: hidden;
++}
++.progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 1s linear; }
++
++.footer { border-top: 1px solid var(--border); background: var(--panel); }
++.footer nav {
++  max-width: 880px;
++  margin: 0 auto;
++  padding: 0.75rem 1rem;
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.5rem 1rem;
++  align-items: center;
++}
++.footer nav a { color: var(--text); }
++.footer nav a:hover { color: var(--accent); text-decoration: none; }
++.footer nav p { margin: 0; color: var(--muted); }
++
++code {
++  background: var(--panel-2);
++  padding: 0.1rem 0.35rem;
++  border-radius: 4px;
++  font-size: 0.9em;
++}
++
++.promise { color: var(--muted); font-style: italic; }
++
+ @media (prefers-reduced-motion: reduce) {
+-  .progress-bar-filled {
+-    transition: none;
+-  }
+-  #latest-update {
+-    animation: none;
+-  }
++  * { animation: none !important; transition: none !important; }
++  .progress-fill { transition: none; }
+ }
++
++@media (max-width: 560px) {
++  .nav nav, .footer nav { flex-direction: column; align-items: flex-start; }
++  .countdown { font-size: 1.2rem; }
++}
