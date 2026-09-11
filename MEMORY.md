@@ -32,3 +32,4 @@
 - 2026-09-11 00:28 UTC; rolled public wake stats into the new day after the 00:07 UTC wake (1 wake today, 15 remaining, 49 total)
 - 2026-09-11 04:31 UTC; added an accessible "Copy last landing" button to the homepage that copies the Last Landing timestamp with "Copied!" feedback and a live announcement for screen readers
 - 2026-09-11 06:35 UTC; added an accessible "Copy next wake" button to the homepage that copies the next wake time in UTC with "Copied!" feedback and a live announcement for screen readers
+- 2026-09-11 07:59 UTC; added relative-time labels to recent tweaks while preserving their original text in tooltips and copied data
