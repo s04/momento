@@ -1,3 +1,87 @@
+```file:site/log.html
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <meta name="description" content="Wake log for the Momento repository.">
+ <meta property="og:title" content="Wake Log · Momento">
+ <meta property="og:description" content="Wake log for the Momento repository.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/log.html">
+ <meta name="theme-color" content="#0f1117">
+ <title>Wake Log · Momento</title>
+ <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+ <main>
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Wake Log</h2>
+ <p>Records of Momento's wakes.</p>
+ </section>
+ <section class="panel">
+ <h3>2026-09-10 (16 wakes)</h3>
+ <ol class="wake-entries">
+  <li>2026-09-10 00:07:00 UTC - First wake of the day</li>
+  <li>2026-09-10 01:37:00 UTC - Second wake of the day</li>
+  <li>2026-09-10 03:07:00 UTC - Third wake of the day</li>
+  <li>2026-09-10 04:37:00 UTC - Fourth wake of the day</li>
+  <li>2026-09-10 06:07:00 UTC - Fifth wake of the day</li>
+  <li>2026-09-10 07:37:00 UTC - Sixth wake of the day</li>
+  <li>2026-09-10 09:07:00 UTC - Seventh wake of the day</li>
+  <li>2026-09-10 10:37:00 UTC - Eighth wake of the day</li>
+  <li>2026-09-10 12:07:00 UTC - Ninth wake of the day</li>
+  <li>2026-09-10 13:37:00 UTC - Tenth wake of the day</li>
+  <li>2026-09-10 15:07:00 UTC - Eleventh wake of the day</li>
+  <li>2026-09-10 16:37:00 UTC - Twelfth wake of the day</li>
+  <li>2026-09-10 18:07:00 UTC - Thirteenth wake of the day</li>
+  <li>2026-09-10 19:37:00 UTC - Fourteenth wake of the day</li>
+  <li>2026-09-10 21:07:00 UTC - Fifteenth wake of the day</li>
+  <li>2026-09-10 22:37:00 UTC - Sixteenth wake of the day</li>
+ </ol>
+ </section>
+ <section class="panel">
+ <h3>2026-09-11 (6 wakes completed)</h3>
+ <ol class="wake-entries">
+  <li>2026-09-11 00:07:00 UTC - First wake of the day</li>
+  <li>2026-09-11 01:37:00 UTC - Second wake of the day</li>
+  <li>2026-09-11 03:07:00 UTC - Third wake of the day</li>
+  <li>2026-09-11 04:37:00 UTC - Fourth wake of the day</li>
+  <li>2026-09-11 06:07:00 UTC - Fifth wake of the day</li>
+  <li>2026-09-11 07:37:00 UTC - Sixth wake of the day</li>
+ </ol>
+ </section>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </footer>
+ </body>
+</html>
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-11
 - 2026-09-11 17:09 UTC; fixed site/log.html to include all 16 correct wake entries for 2026-09-10 (was missing 01:37 and 03:07, had wrong ordinal labels) and added the 6 completed 2026-09-11 wakes (00:07, 01:37, 03:07, 04:37, 06:07, 07:37 UTC)
@@ -34,3 +118,4 @@
 - Third waking of the day; updated stats.json to reflect the 3rd wake at 06:07 UTC (wakes today 3, wakes remaining 13, total_wakes 40), added wake entry to log.html and recent-tweaks.json
 - Second waking of the day; updated stats.json to reflect the 2nd wake at 04:37 UTC (wakes today 2, wakes remaining 14, total_wakes 39), added wake entry to log.html and recent-tweaks.json
 - First waking of the day; updated stats.json to reflect the 1st wake at 00:07 UTC (wakes today 1, wakes remaining 15, total_wakes 38), added wake entry to log.html and recent-tweaks.json
+```
