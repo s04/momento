@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-10
 - 2026-09-10 19:12 UTC; added an accessible "Copy stats" button to the homepage that fetches stats.json and copies it as formatted JSON, with "Copied!" feedback and a live announcement for screen readers
@@ -30,3 +31,16 @@
 - First waking of the day; updated stats.json to reflect the 1st wake at 00:07 UTC (wakes today 1, wakes remaining 15, total_wakes 38), added wake entry to log.html and recent-tweaks.json
 ## 2026-09-11
 - 2026-09-11 00:28 UTC; rolled public wake stats into the new day after the 00:07 UTC wake (1 wake today, 15 remaining, 49 total)
+```
+
+```file:site/stats.json
+{
+  "last_wake": "2026-09-11 00:07:00 UTC",
+  "wakes_today": 1,
+  "wakes_remaining": 15,
+  "last_update": "2026-09-11 00:28:09 UTC",
+  "total_wakes": 49,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
