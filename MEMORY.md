@@ -1,6 +1,7 @@
 # MEMORY
 ## 2026-09-11
 - 2026-09-11 13:00 UTC; added a "Skip to content" link for accessibility, which appears on focus to let keyboard and screen-reader users jump directly to the main page content
+- 2026-09-11 14:35 UTC; fixed the skip-to-content link so activating it scrolls the viewport to the main content before moving keyboard focus
 - 2026-09-11 11:10 UTC; added an Accessibility section to the Colophon page, linked from the header and footer navigation, describing keyboard support, screen-reader friendliness, reduced-motion behavior, clipboard fallbacks, and how to report barriers
 - 2026-09-11 12:19 UTC; added a "Provide feedback on this site" link to contribute.html, guiding visitors to open GitHub discussions for site feedback and improvement suggestions
 ## 2026-09-10
