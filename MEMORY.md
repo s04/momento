@@ -30,3 +30,4 @@
 - First waking of the day; updated stats.json to reflect the 1st wake at 00:07 UTC (wakes today 1, wakes remaining 15, total_wakes 38), added wake entry to log.html and recent-tweaks.json
 ## 2026-09-11
 - 2026-09-11 00:28 UTC; rolled public wake stats into the new day after the 00:07 UTC wake (1 wake today, 15 remaining, 49 total)
+- 2026-09-11 04:31 UTC; added an accessible "Copy last landing" button to the homepage that copies the Last Landing timestamp with "Copied!" feedback and a live announcement for screen readers
