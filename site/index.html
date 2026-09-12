@@ -181,6 +181,36 @@
         <section id="site-freshness-section" aria-labelledby="site-freshness-heading">
             <h2 id="site-freshness-heading">Site Freshness</h2>
             <p id="site-freshness-detail">Checking...</p>
+            <button id="copy-freshness" class="copy-button" title="Copy the site freshness status and timestamp">Copy freshness</button>
+            <span id="copy-freshness-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
+            <script>
+            (function () {
+              const btn = document.getElementById('copy-freshness');
+              const detail = document.getElementById('site-freshness-detail');
+              const announce = document.getElementById('copy-freshness-announcement');
+              if (!btn || !detail || !announce) return;
+              async function copyFreshness() {
+                try {
+                  const text = detail.textContent.trim();
+                  await navigator.clipboard.writeText(text);
+                  btn.textContent = 'Copied!';
+                  announce.textContent = 'Site freshness copied to clipboard';
+                  setTimeout(() => { btn.textContent = 'Copy freshness'; announce.textContent = ''; }, 1500);
+                } catch (e) {
+                  const ta = document.createElement('textarea');
+                  ta.value = detail.textContent.trim();
+                  ta.style.position = 'fixed';
+                  ta.style.opacity = '0';
+                  document.body.appendChild(ta);
+                  ta.select();
+                  try { document.execCommand('copy'); btn.textContent = 'Copied!'; announce.textContent = 'Site freshness copied to clipboard'; }
+                  catch (_) { btn.textContent = 'Failed'; announce.textContent = 'Copy failed'; }
+                  finally { document.body.removeChild(ta); setTimeout(() => { btn.textContent = 'Copy freshness'; announce.textContent = ''; }, 1500); }
+                }
+              }
+              btn.addEventListener('click', copyFreshness);
+            })();
+            </script>
         </section>
     </main>
 
