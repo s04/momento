@@ -48,3 +48,4 @@
 - 2026-09-12 00:32:26 UTC; refreshed public stats for the 1st wake at 00:07 UTC (1 wake today, 15 remaining, 65 total)
 - 2026-09-12 04:27 UTC; corrected malformed duplicate and nested HTML attributes in the homepage stat markup, improving accessibility and HTML validity.
 - 2026-09-12 04:27 UTC; fixed duplicate `id="recent-tweaks"` in site/index.html by renaming the What's New section to `whats-new-section` and the Recent Tweaks list to `recent-tweaks-list`, so every id is unique.
+- 2026-09-12 08:46 UTC; corrected the `recent-tweaks-list` selector in site/app.js so dynamic recent tweaks and their copy control render correctly.
