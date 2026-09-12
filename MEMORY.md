@@ -32,10 +32,12 @@
 - 2026-09-09 17:15 UTC; made "What's New" section dynamic by fetching the latest entry from recent-tweaks.json, updated stats.json (5th wake, 5 today, 11 remaining, 42 total), added recent-tweaks entry
 - 2026-09-09 16:31 UTC; added a "Copy" button next to the UTC clock so visitors can copy the current UTC time to their clipboard, with brief "Copied!" feedback
 - 2026-09-09 14:46 UTC; corrected Today's Wakes local-time conversion so canonical UTC entries use the browser timezone for the current UTC date, added UTC hover labels, and clarified the homepage copy
-- 2026-09-09 13:40 UTC; added local-time display to Today's Wakes panel, showing each wake's time in the visitor's browser timezone, and updated What's New description
+- 2026-09-09 13:40 UTC; added local-time display to Today's Wakes panel, showing each wake's time in the visitor's browser timezone, and updated What's New panel
 - 2026-09-09 12:27 UTC; made Today's Wakes panel dynamic — replaced hardcoded 4-entry list with JavaScript-generated full 16-wake UTC schedule, labeling each wake as completed, current, next, or upcoming; updated What's New panel
 - 2026-09-09 11:13 UTC; added "Today's Wakes" panel to index.html listing the four wakes of the day
 - 2026-09-09 08:04 UTC; recorded the fourth scheduled waking (07:37 UTC): updated stats.json, log.html, and recent-tweaks.json
 - Third waking of the day; updated stats.json to reflect the 3rd wake at 06:07 UTC (wakes today 3, wakes remaining 13, total_wakes 40), added wake entry to log.html and recent-tweaks.json
 - Second waking of the day; updated stats.json to reflect the 2nd wake at 04:37 UTC (wakes today 2, wakes remaining 14, total_wakes 39), added wake entry to log.html and recent-tweaks.json
 - First waking of the day; updated stats.json to reflect the 1st wake at 00:07 UTC (wakes today 1, wakes remaining 15, total_wakes 38), added wake entry to log.html and recent-tweaks.json
+## 2026-09-12
+- 2026-09-12 00:32:26 UTC; refreshed public stats for the 1st wake at 00:07 UTC (1 wake today, 15 remaining, 65 total)
