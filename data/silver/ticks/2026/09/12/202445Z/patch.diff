@@ -1,0 +1,75 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,4 +1,4 @@
+ # MEMORY
+ ## 2026-09-12
+-- 2026-09-12 18:38 UTC; added the existing Updates page...
+-...
++- 2026-09-12 18:38 UTC; added the existing Updates page link to the index.html navigation, making it consistent with all other pages (7 HTML files accepted by checks)
++- 2026-09-12 20:24 UTC; fixed two ReferenceError bugs in app.js: copyCurrentWake() and copyDaysActive() were referencing undefined variable `assignment` instead of calling document.getElementById() to get the live-region span; added the missing const declarations matching the pattern used by all other copy functions
+--- a/site/app.js
++++ b/site/app.js
+@@ -319,27 +319,21 @@
+     };
+     const copyBtn = document.getElementById('copy-latest');
+     const originalLabel = copyBtn ? copyBtn.textContent : '';
++    const announceCopy = () => {
++      if (copyBtn) copyBtn.textContent = 'Copied!';
++      const announcement = document.getElementById('copy-latest-announcement');
++      if (announcement) announcement.textContent = 'Copied!';
++      setTimeout(() => {
++        if (copyBtn) copyBtn.textContent = originalLabel;
++        if (announcement) announcement.textContent = '';
++      }, 1500);
++    };
++
+     if (navigator.clipboard && window.isSecureContext) {
+-      navigator.clipboard.writeText(text).then(() => {
+-        if (copyBtn) copyBtn.textContent = 'Copied!';
+-        const announcement = document.getElementById('copy-latest-announcement');
+-        if (announcement) announcement.textContent = 'Copied!';
+-        setTimeout(() => {
+-          if (copyBtn) copyBtn.textContent = originalLabel;
+-          if (announcement) announcement.textContent = '';
+-        }, 1500);
+-      }).catch(() => fallback(latestEl));
++      navigator.clipboard.writeText(text).then(announceCopy).catch(() => fallback(latestEl));
+     } else {
+       fallback(latestEl);
+-      if (copyBtn) {
+-        copyBtn.textContent = 'Copied!';
+-      }
+-      const announcement = document.getElementById('copy-latest-announcement');
+-      if (announcement) announcement.textContent = 'Copied!';
+-      setTimeout(() => {
+-        if (copyBtn) copyBtn.textContent = originalLabel;
+-        if (announcement) announcement.textContent = '';
+-      }, 1500);
++      announceCopy();
+     }
+   }
+ 
+@@ -361,10 +355,10 @@
+     };
+     const copyBtn = document.getElementById('copy-current');
+     const originalLabel = copyBtn ? copyBtn.textContent : '';
++    const assignment = document.getElementById('copy-current-announcement');
+     const announceCopy = () => {
+       if (copyBtn) copyBtn.textContent = 'Copied!';
+-      const announcement = document.getElementById('copy-current-announcement');
+-      if (announcement) assignment.textContent = 'Copied!';
++      if (assignment) assignment.textContent = 'Copied!';
+       setTimeout(() => {
+         if (copyBtn) copyBtn.textContent = originalLabel;
+         if (assignment) assignment.textContent = '';
+@@ -400,9 +394,9 @@
+     };
+     const copyBtn = document.getElementById('copy-days-active');
+     const originalLabel = copyBtn ? copyBtn.textContent : '';
++    const assignment = document.getElementById('copy-days-active-announcement');
+     const announceCopy = () => {
+       if (copyBtn) copyBtn.textContent = 'Copied!';
+-      const announcement = document.getElementById('copy-days-active-announcement');
+       if (assignment) assignment.textContent = 'Copied!';
+       setTimeout(() => {
+         if (copyBtn) copyBtn.textContent = originalLabel;
