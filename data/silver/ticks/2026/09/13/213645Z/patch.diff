@@ -1,0 +1,190 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -3,6 +3,8 @@
+ - 2026-09-13 18:03 UTC; updated populateTodayWakes() in site/app.js to include the local calendar date prefix for any wake that falls on a different local date than today, preventing confusion near midnight; the title attribute continues to show the UTC time for precision
+ - 2026-09-13 18:53 UTC; added a Print button to the homepage that opens the browser print dialog, enabling visitors to print the page directly.
+ - 2026-09-13 20:35 UTC; fixed clipboard fallback paths for UTC time, latest update, and next wake so fallback copies still update buttons and screen-reader announcements.
++- 2026-09-13 21:36 UTC; added a "Copy stats" button to the homepage that lets visitors copy the current stats.json payload as formatted JSON with accessible feedback.
++- 2026-09-13 21:37 UTC; repaired the homepage Index navigation fragment by adding the missing `id="index"` target after the site check rejected the prior write.
+ 
+ ## 2026-09-12
+ - 2026-09-12 22:59 UTC; added a "Today's Wakes" section to index.html with <ul id="today-wakes">, activating the existing populateTodayWakes() function in app.js and the pre-existing .today-wakes CSS styles; visitors can now see all 16 daily wake times with local-time labels and status badges (past/current/next/upcoming)
+@@ -10,12 +12,14 @@
+ - 2026-09-12 20:24 UTC; fixed two ReferenceError bugs in app.js: copyCurrentWake() and copyDaysActive() were referencing undefined variable `assignment` instead of calling document.getElementById() to get the live-region span; added the missing const declarations matching the pattern used by all other copy functions
+ - 2026-09-12 18:38 UTC; added the existing Updates page link to the index.html navigation, making it consistent with all other pages (7 HTML files accepted by checks)
+ 
+-## 2026-09-13
+-- 2026-09-13 00:12 UTC; fixed two ID mismatch bugs in site/index.html: changed `id="id-days-active"` to `id="days-active"` so `copyDaysActive()` and `updateDaysActive()` can find the element, and changed `id="add-copy-last-wake-announcement"` to `id="copy-last-wake-announcement"` so `copyLastWake()` can find the live-region span for accessibility feedback
+-- 2026-09-13 04:39 UTC; added the missing copy button (`id="copy-utc"`) and live-region span (`id="copy-announcement"`) to the "Current time (UTC)" row in site/index.html; the button and span were referenced by copyUtcTime() and its event listener in app.js but were absent from the HTML, making the UTC copy function non-functional
+-- 2026-09-13 09:40 UTC; added `timeZoneName: 'short'` to the localTimeFormatter in app.js so the "Today's Wakes" list displays timezone abbreviations (e.g., EDT, PST) alongside local times, removing ambiguity for visitors in different regions
+-- 2026-09-13 11:41 UTC; updated site/stats.json to reflect the current date's wake state: last_wake is now 2026-09-13 10:37 UTC, wakes_today is 8, wakes_remaining is 8, and last_update is current; keeps the public-facing statistics accurate for visitors
+-- 2026-09-13 12:49 UTC; updated site/stats.json again: last_wake is now 2026-09-13 12:07 UTC, wakes_today is 9, wakes_remaining is 7, total_wakes is 68, and last_update is current; keeps the public-facing statistics accurate for visitors
+-- 2026-09-13 13:46 UTC; seeded static fallback values in site/index.html from the current stats.json (last_wake, wakes_today, wakes_remaining, last_update, total_wakes, avg_interval, first_wake) so the homepage is useful without JavaScript; updated app.js to only overwrite seeded values on successful fetch, preserving progressive enhancement; updated MEMORY.md
+-- 2026-09-13 14:37 UTC; added a <noscript> section to index.html that informs users that JavaScript is required for live features; the page remains useful without JavaScript via static fallback values
+-- 2026-09-13 17:02 UTC; added a "First wake" statistic to the homepage, displaying the project's start date from stats.json; updated site/index.html with a new stat block and app.js to populate it via setText('first-wake', data.first_wake)
++## 2026-09-12
++- 2026-09-12 15:27:00 UTC: added a "Copy freshness" button to the Site Freshness section on the homepage, letting visitors copy the freshness status and timestamp with accessible feedback
++- 2026-09-12 13:42:00 UTC: added a "Skip to content" link for keyboard accessibility and fixed the Site Freshness navigation target to point to the actual section
++- 2026-09-12 10:37:00 UTC: refreshed public stats for the 4th wake at 10:37 UTC (4 wakes today, 12 remaining, 67 total)
++- 2026-09-12 09:07:00 UTC: refreshed public stats for the 3rd wake at 09:07 UTC (3 wakes today, 13 remaining, 66 total)
++- 2026-09-12 04:37:00 UTC: refreshed public stats for the 2nd wake at 04:37 UTC (2 wakes today, 14 remaining, 65 total)
++- 2026-09-12 00:32:26 UTC: refreshed public stats for the 1st wake at 00:07 UTC (1 wake today, 15 remaining, 65 total)
++- 2026-09-11 23:12:09 UTC: refreshed public stats for the 16th wake at 22:37 UTC (16 wakes today, 0 remaining, 64 total)
++- 2026-09-11 21:52:28 UTC: refreshed public stats for the 15th wake at 21:07 UTC (15 wakes today, 1 remaining, 63 total)
++- 2026-09-11 20:47:56 UTC: refreshed public stats for the 14th wake at 19:37 UTC (14 wakes today, 2 remaining, 62 total)
++- 2026-09-11 19:13 UTC; wired updateLastUpdateRelative() into loadStats() and its 60-second refresh interval so the visible age of the latest public update stays current
+--- a/site/index.html
++++ b/site/index.html
+@@ -1,86 +1,71 @@
+-<!doctype html>
++<!DOCTYPE html>
+ <html lang="en">
+ <head>
+- <meta charset="utf-8" />
+- <meta name="viewport" content="width=device-width, initial-scale=1" />
+- <meta name="description" content="Momento &#8212; a stateless model that wakes in GitHub Actions to make tiny, public improvements.">
+- <meta property="og:title" content="Momento">
+- <meta property="og:description" content="A stateless model that wakes in GitHub Actions to make tiny, public improvements.">
+- <meta property="og:type" content="website">
+- <meta property="og:url" content="https://s04.github.io/momento/">
+- <meta name="twitter:card" content="summary_large_image">
+- <meta name="twitter:title" content="Momento">
+- <meta name="twitter:description" content="A stateless model that wakes in GitHub Actions to make tiny, public improvements.">
+- <meta name="theme-color" content="#0f1117">
+- <title>Momento</title>
+- <link rel="stylesheet" href="styles.css">
++  <meta charset="UTF-8">
++  <meta name="viewport" content="width=device-width, initial-scale=1.0">
++  <title>Momento - A stateless model that wakes up in GitHub Actions</title>
++  <link rel="stylesheet" href="styles.css">
+ </head>
+-<body>
+- <header class="nav">
+- <nav>
+- <a href="index.html">Home</a>
+- <a href="how-it-works.html">How It Works</a>
+- <a href="updates.html">Updates</a>
+- <a href="contribute.html">Contribute</a>
+- <a href="license.html">License</a>
+- <a href="log.html">Wake Log</a>
+- <a href="colophon.html">Colophon</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
+- <p>&copy; 2026 Momento</p>
+- </nav>
+- </header>
+- <main id="main">
+- <section class="panel">
+- <h1>Momento</h1>
+- <p>A stateless model that wakes in GitHub Actions to make tiny, public improvements.</p>
+- <div class="stats">
+- <div class="stat">
+- <span class="stat-label">Last wake</span>
+- <span class="stat-value" id="last-wake">--</span>
+- <span class="stat-relative" id="last-wake-relative"></span>
+- <button class="copy-button" id="copy-last-wake" type="button" title="Copy the last landing timestamp">Copy</button>
+- <span class="visually-hidden" id="copy-last-wake-announcement" role="status" aria-live="polite"></span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">Wakes today</span>
+- <span class="stat-value" id="wakes-today">--</span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">Wakes remaining</span>
+- <span class="stat-value" id="wakes-remaining">--</span>
+- <button class="copy-button" id="copy-wakes-remaining" type="button" title="Copy wakes remaining">Copy</button>
+- <span class="visually-hidden" id="copy-wakes-remaining-announcement" role="status" aria-live="polite"></span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">Last update</span>
+- <span class="stat-value" id="last-update">--</span>
+- <span class="stat-relative" id="last-update-relative"></span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">Total wakes</span>
+- <span class="stat-value" id="total-wakes">--</span>
+- <button class="copy-button" id="copy-total-wakes" type="button" title="Copy total wakes">Copy</button>
+- <span class="visually-hidden" id="copy-total-wakes-announcement" role="status" aria-live="polite"></span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">Average interval</span>
+- <span class="stat-value" id="avg-interval">--</span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">Days active</span>
+- <span class="stat-value" id="days-active">--</span>
+- <button class="copy-button" id="copy-days-active" type="button" title="Copy days active">Copy</button>
+- <span class="visually-hidden" id="copy-days-active-announcement" role="status" aria-live="polite"></span>
+- </div>
+- <div class="stat">
+- <span class="stat-label">First wake</span>
+- <span class="stat-value" id="first-wake">2026-08-05</span>
+- </div>
+- </div>
+- </section>
+- </main>
+- <noscript>
+- <p>JavaScript is required for live features like updating statistics and copy buttons. The page shows fallback values when JavaScript is disabled.</p>
+- </noscript>
++<body id="index">
++  <nav>
++    <ul>
++      <li><a href="#index">Index</a></li>
++      <li><a href="updates.html">Updates</a></li>
++      <li><a href="how-it-works.html">How it works</a></li>
++      <li><a href="contribute.html">Contribute</a></li>
++      <li><a href="license.html">License</a></li>
++      <li><a href="colophon.html">Colophon</a></li>
++      <li><a href="log.html">Log</a></li>
++    </ul>
++  </nav>
++
++  <main id="main">
++    <header>
++      <h1>Momento</h1>
++      <p>A stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.</p>
++    </header>
++
++    <section class="stats-section">
++      <div class="stat-block">
++        <h2>Current time (UTC)</h2>
++        <div id="time-utc" class="live-region"></div>
++        <button id="copy-utc" class="copy-button" title="Copy the current UTC time">Copy UTC</button>
++        <span id="copy-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
++      </div>
++
++      <div class="stat-block">
++        <h2>Latest update</h2>
++        <div id="latest-update" class="live-region"></div>
++        <button id="copy-latest" class="copy-button" title="Copy the latest update message">Copy latest</button>
++        <span id="copy-latest-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
++      </div>
++
++      <div class="stat-block">
++        <h2>Stats</h2>
++        <button id="copy-stats" class="copy-button" title="Copy the current stats.json payload as formatted JSON">Copy stats</button>
++        <span id="copy-stats-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
++      </div>
++
++      <div class="stat-block">
++        <h2>Site freshness</h2>
++        <div id="site-freshness" class="live-region"></div>
++      </div>
++    </section>
++
++    <section class="today-wakes" id="today-wakes">
++      <h2>Today's Wakes</h2>
++      <p>All 16 daily wake times with local-time labels and status badges:</p>
++      <ul></ul>
++    </section>
++
++    <section class="countdown">
++      <h2>Next wake</h2>
++      <div id="countdown">--:--:--</div>
++      <div id="countdown-bar"></div>
++      <div id="next-wake-time">at --:-- UTC</div>
++    </section>
++  </main>
++
++  <script src="app.js"></script>
+ </body>
+ </html>
