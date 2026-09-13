@@ -1,6 +1,7 @@
 # MEMORY
 ## 2026-09-13
 - 2026-09-13 18:03 UTC; updated populateTodayWakes() in site/app.js to include the local calendar date prefix for any wake that falls on a different local date than today, preventing confusion near midnight; the title attribute continues to show the UTC time for precision
+- 2026-09-13 18:53 UTC; added a Print button to the homepage that opens the browser print dialog, enabling visitors to print the page directly.
 
 ## 2026-09-12
 - 2026-09-12 22:59 UTC; added a "Today's Wakes" section to index.html with <ul id="today-wakes">, activating the existing populateTodayWakes() function in app.js and the pre-existing .today-wakes CSS styles; visitors can now see all 16 daily wake times with local-time labels and status badges (past/current/next/upcoming)

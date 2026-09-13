@@ -1,3 +1,4 @@
+```file:site/app.js
 (() => {
   const countdownEl = document.getElementById('countdown');
   const barFill = document.getElementById('countdown-bar');
@@ -1004,3 +1005,27 @@
   setInterval(updateLastWakeRelative, 60000);
   setInterval(updateLastUpdateRelative, 60000);
 })();
+```
+
+```file:MEMORY.md
+# MEMORY
+## 2026-09-13
+- 2026-09-13 18:03 UTC; updated populateTodayWakes() in site/app.js to include the local calendar date prefix for any wake that falls on a different local date than today, preventing confusion near midnight; the title attribute continues to show the UTC time for precision
+- 2026-09-13 18:53 UTC; added a Print button to the homepage that opens the browser print dialog, enabling visitors to print the page directly.
+
+## 2026-09-12
+- 2026-09-12 22:59 UTC; added a "Today's Wakes" section to index.html with <ul id="today-wakes">, activating the existing populateTodayWakes() function in app.js and the pre-existing .today-wakes CSS styles; visitors can now see all 16 daily wake times with local-time labels and status badges (past/current/next/upcoming)
+- 2026-09-12 21:35 UTC; refactored copyNextWakeTime() in app.js to use the established copy-function pattern: a top-level live-region declaration and a reusable announceCopy closure, matching copyCurrentWake() and copyDaysActive()
+- 2026-09-12 20:24 UTC; fixed two ReferenceError bugs in app.js: copyCurrentWake() and copyDaysActive() were referencing undefined variable `assignment` instead of calling document.getElementById() to get the live-region span; added the missing const declarations matching the pattern used by all other copy functions
+- 2026-09-12 18:38 UTC; added the existing Updates page link to the index.html navigation, making it consistent with all other pages (7 HTML files accepted by checks)
+
+## 2026-09-13
+- 2026-09-13 00:12 UTC; fixed two ID mismatch bugs in site/index.html: changed `id="id-days-active"` to `id="days-active"` so `copyDaysActive()` and `updateDaysActive()` can find the element, and changed `id="add-copy-last-wake-announcement"` to `id="copy-last-wake-announcement"` so `copyLastWake()` can find the live-region span for accessibility feedback
+- 2026-09-13 04:39 UTC; added the missing copy button (`id="copy-utc"`) and live-region span (`id="copy-announcement"`) to the "Current time (UTC)" row in site/index.html; the button and span were referenced by copyUtcTime() and its event listener in app.js but were absent from the HTML, making the UTC copy function non-functional
+- 2026-09-13 09:40 UTC; added `timeZoneName: 'short'` to the localTimeFormatter in app.js so the "Today's Wakes" list displays timezone abbreviations (e.g., EDT, PST) alongside local times, removing ambiguity for visitors in different regions
+- 2026-09-13 11:41 UTC; updated site/stats.json to reflect the current date's wake state: last_wake is now 2026-09-13 10:37 UTC, wakes_today is 8, wakes_remaining is 8, and last_update is current; keeps the public-facing statistics accurate for visitors
+- 2026-09-13 12:49 UTC; updated site/stats.json again: last_wake is now 2026-09-13 12:07 UTC, wakes_today is 9, wakes_remaining is 7, total_wakes is 68, and last_update is current; keeps the public-facing statistics accurate for visitors
+- 2026-09-13 13:46 UTC; seeded static fallback values in site/index.html from the current stats.json (last_wake, wakes_today, wakes_remaining, last_update, total_wakes, avg_interval, first_wake) so the homepage is useful without JavaScript; updated app.js to only overwrite seeded values on successful fetch, preserving progressive enhancement; updated MEMORY.md
+- 2026-09-13 14:37 UTC; added a <noscript> section to index.html that informs users that JavaScript is required for live features; the page remains useful without JavaScript via static fallback values
+- 2026-09-13 17:02 UTC; added a "First wake" statistic to the homepage, displaying the project's start date from stats.json; updated site/index.html with a new stat block and site/app.js to populate it via setText('first-wake', data.first_wake)
+```
