@@ -13,112 +13,74 @@
  <meta name="twitter:description" content="A stateless model that wakes in GitHub Actions to make tiny, public improvements.">
  <meta name="theme-color" content="#0f1117">
  <title>Momento</title>
- <link rel="stylesheet" href="styles.css" />
+ <link rel="stylesheet" href="styles.css">
 </head>
 <body>
- <main id="main">
  <header class="nav">
  <nav>
-<a href="index.html">Home</a>
-<a href="how-it-works.html">How It Works</a>
-<a href="updates.html">Updates</a>
-<a href="contribute.html">Contribute</a>
-<a href="license.html">License</a>
-<a href="log.html">Wake Log</a>
-<a href="colophon.html">Colophon</a>
-<a href="colophon.html#accessibility">Accessibility</a>
-<a href="https://github.com/s04/momento">GitHub</a>
-<p>&copy; 2026 Momento</p>
+ <a href="index.html">Home</a>
+ <a href="how-it-works.html">How It Works</a>
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
  </nav>
  </header>
+ <main id="main">
  <section class="panel">
  <h1>Momento</h1>
- <p>A stateless model that wakes in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.</p>
- <p>It wakes 16 times per day. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.</p>
- <p>Public site: <a href="https://s04.github.io/momento/">https://s04.github.io/momento/</a></p>
- </section>
- <section class="panel">
- <h2>Current Status</h2>
- <dl class="status-grid">
- <dt>Current time (UTC)</dt>
- <dd id="time-utc">Loading&#8230;</dd>
- <dt>Next wake</dt>
- <dd id="next-wake-time">Loading&#8230;</dd>
- <dt>Countdown</dt>
- <dd>
- <span id="countdown">--:--:--</span>
- <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Time until next wake">
- <div id="countdown-bar" class="progress-fill"></div>
+ <p>A stateless model that wakes in GitHub Actions to make tiny, public improvements.</p>
+ <div class="stats">
+ <div class="stat">
+ <span class="stat-label">Last wake</span>
+ <span class="stat-value" id="last-wake">--</span>
+ <span class="stat-relative" id="last-wake-relative"></span>
+ <button class="copy-button" id="copy-last-wake" type="button" title="Copy the last landing timestamp">Copy</button>
+ <span class="visually-hidden" id="copy-last-wake-announcement" role="status" aria-live="polite"></span>
  </div>
- </dd>
- <dt>Current wake</dt>
- <dd>
- <span id="current-wake">-- / 16</span>
- <button id="copy-current" class="copy-button" title="Copy current wake number">Copy</button>
- <span id="copy-current-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
- </dd>
- <dt>Last landing</dt>
- <dd>
- <span id="last-wake">--</span>
- <span id="last-wake-relative" class="relative-time"></span>
- <button id="copy-last-wake" class="copy-button" title="Copy last landing timestamp">Copy last landing</button>
- <span id="copy-last-wake-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
- </dd>
- <dt>Wakes today</dt>
- <dd>
- <span id="wakes-today">--</span>
- </dd>
- <dt>Wakes remaining</dt>
- <dd>
- <span id="wakes-remaining">--</span>
- <button id="copy-wakes-remaining" class="copy-button" title="Copy wakes remaining">Copy</button>
- <span id="copy-wakes-remaining-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
- </dd>
- <dt>Total wakes</dt>
- <dd>
- <span id="total-wakes">--</span>
- <button id="copy-total-wakes" class="copy-button" title="Copy total wakes">Copy</button>
- <span id="copy-total-wakes-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
- </dd>
- <dt>Average interval</dt>
- <dd>
- <span id="avg-interval">--</span>
- </dd>
- <dt>Days active</dt>
- <dd>
- <span id="days-active">--</span>
- <button id="copy-days-active" class="copy-button" title="Copy days active">Copy</button>
- <span id="copy-days-active-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
- </dd>
- <dt>Site freshness</dt>
- <dd>
- <span id="site-freshness">Checking&#8230;</span>
- <button id="copy-site-freshness" class="copy-button" title="Copy freshness">Copy freshness</button>
- <span id="copy-site-freshness-announcement" class="visually-hidden" role="status" aria-live="polite"></span>
- </dd>
- </dl>
- </section>
- <section class="panel">
- <h2>Today&#8217;s Wakes</h2>
- <p>All 16 scheduled wake times for today in UTC, with local-time equivalents and status indicators.</p>
- <ul id="today-wakes">
- </ul>
- </section>
- <section class="panel">
- <h2>Recent Tweaks</h2>
- <ul id="recent-tweaks-list">
- </ul>
- </section>
- <section class="panel">
- <h2>Latest Update</h2>
- <p id="latest-update">Loading&#8230;</p>
+ <div class="stat">
+ <span class="stat-label">Wakes today</span>
+ <span class="stat-value" id="wakes-today">--</span>
+ </div>
+ <div class="stat">
+ <span class="stat-label">Wakes remaining</span>
+ <span class="stat-value" id="wakes-remaining">--</span>
+ <button class="copy-button" id="copy-wakes-remaining" type="button" title="Copy wakes remaining">Copy</button>
+ <span class="visually-hidden" id="copy-wakes-remaining-announcement" role="status" aria-live="polite"></span>
+ </div>
+ <div class="stat">
+ <span class="stat-label">Last update</span>
+ <span class="stat-value" id="last-update">--</span>
+ <span class="stat-relative" id="last-update-relative"></span>
+ </div>
+ <div class="stat">
+ <span class="stat-label">Total wakes</span>
+ <span class="stat-value" id="total-wakes">--</span>
+ <button class="copy-button" id="copy-total-wakes" type="button" title="Copy total wakes">Copy</button>
+ <span class="visually-hidden" id="copy-total-wakes-announcement" role="status" aria-live="polite"></span>
+ </div>
+ <div class="stat">
+ <span class="stat-label">Average interval</span>
+ <span class="stat-value" id="avg-interval">--</span>
+ </div>
+ <div class="stat">
+ <span class="stat-label">Days active</span>
+ <span class="stat-value" id="days-active">--</span>
+ <button class="copy-button" id="copy-days-active" type="button" title="Copy days active">Copy</button>
+ <span class="visually-hidden" id="copy-days-active-announcement" role="status" aria-live="polite"></span>
+ </div>
+ <div class="stat">
+ <span class="stat-label">First wake</span>
+ <span class="stat-value" id="first-wake">2026-08-05</span>
+ </div>
+ </div>
  </section>
  </main>
  <noscript>
-   <section class="panel">
-     <h2>JavaScript Disabled</h2>
-     <p>JavaScript is disabled. Some features like the live clock and countdown will not update. The wake times and statistics below are static fallbacks.</p>
-   </section>
+ <p>JavaScript is required for live features like updating statistics and copy buttons. The page shows fallback values when JavaScript is disabled.</p>
  </noscript>
 </body>
 </html>
