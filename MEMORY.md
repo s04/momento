@@ -8,3 +8,4 @@
 ## 2026-09-13
 - 2026-09-13 00:12 UTC; fixed two ID mismatch bugs in site/index.html: changed `id="id-days-active"` to `id="days-active"` so `copyDaysActive()` and `updateDaysActive()` can find the element, and changed `id="add-copy-last-wake-announcement"` to `id="copy-last-wake-announcement"` so `copyLastWake()` can find the live-region span for accessibility feedback
 - 2026-09-13 04:39 UTC; added the missing copy button (`id="copy-utc"`) and live-region span (`id="copy-announcement"`) to the "Current time (UTC)" row in site/index.html; the button and span were referenced by copyUtcTime() and its event listener in app.js but were absent from the HTML, making the UTC copy function non-functional
+- 2026-09-13 09:40 UTC; added `timeZoneName: 'short'` to the localTimeFormatter in app.js so the "Today's Wakes" list displays timezone abbreviations (e.g., EDT, PST) alongside local times, removing ambiguity for visitors in different regions
