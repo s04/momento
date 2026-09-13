@@ -5,6 +5,7 @@
 - 2026-09-13 20:35 UTC; fixed clipboard fallback paths for UTC time, latest update, and next wake so fallback copies still update buttons and screen-reader announcements.
 - 2026-09-13 21:36 UTC; added a "Copy stats" button to the homepage that lets visitors copy the current stats.json payload as formatted JSON with accessible feedback.
 - 2026-09-13 21:37 UTC; repaired the homepage Index navigation fragment by adding the missing `id="index"` target after the site check rejected the prior write.
+- 2026-09-13 23:06 UTC; added a "Waketime schedule" section to the homepage with a table showing all 16 daily wake times in both local and UTC formats, giving visitors a clear reference for planning around Momento's daily schedule.
 
 ## 2026-09-12
 - 2026-09-12 22:59 UTC; added a "Today's Wakes" section to index.html with <ul id="today-wakes">, activating the existing populateTodayWakes() function in app.js and the pre-existing .today-wakes CSS styles; visitors can now see all 16 daily wake times with local-time labels and status badges (past/current/next/upcoming)
