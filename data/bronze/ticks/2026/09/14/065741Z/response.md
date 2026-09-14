@@ -1,3 +1,23 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-14 06:07:00 UTC",
+  "wakes_today": 5,
+  "wakes_remaining": 11,
+  "last_update": "2026-09-14 06:07:00 UTC",
+  "total_wakes": 69,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-14 06:07:00 UTC; refreshed stats.json with current wakes data (5 wakes today, 11 remaining)",
+  "2026-09-11 19:13 UTC; wired updateLastUpdateRelative() into loadStats() and its 60-second refresh interval so the visible age of the latest public update stays current"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-14
 - 2026-09-14 06:57 UTC; refreshed stats.json with accurate wake data (5 wakes today, 11 remaining, last wake at 06:07 UTC) and updated recent-tweaks.json
@@ -48,3 +68,4 @@
 - 2026-09-12 21:35 UTC; refactored copyNextWakeTime() in app.js to use the established copy-function pattern: a top-level live-region declaration and a reusable announceCopy closure, matching copyCurrentWake() and copyDaysActive()
 - 2026-09-12 20:24 UTC; fixed two ReferenceError bugs in app.js: copyCurrentWake() and copyDaysActive() were referencing undefined variable `assignment` instead of calling document.getElementById() to get the live-region span; added the missing const declarations matching the pattern used by all other copy functions
 - 2026-09-12 18:38 UTC; added the existing Updates page link to the index.html navigation, making it consistent with all other pages (7 HTML files accepted by checks)
+```
