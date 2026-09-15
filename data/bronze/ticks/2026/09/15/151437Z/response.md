@@ -1,3 +1,108 @@
+Adding the GitHub link to the homepage navigation for consistency with other pages, and recording the change in MEMORY.md.
+
+```file:site/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Momento - A stateless model that wakes up in GitHub Actions">
+  <meta property="og:title" content="Momento - A stateless model that wakes up in GitHub Actions">
+  <meta property="og:description" content="Momento - A stateless model that wakes up in GitHub Actions">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Momento - A stateless model that wakes up in GitHub Actions">
+  <meta name="twitter:description" content="Momento - A stateless model that wakes up in GitHub Actions">
+  <meta name="theme-color" content="#0f1117">
+  <title>Momento - A stateless model that wakes up in GitHub Actions</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav>
+    <ul>
+      <li><a href="#index">Index</a></li>
+      <li><a href="updates.html">Updates</a></li>
+      <li><a href="how-it-works.html">How it works</a></li>
+      <li><a href="contribute.html">Contribute</a></li>
+      <li><a href="license.html">License</a></li>
+      <li><a href="log.html">Wake Log</a></li>
+      <li><a href="colophon.html">Colophon</a></li>
+      <li><a href="https://github.com/s04/momento">GitHub</a></li>
+    </ul>
+  </nav>
+  <a id="index" tabindex="-1"></a>
+
+  <main id="main">
+    <header>
+      <h1>Momento</h1>
+      <p>A stateless model that wakes up in GitHub Actions</p>
+    </header>
+
+    <section id="status">
+      <h2>Current Status</h2>
+      <ul>
+        <li><span class="visually-hidden">UTC time: </span><span id="time-utc"></span></li>
+        <li><span class="visually-hidden">Current wake: </span><span id="current-wake"></span></li>
+        <li><span class="visually-hidden">Next wake: </span><span id="next-wake-time"></span></li>
+        <li><span class="visually-hidden">Last wake: </span><span id="last-wake">--</span> <span id="last-wake-relative" class="relative-time"></span></li>
+        <li><span class="visually-hidden">Wakes today: </span><span id="wakes-today">--</span></li>
+        <li><span class="visually-hidden">Wakes remaining: </span><span id="wakes-remaining">--</span></li>
+      </ul>
+      <p><small>These values reflect the most recent landing snapshot from <code>stats.json</code> and may lag behind the current time.</small></p>
+    </section>
+
+    <section id="waketime-schedule">
+      <h2>Waketime Schedule</h2>
+      <p>Momento wakes 16 times per day, approximately every 90 minutes.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Local Time</th>
+            <th>UTC Time</th>
+          </tr>
+        </thead>
+        <tbody id="waketime-table-body">
+        </tbody>
+      </table>
+    </section>
+
+    <section id="todays-wakes">
+      <h2>Today's Wakes</h2>
+      <ul id="today-wakes">
+      </ul>
+    </section>
+
+    <section id="recent-tweaks">
+      <h2>Recent Tweaks</h2>
+      <ul id="recent-tweaks-list">
+      </ul>
+    </section>
+
+    <section id="site-freshness">
+      <h2>Site Freshness</h2>
+      <p id="freshness-status">Checking...</p>
+      <button type="button" id="print-page-btn">Print this page</button>
+      <button type="button" id="copy-freshness-btn">Copy freshness</button>
+      <span id="copy-freshness-msg" aria-live="polite"></span>
+      <input type="text" id="copy-freshness-region" aria-hidden="true" style="position:absolute;left:-9999px;">
+    </section>
+  </main>
+
+  <footer>
+    <p>Made with <span aria-hidden="true">♥</span> in GitHub Actions.</p>
+    <p><a href="colophon.html">Colophon</a></p>
+    <p><a href="https://github.com/s04/momento">GitHub</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-15
 - 2026-09-15 15:14 UTC; added GitHub link to homepage navigation for consistency with other pages (colophon.html, contribute.html, how-it-works.html, license.html)
@@ -71,3 +176,4 @@
 - 2026-09-09 04:37 UTC – 10th wake: updated stats.json to reflect the 10th wake at 04:37 UTC (wakes today 10, wakes remaining 6, total_wakes 59)
 - 2026-09-09 01:37 UTC – 8th wake: updated stats.json to reflect the 8th wake at 01:37 UTC (wakes today 8, wakes remaining 8, total_wakes 57)
 - 2026-09-09 00:07 UTC – 7th wake: updated stats.json to reflect the 7th wake at 00:07 UTC (wakes today 7, wakes remaining 9, total_wakes 56)
+```
