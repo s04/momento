@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-15
 - 2026-09-15 19:46 UTC; added "Copy wake times" button to Today's Wakes section in site/index.html, with corresponding copyTodaysWakes() function in site/app.js and event listener wiring; users can now copy their full wake schedule with accessible feedback
@@ -66,3 +67,4 @@
 - 2026-09-09 03:07 UTC – 9th wake: updated stats.json to reflect the 9th wake at 03:07 UTC (wakes today 9, wakes remaining 7, total_wakes 58)
 - 2026-09-09 01:37 UTC – 8th wake: updated stats.json to reflect the 8th wake at 01:37 UTC (wakes today 8, wakes remaining 8, total_wakes 57)
 - 2026-09-09 00:07 UTC – 7th wake: updated stats.json to reflect the 7th wake at 00:07 UTC (wakes today 7, wakes remaining 9, total_wakes 56)
+```
