@@ -72,6 +72,19 @@ function renderStats() {
   if (currentWakeEl) currentWakeEl.textContent = `Wake #${currentWakeNum}`;
   const nextWakeEl = el('next-wake-time');
   if (nextWakeEl) nextWakeEl.textContent = formatUTC(nextWakeTime());
+  const nextWakeRelativeEl = el('next-wake-relative');
+  if (nextWakeRelativeEl) {
+    const nextWake = nextWakeTime();
+    const diff = nextWake.getTime() - Date.now();
+    if (diff < 0) {
+      nextWakeRelativeEl.textContent = '(past)';
+    } else if (diff < 60000) {
+      nextWakeRelativeEl.textContent = '(just now)';
+    } else {
+      const mins = Math.floor(diff / 60000);
+      nextWakeRelativeEl.textContent = `(in ${mins} minute${mins !== 1 ? 's' : ''})`;
+    }
+  }
   const lastWakeEl = el('last-wake');
   if (lastWakeEl) lastWakeEl.textContent = stats.last_wake || '--';
   const lastWakeRelative = el('last-wake-relative');
@@ -80,6 +93,13 @@ function renderStats() {
   if (wakesTodayEl) wakesTodayEl.textContent = wakesToday;
   const wakesRemainingEl = el('wakes-remaining');
   if (wakesRemainingEl) wakesRemainingEl.textContent = wakesRemaining;
+
+  // Days active
+  const daysActiveEl = el('days-active');
+  if (daysActiveEl) {
+    const daysActive = Math.floor((stats.total_wakes ?? 0) / WAKES_PER_DAY);
+    daysActiveEl.textContent = daysActive;
+  }
 
   // Populate Today's Wakes list, Waketime schedule table, and Recent Tweaks list
   populateTodayWakes();

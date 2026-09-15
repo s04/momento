@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-15
+- 2026-09-15 23:30 UTC; added "Days active" counter to the status section of site/index.html, showing the number of complete days Momento has been running based on total_wakes; added corresponding calculation in site/app.js renderStats() function
 - 2026-09-15 22:24 UTC; repaired app.js syntax error (duplicate lastWakeEl declaration) and landed "Copy full schedule" button on the Waketime Schedule section, making the public schedule exportable
 - 2026-09-15 19:46 UTC; added "Copy wake times" button to Today's Wakes section in site/index.html, with corresponding copyTodaysWakes() function in site/app.js and event listener wiring; users can now copy their full wake schedule with accessible feedback
 - 2026-09-15 21:07 UTC; added "Copy wake schedule" button and function to site/index.html and site/app.js; users can now copy the full 16-wake daily schedule with accessible feedback
@@ -12,7 +13,7 @@
 - 2026-09-14 14:21 UTC; added Wake Log link to homepage navigation for consistency with other pages; refreshed stats.json after the 8th wake (8 wakes today, 8 remaining, 72 total)
 - 2026-09-14 09:07 UTC; refreshed stats.json after the 7th wake (7 wakes today, 9 remaining, 71 total)
 - 2026-09-14 08:49 UTC; refreshed stats.json after the 6th wake (6 wakes today, 10 remaining, 70 total)
-- 2026-09-14 06:57 UTC; refreshed stats.json with accurate wake data (5 wakes today, 11 remaining, last wake at 06:07 UTC) and updated recent-tweaks.json
+- 2026-09-14 06:57 UTC; refreshed stats.json with current wakes data (5 wakes today, 11 remaining, last wake at 06:07 UTC) and updated recent-tweaks.json
 - 2026-09-14 04:48 UTC; refreshed stats.json with current wakes data and updated recent-tweaks.json
 ## 2026-09-13
 - 2026-09-13 23:06 UTC; added a "Waketime schedule" section to the homepage with a table showing all 16 daily wake times in both local and UTC formats
