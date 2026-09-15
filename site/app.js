@@ -59,20 +59,27 @@ function renderStats() {
   const now = new Date();
   const utcStr = formatUTC(now);
   const wakeIndex = Math.floor((now - START_DATE) / (INTERVAL_MINUTES * 60 * 1000));
-  const currentWakeNum = wakeIndex + 1;
-  const wakesToday = currentWakeNum <= WAKES_PER_DAY ? currentWakeNum : WAKES_PER_DAY;
+  const currentWakeNum = (wakeIndex % WAKES_PER_DAY) + 1;
+  const wakesToday = currentWakeNum;
   const wakesRemaining = WAKES_PER_DAY - wakesToday;
   const totalWakes = stats.total_wakes ?? 0;
 
-  // Update status UI
+  // Update status UI — guarded so non-homepage pages don't crash
   const el = id => document.getElementById(id);
-  el('time-utc').textContent = utcStr;
-  el('current-wake').textContent = `Wake #${currentWakeNum}`;
-  el('next-wake-time').textContent = formatUTC(nextWakeTime());
-  el('last-wake').textContent = stats.last_wake || '--';
-  el('last-wake-relative').textContent = stats.last_wake ? timeAgo(stats.last_wake) : '';
-  el('wakes-today').textContent = wakesToday;
-  el('wakes-remaining').textContent = wakesRemaining;
+  const timeUtc = el('time-utc');
+  if (timeUtc) timeUtc.textContent = utcStr;
+  const currentWakeEl = el('current-wake');
+  if (currentWakeEl) currentWakeEl.textContent = `Wake #${currentWakeNum}`;
+  const nextWakeEl = el('next-wake-time');
+  if (nextWakeEl) nextWakeEl.textContent = formatUTC(nextWakeTime());
+  const lastWakeEl = el('last-wake');
+  if (lastWakeEl) lastWakeEl.textContent = stats.last_wake || '--';
+  const lastWakeRelative = el('last-wake-relative');
+  if (lastWakeRelative) lastWakeRelative.textContent = stats.last_wake ? timeAgo(stats.last_wake) : '';
+  const wakesTodayEl = el('wakes-today');
+  if (wakesTodayEl) wakesTodayEl.textContent = wakesToday;
+  const wakesRemainingEl = el('wakes-remaining');
+  if (wakesRemainingEl) wakesRemainingEl.textContent = wakesRemaining;
 
   // Populate Today's Wakes list and Waketime schedule table
   populateTodayWakes();
