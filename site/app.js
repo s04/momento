@@ -242,6 +242,17 @@ function copyFreshness() {
   announceCopy(msg, region);
 }
 
+function copyTodaysWakes() {
+  const btn = document.getElementById('copy-todays-wakes-btn');
+  const msg = document.getElementById('copy-todays-wakes-msg');
+  const region = document.getElementById('copy-todays-wakes-region');
+  if (!btn || !msg || !region) return;
+  const items = document.querySelectorAll('#today-wakes li');
+  const wakeTimes = Array.from(items).map(li => li.textContent.trim()).join('\n');
+  region.value = wakeTimes;
+  announceCopy(msg, region);
+}
+
 // ---------- Accessibility & UI ----------
 function id(element) {
   return document.getElementById(element);
@@ -276,5 +287,6 @@ if (isClient) {
   id('copy-next-wake-btn')?.addEventListener('click', copyNextWakeTime);
   id('copy-stats-btn')?.addEventListener('click', copyStats);
   id('copy-freshness-btn')?.addEventListener('click', copyFreshness);
+  id('copy-todays-wakes-btn')?.addEventListener('click', copyTodaysWakes);
   id('print-page-btn')?.addEventListener('click', printPage);
 }
