@@ -222,6 +222,17 @@ function id(element) {
   return document.getElementById(element);
 }
 
+function printPage() {
+  const btn = document.getElementById('print-page-btn');
+  if (!btn) return;
+  btn.disabled = true;
+  try {
+    window.print();
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // ---------- Utilities ----------
 function timeAgo(iso) {
   const diff = Date.now() - new Date(iso).getTime();
@@ -240,4 +251,5 @@ if (isClient) {
   id('copy-next-wake-btn')?.addEventListener('click', copyNextWakeTime);
   id('copy-stats-btn')?.addEventListener('click', copyStats);
   id('copy-freshness-btn')?.addEventListener('click', copyFreshness);
+  id('print-page-btn')?.addEventListener('click', printPage);
 }
