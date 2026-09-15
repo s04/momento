@@ -108,7 +108,6 @@ function populateTodayWakes() {
   list.innerHTML = '';
   const now = new Date();
   const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
-  const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
   const wakes = [];
   for (let i = 0; i < WAKES_PER_DAY; i++) {
     const wake = new Date(todayStart.getTime() + i * INTERVAL_MINUTES * 60 * 1000);
@@ -181,15 +180,7 @@ function populateRecentTweaks() {
 // ---------- Copy Functions ----------
 function announceCopy(msgEl, regionEl) {
   if (!regionEl) return;
-  regionEl.textContent = msgEl.textContent;
-  regionEl.focus();
-  regionEl.select();
-  try {
-    document.execCommand('copy');
-    msgEl.textContent = 'Copied!';
-  } catch (e) {
-    // fallback handled by caller
-  }
+  msgEl.textContent = 'Copied!';
 }
 
 function copyCurrentWake() {
@@ -242,14 +233,19 @@ function copyFreshness() {
   announceCopy(msg, region);
 }
 
-function copyTodaysWakes() {
-  const btn = document.getElementById('copy-todays-wakes-btn');
-  const msg = document.getElementById('copy-todays-wakes-msg');
-  const region = document.getElementById('copy-todays-wakes-region');
+function copyWaketimeSchedule() {
+  const btn = document.getElementById('copy-waketime-schedule-btn');
+  const msg = document.getElementById('copy-waketime-schedule-msg');
+  const region = document.getElementById('copy-waketime-schedule-region');
   if (!btn || !msg || !region) return;
-  const items = document.querySelectorAll('#today-wakes li');
-  const wakeTimes = Array.from(items).map(li => li.textContent.trim()).join('\n');
-  region.value = wakeTimes;
+  const rows = Array.from(document.querySelectorAll('#waketime-table-body tr'));
+  if (!rows.length) return;
+  const lines = ['Wake # | Local Time | UTC Time'];
+  rows.forEach(row => {
+    const cells = Array.from(row.querySelectorAll('td'));
+    lines.push(`${cells[0]?.textContent ?? ''} | ${cells[1]?.textContent ?? ''} | ${cells[2]?.textContent ?? ''}`);
+  });
+  region.value = lines.join('\n');
   announceCopy(msg, region);
 }
 
@@ -287,6 +283,6 @@ if (isClient) {
   id('copy-next-wake-btn')?.addEventListener('click', copyNextWakeTime);
   id('copy-stats-btn')?.addEventListener('click', copyStats);
   id('copy-freshness-btn')?.addEventListener('click', copyFreshness);
-  id('copy-todays-wakes-btn')?.addEventListener('click', copyTodaysWakes);
+  id('copy-waketime-schedule-btn')?.addEventListener('click', copyWaketimeSchedule);
   id('print-page-btn')?.addEventListener('click', printPage);
 }

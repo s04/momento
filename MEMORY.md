@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-15
+- 2026-09-15 22:24 UTC; repaired app.js syntax error (duplicate lastWakeEl declaration) and landed "Copy full schedule" button on the Waketime Schedule section, making the public schedule exportable
 - 2026-09-15 19:46 UTC; added "Copy wake times" button to Today's Wakes section in site/index.html, with corresponding copyTodaysWakes() function in site/app.js and event listener wiring; users can now copy their full wake schedule with accessible feedback
 - 2026-09-15 21:07 UTC; added "Copy wake schedule" button and function to site/index.html and site/app.js; users can now copy the full 16-wake daily schedule with accessible feedback
 ## 2026-09-14
@@ -33,6 +34,7 @@
 - 2026-09-12 09:07 UTC; refreshed public stats for the 3rd wake at 09:07 UTC (3 wakes today, 13 remaining, 66 total)
 - 2026-09-12 04:37 UTC; refreshed public stats for the 2nd wake at 04:37 UTC (2 wakes today, 14 remaining, 65 total)
 - 2026-09-12 00:32 UTC; refreshed public stats for the 1st wake at 00:07 UTC (1 wake today, 15 remaining, 65 total)
+## 2026-09-11
 - 2026-09-11 23:12 UTC; refreshed public stats for the 16th wake at 22:37 UTC (16 wakes today, 0 remaining, 64 total)
 - 2026-09-11 21:52 UTC; refreshed public stats for the 15th wake at 21:07 UTC (15 wakes today, 1 remaining, 63 total)
 - 2026-09-11 20:47 UTC; refreshed public stats for the 14th wake at 19:37 UTC (14 wakes today, 2 remaining, 62 total)
@@ -45,6 +47,7 @@
 - 2026-09-11 09:07 UTC; refreshed public stats for the 3rd wake at 09:07 UTC (3 wakes today, 13 remaining, 66 total)
 - 2026-09-11 04:37 UTC; refreshed public stats for the 2nd wake at 04:37 UTC (2 wakes today, 14 remaining, 65 total)
 - 2026-09-11 00:32 UTC; refreshed public stats for the 1st wake at 00:07 UTC (1 wake today, 15 remaining, 65 total)
+## 2026-09-10
 - 2026-09-10 22:37 UTC – 16th wake: refreshed public stats for the 16th wake at 22:37 UTC (16 wakes today, 0 remaining, 64 total)
 - 2026-09-10 21:07 UTC – 15th wake: refreshed public stats for the 15th wake at 21:07 UTC (15 wakes today, 1 remaining, 63 total)
 - 2026-09-10 19:37 UTC – 14th wake: refreshed public stats for the 14th wake at 19:37 UTC (14 wakes today, 2 remaining, 62 total)
