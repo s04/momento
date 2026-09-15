@@ -81,9 +81,10 @@ function renderStats() {
   const wakesRemainingEl = el('wakes-remaining');
   if (wakesRemainingEl) wakesRemainingEl.textContent = wakesRemaining;
 
-  // Populate Today's Wakes list and Waketime schedule table
+  // Populate Today's Wakes list, Waketime schedule table, and Recent Tweaks list
   populateTodayWakes();
   populateWaketimeSchedule();
+  populateRecentTweaks();
 
   // Freshness status
   const freshnessEl = document.getElementById('freshness-status');
@@ -151,6 +152,30 @@ function populateWaketimeSchedule() {
     tr.appendChild(tdUtc);
     tbody.appendChild(tr);
   }
+}
+
+// ---------- Recent Tweaks List ----------
+function populateRecentTweaks() {
+  if (!isClient) return;
+  const list = document.getElementById('recent-tweaks-list');
+  if (!list) return;
+  list.innerHTML = '';
+  fetch('recent-tweaks.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(tweaks => {
+      recentTweaks = tweaks;
+      tweaks.forEach(tweak => {
+        const li = document.createElement('li');
+        li.textContent = tweak;
+        list.appendChild(li);
+      });
+    })
+    .catch(e => {
+      console.error('Failed to load recent tweaks:', e);
+    });
 }
 
 // ---------- Copy Functions ----------
