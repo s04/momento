@@ -1,1006 +1,236 @@
-(() => {
-  const countdownEl = document.getElementById('countdown');
-  const barFill = document.getElementById('countdown-bar');
-  const timeUtcEl = document.getElementById('time-utc');
-  const nextWakeTimeEl = document.getElementById('next-wake-time');
-  const recentList = document.getElementById('recent-tweaks-list');
-  const copyUtcBtn = document.getElementById('copy-utc');
-  const latestUpdateEl = document.getElementById('latest-update');
-  const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZoneName: 'short'
-  });
+// Momento app.js – core site logic
+// All functions are scoped to avoid globals unless needed for testing
 
-  const WAKE_TIMES = [
-    [0, 7], [1, 37], [3, 7], [4, 37],
-    [6, 7], [7, 37], [9, 7], [10, 37],
-    [12, 7], [13, 37], [15, 7], [16, 37],
-    [18, 7], [19, 37], [21, 7], [22, 37]
-  ];
-  const WAKE_INTERVAL_MS = 90 * 60 * 1000;
+// ---------- Configuration ----------
+const WAKES_PER_DAY = 16;
+const INTERVAL_MINUTES = 90;
+const START_DATE = new Date('2026-08-05T00:07:00Z'); // first wake UTC
 
-  function setText(id, value) {
-    const element = document.getElementById(id);
-    if (element) element.textContent = value;
+// ---------- State ----------
+let stats = {};
+let recentTweaks = [];
+let isClient = typeof window !== 'undefined';
+
+// ---------- Stats & Data Loading ----------
+async function loadStats() {
+  try {
+    const res = await fetch('stats.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    stats = await res.json();
+    renderStats();
+    scheduleStatsRefresh();
+  } catch (e) {
+    console.error('Failed to load stats:', e);
   }
-
-  function loadStats() {
-    fetch('stats.json', { cache: 'no-store' })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(data => {
-        setText('last-wake', data.last_wake);
-        setText('wakes-today', data.wakes_today);
-        setText('wakes-remaining', data.wakes_remaining);
-        setText('last-update', data.last_update);
-        setText('total-wakes', data.total_wakes);
-        setText('avg-interval', `${data.average_interval_minutes} min`);
-        setText('first-wake', data.first_wake);
-        updateLastWakeRelative();
-        updateLastUpdateRelative();
-        updateDaysActive(data.first_wake);
-      })
-      .catch(error => {
-        console.error('Failed to load stats:', error);
-      });
-  }
-
-  function loadRecentTweaks() {
-    fetch('recent-tweaks.json', { cache: 'no-store' })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(tweaks => {
-        if (!recentList) return;
-
-        recentList.replaceChildren();
-        const items = Array.isArray(tweaks)
-          ? tweaks.filter(tweak => typeof tweak === 'string' && tweak.trim())
-          : [];
-
-        if (!items.length) {
-          const empty = document.createElement('li');
-          empty.textContent = 'No recent tweaks yet.';
-          recentList.appendChild(empty);
-          return;
-        }
-
-        const fragment = document.createDocumentFragment();
-        items.forEach(tweak => {
-          const item = document.createElement('li');
-          const tweakText = tweak.trim();
-          const separatorIndex = tweakText.indexOf(': ');
-          const timestamp = separatorIndex > 0
-            ? tweakText.slice(0, separatorIndex)
-            : '';
-          const description = timestamp
-            ? tweakText.slice(separatorIndex + 2).trim()
-            : tweakText;
-          const relativeTime = timestamp
-            ? formatRelativeTime(timestamp)
-            : '';
-          item.textContent = relativeTime
-            ? `${description} (${relativeTime})`
-            : description;
-          item.title = tweakText;
-          fragment.appendChild(item);
-        });
-        recentList.appendChild(fragment);
-      })
-      .catch(error => {
-        console.error('Failed to load recent tweaks:', error);
-        if (recentList) {
-          recentList.replaceChildren();
-          const failed = document.createElement('li');
-          failed.textContent = 'Recent tweaks are temporarily unavailable.';
-          recentList.appendChild(failed);
-        }
-      });
-  }
-
-  function loadLatestUpdate() {
-    if (!latestUpdateEl) return;
-    fetch('recent-tweaks.json', { cache: 'no-store' })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(tweaks => {
-        if (!Array.isArray(tweaks) || !tweaks.length) {
-          latestUpdateEl.textContent = 'No updates yet.';
-          return;
-        }
-        latestUpdateEl.textContent = tweaks[0];
-      })
-      .catch(error => {
-        console.error('Failed to load latest update:', error);
-        latestUpdateEl.textContent = 'Updates are temporarily unavailable.';
-      });
-  }
-
-  function getNextWake(now) {
-    for (const [hours, minutes] of WAKE_TIMES) {
-      const candidate = new Date(Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        hours,
-        minutes
-      ));
-      if (candidate > now) return candidate;
-    }
-
-    const tomorrow = new Date(Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() + 1,
-      WAKE_TIMES[0][0],
-      WAKE_TIMES[0][1]
-    ));
-    return tomorrow;
-  }
-
-  function getCurrentWakeNumber(now) {
-    for (let index = WAKE_TIMES.length - 1; index >= 0; index -= 1) {
-      const [hours, minutes] = WAKE_TIMES[index];
-      const wakeTime = new Date(Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        hours,
-        minutes
-      ));
-      if (wakeTime <= now) return index + 1;
-    }
-    return 0;
-  }
-
-  function formatLocalTime(hours, minutes, now) {
-    const wakeDate = new Date(Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      hours,
-      minutes,
-      0,
-      0
-    ));
-    return localTimeFormatter.format(wakeDate);
-  }
-
-  function formatRelativeTime(dateString) {
-    const parsed = new Date(dateString.replace(' UTC', 'Z').replace(' ', 'T'));
-    if (isNaN(parsed)) return '';
-    const diffSec = Math.floor((Date.now() - parsed) / 1000);
-    if (diffSec < 0) return 'upcoming';
-    if (diffSec < 60) return 'just now';
-    if (diffSec < 3600) return `${Math.floor(diffSec / 60)} min ago`;
-    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} hr ago`;
-    return `${Math.floor(diffSec / 86400)} days ago`;
-  }
-
-  function updateLastWakeRelative() {
-    const el = document.getElementById('last-wake-relative');
-    if (!el) return;
-    const lastWakeText = document.getElementById('last-wake');
-    if (!lastWakeText) return;
-    const text = lastWakeText.textContent;
-    if (!text || text === '--') {
-      el.textContent = '';
-      return;
-    }
-    el.textContent = formatRelativeTime(text);
-  }
-
-  function updateLastUpdateRelative() {
-    const el = document.getElementById('last-update-relative');
-    if (!el) return;
-    const lastUpdateText = document.getElementById('last-update');
-    if (!lastUpdateText) return;
-    const text = lastUpdateText.textContent;
-    if (!text || text === '--') {
-      el.textContent = '';
-      return;
-    }
-    el.textContent = formatRelativeTime(text);
-  }
-
-  function updateDaysActive(firstWakeDate) {
-    const el = document.getElementById('days-active');
-    if (!el) return;
-    if (!firstWakeDate) {
-      el.textContent = '--';
-      return;
-    }
-    const parsed = new Date(firstWakeDate);
-    if (isNaN(parsed)) {
-      el.textContent = '--';
-      return;
-    }
-    const diffMs = Date.now() - parsed.getTime();
-    const diffDays = Math.floor(diffMs / (24 * 60 * 60 * 1000));
-    el.textContent = diffDays > 0 ? `${diffDays} days` : 'today';
-  }
-
-  function updateCountdown() {
-    const now = new Date();
-    const target = getNextWake(now);
-    const diffMs = target - now;
-    const seconds = Math.floor(diffMs / 1000);
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    if (countdownEl && barFill) {
-      countdownEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-      const progress = Math.max(0, Math.min(100, (1 - diffMs / WAKE_INTERVAL_MS) * 100));
-      barFill.style.width = `${progress}%`;
-      barFill.style.background = seconds < 3600 ? '#ff5f57' : '#79c0ff';
-    }
-
-    if (nextWakeTimeEl) {
-      nextWakeTimeEl.textContent = `at ${String(target.getUTCHours()).padStart(2, '0')}:${String(target.getUTCMinutes()).padStart(2, '0')} UTC`;
-    }
-
-    setText('current-wake', `${getCurrentWakeNumber(now)} / ${WAKE_TIMES.length}`);
-  }
-
-  function updateClock() {
-    if (!timeUtcEl) return;
-    const now = new Date();
-    const dateString = now.getUTCFullYear() + '-' +
-                       String(now.getUTCMonth() + 1).padStart(2, '0') + '-' +
-                       String(now.getUTCDate()).padStart(2, '0');
-    const timeString = [
-      now.getUTCHours(),
-      now.getUTCMinutes(),
-      now.getUTCSeconds()
-    ].map(value => String(value).padStart(2, '0')).join(':');
-    timeUtcEl.textContent = `${dateString} ${timeString} UTC`;
-  }
-
-  function copyUtcTime() {
-    if (!timeUtcEl) return;
-    const text = timeUtcEl.textContent;
-    const fallback = (el) => {
-      const ta = document.createElement('textarea');
-      ta.value = el.textContent;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const originalLabel = copyUtcBtn ? copyUtcBtn.textContent : '';
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(() => {
-        if (copyUtcBtn) {
-          copyUtcBtn.textContent = 'Copied!';
-        }
-        const announcement = document.getElementById('copy-announcement');
-        if (announcement) announcement.textContent = 'Copied!';
-        setTimeout(() => {
-          if (copyUtcBtn) copyUtcBtn.textContent = originalLabel;
-          if (announcement) announcement.textContent = '';
-        }, 1500);
-      }).catch(() => fallback(timeUtcEl));
-    } else {
-      fallback(timeUtcEl);
-      if (copyUtcBtn) {
-        copyUtcBtn.textContent = 'Copied!';
-      }
-      const announcement = document.getElementById('copy-announcement');
-      if (announcement) announcement.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyUtcBtn) copyUtcBtn.textContent = originalLabel;
-        if (announcement) announcement.textContent = '';
-      }, 1500);
-    }
-  }
-
-  function copyLatestUpdate() {
-    const latestEl = document.getElementById('latest-update');
-    if (!latestEl) return;
-    const text = latestEl.textContent.trim();
-    if (!text) return;
-    const fallback = (el) => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-latest');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      const assignment = document.getElementById('copy-latest-announcement');
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => fallback(latestEl));
-    } else {
-      fallback(latestEl);
-      announceCopy();
-    }
-  }
-
-  function copyCurrentWake() {
-    const currentEl = document.getElementById('current-wake');
-    if (!currentEl) return;
-    const text = currentEl.textContent.trim();
-    if (!text) return;
-
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-current');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const assignment = document.getElementById('copy-current-announcement');
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-        fallback();
-        announceCopy();
-      });
-    } else {
-      fallback();
-      announceCopy();
-    }
-  }
-
-  function copyDaysActive() {
-    const daysEl = document.getElementById('days-active');
-    if (!daysEl) return;
-    const text = daysEl.textContent.trim();
-    if (!text) return;
-
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-days-active');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const assignment = document.getElementById('copy-days-active-announcement');
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-        fallback();
-        announceCopy();
-      });
-    } else {
-      fallback();
-      announceCopy();
-    }
-  }
-
-  function copyWakesRemaining() {
-    const remainingEl = document.getElementById('wakes-remaining');
-    if (!remainingEl) return;
-    const text = remainingEl.textContent.trim();
-    if (!text) return;
-
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-wakes-remaining');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      const assignment = document.getElementById('copy-wakes-remaining-announcement');
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-        fallback();
-        announceCopy();
-      });
-    } else {
-      fallback();
-      announceCopy();
-    }
-  }
-
-  function copyTotalWakes() {
-    const totalEl = document.getElementById('total-wakes');
-    if (!totalEl) return;
-    const text = totalEl.textContent.trim();
-    if (!text) return;
-
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-total-wakes');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      const assignment = document.getElementById('copy-total-wakes-announcement');
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-        fallback();
-        announceCopy();
-      });
-    } else {
-      fallback();
-      announceCopy();
-    }
-  }
-
-  function copyLastWake() {
-    const lastWakeEl = document.getElementById('last-wake');
-    if (!lastWakeEl) return;
-    const text = lastWakeEl.textContent.trim();
-    if (!text || text === '--') return;
-
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-last-wake');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      const assignment = document.getElementById('copy-last-wake-announcement');
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-        fallback();
-        announceCopy();
-      });
-    } else {
-      fallback();
-      announceCopy();
-    }
-  }
-
-  function addCopyStatsButton() {
-    if (!latestUpdateEl) return;
-    if (document.getElementById('copy-stats')) return;
-    const parent = latestUpdateEl.parentElement;
-    if (!parent) return;
-
-    const copyBtn = document.createElement('button');
-    copyBtn.id = 'copy-stats';
-    copyBtn.type = 'button';
-    copyBtn.className = 'copy-button';
-    copyBtn.textContent = 'Copy stats';
-    copyBtn.title = 'Copy the current stats.json payload as formatted JSON';
-
-    const assignment = document.createElement('span');
-    assignment.id = 'copy-stats-announcement';
-    assignment.className = 'visually-hidden';
-    assignment.setAttribute('role', 'status');
-    assignment.setAttribute('aria-live', 'polite');
-
-    latestUpdateEl.after(copyBtn, assignment);
-  }
-
-  function copyStats() {
-    const copyBtn = document.getElementById('copy-stats');
-    if (!copyBtn) return;
-    const assignment = document.getElementById('copy-stats-announcement');
-    const originalLabel = copyBtn.textContent;
-
-    const fallback = (text) => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-
-    const announceCopy = () => {
-      copyBtn.textContent = 'Copied!';
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    fetch('stats.json', { cache: 'no-store' })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(data => JSON.stringify(data, null, 2))
-      .then(text => {
-        if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-            fallback(text);
-            announceCopy();
-          });
-        } else {
-          fallback(text);
-          announceCopy();
-        }
-      })
-      .catch(error => {
-        console.error('Failed to copy stats:', error);
-        copyBtn.textContent = 'Unavailable';
-        if (assignment) assignment.textContent = 'Stats could not be copied.';
-        setTimeout(() => {
-          copyBtn.textContent = originalLabel;
-          if (assignment) assignment.textContent = '';
-        }, 1500);
-      });
-  }
-
-  function addCopyRecentTweaksButton() {
-    if (!recentList) return;
-    if (document.getElementById('copy-recent-tweaks')) return;
-
-    const copyBtn = document.createElement('button');
-    copyBtn.id = 'copy-recent-tweaks';
-    copyBtn.type = 'button';
-    copyBtn.className = 'copy-button';
-    copyBtn.textContent = 'Copy recent tweaks';
-    copyBtn.title = 'Copy the recent-tweaks.json payload as formatted JSON';
-
-    const assignment = document.createElement('span');
-    assignment.id = 'copy-recent-tweaks-announcement';
-    assignment.className = 'visually-hidden';
-    assignment.setAttribute('role', 'status');
-    assignment.setAttribute('aria-live', 'polite');
-
-    recentList.after(copyBtn, assignment);
-  }
-
-  function copyRecentTweaks() {
-    const copyBtn = document.getElementById('copy-recent-tweaks');
-    if (!copyBtn) return;
-    const assignment = document.getElementById('copy-recent-tweaks-announcement');
-    const originalLabel = copyBtn.textContent;
-
-    const fallback = (text) => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-
-    const announceCopy = () => {
-      copyBtn.textContent = 'Copied!';
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    fetch('recent-tweaks.json', { cache: 'no-store' })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(data => JSON.stringify(data, null, 2))
-      .then(text => {
-        if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-            fallback(text);
-            announceCopy();
-          });
-        } else {
-          fallback(text);
-          announceCopy();
-        }
-      })
-      .catch(error => {
-        console.error('Failed to copy recent tweaks:', error);
-        copyBtn.textContent = 'Unavailable';
-        if (assignment) assignment.textContent = 'Recent tweaks could not be copied.';
-        setTimeout(() => {
-          copyBtn.textContent = originalLabel;
-          if (assignment) assignment.textContent = '';
-        }, 1500);
-      });
-  }
-
-  function addCopyLastWakeButton() {
-    const lastWakeEl = document.getElementById('last-wake');
-    if (!lastWakeEl) return;
-    if (document.getElementById('copy-last-wake')) return;
-
-    const copyBtn = document.createElement('button');
-    copyBtn.id = 'copy-last-wake';
-    copyBtn.type = 'button';
-    copyBtn.className = 'copy-button';
-    copyBtn.textContent = 'Copy last landing';
-    copyBtn.title = 'Copy the last landing timestamp';
-
-    const assignment = document.createElement('span');
-    assignment.id = 'copy-last-wake-announcement';
-    assignment.className = 'visually-hidden';
-    assignment.setAttribute('role', 'status');
-    assignment.setAttribute('aria-live', 'polite');
-
-    lastWakeEl.after(copyBtn, assignment);
-  }
-
-  function addCopyNextWakeButton() {
-    if (!nextWakeTimeEl) return;
-    if (document.getElementById('copy-next-wake')) return;
-
-    const copyBtn = document.createElement('button');
-    copyBtn.id = 'copy-next-wake';
-    copyBtn.type = 'button';
-    copyBtn.className = 'copy-button';
-    copyBtn.textContent = 'Copy next wake';
-    copyBtn.title = 'Copy the next wake time in UTC';
-
-    const assignment = document.createElement('span');
-    assignment.id = 'copy-next-wake-announcement';
-    assignment.className = 'visually-hidden';
-    assignment.setAttribute('role', 'status');
-    assignment.setAttribute('aria-live', 'polite');
-
-    nextWakeTimeEl.after(copyBtn, assignment);
-  }
-
-  function copyNextWakeTime() {
-    const nextEl = document.getElementById('next-wake-time');
-    if (!nextEl) return;
-    const text = nextEl.textContent.trim();
-    if (!text) return;
-
-    const fallback = (el) => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-    const copyBtn = document.getElementById('copy-next-wake');
-    const originalLabel = copyBtn ? copyBtn.textContent : '';
-    const assignment = document.getElementById('copy-next-wake-announcement');
-    const announceCopy = () => {
-      if (copyBtn) copyBtn.textContent = 'Copied!';
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => fallback(nextEl));
-    } else {
-      fallback(nextEl);
-      announceCopy();
-    }
-  }
-
-  function updateSiteFreshness() {
-    const el = document.getElementById('site-freshness');
-    if (!el) return;
-
-    fetch('stats.json', { cache: 'no-store' })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(data => {
-        if (!data.last_update) {
-          el.textContent = 'Unavailable';
-          el.style.color = '#8b949e';
-          el.title = 'Could not determine site freshness.';
-          return;
-        }
-        const lastUpdate = new Date(data.last_update.replace(' UTC', 'Z').replace(' ', 'T'));
-        if (isNaN(lastUpdate)) {
-          el.textContent = 'Unavailable';
-          el.style.color = '#8b949e';
-          el.title = 'Could not determine site freshness.';
-          return;
-        }
-        const now = new Date();
-        const diffMs = now - lastUpdate;
-        const diffHours = diffMs / (1000 * 60 * 60);
-
-        if (diffHours < 2) {
-          el.textContent = 'Current';
-          el.style.color = '#79c0ff';
-          el.title = 'Site data is current.';
-        } else if (diffHours < 24) {
-          el.textContent = 'Stale';
-          el.style.color = '#ff5f57';
-          el.title = 'Site data is valid but may be outdated.';
-        } else {
-          el.textContent = 'Needs update';
-          el.style.color = '#d29922';
-          el.title = 'Site data is valid but older than 24 hours.';
-        }
-      })
-      .catch(error => {
-        console.error('Failed to check site freshness:', error);
-        el.textContent = 'Unavailable';
-        el.style.color = '#8b949e';
-        el.title = 'Could not determine site freshness.';
-      });
-  }
-
-  function addCopySiteFreshnessButton() {
-    const freshnessEl = document.getElementById('site-freshness');
-    if (!freshnessEl) return;
-    if (document.getElementById('copy-site-freshness')) return;
-
-    const copyBtn = document.createElement('button');
-    copyBtn.id = 'copy-site-freshness';
-    copyBtn.type = 'button';
-    copyBtn.className = 'copy-button';
-    copyBtn.textContent = 'Copy freshness';
-    copyBtn.title = 'Copy the site freshness status and last update timestamp';
-
-    const assignment = document.createElement('span');
-    assignment.id = 'copy-site-freshness-announcement';
-    assignment.className = 'visually-hidden';
-    assignment.setAttribute('role', 'status');
-    assignment.setAttribute('aria-live', 'polite');
-
-    freshnessEl.after(copyBtn, assignment);
-  }
-
-  function copySiteFreshness() {
-    const freshnessEl = document.getElementById('site-freshness');
-    const copyBtn = document.getElementById('copy-site-freshness');
-    if (!freshnessEl || !copyBtn) return;
-    const assignment = document.getElementById('copy-site-freshness-announcement');
-    const originalLabel = copyBtn.textContent;
-
-    const fallback = (text) => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    };
-
-    const announceCopy = () => {
-      copyBtn.textContent = 'Copied!';
-      if (assignment) assignment.textContent = 'Copied!';
-      setTimeout(() => {
-        copyBtn.textContent = originalLabel;
-        if (assignment) assignment.textContent = '';
-      }, 1500);
-    };
-
-    const status = freshnessEl.textContent.trim();
-    const lastUpdateEl = document.getElementById('last-update');
-    const lastUpdate = lastUpdateEl ? lastUpdateEl.textContent.trim() : '';
-    const text = lastUpdate ? `Site freshness: ${status} (last update: ${lastUpdate})` : `Site freshness: ${status}`;
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(announceCopy).catch(() => {
-        fallback(text);
-        announceCopy();
-      });
-    } else {
-      fallback(text);
-      announceCopy();
-    }
-  }
-
-  function addPrintButton() {
-    if (document.getElementById('print-btn')) return;
-    const btn = document.createElement('button');
-    btn.id = 'print-btn';
-    btn.type = 'button';
-    btn.className = 'copy-button';
-    btn.textContent = 'Print page';
-    btn.title = 'Print the current page';
-    const lastCopyBtn = document.getElementById('copy-site-freshness');
-    if (lastCopyBtn) {
-      lastCopyBtn.after(btn);
-    } else {
-      document.body.appendChild(btn);
-    }
-    btn.addEventListener('click', () => {
-      window.print();
-    });
-  }
-
-  function populateTodayWakes() {
-    const container = document.getElementById('today-wakes');
-    if (!container) return;
-
-    const now = new Date();
-    const todayLocal = now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-    const currentIndex = getCurrentWakeNumber(now) - 1;
-
-    container.replaceChildren();
-
-    WAKE_TIMES.forEach(([hours, minutes], index) => {
-      const item = document.createElement('li');
-      const wakeDate = new Date(Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        hours,
-        minutes,
-        0,
-        0
-      ));
-      const localDateStr = wakeDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      const timeLabel = formatLocalTime(hours, minutes, now);
-      const utcLabel = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} UTC`;
-      const datePrefix = localDateStr !== todayLocal ? `${localDateStr} · ` : '';
-      item.textContent = `${datePrefix}${timeLabel}`;
-      item.title = `${utcLabel}`;
-
-      if (index < currentIndex) {
-        item.className = 'wake-past';
-        item.textContent += ' — completed';
-      } else if (index === currentIndex) {
-        item.className = 'wake-current';
-        item.textContent += ' — current';
-      } else if (index === currentIndex + 1) {
-        item.className = 'wake-next';
-        item.textContent += ' — next';
-      } else {
-        item.textContent += ' — upcoming';
-      }
-
-      container.appendChild(item);
-    });
-  }
-
-  function addSkipLink() {
-    if (document.getElementById('skip-link')) return;
-    const skipLink = document.createElement('a');
-    skipLink.id = 'skip-link';
-    skipLink.className = 'skip-link';
-    skipLink.href = '#main';
-    skipLink.textContent = 'Skip to content';
-    document.body.prepend(skipLink);
-
-    const main = document.getElementById('main');
-    if (main) {
-      main.setAttribute('tabindex', '-1');
-      skipLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        main.scrollIntoView({ block: 'start' });
-        main.focus({ preventScroll: true });
-      });
-      skipLink.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          main.scrollIntoView({ block: 'start' });
-          main.focus({ preventScroll: true });
-        }
-      });
-    }
-  }
-
-  loadStats();
-  loadRecentTweaks();
-  loadLatestUpdate();
-  addCopyStatsButton();
-  addCopyRecentTweaksButton();
-  addCopyLastWakeButton();
-  addCopyNextWakeButton();
-  addCopySiteFreshnessButton();
-  addPrintButton();
-  addSkipLink();
-  updateCountdown();
-  updateClock();
+}
+
+function scheduleStatsRefresh() {
+  if (!isClient) return;
+  const now = Date.now();
+  const nextWake = nextWakeTime();
+  const msUntilNext = nextWake - now;
+  setTimeout(() => {
+    loadStats();
+    scheduleStatsRefresh();
+  }, Math.max(0, msUntilNext));
+}
+
+// ---------- Time Calculations ----------
+function nextWakeTime() {
+  const now = Date.now();
+  const elapsed = now - START_DATE.getTime();
+  const cycles = Math.floor(elapsed / (INTERVAL_MINUTES * 60 * 1000));
+  return new Date(START_DATE.getTime() + (cycles + 1) * INTERVAL_MINUTES * 60 * 1000);
+}
+
+function formatUTC(date) {
+  const pad = n => n.toString().padStart(2, '0');
+  return `${date.getUTCHours()}:${pad(date.getUTCMinutes())} UTC`;
+}
+
+function formatLocal(date) {
+  const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+  return date.toLocaleDateString(undefined, opts) + ' ' + formatUTC(date);
+}
+
+// ---------- Render Stats ----------
+function renderStats() {
+  if (!isClient) return;
+  const now = new Date();
+  const utcStr = formatUTC(now);
+  const wakeIndex = Math.floor((now - START_DATE) / (INTERVAL_MINUTES * 60 * 1000));
+  const currentWakeNum = wakeIndex + 1;
+  const wakesToday = currentWakeNum <= WAKES_PER_DAY ? currentWakeNum : WAKES_PER_DAY;
+  const wakesRemaining = WAKES_PER_DAY - wakesToday;
+  const totalWakes = stats.total_wakes ?? 0;
+
+  // Update status UI
+  const el = id => document.getElementById(id);
+  el('time-utc').textContent = utcStr;
+  el('current-wake').textContent = `Wake #${currentWakeNum}`;
+  el('next-wake-time').textContent = formatUTC(nextWakeTime());
+  el('last-wake').textContent = stats.last_wake || '--';
+  el('last-wake-relative').textContent = stats.last_wake ? timeAgo(stats.last_wake) : '';
+  el('wakes-today').textContent = wakesToday;
+  el('wakes-remaining').textContent = wakesRemaining;
+
+  // Populate Today's Wakes list and Waketime schedule table
   populateTodayWakes();
-  updateSiteFreshness();
+  populateWaketimeSchedule();
 
-  if (copyUtcBtn) copyUtcBtn.addEventListener('click', copyUtcTime);
-  const copyLatestBtn = document.getElementById('copy-latest');
-  if (copyLatestBtn) copyLatestBtn.addEventListener('click', copyLatestUpdate);
-  const copyCurrentBtn = document.getElementById('copy-current');
-  if (copyCurrentBtn) copyCurrentBtn.addEventListener('click', copyCurrentWake);
-  const copyDaysActiveBtn = document.getElementById('copy-days-active');
-  if (copyDaysActiveBtn) copyDaysActiveBtn.addEventListener('click', copyDaysActive);
-  const copyWakesRemainingBtn = document.getElementById('copy-wakes-remaining');
-  if (copyWakesRemainingBtn) copyWakesRemainingBtn.addEventListener('click', copyWakesRemaining);
-  const copyTotalWakesBtn = document.getElementById('copy-total-wakes');
-  if (copyTotalWakesBtn) copyTotalWakesBtn.addEventListener('click', copyTotalWakes);
-  const copyStatsBtn = document.getElementById('copy-stats');
-  if (copyStatsBtn) copyStatsBtn.addEventListener('click', copyStats);
-  const copyRecentTweaksBtn = document.getElementById('copy-recent-tweaks');
-  if (copyRecentTweaksBtn) copyRecentTweaksBtn.addEventListener('click', copyRecentTweaks);
-  const copyLastWakeBtn = document.getElementById('copy-last-wake');
-  if (copyLastWakeBtn) copyLastWakeBtn.addEventListener('click', copyLastWake);
-  const copyNextWakeBtn = document.getElementById('copy-next-wake');
-  if (copyNextWakeBtn) copyNextWakeBtn.addEventListener('click', copyNextWakeTime);
-  const copySiteFreshnessBtn = document.getElementById('copy-site-freshness');
-  if (copySiteFreshnessBtn) copySiteFreshnessBtn.addEventListener('click', copySiteFreshness);
-  if (countdownEl && barFill) setInterval(updateCountdown, 1000);
-  setInterval(updateClock, 1000);
-  setInterval(updateLastWakeRelative, 60000);
-  setInterval(updateLastUpdateRelative, 60000);
-})();
+  // Freshness status
+  const freshnessEl = document.getElementById('freshness-status');
+  if (freshnessEl) {
+    const ageSec = stats.last_update ? (Date.now() - new Date(stats.last_update).getTime()) / 1000 : null;
+    if (ageSec === null) {
+      freshnessEl.textContent = 'Freshness unknown';
+    } else if (ageSec < 60) {
+      freshnessEl.textContent = `Fresh – updated ${Math.round(ageSec)} seconds ago`;
+    } else {
+      freshnessEl.textContent = `Stale – updated ${Math.round(ageSec / 60)} minutes ago`;
+    }
+  }
+}
+
+// ---------- Today's Wakes List ----------
+function populateTodayWakes() {
+  if (!isClient) return;
+  const list = document.getElementById('today-wakes');
+  if (!list) return;
+  list.innerHTML = '';
+  const now = new Date();
+  const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+  const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
+  const wakes = [];
+  for (let i = 0; i < WAKES_PER_DAY; i++) {
+    const wake = new Date(todayStart.getTime() + i * INTERVAL_MINUTES * 60 * 1000);
+    wakes.push(wake);
+  }
+  wakes.forEach((wake, idx) => {
+    const li = document.createElement('li');
+    const status = wake < now ? 'past' : wake.getTime() === now.getTime() ? 'current' : 'next';
+    const localDatePrefix = wake.getUTCHours() < 12 && idx > 0 ? `<span class="local-date-prefix">${wake.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>` : '';
+    li.innerHTML = `
+      <span class="wake-${status}">${localDatePrefix} Wake #${idx + 1}: ${formatUTC(wake)} (${wake.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</span>
+    `;
+    list.appendChild(li);
+  });
+}
+
+// ---------- Waketime Schedule Table ----------
+function populateWaketimeSchedule() {
+  if (!isClient) return;
+  const tbody = document.getElementById('waketime-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  const now = new Date();
+  const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+  const intervalMs = INTERVAL_MINUTES * 60 * 1000;
+  const startMs = START_DATE.getTime();
+  const cyclesToDayStart = Math.floor((todayStart.getTime() - startMs) / intervalMs);
+  let firstWake = new Date(startMs + (cyclesToDayStart + 1) * intervalMs);
+  if (firstWake < todayStart) firstWake = new Date(firstWake.getTime() + intervalMs);
+  for (let i = 0; i < WAKES_PER_DAY; i++) {
+    const wake = new Date(firstWake.getTime() + i * intervalMs);
+    const tr = document.createElement('tr');
+    const tdNum = document.createElement('td');
+    tdNum.textContent = i + 1;
+    const tdLocal = document.createElement('td');
+    tdLocal.textContent = wake.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const tdUtc = document.createElement('td');
+    tdUtc.textContent = formatUTC(wake);
+    tr.appendChild(tdNum);
+    tr.appendChild(tdLocal);
+    tr.appendChild(tdUtc);
+    tbody.appendChild(tr);
+  }
+}
+
+// ---------- Copy Functions ----------
+function announceCopy(msgEl, regionEl) {
+  if (!regionEl) return;
+  regionEl.textContent = msgEl.textContent;
+  regionEl.focus();
+  regionEl.select();
+  try {
+    document.execCommand('copy');
+    msgEl.textContent = 'Copied!';
+  } catch (e) {
+    // fallback handled by caller
+  }
+}
+
+function copyCurrentWake() {
+  const btn = document.getElementById('copy-current-wake-btn');
+  const msg = document.getElementById('copy-current-wake-msg');
+  const region = document.getElementById('copy-current-wake-region');
+  if (!btn || !msg || !region) return;
+  const wakeText = document.getElementById('current-wake').textContent;
+  region.value = wakeText;
+  announceCopy(msg, region);
+}
+
+function copyDaysActive() {
+  const btn = document.getElementById('copy-days-active-btn');
+  const msg = document.getElementById('copy-days-active-msg');
+  const region = document.getElementById('copy-days-active-region');
+  if (!btn || !msg || !region) return;
+  const daysText = document.getElementById('days-active').textContent;
+  region.value = daysText;
+  announceCopy(msg, region);
+}
+
+function copyNextWakeTime() {
+  const btn = document.getElementById('copy-next-wake-btn');
+  const msg = document.getElementById('copy-next-wake-msg');
+  const region = document.getElementById('copy-next-wake-region');
+  if (!btn || !msg || !region) return;
+  const nextText = document.getElementById('next-wake-time').textContent;
+  region.value = nextText;
+  announceCopy(msg, region);
+}
+
+function copyStats() {
+  const btn = document.getElementById('copy-stats-btn');
+  const msg = document.getElementById('copy-stats-msg');
+  const region = document.getElementById('copy-stats-region');
+  if (!btn || !msg || !region) return;
+  const statsText = JSON.stringify(stats, null, 2);
+  region.value = statsText;
+  announceCopy(msg, region);
+}
+
+function copyFreshness() {
+  const btn = document.getElementById('copy-freshness-btn');
+  const msg = document.getElementById('copy-freshness-msg');
+  const region = document.getElementById('copy-freshness-region');
+  if (!btn || !msg || !region) return;
+  const freshnessText = document.getElementById('freshness-status').textContent;
+  region.value = freshnessText;
+  announceCopy(msg, region);
+}
+
+// ---------- Accessibility & UI ----------
+function id(element) {
+  return document.getElementById(element);
+}
+
+// ---------- Utilities ----------
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins === 1) return '1 minute ago';
+  return `${mins} minutes ago`;
+}
+
+// ---------- Init ----------
+if (isClient) {
+  loadStats();
+  // Wire up copy buttons
+  id('copy-current-wake-btn')?.addEventListener('click', copyCurrentWake);
+  id('copy-days-active-btn')?.addEventListener('click', copyDaysActive);
+  id('copy-next-wake-btn')?.addEventListener('click', copyNextWakeTime);
+  id('copy-stats-btn')?.addEventListener('click', copyStats);
+  id('copy-freshness-btn')?.addEventListener('click', copyFreshness);
+}
