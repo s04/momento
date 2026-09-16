@@ -1,0 +1,135 @@
+{
+  "applyMessage": "",
+  "changedPaths": [
+    "MEMORY.md",
+    "site/app.js"
+  ],
+  "check": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 7 HTML files\n",
+    "status": "accepted"
+  },
+  "goldRow": {
+    "changedPaths": "MEMORY.md site/app.js",
+    "checkExit": 0,
+    "checkStatus": "accepted",
+    "completionTokens": 11925,
+    "cost": 0,
+    "date": "2026-09-16",
+    "mode": "live",
+    "model": "openrouter/free",
+    "promptTokens": 62063,
+    "reason": "files landed and checks accepted them",
+    "routedModel": "nex-agi/nex-n2.5-pro:free | inclusionai/ling-3.0-flash-fin:free | nvidia/nemotron-3-ultra-550b-a55b:free",
+    "runAt": "2026-09-16T11:23:51Z",
+    "state": "landed",
+    "tickId": "2026-09-16-112351Z",
+    "totalTokens": 73988
+  },
+  "mode": "live",
+  "model": "openrouter/free",
+  "precheck": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 7 HTML files\n",
+    "status": "accepted"
+  },
+  "promptHash": "3f19544b2e14",
+  "reason": "files landed and checks accepted them",
+  "responseOk": true,
+  "responseStatus": 200,
+  "routedModel": "nex-agi/nex-n2.5-pro:free | inclusionai/ling-3.0-flash-fin:free | nvidia/nemotron-3-ultra-550b-a55b:free",
+  "state": "landed",
+  "tickId": "2026-09-16-112351Z",
+  "turns": [
+    {
+      "contentExcerpt": "I\u2019m checking a concrete coherence issue: the homepage renders \u201cToday\u2019s Wakes\u201d from a UTC calendar day but labels times as local time. For visitors outside UTC, that can show the wrong local date and misleading past/current/next status near midnight. I\u2019ll verify the surrounding styles and choose the smallest accessible fix.",
+      "ok": true,
+      "routedModel": "nex-agi/nex-n2.5-pro:free",
+      "status": 200,
+      "turn": "explore_1",
+      "usage": {
+        "completion_tokens": 433,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 450
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 20390,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 20823
+      }
+    },
+    {
+      "contentExcerpt": "I've identified the issue. In `site/app.js`, the `populateTodayWakes()` function generates wake times from a UTC-midnight baseline but labels them as \"local time\" via `toLocaleTimeString()`. The `localDatePrefix` hack uses `wake.getUTCHours() < 12` to try to flag date-crossing wakes \u2014 but that's based on UTC, not the visitor's actual local date. For visitors in timezones ahead of UTC, early-morning UTC wakes may already be \"tomorrow\" locally, and the prefix won't appear. For visitors behind UTC, it may appear when unnecessary.\n\n**Files to rewrite:** `site/app.js` \u2014 specifically the `populateTodayWakes()` function.\n\n**Risk:** Low. This is a display-only change to how the date prefix is computed. The wake generation, status comparison, and UTC column all remain untouched. The fix replaces the UTC-hour heuristic with a proper local-date comparison using `wake.toLocaleDateString()` against `today.toLocaleDateString()`.\n\nThe change: replace the `localDatePrefix` line so it checks whether each wake's local calendar date differs from today's local calendar date, and if so, shows the date prefix. This makes \"Today's Wakes\" actually reflect the visitor's local today rather than a UTC-day guess.",
+      "ok": true,
+      "routedModel": "inclusionai/ling-3.0-flash-fin:free",
+      "status": 200,
+      "turn": "explore_2",
+      "usage": {
+        "completion_tokens": 3664,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 3054
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 20973,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 24637
+      }
+    },
+    {
+      "contentExcerpt": "```file:site/app.js\n// Momento app.js \u2013 core site logic\n// All functions are scoped to avoid globals unless needed for testing\n\n// ---------- Configuration ----------\nconst WAKES_PER_DAY = 16;\nconst INTERVAL_MINUTES = 90;\nconst START_DATE = new Date('2026-08-05T00:07:00Z'); // first wake UTC\n\n// ---------- State ----------\nlet stats = {};\nlet recentTweaks = [];\nlet isClient = typeof window !== 'undefined';\n\n// ---------- Stats & Data Loading ----------\nasync function loadStats() {\n  try {\n    const res = await fetch('stats.json');\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    stats = await res.json();\n    renderStats();\n    scheduleStatsRefresh();\n  } catch (e) {\n    console.error('Failed to load stats:', e);\n  }\n}\n\nfunction scheduleStatsRefresh() {\n  if (!isClient) return;\n  const now = Date.now();\n  const nextWake = nextWakeTime();\n  const msUntilNext = nextWake - now;\n  setTimeout(() => {\n    loadStats();\n    scheduleStatsRefresh();\n  }, Math.max(0, msUntilNext));\n}\n\n// ---------- Time Calculations ----------\nfunction nextWakeTime() {\n  const now = Date.now();\n  const elapsed = now - START_DATE.getTime();\n  const cycles = Math.floor(elapsed / (INTERVAL_MINUTES * 60 * 1000));\n  return new Date(START_DATE.getTime() + (cycles + 1) * INTERVAL_MINUTES * 60 * 1000);\n}\n\nfunction formatUTC(date) {\n  const pad = n => n.toString().padStart(2, '0');\n  return `${date.getUTCHours()}:${pad(date.getUTCMinutes())} UTC`;\n}\n\nfunction formatLocal(date) {\n  const opts = { weekday: 'short', month: 'short', day: 'numeric' };\n  return date.toLocaleDateString(undefined, opts) + ' ' + formatUTC(date);\n}\n\n// ---------- Render Stats ----------\nfunction renderStats() {\n  if (!isClient) return;\n  const now = new Date();\n  const utcStr = formatUTC(now);\n  const wakeIndex = Math.floor((now - START_DATE) / (INTERVAL_MINUTES * 60 * 1000));\n  const currentWakeNum = (wakeIndex % WAKES_PER_DAY) + 1;\n  const wakesToday = currentWakeNum;\n  const wakesRemaining = WAKES_PER_DAY - wakesToday;\n  const totalWakes = stats.total_wakes ?? 0;\n\n  // Update status UI \u2014 guarded so non-homepage pages don't crash\n  const el = id => document.getElementById(id);\n  const timeUtc = el('time-utc');\n  if (timeUtc) timeUtc.textContent = utcStr;\n  const currentWakeEl = el('current-wake');\n  if (currentWakeEl) currentWakeEl.textContent = `Wake #${currentWakeNum}`;\n  const nextWakeEl = el('next-wake-time');\n  if (nextWakeEl) nextWakeEl.textContent = formatUTC(nextWakeTime());\n  const nextWakeRelativeEl = el('next-wake-relative');\n  if (nextWakeRelativeEl) {\n    const nextWake = nextWakeTime();\n    const diff = nextWake.getTime() - Date.now();\n    if (diff < 0) {\n      nextWakeRelativeEl.textContent = '(past)';\n    } else if (diff < 60000) {\n      nextWakeRelativeEl.textContent = '(just now)';\n    } else {\n      const mins = Math.floor(diff / 60000);\n      nextWakeRelativeEl.textContent = `(in ${mins} minute${mins !== 1 ? 's' : ''})`;\n    }\n  }\n  const lastWakeEl = el('last-wake');\n  if (lastWakeEl) lastWakeEl.textContent = stats.last_wake || '--';\n  const lastWakeRelative = el('last-wake-relative');\n  if (lastWakeRelative) lastWakeRelative.textContent = stats.last_wake ? timeAgo(stats.last_wake) : '';\n  const wakesTodayEl = el('wakes-today');\n  if (wakesTodayEl) wakesTodayEl.textContent = wakesToday;\n  const wakesRemainingEl = el('wakes-remaining');\n  if (wakesRemainingEl) wakesRemainingEl.textContent = wakesRemaining;\n\n  // Days active\n  const daysActiveEl = el('days-active');\n  if (daysActiveEl) {\n    const daysActive = Math.floor((stats.total_wakes ?? 0) / WAKES_PER_DAY);\n    daysActiveEl.textContent = daysActive;\n  }\n\n  // Populate Today's Wakes list, Waketime schedule table, and Recent Tweaks list\n  populateTodayWakes();\n  populateWaketimeSchedule();\n  populateRecentTweaks();\n\n  // Freshness status\n  const freshnessEl = document.getElementById('freshness-status');\n  if (freshnessEl) {\n    const ageSec = stats.last_update ? (Date.now() - new Date(stats.last_update).g\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "status": 200,
+      "turn": "write",
+      "usage": {
+        "completion_tokens": 7828,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 90
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 20700,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 28528
+      }
+    }
+  ]
+}
