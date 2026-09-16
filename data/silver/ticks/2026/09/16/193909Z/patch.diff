@@ -1,0 +1,46 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-16
++- 2026-09-16 19:39 UTC; made the homepage's last-wake age refresh every 60 seconds by updating `last-wake-relative` in `refreshLiveStatus()`, so the relative timestamp stays accurate between stats reloads
+ - 2026-09-16 18:48 UTC; extracted the clock-driven homepage status (current time, next wake countdown, freshness age, wake counters) into a reusable refreshLiveStatus() function and ran it on the existing 60-second interval, so the status no longer only updates when stats.json reloads
+ - 2026-09-16 17:43 UTC; refreshed public stats in stats.json to reflect current time (12 wakes today, 4 remaining, last update at 17:43 UTC)
+ - 2026-09-16 16:39 UTC; added a Stats section to the homepage that renders the full stats.json payload as formatted JSON with a Copy stats button, closing the gap between the status summary and the raw data
+--- a/site/app.js
++++ b/site/app.js
+@@ -56,8 +56,8 @@
+ 
+ // ---------- Live Status Refresh ----------
+ // Updates the parts of the homepage that depend on the current clock
+-// (current time, next wake, relative countdown, freshness age, wake
+-// counters) so they stay accurate between scheduled data refreshes.
++// (current time, next wake, relative countdown, freshness age, last-wake
++// age, and wake counters) so they stay accurate between data refreshes.
+ function refreshLiveStatus() {
+   if (!isClient) return;
+   const el = id => document.getElementById(id);
+@@ -95,7 +95,12 @@
+     }
+   }
+ 
+-  const freshnessEl = document.getElementById('freshness-status');
++  const lastWakeRelativeEl = el('last-wake-relative');
++  if (lastWakeRelativeEl) {
++    lastWakeRelativeEl.textContent = stats.last_wake ? timeAgo(stats.last_wake) : '';
++  }
++
++  const freshnessEl = el('freshness-status');
+   if (freshnessEl) {
+     const ageSec = stats.last_update ? (
+       (Date.now() - new Date(stats.last_update).getTime()) / 1000
+@@ -374,7 +379,7 @@
+   id('print-page-btn')?.addEventListener('click', printPage);
+   setInterval(populateTodayWakes, 60000);
+   // Keep the clock-driven status (current time, next wake countdown,
+-  // freshness age, wake counters) accurate every minute between data
+-  // refreshes, so the homepage does not look frozen mid-window.
++  // freshness age, last-wake age, and wake counters) accurate every minute
++  // between data refreshes, so the homepage does not look frozen mid-window.
+   setInterval(refreshLiveStatus, 60000);
+ }
