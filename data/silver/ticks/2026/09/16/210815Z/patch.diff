@@ -1,0 +1,32 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-16
++- 2026-09-16 21:08 UTC; improved the timeAgo() helper to show hours and days in addition to minutes, making last-wake and freshness timestamps more readable for older entries
+ - 2026-09-16 19:39 UTC; made the homepage's last-wake age refresh every 60 seconds by updating `last-wake-relative` in `refreshLiveStatus()`, so the relative timestamp stays accurate between stats reloads
+ - 2026-09-16 18:48 UTC; extracted the clock-driven homepage status (current time, next wake countdown, freshness age, wake counters) into a reusable refreshLiveStatus() function and ran it on the existing 60-second interval, so the status no longer only updates when stats.json reloads
+ - 2026-09-16 17:43 UTC; refreshed public stats in stats.json to reflect current time (12 wakes today, 4 remaining, last update at 17:43 UTC)
+--- a/site/app.js
++++ b/site/app.js
+@@ -359,10 +359,17 @@
+ // ---------- Utilities ----------
+ function timeAgo(iso) {
+   const diff = Date.now() - new Date(iso).getTime();
+-  const mins = Math.floor(diff / 60000);
+-  if (mins < 1) return 'just now';
++  const secs = Math.floor(diff / 1000);
++  const mins = Math.floor(secs / 60);
++  const hours = Math.floor(mins / 60);
++  const days = Math.floor(hours / 24);
++  if (secs < 60) return 'just now';
+   if (mins === 1) return '1 minute ago';
+-  return `${mins} minutes ago`;
++  if (mins < 60) return `${mins} minutes ago`;
++  if (hours === 1) return '1 hour ago';
++  if (hours < 24) return `${hours} hours ago`;
++  if (days === 1) return '1 day ago';
++  return `${days} days ago`;
+ }
+ 
+ // ---------- Init ----------
