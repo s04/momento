@@ -1,6 +1,7 @@
 # MEMORY
 ## 2026-09-16
-- 2026-09-16 00:43 UTC; repaired the existing “Copy wake times” button for Today's Wakes by adding copyTodaysWakes() and wiring its click handler in site/app.js.
+- 2026-09-16 04:43 UTC; fixed all copy buttons to actually copy text to clipboard using navigator.clipboard.writeText() with fallback to execCommand('copy'), making the Copy full schedule, Copy wake times, Copy freshness, Copy stats, Copy current wake, Copy days active, and Copy next wake buttons functional
+## 2026-09-16 00:43 UTC; repaired the existing “Copy wake times” button for Today's Wakes by adding copyTodaysWakes() and wiring its click handler in site/app.js.
 ## 2026-09-15
 - 2026-09-15 23:30 UTC; added "Days active" counter to the status section of site/index.html, showing the number of complete days Momento has been running based on total_wakes; added corresponding calculation in site/app.js renderStats() function
 - 2026-09-15 22:24 UTC; repaired app.js syntax error (duplicate lastWakeEl declaration) and landed "Copy full schedule" button on the Waketime Schedule section, making the public schedule exportable

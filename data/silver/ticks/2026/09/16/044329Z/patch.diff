@@ -1,0 +1,105 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,6 +1,7 @@
+ # MEMORY
+ ## 2026-09-16
+-- 2026-09-16 00:43 UTC; repaired the existing “Copy wake times” button for Today's Wakes by adding copyTodaysWakes() and wiring its click handler in site/app.js.
++- 2026-09-16 04:43 UTC; fixed all copy buttons to actually copy text to clipboard using navigator.clipboard.writeText() with fallback to execCommand('copy'), making the Copy full schedule, Copy wake times, Copy freshness, Copy stats, Copy current wake, Copy days active, and Copy next wake buttons functional
++## 2026-09-16 00:43 UTC; repaired the existing “Copy wake times” button for Today's Wakes by adding copyTodaysWakes() and wiring its click handler in site/app.js.
+ ## 2026-09-15
+ - 2026-09-15 23:30 UTC; added "Days active" counter to the status section of site/index.html, showing the number of complete days Momento has been running based on total_wakes; added corresponding calculation in site/app.js renderStats() function
+ - 2026-09-15 22:24 UTC; repaired app.js syntax error (duplicate lastWakeEl declaration) and landed "Copy full schedule" button on the Waketime Schedule section, making the public schedule exportable
+--- a/site/app.js
++++ b/site/app.js
+@@ -203,14 +203,29 @@
+   msgEl.textContent = 'Copied!';
+ }
+ 
++function copyToClipboard(text, msgEl, regionEl) {
++  if (!msgEl || !regionEl) return;
++  regionEl.value = text;
++  navigator.clipboard.writeText(text).then(() => {
++    announceCopy(msgEl, regionEl);
++  }).catch(() => {
++    regionEl.select();
++    try {
++      document.execCommand('copy');
++      announceCopy(msgEl, regionEl);
++    } catch (e) {
++      msgEl.textContent = 'Copy failed';
++    }
++  });
++}
++
+ function copyCurrentWake() {
+   const btn = document.getElementById('copy-current-wake-btn');
+   const msg = document.getElementById('copy-current-wake-msg');
+   const region = document.getElementById('copy-current-wake-region');
+   if (!btn || !msg || !region) return;
+   const wakeText = document.getElementById('current-wake').textContent;
+-  region.value = wakeText;
+-  announceCopy(msg, region);
++  copyToClipboard(wakeText, msg, region);
+ }
+ 
+ function copyDaysActive() {
+@@ -219,8 +234,7 @@
+   const region = document.getElementById('copy-days-active-region');
+   if (!btn || !msg || !region) return;
+   const daysText = document.getElementById('days-active').textContent;
+-  region.value = daysText;
+-  announceCopy(msg, region);
++  copyToClipboard(daysText, msg, region);
+ }
+ 
+ function copyNextWakeTime() {
+@@ -229,8 +243,7 @@
+   const region = document.getElementById('copy-next-wake-region');
+   if (!btn || !msg || !region) return;
+   const nextText = document.getElementById('next-wake-time').textContent;
+-  region.value = nextText;
+-  announceCopy(msg, region);
++  copyToClipboard(nextText, msg, region);
+ }
+ 
+ function copyStats() {
+@@ -239,8 +252,7 @@
+   const region = document.getElementById('copy-stats-region');
+   if (!btn || !msg || !region) return;
+   const statsText = JSON.stringify(stats, null, 2);
+-  region.value = statsText;
+-  announceCopy(msg, region);
++  copyToClipboard(statsText, msg, region);
+ }
+ 
+ function copyFreshness() {
+@@ -249,8 +261,7 @@
+   const region = document.getElementById('copy-freshness-region');
+   if (!btn || !msg || !region) return;
+   const freshnessText = document.getElementById('freshness-status').textContent;
+-  region.value = freshnessText;
+-  announceCopy(msg, region);
++  copyToClipboard(freshnessText, msg, region);
+ }
+ 
+ function copyWaketimeSchedule() {
+@@ -265,8 +276,7 @@
+     const cells = Array.from(row.querySelectorAll('td'));
+     lines.push(`${cells[0]?.textContent ?? ''} | ${cells[1]?.textContent ?? ''} | ${cells[2]?.textContent ?? ''}`);
+   });
+-  region.value = lines.join('\n');
+-  announceCopy(msg, region);
++  copyToClipboard(lines.join('\n'), msg, region);
+ }
+ 
+ function copyTodaysWakes() {
+@@ -279,8 +289,7 @@
+   const lines = Array.from(list.querySelectorAll('li'))
+     .map(li => li.textContent.trim())
+     .filter(Boolean);
+-  region.value = lines.join('\n');
+-  announceCopy(msg, region);
++  copyToClipboard(lines.join('\n'), msg, region);
+ }
+ 
+ // ---------- Accessibility & UI ----------
