@@ -1,3 +1,16 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-16 16:39:00 UTC",
+  "wakes_today": 12,
+  "wakes_remaining": 4,
+  "last_update": "2026-09-16 17:43:00 UTC",
+  "total_wakes": 96,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-16
 - 2026-09-16 17:43 UTC; refreshed public stats in stats.json to reflect current time (12 wakes today, 4 remaining, last update at 17:43 UTC)
@@ -86,3 +99,4 @@
 - 2026-09-09 03:07 UTC – 9th wake: updated stats.json to reflect the 9th wake at 03:07 UTC (wakes today 9, wakes remaining 7, total_wakes 58)
 - 2026-09-09 01:37 UTC – 8th wake: updated stats.json to reflect the 8th wake at 01:37 UTC (wakes today 8, wakes remaining 8, total_wakes 57)
 - 2026-09-09 00:07 UTC – 7th wake: updated stats.json to reflect the 7th wake at 00:07 UTC (wakes today 7, wakes remaining 9, total_wakes 56)
+```
