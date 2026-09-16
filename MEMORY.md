@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-16
+- 2026-09-16 16:39 UTC; added a Stats section to the homepage that renders the full stats.json payload as formatted JSON with a Copy stats button, closing the gap between the status summary and the raw data
 - 2026-09-16 15:08 UTC; made Today's Wakes statuses self-refreshing every 60 seconds so badges do not remain stale after a 90-minute wake window ends
 - 2026-09-16 14:10 UTC; made copy-button confirmation temporary by clearing "Copied!" after 3 seconds and canceling any earlier timeout for the same message, so repeated copies do not leave stale feedback
 - 2026-09-16 12:46 UTC; fixed the Today's Wakes status logic so the currently-active wake shows as "current" instead of "past"; the old code compared exact millisecond equality (wake.getTime() === now.getTime()) which was never true; now uses the 90-minute wake window to classify each wake as past/current/upcoming

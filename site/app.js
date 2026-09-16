@@ -110,7 +110,9 @@ function renderStats() {
   // Freshness status
   const freshnessEl = document.getElementById('freshness-status');
   if (freshnessEl) {
-    const ageSec = stats.last_update ? (Date.now() - new Date(stats.last_update).getTime()) / 1000 : null;
+    const ageSec = stats.last_update ? (
+      (Date.now() - new Date(stats.last_update).getTime()) / 1000
+    ) : null;
     if (ageSec === null) {
       freshnessEl.textContent = 'Freshness unknown';
     } else if (ageSec < 60) {
@@ -118,6 +120,12 @@ function renderStats() {
     } else {
       freshnessEl.textContent = `Stale – updated ${Math.round(ageSec / 60)} minutes ago`;
     }
+  }
+
+  // Stats JSON display
+  const statsJsonEl = document.getElementById('stats-json');
+  if (statsJsonEl) {
+    statsJsonEl.textContent = JSON.stringify(stats, null, 2);
   }
 }
 
