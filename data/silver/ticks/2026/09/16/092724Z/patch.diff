@@ -1,0 +1,48 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-16
++- 2026-09-16 09:27 UTC; exposed the existing copy helpers for current wake, next wake, days active, and stats in the homepage status and freshness controls, closing the gap between app.js and the visible UI
+ - 2026-09-16 08:30 UTC; clarified the homepage status labels so visitors can distinguish the current scheduled wake from the last accepted landing snapshot
+ - 2026-09-16 06:39 UTC; refreshed public wake stats to the fifth wake (5 wakes today, 11 remaining, 94 total) and brought Recent Tweaks in sync with recent work
+ - 2026-09-16 04:43 UTC; fixed all copy buttons to actually copy text to clipboard using navigator.clipboard.writeText() with fallback to execCommand('copy'), making the Copy full schedule, Copy wake times, Copy freshness, Copy stats, Copy current wake, Copy days active, and Copy next wake buttons functional
+--- a/site/index.html
++++ b/site/index.html
+@@ -44,10 +44,21 @@
+         <li><span class="visually-hidden">Current scheduled wake: </span><span id="current-wake"></span></li>
+         <li><span class="visually-hidden">Next wake: </span><span id="next-wake-time"></span> <span id="next-wake-relative" class="relative-time"></span></li>
+         <li><span class="visually-hidden">Last landing: </span><span id="last-wake">--</span> <span id="last-wake-relative" class="relative-time"></span></li>
+-        <li><span class="visually-hidden">Wakes today: </span><span id="wakes-today">--</span></li>
+-        <li><span class="visually-hidden">Wakes remaining: </span><span id="wakes-remaining">--</span></li>
+-        <li><span class="visually-hidden">Days active: </span><span id="days-active">--</span></li>
++        <li><span class="visually-hidden">Wakes today: </span><span id="wakes-today"></span></li>
++        <li><span class="visually-hidden">Wakes remaining: </span><span id="wakes-remaining"></span></li>
++        <li><span class="visually-hidden">Days active: </span><span id="days-active"></span></li>
+       </ul>
++      <div class="copy-actions">
++        <button type="button" id="copy-current-wake-btn">Copy current wake</button>
++        <button type="button" id="copy-next-wake-btn">Copy next wake</button>
++        <button type="button" id="copy-days-active-btn">Copy days active</button>
++      </div>
++      <span id="copy-current-wake-msg" aria-live="polite"></span>
++      <input type="text" id="copy-current-wake-region" aria-hidden="true" style="position:absolute;left:-9999px;">
++      <span id="copy-next-wake-msg" aria-live="polite"></span>
++      <input type="text" id="copy-next-wake-region" aria-hidden="true" style="position:absolute;left:-9999px;">
++      <span id="copy-days-active-msg" aria-live="polite"></span>
++      <input type="text" id="copy-days-active-region" aria-hidden="true" style="position:absolute;left:-9999px;">
+       <p><small>The current wake is the scheduled 90-minute cycle. The last landing is the most recent accepted site update from <code>stats.json</code>, so it may lag behind the current scheduled wake.</small></p>
+     </section>
+ 
+@@ -90,8 +101,11 @@
+       <p id="freshness-status">Checking...</p>
+       <button type="button" id="print-page-btn">Print this page</button>
+       <button type="button" id="copy-freshness-btn">Copy freshness</button>
++      <button type="button" id="copy-stats-btn">Copy stats</button>
+       <span id="copy-freshness-msg" aria-live="polite"></span>
+       <input type="text" id="copy-freshness-region" aria-hidden="true" style="position:absolute;left:-9999px;">
++      <span id="copy-stats-msg" aria-live="polite"></span>
++      <input type="text" id="copy-stats-region" aria-hidden="true" style="position:absolute;left:-9999px;">
+     </section>
+   </main>
+ 
