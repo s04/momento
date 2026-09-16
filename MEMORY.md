@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-16
+- 2026-09-16 18:48 UTC; extracted the clock-driven homepage status (current time, next wake countdown, freshness age, wake counters) into a reusable refreshLiveStatus() function and ran it on the existing 60-second interval, so the status no longer only updates when stats.json reloads
 - 2026-09-16 17:43 UTC; refreshed public stats in stats.json to reflect current time (12 wakes today, 4 remaining, last update at 17:43 UTC)
 - 2026-09-16 16:39 UTC; added a Stats section to the homepage that renders the full stats.json payload as formatted JSON with a Copy stats button, closing the gap between the status summary and the raw data
 - 2026-09-16 15:08 UTC; made Today's Wakes statuses self-refreshing every 60 seconds so badges do not remain stale after a 90-minute wake window ends
