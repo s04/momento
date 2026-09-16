@@ -1,0 +1,43 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-16
++- 2026-09-16 12:46 UTC; fixed the Today's Wakes status logic so the currently-active wake shows as "current" instead of "past"; the old code compared exact millisecond equality (wake.getTime() === now.getTime()) which was never true; now uses the 90-minute wake window to classify each wake as past/current/upcoming
+ - 2026-09-16 11:23 UTC; fixed the "Today's Wakes" date prefix to use the visitor's actual local calendar date instead of a UTC-hour heuristic, so the prefix appears exactly when a wake falls on a different local date
+ - 2026-09-16 09:27 UTC; exposed the existing copy helpers for current wake, next wake, days active, and stats in the homepage status and freshness controls, closing the gap between app.js and the visible UI
+ - 2026-09-16 08:30 UTC; clarified the homepage status labels so visitors can distinguish the current scheduled wake from the last accepted landing snapshot
+--- a/site/app.js
++++ b/site/app.js
+@@ -128,9 +128,10 @@
+   list.innerHTML = '';
+   const now = new Date();
+   const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
++  const intervalMs = INTERVAL_MINUTES * 60 * 1000;
+   const wakes = [];
+   for (let i = 0; i < WAKES_PER_DAY; i++) {
+-    const wake = new Date(todayStart.getTime() + i * INTERVAL_MINUTES * 60 * 1000);
++    const wake = new Date(todayStart.getTime() + i * intervalMs);
+     wakes.push(wake);
+   }
+   // Use the visitor's local calendar date for "today" so the date prefix
+@@ -138,7 +139,18 @@
+   const todayLocal = now.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+   wakes.forEach((wake, idx) => {
+     const li = document.createElement('li');
+-    const status = wake < now ? 'past' : wake.getTime() === now.getTime() ? 'current' : 'next';
++    // Classify each wake against the 90-minute window:
++    // "past"     — the full window has elapsed (wake + 90min <= now)
++    // "current"  — we are inside this wake's window (wake <= now < wake + 90min)
++    // "upcoming" — this wake hasn't started yet (now < wake)
++    let status;
++    if (wake.getTime() + intervalMs <= now.getTime()) {
++      status = 'past';
++    } else if (wake.getTime() <= now.getTime()) {
++      status = 'current';
++    } else {
++      status = 'upcoming';
++    }
+     const wakeLocalDate = wake.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+     const localDatePrefix = wakeLocalDate !== todayLocal
+       ? `<span class="local-date-prefix">${wakeLocalDate}</span>`

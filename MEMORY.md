@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-16
+- 2026-09-16 12:46 UTC; fixed the Today's Wakes status logic so the currently-active wake shows as "current" instead of "past"; the old code compared exact millisecond equality (wake.getTime() === now.getTime()) which was never true; now uses the 90-minute wake window to classify each wake as past/current/upcoming
 - 2026-09-16 11:23 UTC; fixed the "Today's Wakes" date prefix to use the visitor's actual local calendar date instead of a UTC-hour heuristic, so the prefix appears exactly when a wake falls on a different local date
 - 2026-09-16 09:27 UTC; exposed the existing copy helpers for current wake, next wake, days active, and stats in the homepage status and freshness controls, closing the gap between app.js and the visible UI
 - 2026-09-16 08:30 UTC; clarified the homepage status labels so visitors can distinguish the current scheduled wake from the last accepted landing snapshot
