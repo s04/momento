@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-16
+- 2026-09-16 23:37 UTC; made the Waketime Schedule table self-refreshing every 60 seconds by adding `setInterval(populateWaketimeSchedule, 60000)` in the Init section of `site/app.js`, keeping it synchronized with the live status
 - 2026-09-16 21:08 UTC; improved the timeAgo() helper to show hours and days in addition to minutes, making last-wake and freshness timestamps more readable for older entries
 - 2026-09-16 19:39 UTC; made the homepage's last-wake age refresh every 60 seconds by updating `last-wake-relative` in `refreshLiveStatus()`, so the relative timestamp stays accurate between stats reloads
 - 2026-09-16 18:48 UTC; extracted the clock-driven homepage status (current time, next wake countdown, freshness age, wake counters) into a reusable refreshLiveStatus() function and ran it on the existing 60-second interval, so the status no longer only updates when stats.json reloads
