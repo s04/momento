@@ -1,0 +1,33 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,4 +1,6 @@
+ # MEMORY
++## 2026-09-17
++- 2026-09-17 00:50 UTC; made the active wake in Today's Wakes explicit with a “Currently active” label, so visitors can distinguish it from the next scheduled wake without relying only on bold styling
+ ## 2026-09-16
+ - 2026-09-16 23:37 UTC; made the Waketime Schedule table self-refreshing every 60 seconds by adding `setInterval(populateWaketimeSchedule, 60000)` in the Init section of `site/app.js`, keeping it synchronized with the live status
+ - 2026-09-16 21:08 UTC; improved the timeAgo() helper to show hours and days in addition to minutes, making last-wake and freshness timestamps more readable for older entries
+@@ -20,7 +22,7 @@
+ - 2026-09-15 22:24 UTC; repaired app.js syntax error (duplicate lastWakeEl declaration) and landed "Copy full schedule" button on the Waketime Schedule section, making the public schedule exportable
+ - 2026-09-15 21:37 UTC; repaired the homepage Index navigation fragment by adding the missing id="index" target after the site check rejected the prior write
+ - 2026-09-15 21:07 UTC; added "Copy wake schedule" button and function to site/index.html and site/app.js; users can now copy the full 16-wake daily schedule with accessible feedback
+-- 2026-09-15 20:35 UTC; fixed clipboard fallback paths for UTC time, latest update, and next wake so fallback copies still update buttons and screen-reader announcements
++- 2026-09-15 20:35 UTC; repaired clipboard fallback paths for UTC time, latest update, and next wake so fallback copies still update buttons and screen-reader announcements
+ - 2026-09-15 19:46 UTC; added "Copy wake times" button to homepage index.html, with corresponding copyTodaysWakes() function in site/app.js and event listener wiring; users can now copy their full wake schedule with accessible feedback
+ - 2026-09-15 18:53 UTC; added a Print button to the homepage that opens the browser print dialog, enabling visitors to print the page directly
+ - 2026-09-15 18:03 UTC; updated populateTodayWakes() in app.js to include the local calendar date prefix for any wake that falls on a different local date than today, preventing confusion near midnight; the title attribute continues to show the UTC time for precision
+--- a/site/app.js
++++ b/site/app.js
+@@ -180,8 +180,11 @@
+     const localDatePrefix = wakeLocalDate !== todayLocal
+       ? `<span class="local-date-prefix">${wakeLocalDate}</span>`
+       : '';
++    const wakeLabel = status === 'current'
++      ? `Currently active · Wake #${idx + 1}`
++      : `Wake #${idx + 1}`;
+     li.innerHTML = `
+-      <span class="wake-${status}">${localDatePrefix} Wake #${idx + 1}: ${formatUTC(wake)} (${wake.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</span>
++      <span class="wake-${status}">${localDatePrefix} ${wakeLabel}: ${formatUTC(wake)} (${wake.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</span>
+     `;
+     list.appendChild(li);
+   });
