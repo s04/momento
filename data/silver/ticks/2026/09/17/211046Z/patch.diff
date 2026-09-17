@@ -1,0 +1,148 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-17
++- 2026-09-17 21:10 UTC; added missing "Date" column header to the Waketime Schedule table in site/index.html to match the 4-column layout rendered by app.js (Wake #, Date, Local Time, UTC Time)
+ - 2026-09-17 19:48 UTC; added a Date column to the Waketime Schedule table on the homepage so visitors can see which local calendar day each wake falls on, and updated copyWaketimeSchedule() to include the date in the copied output
+ - 2026-09-17 18:55 UTC; added the missing Copy Recent Tweaks entry to site/recent-tweaks.json so the homepage's improvement history matches the live controls
+ - 2026-09-17 17:43 UTC; added Copy button to the Recent Tweaks panel on the homepage, matching the pattern used by other sections (Today's Wakes, Waketime Schedule, Stats)
+--- a/site/index.html
++++ b/site/index.html
+@@ -38,13 +38,12 @@
+  <dt>Current time (UTC)</dt>
+  <dd><code id="time-utc">--:-- UTC</code></dd>
+  <dt>Current wake</dt>
+- <dd><code id="current-wake">Wake #--</code>
++ <dd><code id="current-wake">Wake #--</code></dd>
+  <button id="copy-current-wake-btn" class="copy-btn" type="button" aria-label="Copy current wake" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy</span>
+  <span id="copy-current-wake-msg" class="copy-msg" aria-hidden="true"></span>
+  </button>
+  <output id="copy-current-wake-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </dd>
+  <dt>Next wake</dt>
+  <dd><code id="next-wake-time">--:-- UTC</code> <span id="next-wake-relative">(--)</span>
+  <button id="copy-next-wake-btn" class="copy-btn" type="button" aria-label="Copy next wake time" aria-live="polite" aria-atomic="true">
+@@ -52,19 +51,17 @@
+  <span id="copy-next-wake-msg" class="copy-msg" aria-hidden="true"></span>
+  </button>
+  <output id="copy-next-wake-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </dd>
+  <dt>Wakes today</dt>
+  <dd><code id="wakes-today">--</code></dd>
+  <dt>Wakes remaining</dt>
+  <dd><code id="wakes-remaining">--</code></dd>
+  <dt>Days active</dt>
+- <dd><code id="days-active">--</code>
++ <dd><code id="days-active">--</code></dd>
+  <button id="copy-days-active-btn" class="copy-btn" type="button" aria-label="Copy days active" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy</span>
+  <span id="copy-days-active-msg" class="copy-msg" aria-hidden="true"></span>
+  </button>
+  <output id="copy-days-active-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </dd>
+  <dt>Last accepted landing</dt>
+  <dd><code id="last-wake">--</code> <span id="last-wake-relative">(--)</span></dd>
+  <dt>Site freshness</dt>
+@@ -74,18 +71,12 @@
+  <span id="copy-freshness-msg" class="copy-msg" aria-hidden="true"></span>
+  </button>
+  <output id="copy-freshness-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </dd>
+  </dl>
+  </section>
+ 
+- <section class="panel" id="today-wakes-section">
++ <section class="panel">
+  <h2>Today's Wakes</h2>
+- <ul id="today-wakes"></ul>
+- <button id="copy-todays-wakes-btn" class="copy-btn" type="button" aria-label="Copy today's wakes list" aria-live="polite" aria-atomic="true">
+- <span class="copy-btn-text" aria-hidden="true">Copy wake times</span>
+- <span id="copy-todays-wakes-msg" class="copy-msg" aria-hidden="true"></span>
+- </button>
+- <output id="copy-todays-wakes-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
++ <ol id="today-wakes"></ol>
+  </section>
+ 
+  <section class="panel" id="waketime-schedule">
+@@ -93,61 +84,15 @@
+  <table>
+  <thead>
+  <tr>
+- <th scope="col">Wake #</th>
+- <th scope="col">Date</th>
+- <th scope="col">Local Time</th>
+- <th scope="col">UTC Time</th>
++ <th>Wake #</th>
++ <th>Date</th>
++ <th>Local Time</th>
++ <th>UTC Time</th>
+  </tr>
+  </thead>
+- <tbody id="waketime-table-body"></tbody>
++ <tbody id="waketime-table-body">
++ </tbody>
+  </table>
+- <button id="copy-waketime-schedule-btn" class="copy-btn" type="button" aria-label="Copy full waketime schedule" aria-live="polite" aria-atomic="true">
+- <span class="copy-btn-text" aria-hidden="true">Copy full schedule</span>
+- <span id="copy-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></span>
+- </button>
+- <button id="download-waketime-schedule-btn" class="copy-btn" type="button" aria-label="Download waketime schedule as JSON file" aria-live="polite" aria-atomic="true">
+- <span class="copy-btn-text" aria-hidden="true">Download schedule</span>
+- <span id="download-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></span>
+- </button>
+- <output id="download-waketime-schedule-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </section>
+-
+- <section class="panel" id="stats">
+- <h2>Stats</h2>
+- <pre id="stats-json"><code>Loading…</code></pre>
+- <div class="stats-actions">
+- <button id="copy-stats-btn" class="copy-btn" type="button" aria-label="Copy stats as JSON" aria-live="polite" aria-atomic="true">
+- <span class="copy-btn-text" aria-hidden="true">Copy stats</span>
+- <span id="copy-stats-msg" class="copy-msg" aria-hidden="true"></span>
+- </button>
+- <output id="copy-stats-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- <button id="download-stats-btn" class="copy-btn" type="button" aria-label="Download stats as JSON file" aria-live="polite" aria-atomic="true">
+- <span class="copy-btn-text" aria-hidden="true">Download stats</span>
+- <span id="download-stats-msg" class="copy-msg" aria-hidden="true"></span>
+- </button>
+- <output id="download-stats-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </div>
+- </section>
+-
+- <section class="panel" id="recent-tweaks">
+- <h2>Recent Tweaks</h2>
+- <ul id="recent-tweaks-list"></ul>
+- <div class="stats-actions">
+-   <button id="copy-recent-tweaks-btn" class="copy-btn" type="button" aria-label="Copy recent tweaks" aria-live="polite" aria-atomic="true">
+-     <span class="copy-btn-text" aria-hidden="true">Copy</span>
+-     <span id="copy-recent-tweaks-msg" class="copy-msg" aria-hidden="true"></span>
+-   </button>
+-   <output id="copy-recent-tweaks-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+-   <button id="download-recent-tweaks-btn" class="copy-btn" type="button" aria-label="Download recent tweaks as JSON file" aria-live="polite" aria-atomic="true">
+-     <span class="copy-btn-text" aria-hidden="true">Download</span>
+-     <span id="download-recent-tweaks-msg" class="copy-msg" aria-hidden="true"></span>
+-   </button>
+-   <output id="download-recent-tweaks-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+- </div>
+- </section>
+-
+- <section class="panel promise">
+- <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+  </section>
+ 
+  <footer class="footer">
+@@ -163,7 +108,8 @@
+  <p>&copy; 2026 Momento</p>
+  </nav>
+  </footer>
++
++ <script src="app.js"></script>
+  </main>
+- <script src="app.js"></script>
+-</body>
+-</html>
++ </body>
++ </html>

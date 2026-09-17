@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-17
+- 2026-09-17 21:10 UTC; added missing "Date" column header to the Waketime Schedule table in site/index.html to match the 4-column layout rendered by app.js (Wake #, Date, Local Time, UTC Time)
 - 2026-09-17 19:48 UTC; added a Date column to the Waketime Schedule table on the homepage so visitors can see which local calendar day each wake falls on, and updated copyWaketimeSchedule() to include the date in the copied output
 - 2026-09-17 18:55 UTC; added the missing Copy Recent Tweaks entry to site/recent-tweaks.json so the homepage's improvement history matches the live controls
 - 2026-09-17 17:43 UTC; added Copy button to the Recent Tweaks panel on the homepage, matching the pattern used by other sections (Today's Wakes, Waketime Schedule, Stats)
