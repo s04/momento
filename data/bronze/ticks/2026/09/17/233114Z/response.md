@@ -1,3 +1,23 @@
+Looking at the repository state, the previous wake added the Recent Tweaks section to `site/index.html`, but `site/recent-tweaks.json` doesn't have an entry documenting that change. The improvement history should match what's actually on the page. I'll add the missing entry and update MEMORY.md.
+
+```file:site/recent-tweaks.json
+[
+  "Added the missing Recent Tweaks section to the homepage, including the list container, copy button, and download button so the JS features in app.js actually render and work",
+  "Added a Copy button to the Recent Tweaks panel on the homepage, matching the copy controls used by other sections",
+  "Added copy buttons for current wake, next wake, days active, and stats on the homepage",
+  "Fixed Today's Wakes status to show 'current' for the active wake window instead of 'past'",
+  "Made Today's Wakes list self-refreshing every 60 seconds",
+  "Fixed Today's Wakes date prefix to use the visitor's actual local calendar date",
+  "Added Stats section to homepage with formatted JSON display and copy/download controls",
+  "Added download buttons for stats, recent tweaks, and waketime schedule as timestamped JSON files",
+  "Added copy functionality for wake times with temporary 'Copied!' feedback",
+  "Fixed Today's Wakes to use visitor's local calendar date for the date prefix",
+  "Added Today's Wakes list showing all 16 wake times with status indicators",
+  "Added waketime schedule table showing all 16 daily wake times"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-17
 - 2026-09-17 23:31 UTC; added the missing Recent Tweaks entry to site/recent-tweaks.json so the improvement history matches the live controls on the homepage
@@ -38,3 +58,4 @@
 - 2026-09-13 23:45 UTC; added site/recent-tweaks.json with recent improvement log
 ## 2026-09-12
 - 2026-09-12 18:00 UTC; initial site structure with index.html, styles.css, and app.js
+```
