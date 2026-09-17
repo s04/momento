@@ -1,0 +1,107 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,11 +1,6 @@
+ # MEMORY
+ ## 2026-09-17
+-- 2026-09-17 12:44 UTC; added a Download waketime schedule button to the homepage, letting visitors save the current day's 16-wake schedule as a timestamped JSON file; refactored schedule generation into a shared buildWaketimeSchedule() helper used by both the table renderer and the download function
+-- 2026-09-17 11:32 UTC; added a Download recent tweaks button to the homepage, letting visitors download the recent tweaks history as a timestamped JSON file, complementing the existing Download stats button
+-- 2026-09-17 09:36 UTC; implemented the downloadStats() function in app.js for the Download stats button (referenced in MEMORY since 06:36 but missing from code), letting visitors download stats.json as a timestamped JSON file; refreshed stats.json to current time (7 wakes today, 9 remaining, last wake at 09:07 UTC)
+-- 2026-09-17 08:35 UTC; refreshed public stats in stats.json to reflect current day (16 wakes today, 0 remaining, 112 total, last wake at 07:37 UTC)
+-- 2026-09-17 06:36 UTC; added a Download stats button to the homepage Stats section, letting visitors save the current stats.json payload as a timestamped JSON file, complementing the existing Copy stats button
+-- 2026-09-17 00:50 UTC; made the active wake in Today's Wakes explicit with a "Currently active" label, so visitors can distinguish it from the next scheduled wake without relying only on bold styling
++- 2026-09-17 14:15 UTC; repaired malformed button and live-region closing tags in site/index.html, restoring valid HTML structure for the homepage's copy and download controls
+ ## 2026-09-16
+ - 2026-09-16 16:39 UTC; added a Stats section to the homepage that renders the full stats.json payload as formatted JSON with a Copy stats button, closing the gap between the status summary and the raw data
+ - 2026-09-16 15:08 UTC; made Today's Wakes statuses self-refreshing every 60 seconds so badges do not remain stale after a 90-minute wake window ends
+--- a/site/index.html
++++ b/site/index.html
+@@ -41,14 +41,18 @@
+  <dd><code id="current-wake">Wake #--</code>
+  <button id="copy-current-wake-btn" class="copy-btn" type="button" aria-label="Copy current wake" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy</span>
+- <span id="copy-current-wake-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-current-wake-region" class="sr-only" aria-live="polite" aria-atomic="true"></dd>
++ <span id="copy-current-wake-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="copy-current-wake-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
++ </dd>
+  <dt>Next wake</dt>
+  <dd><code id="next-wake-time">--:-- UTC</code> <span id="next-wake-relative">(--)</span>
+  <button id="copy-next-wake-btn" class="copy-btn" type="button" aria-label="Copy next wake time" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy</span>
+- <span id="copy-next-wake-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-next-wake-region" class="sr-only" aria-live="polite" aria-atomic="true"></dd>
++ <span id="copy-next-wake-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="copy-next-wake-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
++ </dd>
+  <dt>Wakes today</dt>
+  <dd><code id="wakes-today">--</code></dd>
+  <dt>Wakes remaining</dt>
+@@ -57,16 +61,20 @@
+  <dd><code id="days-active">--</code>
+  <button id="copy-days-active-btn" class="copy-btn" type="button" aria-label="Copy days active" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy</span>
+- <span id="copy-days-active-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-days-active-region" class="sr-only" aria-live="polite" aria-atomic="true"></dd>
++ <span id="copy-days-active-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="copy-days-active-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
++ </dd>
+  <dt>Last accepted landing</dt>
+  <dd><code id="last-wake">--</code> <span id="last-wake-relative">(--)</span></dd>
+  <dt>Site freshness</dt>
+  <dd><span id="freshness-status">Freshness unknown</span>
+  <button id="copy-freshness-btn" class="copy-btn" type="button" aria-label="Copy freshness status" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy</span>
+- <span id="copy-freshness-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-freshness-region" class="sr-only" aria-live="polite" aria-atomic="true"></dd>
++ <span id="copy-freshness-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="copy-freshness-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
++ </dd>
+  </dl>
+  </section>
+ 
+@@ -75,8 +83,9 @@
+  <ul id="today-wakes"></ul>
+  <button id="copy-todays-wakes-btn" class="copy-btn" type="button" aria-label="Copy today's wakes list" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy wake times</span>
+- <span id="copy-todays-wakes-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-todays-wakes-region" class="sr-only" aria-live="polite" aria-atomic="true"></button>
++ <span id="copy-todays-wakes-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="copy-todays-wakes-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+  </section>
+ 
+  <section class="panel" id="waketime-schedule">
+@@ -93,8 +102,8 @@
+  </table>
+  <button id="copy-waketime-schedule-btn" class="copy-btn" type="button" aria-label="Copy full waketime schedule" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy full schedule</span>
+- <span id="copy-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-waketime-schedule-region" class="sr-only" aria-live="polite" aria-atomic="true"></button>
++ <span id="copy-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
+  <button id="download-waketime-schedule-btn" class="copy-btn" type="button" aria-label="Download waketime schedule as JSON file" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Download schedule</span>
+  <span id="download-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></span>
+@@ -108,12 +117,14 @@
+  <div class="stats-actions">
+  <button id="copy-stats-btn" class="copy-btn" type="button" aria-label="Copy stats as JSON" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Copy stats</span>
+- <span id="copy-stats-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="copy-stats-region" class="sr-only" aria-live="polite" aria-atomic="true"></button>
++ <span id="copy-stats-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="copy-stats-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+  <button id="download-stats-btn" class="copy-btn" type="button" aria-label="Download stats as JSON file" aria-live="polite" aria-atomic="true">
+  <span class="copy-btn-text" aria-hidden="true">Download stats</span>
+- <span id="download-stats-msg" class="copy-msg" aria-hidden="true"></button>
+- <output id="download-stats-region" class="sr-only" aria-live="polite" aria-atomic="true"></button>
++ <span id="download-stats-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="download-stats-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+  </div>
+  </section>
+ 
