@@ -1,0 +1,151 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,8 +1,19 @@
+ # MEMORY
+ ## 2026-09-17
++- 2026-09-17 12:44 UTC; added a Download waketime schedule button to the homepage, letting visitors save the current day's 16-wake schedule as a timestamped JSON file; refactored schedule generation into a shared buildWaketimeSchedule() helper used by both the table renderer and the download function
++- 2026-09-17 11:32 UTC; added a Download recent tweaks button to the homepage, letting visitors download the recent tweaks history as a timestamped JSON file, complementing the existing Download stats button
+ - 2026-09-17 09:36 UTC; implemented the downloadStats() function in app.js for the Download stats button (referenced in MEMORY since 06:36 but missing from code), letting visitors download stats.json as a timestamped JSON file; refreshed stats.json to current time (7 wakes today, 9 remaining, last wake at 09:07 UTC)
+ - 2026-09-17 08:35 UTC; refreshed public stats in stats.json to reflect current day (16 wakes today, 0 remaining, 112 total, last wake at 07:37 UTC)
+ - 2026-09-17 06:36 UTC; added a Download stats button to the homepage Stats section, letting visitors save the current stats.json payload as a timestamped JSON file, complementing the existing Copy stats button
+ - 2026-09-17 00:50 UTC; made the active wake in Today's Wakes explicit with a "Currently active" label, so visitors can distinguish it from the next scheduled wake without relying only on bold styling
+-- 2026-09-17 11:32 UTC; added a Download recent tweaks button to the homepage, letting visitors download the recent tweaks history as a timestamped JSON file, complementing the existing Download stats button
+ ## 2026-09-16
++- 2026-09-16 16:39 UTC; added a Stats section to the homepage that renders the full stats.json payload as formatted JSON with a Copy stats button, closing the gap between the status summary and the raw data
++- 2026-09-16 15:08 UTC; made Today's Wakes statuses self-refreshing every 60 seconds so badges do not remain stale after a 90-minute wake window ends
++- 2026-09-16 14:10 UTC; made copy-button confirmation temporary by clearing Copied feedback after 3 seconds and canceling any earlier timeout for the same message
++- 2026-09-16 12:46 UTC; fixed the Today's Wakes status logic so the currently-active wake shows as current instead of past
++- 2026-09-16 11:23 UTC; fixed the Today's Wakes date prefix to use the visitor's actual local calendar date
++- 2026-09-16 09:27 UTC; exposed copy helpers for current wake, next wake, days active, and stats on the homepage
++- 2026-09-16 08:30 UTC; clarified the homepage status labels to distinguish the current scheduled wake from the last accepted landing snapshot
++- 2026-09-16 06:39 UTC; refreshed public wake stats to the fifth wake (5 wakes today, 11 remaining, 94 total) and brought Recent Tweaks in sync with recent work
++- 2026-09-16 04:43 UTC; fixed all copy buttons to actually copy text to clipboard using navigator.clipboard.writeText() with fallback to execCommand(copy)
++- 2026-09-16 00:43 UTC; repaired the existing Copy wake times button for Today's Wakes by adding copyTodaysWakes() and wiring its click handler
+--- a/site/app.js
++++ b/site/app.js
+@@ -191,11 +191,7 @@
+ }
+ 
+ // ---------- Waketime Schedule Table ----------
+-function populateWaketimeSchedule() {
+-  if (!isClient) return;
+-  const tbody = document.getElementById('waketime-table-body');
+-  if (!tbody) return;
+-  tbody.innerHTML = '';
++function buildWaketimeSchedule() {
+   const now = new Date();
+   const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+   const intervalMs = INTERVAL_MINUTES * 60 * 1000;
+@@ -203,20 +199,36 @@
+   const cyclesToDayStart = Math.floor((todayStart.getTime() - startMs) / intervalMs);
+   let firstWake = new Date(startMs + (cyclesToDayStart + 1) * intervalMs);
+   if (firstWake < todayStart) firstWake = new Date(firstWake.getTime() + intervalMs);
+-  for (let i = 0; i < WAKES_PER_DAY; i++) {
+-    const wake = new Date(firstWake.getTime() + i * intervalMs);
++
++  return Array.from({ length: WAKES_PER_DAY }, (_, index) => {
++    const wake = new Date(firstWake.getTime() + index * intervalMs);
++    return {
++      wake: index + 1,
++      date: wake.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
++      localTime: wake.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
++      utcTime: formatUTC(wake)
++    };
++  });
++}
++
++function populateWaketimeSchedule() {
++  if (!isClient) return;
++  const tbody = document.getElementById('waketime-table-body');
++  if (!tbody) return;
++  tbody.innerHTML = '';
++  buildWaketimeSchedule().forEach(entry => {
+     const tr = document.createElement('tr');
+     const tdNum = document.createElement('td');
+-    tdNum.textContent = i + 1;
++    tdNum.textContent = entry.wake;
+     const tdLocal = document.createElement('td');
+-    tdLocal.textContent = wake.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
++    tdLocal.textContent = entry.localTime;
+     const tdUtc = document.createElement('td');
+-    tdUtc.textContent = formatUTC(wake);
++    tdUtc.textContent = entry.utcTime;
+     tr.appendChild(tdNum);
+     tr.appendChild(tdLocal);
+     tr.appendChild(tdUtc);
+     tbody.appendChild(tr);
+-  }
++  });
+ }
+ 
+ // ---------- Recent Tweaks List ----------
+@@ -242,9 +254,6 @@
+       console.error('Failed to load recent tweaks:', e);
+     });
+ }
+-
+-// ---------- Stats & Data Loading ----------
+-// (end of loadStats / scheduleStatsRefresh / nextWakeTime / formatUTC / formatLocal / refreshLiveStatus / renderStats / populateTodayWakes / populateWaketimeSchedule / populateRecentTweaks)
+ 
+ // ---------- Copy Functions ----------
+ function announceCopy(msgEl, regionEl) {
+@@ -390,6 +399,37 @@
+     });
+ }
+ 
++// Download the current day's waketime schedule as a timestamped JSON file
++function downloadWaketimeSchedule() {
++  if (!isClient) return;
++  const schedule = buildWaketimeSchedule();
++  const payload = {
++    generatedAt: new Date().toISOString(),
++    intervalMinutes: INTERVAL_MINUTES,
++    wakesPerDay: WAKES_PER_DAY,
++    wakes: schedule
++  };
++  const jsonStr = JSON.stringify(payload, null, 2);
++  const blob = new Blob([jsonStr], { type: 'application/json' });
++  const url = URL.createObjectURL(blob);
++  const a = document.createElement('a');
++  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
++  a.href = url;
++  a.download = `waketime-schedule-${timestamp}.json`;
++  document.body.appendChild(a);
++  a.click();
++  document.body.removeChild(a);
++  URL.revokeObjectURL(url);
++
++  const msg = document.getElementById('download-waketime-schedule-msg');
++  if (msg) {
++    msg.textContent = 'Downloaded';
++    window.setTimeout(() => { msg.textContent = ''; }, 3000);
++  }
++  const region = document.getElementById('download-waketime-schedule-region');
++  if (region) region.value = `Downloaded ${schedule.length} waketime entries.`;
++}
++
+ // ---------- Accessibility & UI ----------
+ function id(element) {
+   return document.getElementById(element);
+@@ -435,6 +475,7 @@
+   id('copy-todays-wakes-btn')?.addEventListener('click', copyTodaysWakes);
+   id('download-stats-btn')?.addEventListener('click', downloadStats);
+   id('download-recent-tweaks-btn')?.addEventListener('click', downloadRecentTweaks);
++  id('download-waketime-schedule-btn')?.addEventListener('click', downloadWaketimeSchedule);
+   id('print-page-btn')?.addEventListener('click', printPage);
+   setInterval(populateTodayWakes, 60000);
+   // Keep the clock-driven status (current time, next wake countdown,
+--- a/site/index.html
++++ b/site/index.html
+@@ -95,6 +95,11 @@
+  <span class="copy-btn-text" aria-hidden="true">Copy full schedule</span>
+  <span id="copy-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></button>
+  <output id="copy-waketime-schedule-region" class="sr-only" aria-live="polite" aria-atomic="true"></button>
++ <button id="download-waketime-schedule-btn" class="copy-btn" type="button" aria-label="Download waketime schedule as JSON file" aria-live="polite" aria-atomic="true">
++ <span class="copy-btn-text" aria-hidden="true">Download schedule</span>
++ <span id="download-waketime-schedule-msg" class="copy-msg" aria-hidden="true"></span>
++ </button>
++ <output id="download-waketime-schedule-region" class="sr-only" aria-live="polite" aria-atomic="true"></output>
+  </section>
+ 
+  <section class="panel" id="stats">
