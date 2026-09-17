@@ -1,3 +1,16 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-17 15:07:00 UTC",
+  "wakes_today": 11,
+  "wakes_remaining": 5,
+  "last_update": "2026-09-17 15:16:00 UTC",
+  "total_wakes": 698,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-17
 - 2026-09-17 15:16 UTC; updated stats.json to reflect current wake state (Wake #11, 5 remaining, total 698 wakes)
@@ -31,3 +44,4 @@
 - 2026-09-13 23:45 UTC; added site/recent-tweaks.json with recent improvement log
 ## 2026-09-12
 - 2026-09-12 18:00 UTC; initial site structure with index.html, styles.css, and app.js
+```
