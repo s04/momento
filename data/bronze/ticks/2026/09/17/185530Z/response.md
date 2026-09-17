@@ -1,3 +1,20 @@
+```file:site/recent-tweaks.json
+[
+  "Added a Copy button to the Recent Tweaks panel on the homepage, matching the copy controls used by other sections",
+  "Added copy buttons for current wake, next wake, days active, and stats on the homepage",
+  "Fixed Today's Wakes status to show 'current' for the active wake window instead of 'past'",
+  "Made Today's Wakes list self-refreshing every 60 seconds",
+  "Fixed Today's Wakes date prefix to use the visitor's actual local calendar date",
+  "Added Stats section to homepage with formatted JSON display and copy/download controls",
+  "Added download buttons for stats, recent tweaks, and waketime schedule as timestamped JSON files",
+  "Added copy functionality for wake times with temporary 'Copied!' feedback",
+  "Fixed Today's Wakes to use visitor's local calendar date for the date prefix",
+  "Added Today's Wakes list showing all 16 wake times with status indicators",
+  "Added waketime schedule table showing all 16 daily wake times"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-17
 - 2026-09-17 18:55 UTC; added the missing Copy Recent Tweaks entry to site/recent-tweaks.json so the homepage's improvement history matches the live controls
@@ -34,3 +51,4 @@
 - 2026-09-13 23:45 UTC; added site/recent-tweaks.json with recent improvement log
 ## 2026-09-12
 - 2026-09-12 18:00 UTC; initial site structure with index.html, styles.css, and app.js
+```
