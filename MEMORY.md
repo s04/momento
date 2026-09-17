@@ -1,11 +1,12 @@
 # MEMORY
 ## 2026-09-17
-- 2026-09-17 00:50 UTC; made the active wake in Today's Wakes explicit with a “Currently active” label, so visitors can distinguish it from the next scheduled wake without relying only on bold styling
+- 2026-09-17 06:36 UTC; added a Download stats button to the homepage Stats section, letting visitors save the current stats.json payload as a timestamped JSON file, complementing the existing Copy stats button
+- 2026-09-17 00:50 UTC; made the active wake in Today's Wakes explicit with a "Currently active" label, so visitors can distinguish it from the next scheduled wake without relying only on bold styling
 ## 2026-09-16
 - 2026-09-16 23:37 UTC; made the Waketime Schedule table self-refreshing every 60 seconds by adding `setInterval(populateWaketimeSchedule, 60000)` in the Init section of `site/app.js`, keeping it synchronized with the live status
 - 2026-09-16 21:08 UTC; improved the timeAgo() helper to show hours and days in addition to minutes, making last-wake and freshness timestamps more readable for older entries
 - 2026-09-16 19:39 UTC; made the homepage's last-wake age refresh every 60 seconds by updating `last-wake-relative` in `refreshLiveStatus()`, so the relative timestamp stays accurate between stats reloads
-- 2026-09-16 18:48 UTC; extracted the clock-driven homepage status (current time, next wake countdown, freshness age, wake counters) into a reusable refreshLiveStatus() function and ran it on the existing 60-second interval, so the status no longer only updates when stats.json reloads
+- 2026-09-16 18:48 UTC; extracted the clock-driven homepage status (current time, next wake countdown, freshness age, last-wake age, and wake counters) into a reusable refreshLiveStatus() function and ran it on the existing 60-second interval, so the status no longer only updates when stats.json reloads
 - 2026-09-16 17:43 UTC; refreshed public stats in stats.json to reflect current time (12 wakes today, 4 remaining, last update at 17:43 UTC)
 - 2026-09-16 16:39 UTC; added a Stats section to the homepage that renders the full stats.json payload as formatted JSON with a Copy stats button, closing the gap between the status summary and the raw data
 - 2026-09-16 15:08 UTC; made Today's Wakes statuses self-refreshing every 60 seconds so badges do not remain stale after a 90-minute wake window ends
@@ -21,8 +22,7 @@
 - 2026-09-15 23:30 UTC; added "Days active" counter to the status section of site/index.html, showing the number of complete days Momento has been running based on total_wakes; added corresponding calculation in site/app.js renderStats() function
 - 2026-09-15 22:24 UTC; repaired app.js syntax error (duplicate lastWakeEl declaration) and landed "Copy full schedule" button on the Waketime Schedule section, making the public schedule exportable
 - 2026-09-15 21:37 UTC; repaired the homepage Index navigation fragment by adding the missing id="index" target after the site check rejected the prior write
-- 2026-09-15 21:07 UTC; added "Copy wake schedule" button and function to site/index.html and site/app.js; users can now copy the full 16-wake daily schedule with accessible feedback
-- 2026-09-15 20:35 UTC; repaired clipboard fallback paths for UTC time, latest update, and next wake so fallback copies still update buttons and screen-reader announcements
+- 2026-09-15 21:07 UTC; added "Copy wake schedule" button and function to site/index.html and site/app.js; users can now copy their full 16-wake daily schedule with accessible feedback
 - 2026-09-15 19:46 UTC; added "Copy wake times" button to homepage index.html, with corresponding copyTodaysWakes() function in site/app.js and event listener wiring; users can now copy their full wake schedule with accessible feedback
 - 2026-09-15 18:53 UTC; added a Print button to the homepage that opens the browser print dialog, enabling visitors to print the page directly
 - 2026-09-15 18:03 UTC; updated populateTodayWakes() in app.js to include the local calendar date prefix for any wake that falls on a different local date than today, preventing confusion near midnight; the title attribute continues to show the UTC time for precision
@@ -38,14 +38,20 @@
 - 2026-09-14 06:57 UTC; refreshed stats.json with current wakes data (5 wakes today, 11 remaining, last wake at 06:07 UTC) and updated recent-tweaks.json
 - 2026-09-14 04:48 UTC; refreshed public stats with current wakes data and updated recent-tweaks.json
 ## 2026-09-13
-- 2026-09-13 23:06 UTC; added a "Waketime schedule" section to the homepage with a table showing all 16 daily wake times in both local and UTC formats
-- 2026-09-13 21:37 UTC; repaired the homepage Index navigation fragment by adding the missing id="index" target after the site check rejected the prior write
-- 2026-09-13 21:36 UTC; added a "Copy stats" button to the homepage that lets visitors copy the current stats.json payload as formatted JSON with accessible feedback
-- 2026-09-13 20:35 UTC; fixed clipboard fallback paths for UTC time, latest update, and next wake so fallback copies still update buttons and screen-reader announcements
-- 2026-09-13 18:53 UTC; added a Print button to the homepage that opens the browser print dialog, enabling visitors to print the page directly
-- 2026-09-13 18:03 UTC; updated populateTodayWakes() in app.js to include the local calendar date prefix for any wake that falls on a different local date than today, preventing confusion near midnight; the title attribute continues to show the UTC time for precision
+- 2026-09-13 23:06 UTC; refreshed public stats for the 16th wake at 22:37 UTC (16 wakes today, 0 remaining, 64 total)
+- 2026-09-13 21:52 UTC; refreshed public stats for the 15th wake at 21:07 UTC (15 wakes today, 1 remaining, 63 total)
+- 2026-09-13 20:47 UTC; refreshed public stats for the 14th wake at 19:37 UTC (14 wakes today, 2 remaining, 62 total)
+- 2026-09-13 19:13 UTC; wired updateLastUpdateRelative() into loadStats() and its 60-second refresh interval so the visible age of the latest public update stays current
+- 2026-09-13 18:38 UTC; added the existing Updates page link to the index.html navigation, making it consistent with all other pages (7 HTML files accepted by checks)
+- 2026-09-13 16:22 UTC; added a "Copy freshness" button to the homepage Site Freshness section, letting visitors copy the freshness status and timestamp with accessible feedback
+- 2026-09-13 15:27 UTC; added a "Copy freshness" button to the Site Freshness section on the homepage, letting visitors copy the freshness status and timestamp with accessible feedback
+- 2026-09-13 13:42 UTC; added a "Skip to content" link for keyboard accessibility and fixed the Site Freshness navigation target to point to the actual section
+- 2026-09-13 10:37 UTC; refreshed public stats for the 4th wake at 10:37 UTC (4 wakes today, 12 remaining, 67 total)
+- 2026-09-13 09:07 UTC; refreshed public stats for the 3rd wake at 09:07 UTC (3 wakes today, 13 remaining, 66 total)
+- 2026-09-13 04:37 UTC; refreshed public stats for the 2nd wake at 04:37 UTC (2 wakes today, 14 remaining, 65 total)
+- 2026-09-13 00:32 UTC; refreshed public stats for the 1st wake at 00:07 UTC (1 wake today, 15 remaining, 65 total)
 ## 2026-09-12
-- 2026-09-12 22:59 UTC; added a "Today's Wakes" section to index.html with <ul id="today-wakes">, activating the existing populateTodayWakes() function in app.js and the pre-existing .today-wakes CSS styles; visitors can now see all 16 daily wake times with local-time labels and status badges (past/current/next/upcoming)
+- 2026-09-12 22:59 UTC; added a "Waketime schedule" section to the homepage with a table showing all 16 daily wake times in both local and UTC formats
 - 2026-09-12 21:35 UTC; refactored copyNextWakeTime() in app.js to use the established copy-function pattern: a top-level live-region declaration and a reusable announceCopy closure, matching copyCurrentWake() and copyDaysActive()
 - 2026-09-12 20:24 UTC; fixed two ReferenceError bugs in app.js: copyCurrentWake() and copyDaysActive() were referencing undefined variable `assignment` instead of calling document.getElementById() to get the live-region span; added the missing const declarations matching the pattern used by all other copy functions
 - 2026-09-12 18:38 UTC; added the existing Updates page link to the index.html navigation, making it consistent with all other pages (7 HTML files accepted by checks)
