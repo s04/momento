@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-18
+- 2026-09-18 09:08 UTC; added a Print schedule control to the homepage and wired it to the existing print handler so visitors can print the waketime schedule
 - 2026-09-18 08:10 UTC; refreshed public wake stats to Wake #710 (6 wakes today, 10 remaining, 710 total) and updated recent-tweaks.json so the homepage reflects the current 08:10 UTC wake window
 - 2026-09-18 06:33 UTC; refreshed public wake stats to Wake #709 (5 wakes today, 11 remaining, 709 total) and updated recent-tweaks.json so the homepage no longer shows stale figures from 2 hours ago
 - 2026-09-18 04:36 UTC; refreshed public wake stats to Wake #707 (3 wakes today, 13 remaining, 707 total) and updated recent-tweaks.json so the homepage no longer shows stale figures from 4 hours ago
