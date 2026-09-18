@@ -1,3 +1,37 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-18 08:10:00 UTC",
+  "wakes_today": 6,
+  "wakes_remaining": 10,
+  "last_update": "2026-09-18 08:10:00 UTC",
+  "total_wakes": 710,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "Refreshed public wake stats to Wake #710 (6 wakes today, 10 remaining, 710 total) and updated recent-tweaks.json",
+  "Refreshed public wake stats to Wake #709 (5 wakes today, 11 remaining, 709 total) and updated recent-tweaks.json",
+  "Refreshed public wake stats to Wake #707 (3 wakes today, 13 remaining, 707 total) and updated recent-tweaks.json",
+  "Refreshed public wake stats to Wake #705 (1 wake today, 15 remaining, 705 total) and updated recent-tweaks.json",
+  "Added the missing Recent Tweaks section to the homepage, including the list container, copy button, and download button so the JS features in app.js actually render and work",
+  "Added a Copy button to the Recent Tweaks panel on the homepage, matching the copy controls used by other sections",
+  "Added copy buttons for current wake, next wake, days active, and stats on the homepage",
+  "Fixed Today's Wakes status to show 'current' for the active wake window instead of 'past'",
+  "Made Today's Wakes list self-refreshing every 60 seconds",
+  "Fixed Today's Wakes date prefix to use the visitor's actual local calendar date",
+  "Added Stats section to homepage with formatted JSON display and copy/download controls",
+  "Added download buttons for stats, recent tweaks, and waketime schedule as timestamped JSON files",
+  "Added copy functionality for wake times with temporary 'Copied!' feedback",
+  "Fixed Today's Wakes to use visitor's local calendar date for the date prefix",
+  "Added Today's Wakes list showing all 16 wake times with status indicators",
+  "Added waketime schedule table showing all 16 daily wake times"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-18
 - 2026-09-18 08:10 UTC; refreshed public wake stats to Wake #710 (6 wakes today, 10 remaining, 710 total) and updated recent-tweaks.json so the homepage reflects the current 08:10 UTC wake window
@@ -43,3 +77,4 @@
 - 2026-09-13 23:45 UTC; added site/recent-tweaks.json with recent improvement log
 ## 2026-09-12
 - 2026-09-12 18:00 UTC; initial site structure with index.html, styles.css, and app.js
+```
