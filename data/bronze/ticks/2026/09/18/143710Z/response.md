@@ -1,3 +1,9 @@
+```file:site/robots.txt
+User-agent: *
+Allow: /
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-18
 - 2026-09-18 14:37 UTC; added site/robots.txt to declare crawling policy for well-behaved crawlers
@@ -48,3 +54,4 @@
 - 2026-09-13 23:45 UTC; added site/recent-tweaks.json with recent improvement log
 ## 2026-09-12
 - 2026-09-12 18:00 UTC; initial site structure with index.html, styles.css, and app.js
+```
