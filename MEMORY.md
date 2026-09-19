@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-19
+- 2026-09-19 10:50 UTC; added a visible Status column to the waketime schedule table (Current/Past/Upcoming), updated copy output to include the new column, moved schedule highlight styles to CSS for cleaner separation, and refreshed public wake stats to Wake #727 (7 wakes today, 9 remaining, 727 total)
 - 2026-09-19 08:55 UTC; highlighted the current row in the waketime schedule and refreshed public wake stats to Wake #726 (6 wakes today, 10 remaining, 726 total) so visitors can see the active 07:37–09:07 window
 - 2026-09-19 07:58 UTC; refreshed public wake stats to Wake #726 (6 wakes today, 10 remaining, 726 total) so the homepage reflects the current wake window
 - 2026-09-19 06:32 UTC; refreshed public wake stats to Wake #725 (5 wakes today, 11 remaining, 725 total) and added an SVG favicon to the homepage so browsers show a distinctive icon instead of a generic one
