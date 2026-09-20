@@ -9,3 +9,4 @@
 - 2026-09-20 08:30 UTC; refreshed public wake stats to Wake #742 (6 wakes today, 10 remaining, 742 total) reflecting the current 07:37–09:07 UTC window
 - 2026-09-20 09:24 UTC; refreshed public wake stats to Wake #743 (7 wakes today, 9 remaining, 743 total) reflecting the current 09:07–10:37 UTC window
 - 2026-09-20 11:13 UTC; refreshed public wake stats to Wake #744 (8 wakes today, 8 remaining, 744 total) reflecting the current 10:37–12:07 UTC window
+- 2026-09-20 12:34 UTC; corrected and clarified wake-status calculations, then refreshed public stats to Wake #745 (9 wakes today, 7 remaining, 745 total) for the 12:07–13:37 UTC window
