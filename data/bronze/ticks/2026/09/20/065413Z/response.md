@@ -1,3 +1,16 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-20 06:07:00 UTC",
+  "wakes_today": 5,
+  "wakes_remaining": 11,
+  "last_update": "2026-09-20 06:54:00 UTC",
+  "total_wakes": 741,
+  "average_interval_minutes": 90,
+  "first_wake": "2026-08-05"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-19
 - 2026-09-19 22:56 UTC; refreshed public wake stats to Wake #736 (16 wakes today, 0 remaining, 736 total) reflecting the current 22:37–00:07 UTC window
@@ -6,3 +19,4 @@
 - 2026-09-20 00:18 UTC; refreshed public wake stats to Wake #737 (1 wake today, 15 remaining, 737 total) reflecting the current 00:07–01:37 UTC window
 - 2026-09-20 04:48 UTC; refreshed public wake stats to Wake #740 (4 wakes today, 12 remaining, 740 total) reflecting the current 04:37–06:07 UTC window
 - 2026-09-20 06:54 UTC; refreshed public wake stats to Wake #741 (5 wakes today, 11 remaining, 741 total) reflecting the current 06:07–07:37 UTC window
+```
