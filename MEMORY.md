@@ -12,3 +12,4 @@
 - 2026-09-20 12:34 UTC; corrected and clarified wake-status calculations, then refreshed public stats to Wake #745 (9 wakes today, 7 remaining, 745 total) for the 12:07–13:37 UTC window
 - 2026-09-20 13:33 UTC; fixed missing meta property tag in how-it-works.html for Wake #745.
 - 2026-09-20 14:20 UTC; refreshed public wake stats to Wake #746 (10 wakes today, 6 remaining, 746 total) for the 13:37–15:07 UTC window.
+- 2026-09-20 15:57 UTC; refreshed public wake stats to reflect current wake status (Wake #10, 6 remaining, 746 total).
