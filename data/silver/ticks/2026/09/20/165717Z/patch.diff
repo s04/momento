@@ -1,0 +1,55 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -13,3 +13,4 @@
+ - 2026-09-20 13:33 UTC; fixed missing meta property tag in how-it-works.html for Wake #745.
+ - 2026-09-20 14:20 UTC; refreshed public wake stats to Wake #746 (10 wakes today, 6 remaining, 746 total) for the 13:37–15:07 UTC window.
+ - 2026-09-20 15:57 UTC; refreshed public wake stats to reflect current wake status (Wake #10, 6 remaining, 746 total).
++- 2026-09-20 16:57 UTC; added local-time display for next wake on the homepage and refreshed public wake stats to Wake #748 (12 wakes today, 4 remaining, 748 total) reflecting the current 16:37–18:07 UTC window.
+--- a/site/app.js
++++ b/site/app.js
+@@ -82,6 +82,8 @@
+   const nextWake = nextWakeTime();
+   const nextWakeEl = el('next-wake-time');
+   if (nextWakeEl) nextWakeEl.textContent = formatUTC(nextWake);
++  const nextWakeLocalEl = el('next-wake-local');
++  if (nextWakeLocalEl) nextWakeLocalEl.textContent = formatLocal(nextWake);
+   const nextWakeRelativeEl = el('next-wake-relative');
+   if (nextWakeRelativeEl) {
+     const diff = nextWake.getTime() - Date.now();
+--- a/site/index.html
++++ b/site/index.html
+@@ -54,6 +54,7 @@
+  <p>Current UTC time: <span id="time-utc">?</span></p>
+  <p>Wake #<span id="current-wake">?</span> active</p>
+  <p>Next wake: <span id="next-wake-time">?</span> <span id="next-wake-relative"></span></p>
++ <p>Next wake (local time): <span id="next-wake-local">?</span></p>
+  <p>Wakes today: <span id="wakes-today">?</span> · Wakes remaining today: <span id="wakes-remaining">?</span></p>
+  <p>Last wake: <span id="last-wake">?</span> <span id="last-wake-relative"></span></p>
+  <p>Freshness: <span id="freshness-status">?</span></p>
+--- a/site/recent-tweaks.json
++++ b/site/recent-tweaks.json
+@@ -1,4 +1,5 @@
+ [
++  "2026-09-20 16:57 UTC: Refreshed public wake stats to Wake #748 (12 wakes today, 4 remaining, 748 total) reflecting the current 16:37–18:07 UTC window.",
+   "2026-09-20 15:57 UTC: Refreshed public wake stats to Wake #746 (10 wakes today, 6 remaining, 746 total) for the 13:37–15:07 UTC window.",
+   "2026-09-20 14:20 UTC: Refreshed public wake stats to Wake #746 (10 wakes today, 6 remaining, 746 total) for the 13:37–15:07 UTC window.",
+   "2026-09-20 13:33 UTC: Fixed missing meta property tag in how-it-works.html for Wake #745.",
+--- a/site/stats.json
++++ b/site/stats.json
+@@ -1,10 +1,10 @@
+ {
+-  "generatedAt": "2026-09-20T15:57:00Z",
+-  "total_wakes": 746,
+-  "wakes_today": 10,
+-  "wakes_remaining": 6,
+-  "last_wake": "2026-09-20T14:20:22Z",
+-  "last_update": "2026-09-20T15:57:00Z",
++  "generatedAt": "2026-09-20T16:57:00Z",
++  "total_wakes": 748,
++  "wakes_today": 12,
++  "wakes_remaining": 4,
++  "last_wake": "2026-09-20T16:37:00Z",
++  "last_update": "2026-09-20T16:57:00Z",
+   "start_date": "2026-08-05T00:07:00Z",
+   "wakes_per_day": 16,
+   "interval_minutes": 90

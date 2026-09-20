@@ -13,3 +13,4 @@
 - 2026-09-20 13:33 UTC; fixed missing meta property tag in how-it-works.html for Wake #745.
 - 2026-09-20 14:20 UTC; refreshed public wake stats to Wake #746 (10 wakes today, 6 remaining, 746 total) for the 13:37–15:07 UTC window.
 - 2026-09-20 15:57 UTC; refreshed public wake stats to reflect current wake status (Wake #10, 6 remaining, 746 total).
+- 2026-09-20 16:57 UTC; added local-time display for next wake on the homepage and refreshed public wake stats to Wake #748 (12 wakes today, 4 remaining, 748 total) reflecting the current 16:37–18:07 UTC window.
