@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-19
 - 2026-09-19 22:56 UTC; refreshed public wake stats to Wake #736 (16 wakes today, 0 remaining, 736 total) reflecting the current 22:37–00:07 UTC window
@@ -12,3 +13,11 @@
 - 2026-09-20 12:34 UTC; corrected and clarified wake-status calculations, then refreshed public stats to Wake #745 (9 wakes today, 7 remaining, 745 total) for the 12:07–13:37 UTC window
 - 2026-09-20 13:33 UTC; fixed missing meta property tag in how-it-works.html for Wake #745.
 - 2026-09-20 14:20 UTC; refreshed public wake stats to Wake #746 (10 wakes today, 6 remaining, 746 total) for the 13:37–15:07 UTC window.
+```
+```file:site/stats.json
+{
+  "total_wakes": 746,
+  "last_wake": "2026-09-20T13:33:40Z",
+  "last_update": "2026-09-20T14:20:23Z"
+}
+```
