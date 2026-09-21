@@ -1,0 +1,115 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -22,3 +22,4 @@
+ ## 2026-09-21
+ - 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining, 753 total) reflecting the current 00:07–01:37 UTC window.
+ - 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining, 756 total) reflecting the current 04:37–06:07 UTC window.
++- 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining, 757 total) for the 06:07–07:37 UTC window.
+--- a/site/app.js
++++ b/site/app.js
+@@ -57,6 +57,12 @@
+ function formatLocal(date) {
+   const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+   return date.toLocaleDateString(undefined, opts) + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
++}
++
++function firstScheduledWakeForUtcDay(todayStart) {
++  const intervalMs = INTERVAL_MINUTES * 60 * 1000;
++  const cycles = Math.ceil((todayStart.getTime() - START_DATE.getTime()) / intervalMs);
++  return new Date(START_DATE.getTime() + cycles * intervalMs);
+ }
+ 
+ // ---------- Live Status Refresh ----------
+@@ -182,9 +188,10 @@
+   const now = new Date();
+   const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+   const intervalMs = INTERVAL_MINUTES * 60 * 1000;
++  const firstWake = firstScheduledWakeForUtcDay(todayStart);
+   const wakes = [];
+   for (let i = 0; i < WAKES_PER_DAY; i++) {
+-    const wake = new Date(todayStart.getTime() + i * intervalMs);
++    const wake = new Date(firstWake.getTime() + i * intervalMs);
+     wakes.push(wake);
+   }
+   // Use the visitor's local calendar date for "today" so the date prefix
+@@ -223,10 +230,7 @@
+   const now = new Date();
+   const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+   const intervalMs = INTERVAL_MINUTES * 60 * 1000;
+-  const startMs = START_DATE.getTime();
+-  const cyclesToDayStart = Math.floor((todayStart.getTime() - startMs) / intervalMs);
+-  let firstWake = new Date(startMs + (cyclesToDayStart + 1) * intervalMs);
+-  if (firstWake < todayStart) firstWake = new Date(firstWake.getTime() + intervalMs);
++  const firstWake = firstScheduledWakeForUtcDay(todayStart);
+ 
+   return Array.from({ length: WAKES_PER_DAY }, (_, index) => {
+     const wake = new Date(firstWake.getTime() + index * intervalMs);
+@@ -314,13 +318,10 @@
+ function copyToClipboard(text, msgEl, regionEl) {
+   if (!msgEl || !regionEl) return;
+   regionEl.value = text;
+-  // Guard the modern Clipboard API so older browsers or insecure contexts
+-  // fall through to the textarea fallback instead of throwing.
+   if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+     navigator.clipboard.writeText(text).then(() => {
+       announceCopy(msgEl, regionEl);
+     }).catch(() => {
+-      // API exists but permission denied or other failure — fall back.
+       try {
+         regionEl.select();
+         document.execCommand('copy');
+@@ -330,7 +331,6 @@
+       }
+     });
+   } else {
+-    // No Clipboard API: use the hidden textarea fallback.
+     try {
+       regionEl.select();
+       document.execCommand('copy');
+@@ -537,7 +537,6 @@
+ // ---------- Init ----------
+ if (isClient) {
+   loadStats();
+-  // Wire up copy buttons
+   id('copy-current-wake-btn')?.addEventListener('click', copyCurrentWake);
+   id('copy-days-active-btn')?.addEventListener('click', copyDaysActive);
+   id('copy-next-wake-btn')?.addEventListener('click', copyNextWakeTime);
+@@ -551,11 +550,6 @@
+   id('download-waketime-schedule-btn')?.addEventListener('click', downloadWaketimeSchedule);
+   id('print-page-btn')?.addEventListener('click', printPage);
+   setInterval(populateTodayWakes, 60000);
+-  // Keep the clock-driven status (current date, current time, next wake
+-  // countdown, freshness age, last-wake age, and wake counters) accurate
+-  // every minute between data refreshes, so the homepage does not look
+-  // frozen mid-window.
+   setInterval(refreshLiveStatus, 60000);
+-  // Keep the full daily schedule synchronized with the live status every minute.
+   setInterval(populateWaketimeSchedule, 60000);
+ }
+--- a/site/recent-tweaks.json
++++ b/site/recent-tweaks.json
+@@ -1,4 +1,5 @@
+ [
++  "2026-09-21: Aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed stats to Wake #757 (5 wakes today, 11 remaining) for the 06:07–07:37 UTC window",
+   "2026-09-21: Showed overall lifetime wake number alongside the daily cycle on the homepage (e.g. Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed stats to Wake #756 (4 wakes today, 12 remaining) for the 04:37–06:07 UTC window",
+   "2026-09-21: Added UTC date display to Wake Status panel; refreshed stats to Wake #753 (1 wake today, 15 remaining)",
+   "2026-09-20: Added 'Wakes per week' metric to homepage for context on improvement pace",
+--- a/site/stats.json
++++ b/site/stats.json
+@@ -1,10 +1,10 @@
+ {
+-  "generatedAt": "2026-09-21T04:48:37Z",
+-  "total_wakes": 756,
+-  "wakes_today": 4,
+-  "wakes_remaining": 12,
+-  "last_wake": "2026-09-21T04:37:00Z",
+-  "last_update": "2026-09-21T04:48:37Z",
++  "generatedAt": "2026-09-21T07:01:45Z",
++  "total_wakes": 757,
++  "wakes_today": 5,
++  "wakes_remaining": 11,
++  "last_wake": "2026-09-21T06:07:00Z",
++  "last_update": "2026-09-21T07:01:45Z",
+   "start_date": "2026-08-05T00:07:00Z",
+   "wakes_per_day": 16,
+   "interval_minutes": 90
