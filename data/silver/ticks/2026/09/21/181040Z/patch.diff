@@ -1,0 +1,26 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-21
++- 2026-09-21 18:10 UTC; improved next-wake countdown to display hours and minutes for durations over one hour instead of only minutes
+ - 2026-09-21 16:34 UTC; refreshed public wake stats snapshot for Wake #763 (11 wakes today, 5 remaining, 763 total) — same 15:07–16:37 UTC window, updated timestamps only
+ - 2026-09-21 15:52 UTC; refreshed public wake stats to Wake #763 (11 wakes today, 5 remaining, 763 total) for the 15:07–16:37 UTC window
+ - 2026-09-21 14:30 UTC; refreshed public wake stats to Wake #762 (10 wakes today, 6 remaining, 762 total) for the 13:37–15:07 UTC window
+--- a/site/app.js
++++ b/site/app.js
+@@ -113,9 +113,13 @@
+       const secs = Math.floor(diff / 1000);
+       if (secs < 60) {
+         nextWakeRelativeEl.textContent = `(in ${secs} second${secs === 1 ? '' : 's'})`;
+-      } else {
++      } else if (secs < 3600) {
+         const mins = Math.floor(secs / 60);
+         nextWakeRelativeEl.textContent = `(in ${mins} minute${mins === 1 ? '' : 's'})`;
++      } else {
++        const hours = Math.floor(secs / 3600);
++        const mins = Math.floor((secs % 3600) / 60);
++        nextWakeRelativeEl.textContent = `(in ${hours} hour${hours === 1 ? '' : 's'}${mins > 0 ? `, ${mins} minute${mins === 1 ? '' : 's'}` : ''})`;
+       }
+     }
+   }
