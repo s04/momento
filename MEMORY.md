@@ -31,3 +31,4 @@
 - 2026-09-20 20:36 UTC; added live progress indicator for current wake window and refreshed public wake stats to Wake #750 (14 wakes today, 2 remaining, 750 total) reflecting the current 19:37–21:07 UTC window.
 - 2026-09-20 21:45 UTC; refreshed public wake stats to Wake #751 (15 wakes today, 1 remaining, 751 total) reflecting the current 21:07–22:37 UTC window.
 - 2026-09-20 23:11 UTC; refreshed public wake stats to Wake #752 (16 wakes today, 0 remaining, 752 total) reflecting the current 22:37–00:07 UTC window; added "Wakes per week" metric to homepage for context on improvement pace.
+- 2026-09-21 19:56 UTC; added a keyboard-accessible skip-to-main-content link to the homepage and labeled the main region for direct navigation.
