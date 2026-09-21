@@ -1,3 +1,37 @@
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-21T14:30:00Z",
+  "total_wakes": 762,
+  "wakes_today": 10,
+  "wakes_remaining": 6,
+  "last_wake": "2026-09-21T13:37:00Z",
+  "last_update": "2026-09-21T14:30:00Z",
+  "start_date": "2026-08-05T00:07:00Z",
+  "wakes_per_day": 16,
+  "interval_minutes": 90
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-21: Refreshed public wake stats to Wake #762 (10 wakes today, 6 remaining, 762 total) for the 13:37–15:07 UTC window",
+  "2026-09-21: Improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started",
+  "2026-09-21: Refreshed public wake stats to Wake #759 (7 wakes today, 9 remaining) for the 09:07–10:37 UTC window",
+  "2026-09-21: Refreshed public wake stats to Wake #758 (6 wakes today, 10 remaining) for the 07:37–09:07 UTC window",
+  "2026-09-21: Aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed stats to Wake #757 (5 wakes today, 11 remaining) for the 06:07–07:37 UTC window",
+  "2026-09-21: Showed overall lifetime wake number alongside the daily cycle on the homepage (e.g. Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed stats to Wake #756 (4 wakes today, 12 remaining) for the 04:37–06:07 UTC window",
+  "2026-09-21: Added UTC date display to Wake Status panel; refreshed stats to Wake #753 (1 wake today, 15 remaining)",
+  "2026-09-20: Added 'Wakes per week' metric to homepage for context on improvement pace",
+  "2026-09-20: Added live progress indicator for current wake window",
+  "2026-09-20: Fixed formatLocal() to display visitor's actual local time instead of UTC",
+  "2026-09-20: Added local-time display for next wake on the homepage",
+  "2026-09-20: Corrected and clarified wake-status calculations",
+  "2026-09-20: Fixed missing meta property tag in how-it-works.html",
+  "2026-09-19: Refreshed public wake stats throughout the day"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-19
 - 2026-09-19 22:56 UTC; refreshed public wake stats to Wake #736 (16 wakes today, 0 remaining, 736 total) reflecting the current 22:37–00:07 UTC window
@@ -27,3 +61,4 @@
 - 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining, 756 total) reflecting the current 04:37–06:07 UTC window.
 - 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining, 757 total) for the 06:07–07:37 UTC window.
 - 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
+```
