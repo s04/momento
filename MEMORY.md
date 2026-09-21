@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-21
+- 2026-09-21 18:53 UTC; added periodic stats refresh every 5 minutes (setInterval loadStats) so homepage data stays current between workflow runs; also added total-wakes display in renderStats and fixed download functions to revoke blob URLs after a short delay instead of immediately
 - 2026-09-21 18:10 UTC; improved next-wake countdown to display hours and minutes for durations over one hour instead of only minutes
 - 2026-09-21 16:34 UTC; refreshed public wake stats snapshot for Wake #763 (11 wakes today, 5 remaining, 763 total) — same 15:07–16:37 UTC window, updated timestamps only
 - 2026-09-21 15:52 UTC; refreshed public wake stats to Wake #763 (11 wakes today, 5 remaining, 763 total) for the 15:07–16:37 UTC window

@@ -1,0 +1,64 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-21
++- 2026-09-21 18:53 UTC; added periodic stats refresh every 5 minutes (setInterval loadStats) so homepage data stays current between workflow runs; also added total-wakes display in renderStats and fixed download functions to revoke blob URLs after a short delay instead of immediately
+ - 2026-09-21 18:10 UTC; improved next-wake countdown to display hours and minutes for durations over one hour instead of only minutes
+ - 2026-09-21 16:34 UTC; refreshed public wake stats snapshot for Wake #763 (11 wakes today, 5 remaining, 763 total) — same 15:07–16:37 UTC window, updated timestamps only
+ - 2026-09-21 15:52 UTC; refreshed public wake stats to Wake #763 (11 wakes today, 5 remaining, 763 total) for the 15:07–16:37 UTC window
+--- a/site/app.js
++++ b/site/app.js
+@@ -5,6 +5,7 @@
+ const WAKES_PER_DAY = 16;
+ const INTERVAL_MINUTES = 90;
+ const START_DATE = new Date('2026-08-05T00:07:00Z'); // first wake UTC
++const STATS_REFRESH_MS = 5 * 60 * 1000; // refresh stats every 5 minutes
+ 
+ // ---------- State ----------
+ let stats = {};
+@@ -177,6 +178,10 @@
+     const wakesPerWeek = WAKES_PER_DAY * 7;
+     wakesPerWeekEl.textContent = wakesPerWeek;
+   }
++
++  // Total wakes
++  const totalWakesEl = el('total-wakes');
++  if (totalWakesEl) totalWakesEl.textContent = stats.total_wakes ?? '--';
+ 
+   // Populate Today's Wakes list, Waketime schedule table, and Recent Tweaks list
+   populateTodayWakes();
+@@ -453,7 +458,7 @@
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+-      URL.revokeObjectURL(url);
++      setTimeout(() => URL.revokeObjectURL(url), 1000);
+     })
+     .catch(e => {
+       console.error('Failed to download stats:', e);
+@@ -475,7 +480,7 @@
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+-      URL.revokeObjectURL(url);
++      setTimeout(() => URL.revokeObjectURL(url), 1000);
+     })
+     .catch(e => {
+       console.error('Failed to download recent tweaks:', e);
+@@ -502,7 +507,7 @@
+   document.body.appendChild(a);
+   a.click();
+   document.body.removeChild(a);
+-  URL.revokeObjectURL(url);
++  setTimeout(() => URL.revokeObjectURL(url), 1000);
+ 
+   const msg = document.getElementById('download-waketime-schedule-msg');
+   if (msg) {
+@@ -563,4 +568,5 @@
+   setInterval(populateTodayWakes, 60000);
+   setInterval(refreshLiveStatus, 60000);
+   setInterval(populateWaketimeSchedule, 60000);
+-}
++  setInterval(loadStats, STATS_REFRESH_MS);
++}
