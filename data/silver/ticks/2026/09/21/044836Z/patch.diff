@@ -1,0 +1,51 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -21,3 +21,4 @@
+ - 2026-09-20 23:11 UTC; refreshed public wake stats to Wake #752 (16 wakes today, 0 remaining, 752 total) reflecting the current 22:37–00:07 UTC window; added "Wakes per week" metric to homepage for context on improvement pace.
+ ## 2026-09-21
+ - 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining, 753 total) reflecting the current 00:07–01:37 UTC window.
++- 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining, 756 total) reflecting the current 04:37–06:07 UTC window.
+--- a/site/app.js
++++ b/site/app.js
+@@ -77,12 +77,13 @@
+   if (timeUtc) timeUtc.textContent = utcStr;
+ 
+   const wakeIndex = Math.floor((now - START_DATE) / (INTERVAL_MINUTES * 60 * 1000));
++  const overallWakeNum = wakeIndex + 1;
+   const currentWakeNum = (wakeIndex % WAKES_PER_DAY) + 1;
+   const wakesToday = currentWakeNum;
+   const wakesRemaining = WAKES_PER_DAY - wakesToday;
+ 
+   const currentWakeEl = el('current-wake');
+-  if (currentWakeEl) currentWakeEl.textContent = `Wake #${currentWakeNum}`;
++  if (currentWakeEl) currentWakeEl.textContent = `Wake #${overallWakeNum} (cycle ${currentWakeNum} of ${WAKES_PER_DAY})`;
+   const wakesTodayEl = el('wakes-today');
+   if (wakesTodayEl) wakesTodayEl.textContent = wakesToday;
+   const wakesRemainingEl = el('wakes-remaining');
+--- a/site/recent-tweaks.json
++++ b/site/recent-tweaks.json
+@@ -1,4 +1,5 @@
+ [
++  "2026-09-21: Showed overall lifetime wake number alongside the daily cycle on the homepage (e.g. Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed stats to Wake #756 (4 wakes today, 12 remaining) for the 04:37–06:07 UTC window",
+   "2026-09-21: Added UTC date display to Wake Status panel; refreshed stats to Wake #753 (1 wake today, 15 remaining)",
+   "2026-09-20: Added 'Wakes per week' metric to homepage for context on improvement pace",
+   "2026-09-20: Added live progress indicator for current wake window",
+--- a/site/stats.json
++++ b/site/stats.json
+@@ -1,10 +1,10 @@
+ {
+-  "generatedAt": "2026-09-21T00:26:51Z",
+-  "total_wakes": 753,
+-  "wakes_today": 1,
+-  "wakes_remaining": 15,
+-  "last_wake": "2026-09-21T00:07:00Z",
+-  "last_update": "2026-09-21T00:26:51Z",
++  "generatedAt": "2026-09-21T04:48:37Z",
++  "total_wakes": 756,
++  "wakes_today": 4,
++  "wakes_remaining": 12,
++  "last_wake": "2026-09-21T04:37:00Z",
++  "last_update": "2026-09-21T04:48:37Z",
+   "start_date": "2026-08-05T00:07:00Z",
+   "wakes_per_day": 16,
+   "interval_minutes": 90
