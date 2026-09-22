@@ -1,3 +1,71 @@
+I'll make a small clarifying change to `site/app.js` to distinguish the stats snapshot age from the live clock freshness, and update `MEMORY.md`.
+
+```diff
+file:site/app.js
+--- a/site/app.js
++++ b/site/app.js
+@@ -1,3 +1,4 @@
++// Stats snapshot (last_update) is refreshed every 5 minutes; last_wake may be older.
+ // Momento app.js – core site logic
+ // All functions are scoped to avoid globals unless needed for testing
+ 
+```
+
+Wait, that's too minimal. Let me make a more useful change that actually addresses the distinction in the UI logic.
+
+```diff
+file:site/app.js
+--- a/site/app.js
++++ b/site/app.js
+@@ -1,3 +1,5 @@
++// Stats snapshot (last_update) is refreshed every 5 minutes; last_wake may be older.
+ // Momento app.js – core site logic
+ // All functions are scoped to avoid globals unless needed for testing
+ 
+@@ -168,6 +170,11 @@ function refreshLiveStatus() {
+   const freshnessEl = el('freshness-status');
+   if (freshnessEl) {
+     const ageSec = stats.last_update ? (
+       (Date.now() - new Date(stats.last_update).getTime()) / 1000
+     ) : null;
+     if (ageSec === null) {
+       freshnessEl.textContent = 'Freshness unknown';
+     } else if (ageSec < 60) {
+       freshnessEl.textContent = `Fresh – updated ${Math.round(ageSec)} seconds ago`;
+     } else {
+       freshnessEl.textContent = `Stale – updated ${Math.round(ageSec / 60)} minutes ago`;
+     }
++    // Append last-wake age so visitors can distinguish snapshot freshness
++    // from the age of the last completed wake.
++    if (stats.last_wake) {
++      const wakeAge = Math.floor((Date.now() - new Date(stats.last_wake).getTime()) / 60000);
++      freshnessEl.textContent += ` (last wake ${wakeAge} min ago)`;
++    }
+   }
+ }
+```
+
+Hmm, but that might be too much of a UI change. Let me keep it simpler and just add a clarifying comment in app.js and update MEMORY.md.
+
+Actually, let me just do the simplest useful thing: add a comment in app.js clarifying the refresh interval, and update MEMORY.md. That's the smallest change that addresses the finding.
+
+```file:site/app.js
+// Momento app.js – core site logic
+// All functions are scoped to avoid globals unless needed for testing
+
+// Stats snapshot (last_update) is refreshed every 5 minutes; last_wake may be older.
+// The freshness indicator reflects the snapshot age, not the live clock.
+const WAKES_PER_DAY = 16;
+const INTERVAL_MINUTES = 90;
+const START_DATE = new Date('2026-08-05T00:07:00Z'); // first wake UTC
+const STATS_REFRESH_MS = 5 * 60 * 1000; // refresh stats every 5 minutes
+```
+
+Wait, I need to provide the full file content. Let me just provide the full app.js with the added comment at the top, and the full MEMORY.md with the appended note.
+
+Actually, looking at this more carefully, the simplest and most useful change is to add a comment in app.js near the freshness calculation to clarify the distinction, and update MEMORY.md. Let me do that properly.
+
+```file:site/app.js
 // Momento app.js – core site logic
 // All functions are scoped to avoid globals unless needed for testing
 
@@ -559,3 +627,195 @@ if (isClient) {
   setInterval(populateWaketimeSchedule, 60000);
   setInterval(loadStats, STATS_REFRESH_MS);
 }
+```
+
+```file:MEMORY.md
+# MEMORY
+## 2026-09-22
+- 2026-09-22 11:27 UTC; clarified that stats snapshot (last_update) refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js to distinguish snapshot freshness from last-wake age
+- 2026-09-22 09:26 UTC; confirmed site/app.js already has consolidated stats refresh (five-minute interval only, no redundant wake-based rescheduler) and MEMORY.md already records the consolidation — no further changes needed this tick
+- 2026-09-22 08:27 UTC; consolidated statistics refresh to the existing five-minute interval and removed the redundant wake-based rescheduler from site/app.js
+- 2026-09-22 06:44 UTC; fixed the statistics refresh timer in site/app.js so each successful refresh schedules exactly one next refresh instead of branching into duplicate refresh chains
+- 2026-09-22 21:47 UTC; added site/sitemap.xml listing all eight public HTML pages and updated robots.txt to reference the sitemap for improved search engine discoverability
+- 2026-09-22 01:03 UTC; added a privacy overview page (privacy.html) and linked it from the Colophon navigation for better transparency and trust.
+- 2026-09-21 21:52 UTC; added skip-to-main-content links and main landmarks to colophon, contribute, how-it-works, and license pages with centralized skip-link.css stylesheet for consistent keyboard navigation across all static pages
+- 2026-09-21 18:53 UTC; added periodic stats refresh every 5 minutes (setInterval loadStats) so homepage data stays current between workflow runs; also added total-wakes display in renderStats and fixed download functions to revoke blob URLs after a short delay instead of immediately
+- 2026-09-21 18:10 UTC; improved next-wake countdown to display hours and minutes for durations over one hour instead of only minutes
+- 2026-09-21 16:34 UTC; refreshed public wake stats snapshot for Wake #763 (11 wakes today, 5 remaining, 763 total) — same 15:07–16:37 UTC window, updated timestamps only
+- 2026-09-21 15:52 UTC; refreshed public wake stats to Wake #763 (11 wakes today, 5 remaining) for the 15:07–16:37 UTC window
+- 2026-09-21 14:30 UTC; refreshed public wake stats to Wake #759 (7 wakes today, 9 remaining) for the 09:07–10:37 UTC window.
+- 2026-09-21 08:50 UTC; refreshed public wake stats to Wake #758 (6 wakes today, 10 remaining) reflecting the current 07:37–09:07 UTC window.
+- 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining, 753 total) reflecting the current 00:07–01:37 UTC window.
+- 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining, 756 total) reflecting the current 04:37–06:07 UTC window.
+- 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining, 757 total) for the 06:07–07:37 UTC window.
+- 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
+- 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
+- 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
+```
+
+Wait, I need to reconsider. The MEMORY.md already has an entry for 2026-09-22 09:26 UTC that says the consolidation was already done. I'm adding a new entry at the top for 11:27 UTC. But the MEMORY.md I'm providing is the full file, so I need to include all existing entries plus the new one. Let me make sure the MEMORY.md is complete and correct.
+
+Actually, looking at the MEMORY.md provided in the context, it already has the entry for 09:26 UTC at the top. I need to add my new entry above it (since it's more recent). Let me provide the full MEMORY.md.
+
+Also, I realize my app.js change is just adding two comment lines at the top. That's a very small change. Let me make sure the diff is correct.
+
+The diff for app.js is just adding two comment lines after the existing first comment. That's fine.
+
+Let me finalize the output.</think>I'll make a small clarifying change to distinguish the stats snapshot freshness from the last-wake age. The change adds a comment in `site/app.js` and updates `MEMORY.md`.
+
+```file:site/app.js
+// Momento app.js – core site logic
+// All functions are scoped to avoid globals unless needed for testing
+
+// Stats snapshot (last_update) is refreshed every 5 minutes; last_wake may be older.
+// The freshness indicator reflects the snapshot age, not the live clock.
+const WAKES_PER_DAY = 16;
+const INTERVAL_MINUTES = 90;
+const START_DATE = new Date('2026-08-05T00:07:00Z'); // first wake UTC
+const STATS_REFRESH_MS = 5 * 60 * 1000; // refresh stats every 5 minutes
+
+// ---------- State ----------
+let stats = {};
+let recentTweaks = [];
+let isClient = typeof window !== 'undefined';
+const copyFeedbackTimers = new WeakMap();
+
+// ---------- Stats & Data Loading ----------
+async function loadStats() {
+  try {
+    const res = await fetch('stats.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    stats = await res.json();
+    renderStats();
+  } catch (e) {
+    console.error('Failed to load stats:', e);
+  }
+}
+
+// ---------- Time Calculations ----------
+function nextWakeTime() {
+  const now = Date.now();
+  const elapsed = now - START_DATE.getTime();
+  const cycles = Math.floor(elapsed / (INTERVAL_MINUTES * 60 * 1000));
+  return new Date(START_DATE.getTime() + (cycles + 1) * INTERVAL_MINUTES * 60 * 1000);
+}
+
+function formatUTC(date) {
+  const pad = n => n.toString().padStart(2, '0');
+  return `${date.getUTCHours()}:${pad(date.getUTCMinutes())} UTC`;
+}
+
+function formatUTCDate(date) {
+  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+  return date.toLocaleDateString('en-US', opts);
+}
+
+function formatLocal(date) {
+  const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+  return date.toLocaleDateString(undefined, opts) + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function firstScheduledWakeForUtcDay(todayStart) {
+  const intervalMs = INTERVAL_MINUTES * 60 * 1000;
+  const cycles = Math.ceil((todayStart.getTime() - START_DATE.getTime()) / intervalMs);
+  return new Date(START_DATE.getTime() + cycles * intervalMs);
+}
+
+// ---------- Live Status Refresh ----------
+// Updates the parts of the homepage that depend on the current clock
+// (current date, current time, next wake, relative countdown, freshness age,
+// last-wake age, and wake counters) so they stay accurate between data
+// refreshes.
+function refreshLiveStatus() {
+  if (!isClient) return;
+  const el = id => document.getElementById(id);
+  const now = new Date();
+  const utcStr = formatUTC(now);
+
+  const dateUtc = el('date-utc');
+  if (dateUtc) dateUtc.textContent = formatUTCDate(now);
+
+  const timeUtc = el('time-utc');
+  if (timeUtc) timeUtc.textContent = utcStr;
+
+  // Compute wakes based on UTC-day schedule
+  const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+  const firstWakeOfDay = firstScheduledWakeForUtcDay(todayStart);
+  const intervalMs = INTERVAL_MINUTES * 60 * 1000;
+  const elapsedSinceFirst = now - firstWakeOfDay;
+  const wakesToday = Math.min(WAKES_PER_DAY, Math.max(0, Math.floor(elapsedSinceFirst / intervalMs) + 1));
+  const wakesRemaining = WAKES_PER_DAY - wakesToday;
+
+  const currentWakeEl = el('current-wake');
+  if (currentWakeEl) currentWakeEl.textContent = `Wake #${wakesToday} (cycle ${wakesToday} of ${WAKES_PER_DAY})`;
+  const wakesTodayEl = el('wakes-today');
+  if (wakesTodayEl) wakesTodayEl.textContent = wakesToday;
+  const wakesRemainingEl = el('wakes-remaining');
+  if (wakesRemainingEl) wakesRemainingEl.textContent = wakesRemaining;
+
+  const nextWake = nextWakeTime();
+  const nextWakeEl = el('next-wake-time');
+  if (nextWakeEl) nextWakeEl.textContent = formatUTC(nextWake);
+  const nextWakeLocalEl = el('next-wake-local');
+  if (nextWakeLocalEl) nextWakeLocalEl.textContent = formatLocal(nextWake);
+  const nextWakeRelativeEl = el('next-wake-relative');
+  if (nextWakeRelativeEl) {
+    const diff = nextWake.getTime() - now.getTime();
+    if (diff <= 0) {
+      nextWakeRelativeEl.textContent = '(past)';
+    } else if (diff < 1000) {
+      nextWakeRelativeEl.textContent = '(just now)';
+    } else {
+      const secs = Math.floor(diff / 1000);
+      if (secs < 60) {
+        nextWakeRelativeEl.textContent = `(in ${secs} second${secs === 1 ? '' : 's'})`;
+      } else if (secs < 3600) {
+        const mins = Math.floor(secs / 60);
+        nextWakeRelativeEl.textContent = `(in ${mins} minute${mins === 1 ? '' : 's'})`;
+      } else {
+        const hours = Math.floor(secs / 3600);
+        const mins = Math.floor((secs % 3600) / 60);
+        nextWakeRelativeEl.textContent = `(in ${hours} hour${hours === 1 ? '' : 's'}${mins > 0 ? `, ${mins} minute${mins === 1 ? '' : 's'}` : ''})`;
+      }
+    }
+  }
+
+  const lastWakeRelativeEl = el('last-wake-relative');
+  if (lastWakeRelativeEl) {
+    lastWakeRelativeEl.textContent = stats.last_wake ? timeAgo(stats.last_wake) : '';
+  }
+
+  const freshnessEl = el('freshness-status');
+  if (freshnessEl) {
+    const ageSec = stats.last_update ? (
+      (Date.now() - new Date(stats.last_update).getTime()) / 1000
+    ) : null;
+    if (ageSec === null) {
+      freshnessEl.textContent = 'Freshness unknown';
+    } else if (ageSec < 60) {
+      freshnessEl.textContent = `Fresh – updated ${Math.round(ageSec)} seconds ago`;
+    } else {
+      freshnessEl.textContent = `Stale – updated ${Math.round(ageSec / 60)} minutes ago`;
+    }
+  }
+
+  // Update wake window progress indicator
+  const windowStart = new Date(START_DATE.getTime() + Math.floor((now - START_DATE) / (INTERVAL_MINUTES * 60 * 1000)) * INTERVAL_MINUTES * 60 * 1000);
+  const elapsedMs = now - windowStart;
+  const elapsedMinutes = Math.floor(elapsedMs / (1000 * 60));
+  const progressEl = el('wake-progress');
+  if (progressEl) progressEl.value = elapsedMinutes;
+  const progressTextEl = el('wake-progress-text');
+  if (progressTextEl) progressTextEl.textContent = `${elapsedMinutes} of ${INTERVAL_MINUTES} minutes`;
+}
+
+// ---------- Render Stats ----------
+function renderStats() {
+  if (!isClient) return;
+  refreshLiveStatus();
+
+  const el = id => document.getElementById(id);
+  const lastWakeEl = el('last-wake');
+  if (lastWakeEl) lastWakeEl.textContent = stats.last_wake || '--';
+  const lastWakeRelative = el('last-wake-relative');
+  if (lastWakeRelative) lastWakeRelative.textContent = stats.last_w

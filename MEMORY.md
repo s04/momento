@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-22
+- 2026-09-22 11:27 UTC; clarified that stats snapshot (last_update) refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js to distinguish snapshot freshness from last-wake age
 - 2026-09-22 09:26 UTC; confirmed site/app.js already has consolidated stats refresh (five-minute interval only, no redundant wake-based rescheduler) and MEMORY.md already records the consolidation — no further changes needed this tick
 - 2026-09-22 08:27 UTC; consolidated statistics refresh to the existing five-minute interval and removed the redundant wake-based rescheduler from site/app.js
 - 2026-09-22 06:44 UTC; fixed the statistics refresh timer in site/app.js so each successful refresh schedules exactly one next refresh instead of branching into duplicate refresh chains

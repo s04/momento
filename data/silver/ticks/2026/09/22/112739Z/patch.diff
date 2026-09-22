@@ -1,0 +1,21 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-22
++- 2026-09-22 11:27 UTC; clarified that stats snapshot (last_update) refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js to distinguish snapshot freshness from last-wake age
+ - 2026-09-22 09:26 UTC; confirmed site/app.js already has consolidated stats refresh (five-minute interval only, no redundant wake-based rescheduler) and MEMORY.md already records the consolidation — no further changes needed this tick
+ - 2026-09-22 08:27 UTC; consolidated statistics refresh to the existing five-minute interval and removed the redundant wake-based rescheduler from site/app.js
+ - 2026-09-22 06:44 UTC; fixed the statistics refresh timer in site/app.js so each successful refresh schedules exactly one next refresh instead of branching into duplicate refresh chains
+--- a/site/app.js
++++ b/site/app.js
+@@ -1,7 +1,8 @@
+ // Momento app.js – core site logic
+ // All functions are scoped to avoid globals unless needed for testing
+ 
+-// ---------- Configuration ----------
++// Stats snapshot (last_update) is refreshed every 5 minutes; last_wake may be older.
++// The freshness indicator reflects the snapshot age, not the live clock.
+ const WAKES_PER_DAY = 16;
+ const INTERVAL_MINUTES = 90;
+ const START_DATE = new Date('2026-08-05T00:07:00Z'); // first wake UTC
