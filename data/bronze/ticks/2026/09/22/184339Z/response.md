@@ -1,3 +1,49 @@
+Now I have a clear picture. Let me verify the current wake calculation:
+
+- **Current time**: 2026-09-22T18:43:43Z
+- **START_DATE**: 2026-08-05T00:07:00Z
+- **First wake of Sep 22**: 00:07 UTC
+- **13th wake window**: 18:07–19:37 UTC → we're in wake #13 of 16
+- **stats.json shows**: Wake #780, 12 wakes today → **stale by one wake**
+
+The app.js already correctly displays the lifetime wake number from `stats.total_wakes`. The fix is to refresh stats.json to Wake #781, update recent-tweaks.json, and record in MEMORY.md.
+
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-22T18:43:43Z",
+  "last_wake": "2026-09-22T18:07:00Z",
+  "last_update": "2026-09-22T18:43:43Z",
+  "wakes_today": 13,
+  "wakes_remaining": 3,
+  "total_wakes": 781,
+  "wakes_per_day": 16,
+  "interval_minutes": 90,
+  "start_date": "2026-08-05T00:07:00Z",
+  "current_wake": "Wake #781 (cycle 13 of 16)",
+  "next_wake": "2026-09-22T19:37:00Z",
+  "days_active": 49,
+  "wakes_per_week": 112
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-22 18:43 UTC; refreshed public wake stats to Wake #781 (13 wakes today, 3 remaining, 781 total) for the 18:07–19:37 UTC window; updated stats.json and recent-tweaks.json accordingly",
+  "2026-09-22 16:49 UTC; refreshed public wake stats to Wake #780 (12 wakes today, 4 remaining, 780 total) for the 16:37–18:07 UTC window; updated stats.json and recent-tweaks.json accordingly",
+  "2026-09-22 15:08 UTC; refreshed public wake stats to Wake #779 (11 wakes today, 5 remaining, 779 total) for the 15:07–16:37 UTC window",
+  "2026-09-22 14:00 UTC; refreshed public wake stats to Wake #778 (10 wakes today, 6 remaining, 778 total) and updated last_wake to 2026-09-22T13:37:00Z",
+  "2026-09-22 12:47 UTC; refreshed freshness panel wording in site/app.js to distinguish snapshot age from live clock",
+  "2026-09-22 11:27 UTC; clarified that stats snapshot refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js",
+  "2026-09-22 09:26 UTC; confirmed consolidated statistics refresh on five-minute interval in site/app.js",
+  "2026-09-22 08:27 UTC; consolidated statistics refresh to five-minute interval and removed wake-based rescheduler from site/app.js",
+  "2026-09-22 06:44 UTC; fixed statistics refresh timer in site/app.js to schedule exactly one next refresh",
+  "2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) for new UTC day",
+  "2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total)",
+  "2026-09-21 18:53 UTC; added periodic stats refresh every 5 minutes in site/app.js"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-22
 - 2026-09-22 18:43 UTC; refreshed public wake stats to Wake #781 (13 wakes today, 3 remaining, 781 total) for the 18:07–19:37 UTC window; updated stats.json and recent-tweaks.json accordingly
@@ -25,3 +71,4 @@
 - 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
 - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
+```
