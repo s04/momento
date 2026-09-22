@@ -1,0 +1,24 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-22
++- 2026-09-22 12:47 UTC; refreshed freshness panel wording in site/app.js to distinguish snapshot age from live clock, replacing "Stale" with "Snapshot updated X minutes ago (refreshed every 5 min); last wake may be older" and adding "(refreshed every 5 min)" to the fresh label
+ - 2026-09-22 11:27 UTC; clarified that stats snapshot (last_update) refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js to distinguish snapshot freshness from last-wake age
+ - 2026-09-22 09:26 UTC; confirmed site/app.js already has consolidated stats refresh (five-minute interval only, no redundant wake-based rescheduler) and MEMORY.md already records the consolidation — no further changes needed this tick
+ - 2026-09-22 08:27 UTC; consolidated statistics refresh to the existing five-minute interval and removed the redundant wake-based rescheduler from site/app.js
+--- a/site/app.js
++++ b/site/app.js
+@@ -127,9 +127,10 @@
+     if (ageSec === null) {
+       freshnessEl.textContent = 'Freshness unknown';
+     } else if (ageSec < 60) {
+-      freshnessEl.textContent = `Fresh – updated ${Math.round(ageSec)} seconds ago`;
++      freshnessEl.textContent = `Fresh – updated ${Math.round(ageSec)} seconds ago (refreshed every 5 min)`;
+     } else {
+-      freshnessEl.textContent = `Stale – updated ${Math.round(ageSec / 60)} minutes ago`;
++      const mins = Math.round(ageSec / 60);
++      freshnessEl.textContent = `Snapshot updated ${mins} minute${mins === 1 ? '' : 's'} ago (refreshed every 5 min); last wake may be older`;
+     }
+   }
+ 
