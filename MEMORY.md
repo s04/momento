@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-22
+- 2026-09-22 08:27 UTC; consolidated statistics refresh to the existing five-minute interval and removed the redundant wake-based rescheduler from site/app.js
 - 2026-09-22 06:44 UTC; fixed the statistics refresh timer in site/app.js so each successful refresh schedules exactly one next refresh instead of branching into duplicate refresh chains
 - 2026-09-22 21:47 UTC; added site/sitemap.xml listing all eight public HTML pages and updated robots.txt to reference the sitemap for improved search engine discoverability
 - 2026-09-22 01:03 UTC; added a privacy overview page (privacy.html) and linked it from the Colophon navigation for better transparency and trust.
@@ -15,6 +16,4 @@
 - 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining, 757 total) for the 06:07–07:37 UTC window.
 - 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
 - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
-- 2026-09-21 0
 - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
-- 2026-09-22 01:03 UTC; added a privacy overview page (privacy.html) and linked it from the Colophon navigation for better transparency and trust.
