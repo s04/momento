@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-22
 - 2026-09-22 12:47 UTC; refreshed freshness panel wording in site/app.js to distinguish snapshot age from live clock, replacing "Stale" with "Snapshot updated X minutes ago (refreshed every 5 min); last wake may be older" and adding "(refreshed every 5 min)" to the fresh label
@@ -21,3 +22,15 @@
 - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 14:00 UTC; refreshed public wake stats to Wake #778 (10 wakes today, 6 remaining, 778 total) and updated last_wake to 2026-09-22T13:37:00Z; updated stats.json and recent-tweaks.json accordingly
+```
+
+```file:site/stats.json
+{
+  "last_update": "2026-09-22T14:00:13Z",
+  "last_wake": "2026-09-22T13:37:00Z",
+  "wakes_today": 10,
+  "wakes_remaining": 6,
+  "total_wakes": 778,
+  "date": "2026-09-22"
+}
+```
