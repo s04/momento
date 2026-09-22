@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-22
+- 2026-09-22 06:44 UTC; fixed the statistics refresh timer in site/app.js so each successful refresh schedules exactly one next refresh instead of branching into duplicate refresh chains
 - 2026-09-22 21:47 UTC; added site/sitemap.xml listing all eight public HTML pages and updated robots.txt to reference the sitemap for improved search engine discoverability
 - 2026-09-22 01:03 UTC; added a privacy overview page (privacy.html) and linked it from the Colophon navigation for better transparency and trust.
 - 2026-09-21 21:52 UTC; added skip-to-main-content links and main landmarks to colophon, contribute, how-it-works, and license pages with centralized skip-link.css stylesheet for consistent keyboard navigation across all static pages
