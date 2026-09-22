@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-22
+- 2026-09-22 23:35 UTC; refreshed public wake stats to Wake #784 (16 wakes today, 0 remaining, 784 total) for the 22:37–00:07 UTC window; added missing app.js script tags to contribute.html and how-it-works.html for consistent site functionality
 - 2026-09-22 22:23 UTC; updated stats.json and recent-tweaks.json to reflect wake #783 from 21:07 UTC
 - 2026-09-22 21:07 UTC; added missing Privacy and Accessibility navigation links to contribute.html and how-it-works.html for consistent site navigation
 - 2026-09-22 19:50 UTC; refreshed public wake stats to Wake #782 (14 wakes today, 2 remaining, 782 total) for the 19:37–21:07 UTC window; updated stats.json and recent-tweaks.json accordingly
