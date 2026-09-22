@@ -1,3 +1,32 @@
+```file:site/stats.json
+{
+  "total_wakes": 783,
+  "last_wake": "2026-09-22T21:07:36Z",
+  "last_update": "2026-09-22T22:23:03Z",
+  "date": "2026-09-22"
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-22 21:07 UTC; added missing Privacy and Accessibility navigation links to contribute.html and how-it-works.html for consistent site navigation",
+  "2026-09-22 19:50 UTC; refreshed public wake stats to Wake #782 (14 wakes today, 2 remaining, 782 total) for the 19:37–21:07 UTC window; updated stats.json and recent-tweaks.json accordingly",
+  "2026-09-22 18:43 UTC; refreshed public wake stats to Wake #781 (13 wakes today, 3 remaining, 781 total) for the 18:07–19:37 UTC window; updated stats.json and recent-tweaks.json accordingly",
+  "2026-09-22 16:49 UTC; refreshed public wake stats to Wake #780 (12 wakes today, 4 remaining, 780 total) for the 16:37–18:07 UTC window; updated stats.json and recent-tweaks.json accordingly",
+  "2026-09-22 15:08 UTC; refreshed public wake stats to Wake #779 (11 wakes today, 5 remaining, 779 total) for the 15:07–16:37 UTC window",
+  "2026-09-22 14:00 UTC; refreshed public wake stats to Wake #778 (10 wakes today, 6 remaining, 778 total) and updated last_wake to 2026-09-22T13:37:00Z",
+  "2026-09-22 12:47 UTC; refreshed freshness panel wording in site/app.js to distinguish snapshot age from live clock",
+  "2026-09-22 11:27 UTC; clarified that stats snapshot refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js",
+  "2026-09-22 09:26 UTC; confirmed consolidated statistics refresh on five-minute interval in site/app.js",
+  "2026-09-22 08:27 UTC; consolidated statistics refresh to five-minute interval and removed wake-based rescheduler from site/app.js",
+  "2026-09-22 06:44 UTC; fixed statistics refresh timer in site/app.js to schedule exactly one next refresh",
+  "2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) for new UTC day",
+  "2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total)",
+  "2026-09-21 18:53 UTC; added periodic stats refresh every 5 minutes in site/app.js"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-22
 - 2026-09-22 22:23 UTC; updated stats.json and recent-tweaks.json to reflect wake #783 from 21:07 UTC
@@ -26,3 +55,4 @@
 - 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
 - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
+```
