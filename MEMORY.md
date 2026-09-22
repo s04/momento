@@ -24,3 +24,4 @@
 - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 14:00 UTC; refreshed public wake stats to Wake #778 (10 wakes today, 6 remaining, 778 total) and updated last_wake to 2026-09-22T13:37:00Z; updated stats.json and recent-tweaks.json accordingly
+- 2026-09-22 17:44 UTC; fixed current-wake label to show lifetime wake number (e.g., Wake #780) while keeping daily cycle; updated site/app.js accordingly
