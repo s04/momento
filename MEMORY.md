@@ -1,12 +1,13 @@
 # MEMORY
 ## 2026-09-22
+- 2026-09-22 21:07 UTC; added missing Privacy and Accessibility navigation links to contribute.html and how-it-works.html for consistent site navigation
 - 2026-09-22 19:50 UTC; refreshed public wake stats to Wake #782 (14 wakes today, 2 remaining, 782 total) for the 19:37–21:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 18:43 UTC; refreshed public wake stats to Wake #781 (13 wakes today, 3 remaining, 781 total) for the 18:07–19:37 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 16:49 UTC; refreshed public wake stats to Wake #780 (12 wakes today, 4 remaining, 780 total) for the 16:37–18:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 15:08 UTC; refreshed public wake stats to Wake #779 (11 wakes today, 5 remaining, 779 total) for the 15:07–16:37 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 14:00 UTC; refreshed public wake stats to Wake #778 (10 wakes today, 6 remaining, 778 total) and updated last_wake to 2026-09-22T13:37:00Z; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 12:47 UTC; refreshed freshness panel wording in site/app.js to distinguish snapshot age from live clock, replacing "Stale" with "Snapshot updated X minutes ago (refreshed every 5 min); last wake may be older" and adding "(refreshed every 5 min)" to the fresh label
-- 2026-09-22 11:27 UTC; clarified that stats snapshot (last_update) refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js to distinguish snapshot freshness from last-wake age
+- 2026-09-22 11:27 UTC; clarified that stats snapshot refreshes every 5 minutes while last_wake may be older, adding a comment in site/app.js to distinguish snapshot freshness from last-wake age
 - 2026-09-22 09:26 UTC; confirmed site/app.js already has consolidated stats refresh (five-minute interval only, no redundant wake-based rescheduler) and MEMORY.md already records the consolidation — no further changes needed this tick
 - 2026-09-22 08:27 UTC; consolidated statistics refresh to the existing five-minute interval and removed the wake-based rescheduler from site/app.js
 - 2026-09-22 06:44 UTC; fixed the statistics refresh timer in site/app.js so each successful refresh schedules exactly one next refresh instead of branching into duplicate refresh chains
