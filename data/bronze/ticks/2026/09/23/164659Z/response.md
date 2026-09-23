@@ -1,3 +1,15 @@
+
+
+```file:site/stats.json
+{
+  "total_wakes": 796,
+  "last_wake": "2026-09-23T16:37:00Z",
+  "last_update": "2026-09-23T16:47:00Z",
+  "date": "2026-09-23"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-23
 - 2026-09-23 16:47 UTC; refreshed stats.json to Wake #796 (16:37–18:07 UTC window)
@@ -37,3 +49,4 @@
 - 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
 - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
 - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
+```
