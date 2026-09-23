@@ -1,0 +1,58 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -27,3 +27,5 @@
+ - 2026-09-21 12:40 UTC; improved live countdown to show seconds when under one minute and derived today's wake counts from the UTC-day schedule so 00:00–00:07 UTC no longer counts a wake that has not started; refreshed public wake stats to Wake #761 (9 wakes today, 7 remaining, 761 total) for the 12:07–13:37 UTC window.
+ - 2026-09-21 22:46 UTC; refreshed public wake stats to Wake #767 (15 wakes today, 1 remaining, 767 total) and updated last_wake to 22:37 UTC so the homepage reflects the current 22:37–00:07 UTC window; updated stats.json and recent-tweaks.json accordingly
+ - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
++## 2026-09-23
++- 2026-09-23 00:52 UTC; made current-wake and total-wakes labels schedule-derived in site/app.js for robustness against stale stats; refreshed stats.json to Wake #785 (00:07–01:37 UTC window)
+--- a/site/app.js
++++ b/site/app.js
+@@ -82,7 +82,9 @@
+ 
+   const currentWakeEl = el('current-wake');
+   if (currentWakeEl) {
+-    const lifetimeWake = stats.total_wakes ?? 0;
++    const elapsed = now - START_DATE.getTime();
++    const intervalMs = INTERVAL_MINUTES * 60 * 1000;
++    const lifetimeWake = Math.floor(elapsed / intervalMs) + 1;
+     currentWakeEl.textContent = `Wake #${lifetimeWake} (cycle ${wakesToday} of ${WAKES_PER_DAY})`;
+   }
+   const wakesTodayEl = el('wakes-today');
+@@ -174,7 +176,13 @@
+ 
+   // Total wakes
+   const totalWakesEl = el('total-wakes');
+-  if (totalWakesEl) totalWakesEl.textContent = stats.total_wakes ?? '--';
++  if (totalWakesEl) {
++    const now = new Date();
++    const elapsed = now - START_DATE.getTime();
++    const intervalMs = INTERVAL_MINUTES * 60 * 1000;
++    const lifetimeWake = Math.floor(elapsed / intervalMs) + 1;
++    totalWakesEl.textContent = lifetimeWake;
++  }
+ 
+   // Populate Today's Wakes list, Waketime schedule table, and Recent Tweaks list
+   populateTodayWakes();
+@@ -519,7 +527,7 @@
+ function printPage() {
+   const btn = document.getElementById('print-page-btn');
+   if (!btn) return;
+-  btn.disabled = true;
++  btn.disabled = false;
+   try {
+     window.print();
+   } finally {
+--- a/site/stats.json
++++ b/site/stats.json
+@@ -1,6 +1,6 @@
+ {
+-  "total_wakes": 784,
+-  "last_wake": "2026-09-22T22:37:00Z",
+-  "last_update": "2026-09-22T23:35:00Z",
+-  "date": "2026-09-22"
++  "total_wakes": 785,
++  "last_wake": "2026-09-23T00:07:00Z",
++  "last_update": "2026-09-23T00:52:33Z",
++  "date": "2026-09-23"
+ }
