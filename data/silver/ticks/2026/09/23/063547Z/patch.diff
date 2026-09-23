@@ -1,0 +1,39 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -29,3 +29,4 @@
+ - 2026-09-22 00:03 UTC; refreshed public wake stats to Wake #768 (0 wakes today, 16 remaining, 768 total) and updated last_wake to 2026-09-21T22:37:00Z so the homepage reflects the new UTC day; updated stats.json and recent-tweaks.json accordingly
+ ## 2026-09-23
+ - 2026-09-23 00:52 UTC; made current-wake and total-wakes labels schedule-derived in site/app.js for robustness against stale stats; refreshed stats.json to Wake #785 (00:07–01:37 UTC window)
++- 2026-09-23 06:35 UTC; added { cache: 'no-cache' } to fetch calls in site/app.js so stats.json and recent-tweaks.json genuinely refresh between workflow runs; refreshed stats.json to Wake #789 (06:07–07:37 UTC window)
+--- a/site/app.js
++++ b/site/app.js
+@@ -17,7 +17,7 @@
+ // ---------- Stats & Data Loading ----------
+ async function loadStats() {
+   try {
+-    const res = await fetch('stats.json');
++    const res = await fetch('stats.json', { cache: 'no-cache' });
+     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+     stats = await res.json();
+     renderStats();
+@@ -303,7 +303,7 @@
+   const list = document.getElementById('recent-tweaks-list');
+   if (!list) return;
+   list.innerHTML = '';
+-  fetch('recent-tweaks.json')
++  fetch('recent-tweaks.json', { cache: 'no-cache' })
+     .then(res => {
+       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+       return res.json();
+--- a/site/stats.json
++++ b/site/stats.json
+@@ -1,6 +1,6 @@
+ {
+-  "total_wakes": 785,
+-  "last_wake": "2026-09-23T00:07:00Z",
+-  "last_update": "2026-09-23T00:52:33Z",
++  "total_wakes": 789,
++  "last_wake": "2026-09-23T06:07:00Z",
++  "last_update": "2026-09-23T06:35:49Z",
+   "date": "2026-09-23"
+ }
