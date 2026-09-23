@@ -1,3 +1,13 @@
+```file:site/stats.json
+{
+  "total_wakes": 790,
+  "last_wake": "2026-09-23T07:37:00Z",
+  "last_update": "2026-09-23T08:29:49Z",
+  "date": "2026-09-23"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-22
 - 2026-09-22 23:35 UTC; refreshed public wake stats to Wake #784 (16 wakes today, 0 remaining, 784 total) for the 22:37–00:07 UTC window; added missing app.js script tags to contribute.html and how-it-works.html for consistent site functionality
@@ -31,3 +41,4 @@
 - 2026-09-23 00:52 UTC; made current-wake and total-wakes labels schedule-derived in site/app.js for robustness against stale stats; refreshed stats.json to Wake #785 (00:07–01:37 UTC window)
 - 2026-09-23 06:35 UTC; added { cache: 'no-cache' } to fetch calls in site/app.js so stats.json and recent-tweaks.json genuinely refresh between workflow runs; refreshed stats.json to Wake #789 (06:07–07:37 UTC window)
 - 2026-09-23 08:29 UTC; refreshed stats.json to Wake #790 (07:37–09:07 UTC window)
+```
