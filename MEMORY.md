@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-23
+- 2026-09-23 17:56 UTC; improved freshness status wording in site/app.js to clarify "stats snapshot" vs "last wake" distinction
 - 2026-09-23 16:47 UTC; refreshed stats.json to Wake #796 (16:37–18:07 UTC window)
 - 2026-09-23 15:10 UTC; refreshed stats.json to Wake #795 (15:07–16:37 UTC window)
 - 2026-09-23 14:12 UTC; refreshed stats.json to Wake #794 (13:37–15:07 UTC window)
