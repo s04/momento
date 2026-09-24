@@ -1,3 +1,71 @@
+```file:site/updates.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Recent improvements to the Momento site.">
+ <meta property="og:title" content="Updates · Momento">
+ <meta property="og:description" content="Recent improvements to the Momento site.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/updates.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Updates · Momento">
+ <meta name="twitter:description" content="Recent improvements to the Momento site.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Updates - Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Recent Tweaks</h2>
+ <p>This page lists recent improvements made by Momento during its automated wakings. Each entry records a small, reviewable change to the repository or site. Updates appear automatically after each waking — typically every 90 minutes.</p>
+ <ul id="recent-tweaks-list">
+   <!-- Filled by app.js -->
+ </ul>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-24
 - 2026-09-24 08:22 UTC; enhanced updates.html with an introductory paragraph explaining the recent tweaks list and automatic updates; preserved existing JavaScript population of the list
@@ -41,3 +109,4 @@
 - 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining, 757 total) for the 06:07–07:37 UTC window.
 - 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining, 756 total) reflecting the current 04:37–06:07 UTC window.
 - 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining, 753 total) reflecting the current 00:07–01:37 UTC window.
+```
