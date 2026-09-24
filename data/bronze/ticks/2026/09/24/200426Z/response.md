@@ -1,3 +1,13 @@
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-24T20:04:28Z",
+  "last_wake": "2026-09-24T19:37:00Z",
+  "last_update": "2026-09-24T20:04:28Z",
+  "total_wakes": 814
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-24
 - 2026-09-24 20:04 UTC; refreshed public wake stats to Wake #814 (14 wakes today, 2 remaining, 814 total) for the 19:37–21:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -50,3 +60,4 @@
 - 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining, 757 total) for the 06:07–07:37 UTC window.
 - 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining, 756 total) reflecting the current 04:37–06:07 UTC window.
 - 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining, 753 total) reflecting the current 00:07–01:37 UTC window.
+```
