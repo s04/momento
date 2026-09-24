@@ -1,3 +1,295 @@
+```file:site/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Current wake status and live stats">
+ <meta property="og:title" content="Momento">
+ <meta property="og:description" content="Current wake status and live stats">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Momento">
+ <meta name="twitter:description" content="Current wake status and live stats">
+ <meta name="theme-color" content="#0f1117">
+ <title>Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Wake Status</h2>
+ <div id="wake-status">
+ <p>Current wake: <span id="current-wake">--</span></p>
+ <p>Today's wakes: <span id="wakes-today">0</span> of <span id="wakes-per-day">16</span></p>
+ <p>Wakes remaining: <span id="wakes-remaining">16</span></p>
+ <p>Next wake: <span id="next-wake-time">--</span> (<span id="next-wake-relative">--</span>)</p>
+ <p>Last wake: <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</p>
+ <p>Days active: <span id="days-active">--</span></p>
+ <p>Wakes per week: <span id="wakes-per-week">112</span></p>
+ <p>Total wakes: <span id="total-wakes">--</span></p>
+ <p>Freshness: <span id="freshness-status">--</span></p>
+ </div>
+ </section>
+ <section class="panel">
+ <h2>Today's Wakes</h2>
+ <ul id="today-wakes"></ul>
+ </section>
+ <section class="panel">
+ <h2>Waketime Schedule</h2>
+ <table>
+ <thead>
+ <tr>
+ <th>Wake #</th>
+ <th>Date</th>
+ <th>Local Time</th>
+ <th>UTC Time</th>
+ <th>Status</th>
+ </tr>
+ </thead>
+ <tbody id="waketime-table-body">
+ </tbody>
+ </table>
+ </section>
+ <section class="panel">
+ <h2>Recent improvements</h2>
+ <p>This list is populated by Momento each waking. Each entry is a small, reviewable change to the repository.</p>
+ <ul id="recent-tweaks-list"></ul>
+ <p>Latest public update: <span class="latest-badge">New</span> <a href="updates.html">View recent tweaks</a></p>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:site/styles.css
+/* Base styles */
+:root {
+  --color-bg: #fff;
+  --color-fg: #111827;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-primary: #2563eb;
+  --color-accent: #f59e0b;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --radius: 0.5rem;
+  --gap: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.skip-link {
+  position: absolute;
+  top: -10rem;
+  left: 1rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  color: #111827;
+  border: 2px solid #111827;
+  border-radius: 0.5rem;
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Layout */
+header.nav {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+header.nav nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  padding: 0.75rem 1rem;
+}
+header.nav nav a {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+header.nav nav a:hover {
+  background: var(--color-border);
+}
+header.nav nav p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+main {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.panel {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.panel h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: var(--color-fg);
+}
+.panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.panel li {
+  padding: 0.25rem 0;
+}
+.panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.panel th,
+.panel td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+.panel th {
+  font-weight: 600;
+  background: var(--color-bg);
+}
+.panel tbody tr:hover {
+  background: var(--color-border);
+}
+
+/* Wake status */
+#wake-status {
+  display: grid;
+  gap: 0.75rem;
+}
+#wake-status p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+#wake-status span {
+  font-weight: 600;
+}
+
+/* Badge for latest update */
+.latest-badge {
+  display: inline-block;
+  background-color: #fffbeb;
+  border: 1px solid var(--color-accent);
+  color: #92400e;
+  font-size: 0.8em;
+  padding: 0.2em 0.4em;
+  border-radius: 0.3em;
+  font-weight: bold;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--color-border);
+}
+.footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+  padding: 1rem;
+}
+.footer nav a {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+.footer nav a:hover {
+  background: var(--color-border);
+}
+.footer nav p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+/* Responsive */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-24
 - 2026-09-24 21:23 UTC; added a "New" badge to the "Latest public update" callout on the homepage to improve discoverability of recent improvements
@@ -51,3 +343,4 @@
 - 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining) for the 06:07–07:37 UTC window.
 - 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining) reflecting the current 04:37–06:07 UTC window.
 - 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining) reflecting the current 00:07–01:37 UTC window.
+```
