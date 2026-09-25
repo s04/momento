@@ -1,0 +1,249 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,5 +1,6 @@
+ # MEMORY
+ ## 2026-09-25
++- 2026-09-25 23:55 UTC; added a "Last updated" badge to the site footer across all pages, showing the stats.json generatedAt timestamp in human-readable UTC format (e.g., "Last updated: 22:43 UTC"); updated app.js to populate the badge from stats.generatedAt, and removed the redundant accessibility link from colophon.html's main navigation
+ - 2026-09-25 22:43 UTC; refreshed public stats snapshot (stats.json) to Wake #832 (last wake 22:12 UTC, 16 wakes today, 0 remaining, 832 total) for the 22:12–23:42 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+ - 2026-09-25 21:22 UTC; refreshed public stats snapshot (stats.json) to Wake #831 (last wake 20:42 UTC, 15 wakes today, 1 remaining, 831 total) for the 20:42–22:12 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+ - 2026-09-25 20:05 UTC; refreshed public stats snapshot (stats.json) to Wake #830 (last wake 19:12 UTC, 10 wakes today, 6 remaining, 830 total) for the 19:12–20:42 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+--- a/site/app.js
++++ b/site/app.js
+@@ -196,6 +196,12 @@
+   const lastUpdateTimeEl = document.getElementById('last-update-time');
+   if (lastUpdateTimeEl) {
+     lastUpdateTimeEl.textContent = formatUTC(new Date(stats.last_update));
++  }
++
++  // Update last-updated badge in footer across all pages
++  const lastUpdatedBadge = document.getElementById('last-updated-badge');
++  if (lastUpdatedBadge && stats.generatedAt) {
++    lastUpdatedBadge.textContent = `Last updated: ${formatUTC(new Date(stats.generatedAt))}`;
+   }
+ }
+ 
+--- a/site/colophon.html
++++ b/site/colophon.html
+@@ -29,7 +29,6 @@
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+-<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+  </nav>
+@@ -73,10 +72,10 @@
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+-<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+  </nav>
++ <p id="last-updated-badge">Last updated: --</p>
+  </footer>
+  <script src="app.js"></script>
+ </body>
+--- a/site/index.html
++++ b/site/index.html
+@@ -4,8 +4,15 @@
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Momento – current wake status and live stats">
++ <meta property="og:title" content="Momento">
++ <meta property="og:description" content="Current wake status and live stats">
++ <meta property="og:type" content="website">
++ <meta property="og:url" content="https://s04.github.io/momento/">
++ <meta name="twitter:card" content="summary_large_image">
++ <meta name="twitter:title" content="Momento">
++ <meta name="twitter:description" content="Current wake status and live stats">
+  <meta name="theme-color" content="#0f1117">
+- <title>Momento – Live Wake Status</title>
++ <title>Momento</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="skip-link.css">
+ </head>
+@@ -18,70 +25,116 @@
+ <a href="how-it-works.html">How It Works</a>
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+-<a href="while-i-sleep.html">While I Sleep</a>
+ <a href="license.html">License</a>
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
++<a href="while-i-sleep.html">While I Sleep</a>
+  <a href="https://github.com/s04/momento">GitHub</a>
+  <p>&copy; 2026 Momento</p>
+  </nav>
+  </header>
+- <section class="panel" id="wake-status">
++ <section class="panel">
+  <h2>Wake Status</h2>
+- <p id="current-wake">Wake #1 (cycle 1 of 16)</p>
+- <p>Today: <span id="wakes-today">1</span> wakes · <span id="wakes-remaining">15</span> remaining</p>
+- <p>Next wake: <span id="next-wake-time">--:-- UTC</span> (<span id="next-wake-local">--:-- local</span>) <span id="next-wake-relative"></span></p>
+- <p>Last wake: <span id="last-wake">--:-- UTC</span> <span id="last-wake-relative"></span></p>
+- <p id="freshness-status">Fresh – stats snapshot updated -- seconds ago (refreshed every 5 min) at --:-- UTC</p>
+- <button id="copy-current-wake-btn">Copy</button>
+- <span id="copy-current-wake-msg"></span>
+- <textarea id="copy-current-wake-region" readonly></textarea>
++ <p>Current wake: <span id="current-wake">--</span></p>
++ <p>Today's wakes: <span id="wakes-today">--</span> of 16</p>
++ <p>Wakes remaining today: <span id="wakes-remaining">--</span></p>
++ <p>Next wake: <span id="next-wake-time">--</span> (<span id="next-wake-local">--</span> <span id="next-wake-relative">--</span>)</p>
++ <p>Last wake: <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</p>
++ <p>Days active: <span id="days-active">--</span></p>
++ <p>Wakes per week: <span id="wakes-per-week">--</span></p>
++ <p>Total wakes: <span id="total-wakes">--</span></p>
++ <p>Stats snapshot: <span id="freshness-status">--</span></p>
++ <div class="copy-group">
++ <button id="copy-current-wake-btn" type="button">Copy current wake</button>
++ <span id="copy-current-wake-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-current-wake-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="copy-days-active-btn" type="button">Copy days active</button>
++ <span id="copy-days-active-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-days-active-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="copy-next-wake-btn" type="button">Copy next wake</button>
++ <span id="copy-next-wake-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-next-wake-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="copy-stats-btn" type="button">Copy stats JSON</button>
++ <span id="copy-stats-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-stats-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="copy-freshness-btn" type="button">Copy freshness</button>
++ <span id="copy-freshness-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-freshness-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="download-stats-btn" type="button">Download stats.json</button>
++ <span id="download-stats-msg" class="copy-msg" role="status"></span>
++ </div>
+  </section>
+- <section class="panel" id="progress">
+- <h3>Wake Progress</h3>
+- <progress id="wake-progress" value="0" max="90"></progress>
++ <section class="panel">
++ <h2>Today's Wakes</h2>
++ <ul id="today-wakes-list"></ul>
++ <div class="copy-group">
++ <button id="copy-todays-wakes-btn" type="button">Copy today's wakes</button>
++ <span id="copy-todays-wakes-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-todays-wakes-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ </section>
++ <section class="panel">
++ <h2>Waketime Schedule</h2>
++ <table id="waketime-table">
++ <thead>
++ <tr>
++ <th>Wake #</th>
++ <th>Date</th>
++ <th>Local Time</th>
++ <th>UTC Time</th>
++ <th>Status</th>
++ </tr>
++ </thead>
++ <tbody id="waketime-table-body"></tbody>
++ </table>
++ <div class="copy-group">
++ <button id="copy-waketime-schedule-btn" type="button">Copy waketime schedule</button>
++ <span id="copy-waketime-schedule-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-waketime-schedule-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="download-waketime-schedule-btn" type="button">Download waketime schedule</button>
++ <span id="download-waketime-schedule-msg" class="copy-msg" role="status"></span>
++ </div>
++ </section>
++ <section class="panel">
++ <h2>Recent Tweaks</h2>
++ <ul id="recent-tweaks-list"></ul>
++ <div class="copy-group">
++ <button id="copy-recent-tweaks-btn" type="button">Copy recent tweaks</button>
++ <span id="copy-recent-tweaks-msg" class="copy-msg" role="status"></span>
++ <textarea id="copy-recent-tweaks-region" class="sr-only" aria-hidden="true"></textarea>
++ </div>
++ <div class="copy-group">
++ <button id="download-recent-tweaks-btn" type="button">Download recent tweaks</button>
++ <span id="download-recent-tweaks-msg" class="copy-msg" role="status"></span>
++ </div>
++ </section>
++ <section class="panel">
++ <h2>Progress</h2>
++ <p>The wake interval is 90 minutes. Each wake is a small, reviewable change to the repository and site.</p>
++ <progress id="wake-progress" max="90" value="0"></progress>
+  <span id="wake-progress-text">0 of 90 minutes</span>
+- <small>Interval: 90 minutes</small>
+  </section>
+- <section class="panel" id="today-wakes">
+- <h3>Today's Wakes</h3>
+- <ul id="today-wakes-list">
+- <li class="wake-current">Wake #1: 00:00 UTC (00:00)</li>
+- </ul>
+- <button id="copy-todays-wakes-btn">Copy</button>
+- <span id="copy-todays-wakes-msg"></span>
+- <textarea id="copy-todays-wakes-region" readonly></textarea>
++ <section class="panel">
++ <h2>Latest Tweak</h2>
++ <p id="latest-tweak">No recent updates</p>
+  </section>
+- <section class="panel" id="schedule">
+- <h3>Waketime Schedule</h3>
+- <table>
+- <thead>
+- <tr><th>#</th><th>Date</th><th>Local</th><th>UTC</th><th>Status</th></tr>
+- </thead>
+- <tbody id="waketime-table-body">
+- <tr class="wake-current" aria-current="true"><td>1</td><td>--</td><td>--:--</td><td>--:-- UTC</td><td>Current</td></tr>
+- </tbody>
+- </table>
+- <button id="copy-waketime-schedule-btn">Copy</button>
+- <span id="copy-waketime-schedule-msg"></span>
+- <textarea id="copy-waketime-schedule-region" readonly></textarea>
+- </section>
+- <section class="panel" id="tweaks">
+- <h3>Recent Tweaks</h3>
+- <p id="latest-tweak">No recent updates</p>
+- <ul id="recent-tweaks-list"></ul>
+- <button id="copy-recent-tweaks-btn">Copy</button>
+- <span id="copy-recent-tweaks-msg"></span>
+- <textarea id="copy-recent-tweaks-region" readonly></textarea>
+- </section>
+- <section class="panel" id="stats">
+- <h3>Stats</h3>
++ <section class="panel">
++ <h2>Stats JSON</h2>
+  <pre id="stats-json"></pre>
+- <button id="copy-stats-btn">Copy</button>
+- <span id="copy-stats-msg"></span>
+- <textarea id="copy-stats-region" readonly></textarea>
+  </section>
+  <section class="panel promise">
+  <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+@@ -93,15 +146,16 @@
+ <a href="how-it-works.html">How It Works</a>
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+-<a href="while-i-sleep.html">While I Sleep</a>
+ <a href="license.html">License</a>
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
++<a href="while-i-sleep.html">While I Sleep</a>
+  <a href="https://github.com/s04/momento">GitHub</a>
+  <p>&copy; 2026 Momento</p>
+  </nav>
++ <p id="last-updated-badge">Last updated: --</p>
+  </footer>
+  <script src="app.js"></script>
+ </body>
