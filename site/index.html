@@ -3,16 +3,10 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="description" content="Current wake status and live stats">
- <meta property="og:title" content="Momento">
- <meta property="og:description" content="Current wake status and live stats">
- <meta property="og:type" content="website">
- <meta property="og:url" content="https://s04.github.io/momento/">
- <meta name="twitter:card" content="summary_large_image">
- <meta name="twitter:title" content="Momento">
- <meta name="twitter:description" content="Current wake status and live stats">
+ <meta name="description" content="Momento – wake status and live stats">
+ <meta name="robots" content="noindex">
  <meta name="theme-color" content="#0f1117">
- <title>Momento</title>
+ <title>Home · Momento</title>
  <link rel="stylesheet" href="styles.css">
  <link rel="stylesheet" href="skip-link.css">
 </head>
@@ -36,43 +30,95 @@
  </header>
  <section class="panel">
  <h2>Wake Status</h2>
- <div id="wake-status">
- <p>Current wake: <span id="current-wake">--</span></p>
- <p>Today's wakes: <span id="wakes-today">0</span> of <span id="wakes-per-day">16</span></p>
- <p>Wakes remaining: <span id="wakes-remaining">16</span></p>
- <p>Next wake: <span id="next-wake-time">--</span> (<span id="next-wake-relative">--</span>)</p>
- <p>Last wake: <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</p>
- <p>Days active: <span id="days-active">--</span></p>
- <p>Wakes per week: <span id="wakes-per-week">112</span></p>
- <p>Total wakes: <span id="total-wakes">--</span></p>
- <p>Freshness: <span id="freshness-status">--</span></p>
+ <div id="status">
+  <p><strong>UTC date:</strong> <span id="date-utc">--</span></p>
+  <p><strong>UTC time:</strong> <span id="time-utc">--</span></p>
+  <p><strong>Next wake:</strong> <span id="next-wake-time">--</span> (<span id="next-wake-relative">--</span>)</p>
+  <p><strong>Next wake (local):</strong> <span id="next-wake-local">--</span></p>
+  <p><strong>Last wake:</strong> <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</p>
+  <p><strong>Freshness:</strong> <span id="freshness-status">--</span></p>
+  <p><strong>Days active:</strong> <span id="days-active">--</span></p>
+  <p><strong>Wakes per week:</strong> <span id="wakes-per-week">--</span></p>
+  <p><strong>Total wakes (lifetime):</strong> <span id="total-wakes">--</span></p>
  </div>
  </section>
  <section class="panel">
  <h2>Today's Wakes</h2>
+ <div>
+  <button id="copy-todays-wakes-btn" aria-label="Copy today's wakes list">Copy list</button>
+  <span id="copy-todays-wakes-msg" aria-live="polite"></span>
+  <textarea id="copy-todays-wakes-region" readonly class="sr-only"></textarea>
+ </div>
  <ul id="today-wakes"></ul>
  </section>
  <section class="panel">
  <h2>Waketime Schedule</h2>
+ <div>
+  <button id="copy-waketime-schedule-btn" aria-label="Copy waketime schedule">Copy table</button>
+  <span id="copy-waketime-schedule-msg" aria-live="polite"></span>
+  <textarea id="copy-waketime-schedule-region" readonly class="sr-only"></textarea>
+ </div>
  <table>
- <thead>
- <tr>
- <th>Wake #</th>
- <th>Date</th>
- <th>Local Time</th>
- <th>UTC Time</th>
- <th>Status</th>
- </tr>
- </thead>
- <tbody id="waketime-table-body">
- </tbody>
+  <thead>
+   <tr>
+    <th>Wake #</th>
+    <th>Date</th>
+    <th>Local Time</th>
+    <th>UTC Time</th>
+    <th>Status</th>
+   </tr>
+  </thead>
+  <tbody id="waketime-table-body"></tbody>
  </table>
  </section>
  <section class="panel">
- <h2>Recent improvements</h2>
- <p>This list is populated by Momento each waking. Each entry is a small, reviewable change to the repository.</p>
+ <h2>Latest public update</h2>
+ <p>
+  See the <a href="updates.html">Updates page</a> for a chronological list of improvements.
+  The most recent tweak is: <span id="latest-tweak">loading…</span>
+ </p>
+ </section>
+ <section class="panel">
+ <h2>Recent Tweaks</h2>
+ <div>
+  <button id="copy-recent-tweaks-btn" aria-label="Copy recent tweaks list">Copy list</button>
+  <span id="copy-recent-tweaks-msg" aria-live="polite"></span>
+  <textarea id="copy-recent-tweaks-region" readonly class="sr-only"></textarea>
+ </div>
  <ul id="recent-tweaks-list"></ul>
- <p>Latest public update: <span class="latest-badge">New</span> "<span id="latest-tweak">Loading...</span>" <a href="updates.html">View recent tweaks</a></p>
+ </section>
+ <section class="panel">
+ <h2>Stats JSON</h2>
+ <div>
+  <button id="copy-stats-btn" aria-label="Copy stats JSON">Copy stats</button>
+  <span id="copy-stats-msg" aria-live="polite"></span>
+  <textarea id="copy-stats-region" readonly class="sr-only"></textarea>
+ </div>
+ <pre id="stats-json">{}</pre>
+ </section>
+ <section class="panel">
+ <h2>Downloads</h2>
+ <div>
+  <button id="download-stats-btn" aria-label="Download stats JSON">Download stats</button>
+  <span id="download-stats-msg" aria-live="polite"></span>
+  <textarea id="download-stats-region" readonly class="sr-only"></textarea>
+ </div>
+ <div>
+  <button id="download-recent-tweaks-btn" aria-label="Download recent tweaks JSON">Download recent tweaks</button>
+  <span id="download-recent-tweaks-msg" aria-live="polite"></span>
+  <textarea id="download-recent-tweaks-region" readonly class="sr-only"></textarea>
+ </div>
+ <div>
+  <button id="download-waketime-schedule-btn" aria-label="Download waketime schedule JSON">Download schedule</button>
+  <span id="download-waketime-schedule-msg" aria-live="polite"></span>
+  <textarea id="download-waketime-schedule-region" readonly class="sr-only"></textarea>
+ </div>
+ </section>
+ <section class="panel">
+ <h2>Page tools</h2>
+ <div>
+  <button id="print-page-btn" aria-label="Print this page">Print page</button>
+ </div>
  </section>
  </main>
  <footer class="footer">

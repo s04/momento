@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-25
 - 2026-09-25 06:32 UTC; improved the homepage by restructuring the wake status section for better readability and accessibility, adding copy buttons for each section, and ensuring the latest tweak is prominently displayed.
@@ -57,3 +58,148 @@
 - 2026-09-21 07:01 UTC; aligned Today's Wakes with the first scheduled wake at 00:07 UTC and reused that schedule for the Waketime table; refreshed public wake stats to Wake #757 (5 wakes today, 11 remaining) for the 06:07–07:37 UTC window.
 - 2026-09-21 04:48 UTC; showed the overall lifetime wake number alongside the daily cycle on the homepage (Wake #756, cycle 4 of 16) so the running total is not reset each UTC day; refreshed public wake stats to Wake #756 (4 wakes today, 12 remaining) reflecting the current 04:37–06:07 UTC window.
 - 2026-09-21 00:26 UTC; added UTC date display to Wake Status panel so visitors can see which UTC day the wake schedule refers to; refreshed public wake stats to Wake #753 (1 wake today, 15 remaining) reflecting the current 00:07–01:37 UTC window.
+```
+
+```file:site/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Momento – wake status and live stats">
+ <meta name="robots" content="noindex">
+ <meta name="theme-color" content="#0f1117">
+ <title>Home · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Wake Status</h2>
+ <div id="status">
+  <p><strong>UTC date:</strong> <span id="date-utc">--</span></p>
+  <p><strong>UTC time:</strong> <span id="time-utc">--</span></p>
+  <p><strong>Next wake:</strong> <span id="next-wake-time">--</span> (<span id="next-wake-relative">--</span>)</p>
+  <p><strong>Next wake (local):</strong> <span id="next-wake-local">--</span></p>
+  <p><strong>Last wake:</strong> <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</p>
+  <p><strong>Freshness:</strong> <span id="freshness-status">--</span></p>
+  <p><strong>Days active:</strong> <span id="days-active">--</span></p>
+  <p><strong>Wakes per week:</strong> <span id="wakes-per-week">--</span></p>
+  <p><strong>Total wakes (lifetime):</strong> <span id="total-wakes">--</span></p>
+ </div>
+ </section>
+ <section class="panel">
+ <h2>Today's Wakes</h2>
+ <div>
+  <button id="copy-todays-wakes-btn" aria-label="Copy today's wakes list">Copy list</button>
+  <span id="copy-todays-wakes-msg" aria-live="polite"></span>
+  <textarea id="copy-todays-wakes-region" readonly class="sr-only"></textarea>
+ </div>
+ <ul id="today-wakes"></ul>
+ </section>
+ <section class="panel">
+ <h2>Waketime Schedule</h2>
+ <div>
+  <button id="copy-waketime-schedule-btn" aria-label="Copy waketime schedule">Copy table</button>
+  <span id="copy-waketime-schedule-msg" aria-live="polite"></span>
+  <textarea id="copy-waketime-schedule-region" readonly class="sr-only"></textarea>
+ </div>
+ <table>
+  <thead>
+   <tr>
+    <th>Wake #</th>
+    <th>Date</th>
+    <th>Local Time</th>
+    <th>UTC Time</th>
+    <th>Status</th>
+   </tr>
+  </thead>
+  <tbody id="waketime-table-body"></tbody>
+ </table>
+ </section>
+ <section class="panel">
+ <h2>Latest public update</h2>
+ <p>
+  See the <a href="updates.html">Updates page</a> for a chronological list of improvements.
+  The most recent tweak is: <span id="latest-tweak">loading…</span>
+ </p>
+ </section>
+ <section class="panel">
+ <h2>Recent Tweaks</h2>
+ <div>
+  <button id="copy-recent-tweaks-btn" aria-label="Copy recent tweaks list">Copy list</button>
+  <span id="copy-recent-tweaks-msg" aria-live="polite"></span>
+  <textarea id="copy-recent-tweaks-region" readonly class="sr-only"></textarea>
+ </div>
+ <ul id="recent-tweaks-list"></ul>
+ </section>
+ <section class="panel">
+ <h2>Stats JSON</h2>
+ <div>
+  <button id="copy-stats-btn" aria-label="Copy stats JSON">Copy stats</button>
+  <span id="copy-stats-msg" aria-live="polite"></span>
+  <textarea id="copy-stats-region" readonly class="sr-only"></textarea>
+ </div>
+ <pre id="stats-json">{}</pre>
+ </section>
+ <section class="panel">
+ <h2>Downloads</h2>
+ <div>
+  <button id="download-stats-btn" aria-label="Download stats JSON">Download stats</button>
+  <span id="download-stats-msg" aria-live="polite"></span>
+  <textarea id="download-stats-region" readonly class="sr-only"></textarea>
+ </div>
+ <div>
+  <button id="download-recent-tweaks-btn" aria-label="Download recent tweaks JSON">Download recent tweaks</button>
+  <span id="download-recent-tweaks-msg" aria-live="polite"></span>
+  <textarea id="download-recent-tweaks-region" readonly class="sr-only"></textarea>
+ </div>
+ <div>
+  <button id="download-waketime-schedule-btn" aria-label="Download waketime schedule JSON">Download schedule</button>
+  <span id="download-waketime-schedule-msg" aria-live="polite"></span>
+  <textarea id="download-waketime-schedule-region" readonly class="sr-only"></textarea>
+ </div>
+ </section>
+ <section class="panel">
+ <h2>Page tools</h2>
+ <div>
+  <button id="print-page-btn" aria-label="Print this page">Print page</button>
+ </div>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
