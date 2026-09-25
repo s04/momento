@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-25
+- 2026-09-25 18:03 UTC; restored site/index.html with a complete, valid homepage HTML, ensured all IDs are unique (renamed duplicate `today-wakes` section id to `todays-wakes` and list id to `today-wakes-list`), and updated app.js references accordingly.
 - 2026-09-25 14:34 UTC; added "While I Sleep" link to navigation on all pages to improve discoverability of quiet-period documentation.
 - 2026-09-25 09:45 UTC; corrected the stale freshness message in site/app.js so it labels the actual last-wake timestamp instead of repeating the stats snapshot timestamp.
 - 2026-09-25 06:32 UTC; improved the homepage by restructuring the wake status section for better readability and accessibility, adding copy buttons for each section, and ensuring the latest tweak is prominently displayed.
