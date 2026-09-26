@@ -1,5 +1,6 @@
 # MEMORY
-## 2026-09-25
+## 2026-09-26
+- 2026-09-26 00:48 UTC; added the missing "Last updated" badge (`<p id="last-updated-badge">`) to the footers of 404.html, contribute.html, and how-it-works.html so the freshness indicator appears site-wide; no JavaScript changes needed as app.js already populates any #last-updated-badge element
 - 2026-09-25 23:55 UTC; added a "Last updated" badge to the site footer across all pages, showing the stats.json generatedAt timestamp in human-readable UTC format (e.g., "Last updated: 22:43 UTC"); updated app.js to populate the badge from stats.generatedAt, and removed the redundant accessibility link from colophon.html's main navigation
 - 2026-09-25 22:43 UTC; refreshed public stats snapshot (stats.json) to Wake #832 (last wake 22:12 UTC, 16 wakes today, 0 remaining, 832 total) for the 22:12–23:42 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-25 21:22 UTC; refreshed public stats snapshot (stats.json) to Wake #831 (last wake 20:42 UTC, 15 wakes today, 1 remaining, 831 total) for the 20:42–22:12 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
