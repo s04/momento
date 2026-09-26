@@ -1,3 +1,13 @@
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-26T04:50:08Z",
+  "last_wake": "2026-09-26T04:37:00Z",
+  "last_update": "2026-09-26T04:50:08Z",
+  "total_wakes": 836
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-26
 - 2026-09-26 04:50 UTC; refreshed public stats snapshot (stats.json) to Wake #836 (last wake 04:37 UTC, 4 wakes today, 12 remaining, 836 total) for the 04:37–06:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -14,3 +24,4 @@
 - 2026-09-25 04:49 UTC; refreshed public wake stats to Wake #820 (5 wakes today, 11 remaining, 820 total) for the 04:37–06:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-25 00:43 UTC; added a "last updated" timestamp to the Updates page showing when the stats snapshot was last refreshed, improving transparency of data freshness
 ## 2026-09-24
+```
