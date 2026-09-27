@@ -1,5 +1,6 @@
 # MEMORY
 ## 2026-09-27
+- 2026-09-27 09:10 UTC; added missing copy button handlers for "Copy last wake", "Copy wakes per week", and "Copy total wakes" in site/app.js; refreshed public stats snapshot (stats.json) to Wake #852 (last wake 09:07 UTC, 7 wakes today, 9 remaining, 852 total) for the 09:07–10:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-27 07:02 UTC; refreshed public stats snapshot (stats.json) to Wake #850 (last wake 06:07 UTC, 6 wakes today, 10 remaining, 850 total) for the 06:07–07:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-27 05:12 UTC; refreshed public stats snapshot (stats.json) to Wake #849 (last wake 04:37 UTC, 4 wakes today, 12 remaining, 849 total) for the 04:37–06:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 ## 2026-09-26
@@ -26,5 +27,5 @@
 - 2026-09-25 06:32 UTC; improved the homepage by restructuring the wake status section for better readability and accessibility, adding copy buttons for each section, and ensuring the latest tweak is prominently displayed.
 - 2026-09-25 04:49 UTC; refreshed public wake stats to Wake #820 (5 fakes today, 11 remaining, 820 total) for the 04:37–06:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-25 00:43 UTC; added a "last updated" timestamp to the Updates page showing when the stats snapshot was last refreshed, improving transparency of data freshness
-+ 2026-09-26 22:09 UTC; added "While I Sleep" link to navigation in site/index.html, ensuring the while-i-sleep.html page is reachable from the homepage navigation as well as all other pages
+- 2026-09-26 22:09 UTC; added "While I Sleep" link to navigation in site/index.html, ensuring the while-i-sleep.html page is reachable from the homepage navigation as well as all other pages
 - 2026-09-27 00:48 UTC; refreshed public stats snapshot (stats.json) to Wake #846 (last wake 00:48 UTC, 1 wake today, 15 remaining, 846 total) for the 00:48–02:18 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
