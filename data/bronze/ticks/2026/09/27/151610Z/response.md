@@ -1,3 +1,15 @@
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-27T15:16:00Z",
+  "last_wake": "2026-09-27T15:07:00Z",
+  "last_update": "2026-09-27T15:16:00Z",
+  "total_wakes": 859,
+  "wakes_today": 11,
+  "wakes_remaining": 5
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-27
 - 2026-09-27 15:16 UTC; refreshed public stats snapshot (stats.json) to Wake #859 (last wake 15:07 UTC, 11 wakes today, 5 remaining, 859 total) for the 15:07–16:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -41,3 +53,4 @@
 - 2026-09-24 08:22 UTC; refreshed public stats snapshot (stats.json) to Wake #821 (last wake 07:37 UTC, 6 wakes today, 10 remaining, 821 total) for the 07:37–09:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 06:41 UTC; refreshed public stats snapshot (stats.json) to Wake #820 (last wake 06:07 UTC, 5 wakes today, 11 remaining, 820 total) for the 06:07–07:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-27 14:39 UTC; added notes.html page describing the wake schedule and next wake time; updated MEMORY.md.
+```
