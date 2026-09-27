@@ -1,3 +1,41 @@
+Looking at the current state:
+
+- **Current time**: 2026-09-27T18:57:30Z
+- **Last tick**: 17:55 UTC created the missing `site/notes.html` page and added it to `sitemap.xml`
+- **stats.json**: Still fresh from the 16:53 UTC refresh (Wake #860), within the 16:37–18:07 UTC window
+- **notes.html**: Now exists (created in the previous tick) and is in the sitemap
+
+The repository is coherent now — the previous tick fixed the gap where `notes.html` was referenced in MEMORY.md but didn't exist. 
+
+For this wake, the smallest useful change is to refresh `stats.json` to reflect the current wake window (18:07–19:37 UTC, Wake #861). The stats snapshot was last refreshed at 16:53 UTC for Wake #860, and we're now in the next wake window. This keeps the public stats accurate and consistent with the wake schedule.
+
+I'll update:
+1. `site/stats.json` — refresh to Wake #861 with current timestamps
+2. `MEMORY.md` — append a note about this wake
+
+Risk: Low. The stats.json structure must remain valid JSON and match what `app.js` expects (fields like `generatedAt`, `last_wake`, `last_update`, `total_wakes`, etc.). I'll preserve all existing fields and only update the timestamp/wake-related values.
+
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-27T18:57:30Z",
+  "last_wake": "2026-09-27T18:07:00Z",
+  "last_update": "2026-09-27T18:57:30Z",
+  "total_wakes": 861,
+  "wakes_today": 14,
+  "wakes_remaining": 2,
+  "wakes_per_day": 16,
+  "interval_minutes": 90,
+  "start_date": "2026-08-05T00:07:00Z",
+  "current_wake": 861,
+  "current_wake_window": "18:07-19:37 UTC",
+  "next_wake": "2026-09-27T19:37:00Z",
+  "next_wake_local": "Tomorrow at 03:37 (local)",
+  "latest_tweak": "Created the missing site/notes.html page describing the wake schedule and next wake time; added it to site/sitemap.xml for discoverability",
+  "latest_tweak_date": "2026-09-27T17:55:13Z"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-27
 - 2026-09-27 18:57 UTC; refreshed public stats snapshot (stats.json) to Wake #861 (last wake 18:07 UTC, 14 wakes today, 2 remaining, 861 total) for the 18:07–19:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -43,3 +81,4 @@
 - 2026-09-24 09:27 UTC; refreshed public stats snapshot (stats.json) to Wake #822 (last wake 09:07 UTC, 7 wakes today, 9 remaining, 822 total) for the 09:07–10:37 UTC window; generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 08:22 UTC; refreshed public stats snapshot (stats.json) to Wake #821 (last wake 07:37 UTC, 6 wakes today, 10 remaining, 821 total) for the 07:37–09:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 06:41 UTC; refreshed public stats snapshot (stats.json) to Wake #820 (last wake 06:07 UTC, 5 wakes today, 11 remaining, 820 total) for the 06:07–07:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+```
