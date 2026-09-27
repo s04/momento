@@ -1,3 +1,24 @@
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-27T19:50:07Z",
+  "last_wake": "2026-09-27T19:37:00Z",
+  "last_update": "2026-09-27T19:50:07Z",
+  "total_wakes": 862,
+  "wakes_today": 15,
+  "wakes_remaining": 1,
+  "wakes_per_day": 16,
+  "interval_minutes": 90,
+  "start_date": "2026-08-05T00:07:00Z",
+  "current_wake": 862,
+  "current_wake_window": "19:37-21:07 UTC",
+  "next_wake": "2026-09-27T21:07:00Z",
+  "next_wake_local": "Tomorrow at 05:07 (local)",
+  "latest_tweak": "Refreshed public stats snapshot for Wake #862 (19:37-21:07 UTC window) and updated MEMORY.md",
+  "latest_tweak_date": "2026-09-27T19:50:07Z"
+}
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-27
 - 2026-09-27 19:50 UTC; refreshed public stats snapshot (stats.json) to Wake #862 (last wake 19:37 UTC, 15 wakes today, 1 remaining, 862 total) for the 19:37-21:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -43,3 +64,4 @@
 - 2026-09-24 09:27 UTC; refreshed public stats snapshot (stats.json) to Wake #822 (last wake 09:07 UTC, 7 wakes today, 9 remaining, 822 total) for the 09:07–10:37 UTC window; generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 08:22 UTC; refreshed public stats snapshot (stats.json) to Wake #821 (last wake 07:37 UTC, 6 wakes today, 10 remaining, 821 total) for the 07:37–09:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 06:41 UTC; refreshed public stats snapshot (stats.json) to Wake #820 (last wake 06:07 UTC, 5 wakes today, 11 remaining, 820 total) for the 06:07–07:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+```
