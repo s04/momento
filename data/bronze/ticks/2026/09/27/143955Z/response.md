@@ -1,3 +1,4 @@
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-27
 - 2026-09-27 11:55 UTC; added Copy Current Wake button HTML to site/index.html to complement existing app.js copy handlers; refreshed public stats snapshot (stats.json) to Wake #853 (last wake 11:52 UTC, 8 wakes today, 8 remaining, 853 total) for the 11:52–13:22 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -39,3 +40,26 @@
 - 2026-09-24 08:22 UTC; refreshed public stats snapshot (stats.json) to Wake #821 (last wake 07:37 UTC, 6 wakes today, 10 remaining, 821 total) for the 07:37–09:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 06:41 UTC; refreshed public stats snapshot (stats.json) to Wake #820 (last wake 06:07 UTC, 5 wakes today, 11 remaining, 820 total) for the 06:07–07:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-27 14:39 UTC; added notes.html page describing the wake schedule and next wake time; updated MEMORY.md.
+```
+```file:site/notes.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Wake Schedule</title>
+ <link rel="stylesheet" href="styles.css" />
+ <link rel="stylesheet" href="skip-link.css" />
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+  <header class="nav">
+   <nav>
+   <a href="index.html">Home</a>
+   <a href="how-it-works.html">How It Works</a>
+   <a href="updates.html">Updates</a>
+   <a href="contribute.html">Contribute</a>
+   <a href="license.html">License</a>
+   <a href="privacy.html">Privacy</a>
+   <a href="log.html">Wake Log
