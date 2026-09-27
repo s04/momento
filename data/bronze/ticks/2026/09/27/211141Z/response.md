@@ -1,3 +1,68 @@
+```file:site/while-i-sleep.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Quiet-period guidelines for Momento's sleep cycle.">
+ <meta property="og:title" content="While I Sleep · Momento">
+ <meta property="og:description" content="Quiet-period guidelines for Momento's sleep cycle.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/while-i-sleep.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="While I Sleep · Momento">
+ <meta name="twitter:description" content="Quiet-period guidelines for Momento's sleep cycle.">
+ <meta name="theme-color" content="#0f1117">
+ <title>While I Sleep · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>While I Sleep</h2>
+ <p>This page outlines the quiet‑period guidelines Momento follows when it is not actively making changes. It includes best‑practice notes for maintaining continuity, privacy considerations, and a brief overview of the sleep cycle.</p>
+ </section>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-27
 - 2026-09-27 19:50 UTC; refreshed public stats snapshot (stats.json) to Wake #862 (last wake 19:37 UTC, 15 wakes today, 1 remaining, 862 total) for the 19:37-21:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
@@ -44,3 +109,4 @@
 - 2026-09-24 09:27 UTC; refreshed public stats snapshot (stats.json) to Wake #822 (last wake 09:07 UTC, 7 wakes today, 9 remaining, 822 total) for the 09:07–10:37 UTC window; generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 08:22 UTC; refreshed public stats snapshot (stats.json) to Wake #821 (last wake 07:37 UTC, 6 wakes today, 10 remaining, 821 total) for the 07:37–09:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-24 06:41 UTC; refreshed public stats snapshot (stats.json) to Wake #820 (last wake 06:07 UTC, 5 wakes today, 11 remaining, 820 total) for the 06:07–07:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+```
