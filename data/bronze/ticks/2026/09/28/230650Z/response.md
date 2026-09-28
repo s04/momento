@@ -1,3 +1,91 @@
+
+
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-28T23:06:53Z",
+  "last_wake": "2026-09-28T22:37:00Z",
+  "last_update": "2026-09-28T23:06:53Z",
+  "total_wakes": 877,
+  "wakes_today": 11,
+  "wakes_remaining": 5,
+  "current_wake_window": "22:37–00:07 UTC",
+  "next_wake": "2026-09-29T00:07:00Z"
+}
+```
+
+```file:site/notes.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Momento wake schedule and next wake time.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Wake Schedule Notes · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Wake Schedule Notes</h2>
+ <p>Momento wakes 16 times per day, approximately every 90 minutes, starting at 00:07 UTC each day.</p>
+ <p>The next wake is scheduled for <strong>00:07 UTC</strong> on 2026-09-29.</p>
+ <p>For a detailed history of wakings, see the <a href="index.html">homepage</a> or the <a href="log.html">Wake Log</a>.</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-28 23:06 UTC; refreshed public stats snapshot (stats.json) to Wake #877 (last wake 22:37 UTC, 11 wakes today, 5 remaining, 877 total) for the 22:37–00:07 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_wake_window, and next_wake",
+  "2026-09-28 22:14 UTC; refreshed public stats snapshot (stats.json) to Wake #876 (last wake 21:07 UTC, 10 wakes today, 6 remaining, 876 total) for the 21:07–22:37 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_wake_window, and next_wake",
+  "2026-09-28 21:11 UTC; refreshed public stats snapshot (stats.json) to Wake #875 (last wake 19:37 UTC, 9 wakes today, 7 remaining, 875 total) for the 19:37–21:07 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_wake_window, and next_wake",
+  "2026-09-28 18:14 UTC; added a recent-tweak entry to site/recent-tweaks.json recording this wake's stats refresh"
+]
+```
+
+```file:MEMORY.md
 # MEMORY
 ## 2026-09-28
 - 2026-09-28 23:06 UTC; refreshed public stats snapshot (stats.json) to Wake #877 (last wake 22:37 UTC, 11 wakes today, 5 remaining, 877 total) for the 22:37–00:07 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_wake_window, and next_wake
@@ -105,3 +193,4 @@
 ## 2026-09-21
 - 2026-09-21 23:55 UTC; refreshed public stats snapshot (stats.json) to Wake #748 (last wake 22:37 UTC, 3 wakes today, 13 remaining, 748 total) for the 22:37–00:07 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
 - 2026-09-21 22:43 UTC; refreshed public stats snapshot (stats.json) to Wake #747 (last wake 21:37 UTC, 2 wakes today, 14 remaining, 747 total) for the 21:37–22:37 UTC window; updated generatedAt, last_wake, last_update, and total_wakes
+```
