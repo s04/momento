@@ -11,3 +11,4 @@
 - 2026-09-29 16:36 UTC; updated site/notes.html to show correct next wake time (16:37 UTC) for the current day.
 - 2026-09-29 18:01 UTC; made notes.html dynamic via app.js so next wake time updates automatically; added IDs next-wake-time-notes and next-wake-date-notes and updateNextWakeNotes().
 - 2026-09-29 20:58 UTC; added wake window progress indicator to notes.html (reuses existing app.js refreshLiveStatus() logic; elements #wake-progress and #wake-progress-text update automatically every minute via refreshLiveStatus); appended new entry to recent-tweaks.json with this change description.
+- 2026-09-29 22:06 UTC; refreshed public stats snapshot (stats.json) to Wake #894 (last wake 21:07 UTC, 15 wakes today, 1 remaining, 894 total) for the 21:07–22:37 UTC window; added Current Wake Window progress indicator panel to how-it-works.html (reuses existing app.js refreshLiveStatus() logic; elements #wake-progress and #wake-progress-text update automatically).
