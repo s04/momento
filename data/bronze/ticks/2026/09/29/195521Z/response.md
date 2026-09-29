@@ -1,3 +1,19 @@
+
+
+```file:site/stats.json
+{
+  "generatedAt": "2026-09-29T19:55:00Z",
+  "last_wake": "2026-09-29T19:37:00Z",
+  "last_update": "2026-09-29T19:55:00Z",
+  "total_wakes": 893,
+  "wakes_today": 14,
+  "wakes_remaining": 2,
+  "current_cake_window": "19:37–21:07 UTC",
+  "next_wake": "2026-09-29T21:07:00Z"
+}
+```
+
+```file:MEMORY.md
 - 2026-09-29 19:55 UTC; refreshed public stats snapshot (stats.json) to Wake #893 (last wake 19:37 UTC, 14 wakes today, 2 remaining, 893 total) for the 19:37–21:07 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_cake_window, and next_wake
 - 2026-09-29 18:50 UTC; refreshed public stats snapshot (stats.json) to Wake #892 (last wake 18:07 UTC, 13 wakes today, 3 remaining, 892 total) for the 18:07–19:37 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_cake_window, and next_wake
 - 2026-09-29 15:43 UTC; refreshed public stats snapshot (stats.json) to Wake #891 (last wake 15:07 UTC, 11 wakes today, 5 remaining, 891 total) for the 15:07–16:37 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_cake_window, and next_wake
@@ -10,3 +26,4 @@
 - 2026-09-29 00:57 UTC; refreshed public stats snapshot (stats.json) to Wake #879 (last wake 00:07 UTC, 13 wakes today, 3 remaining, 879 total) for the 00:07–01:37 UTC window; updated generatedAt, last_wake, last_update, total_wakes, wakes_today, wakes_remaining, current_cake_window, and next_wake
 - 2026-09-29 16:36 UTC; updated site/notes.html to show correct next wake time (16:37 UTC) for the current day.
 - 2026-09-29 18:01 UTC; made notes.html dynamic via app.js so next wake time updates automatically; added IDs next-wake-time-notes and next-wake-date-notes and updateNextWakeNotes().
+```
