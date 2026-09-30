@@ -1,0 +1,44 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -7,3 +7,4 @@
+ - 2026-09-30 15:52 UTC; added "Copy current wake" button to the Current Wake Status section on colophon.html (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements).
+ - 2026-09-30 16:29 UTC; added copy buttons for last wake, next wake time, and freshness status to the Current Wake Status section on colophon.html (reuses existing app.js copyLastWake(), copyNextWakeTime(), and copyFreshness() functions and event listeners; adds #copy-last-wake-btn/msg/region, #copy-next-wake-btn/msg/region, and #copy-freshness-btn/msg/region elements).
+ - 2026-09-30 17:57 UTC; fixed backslash bug in colophon.html "Wakes remaining" line; added "Copy wakes today" button to Current Wake Status section on colophon.html (adds copyWakesToday() function and event listener in app.js; adds #copy-wakes-today-btn/msg/region elements).
++- 2026-09-30 18:32 UTC; added "Copy wakes remaining" button to the Current Wake Status section on colophon.html (adds copyWakesRemaining() function and event listener in app.js; adds #copy-wakes-remaining-btn/msg/region elements).
+--- a/site/app.js
++++ b/site/app.js
+@@ -430,6 +430,15 @@
+   copyToClipboard(wakesTodayText, msg, region);
+ }
+ 
++function copyWakesRemaining() {
++  const btn = document.getElementById('copy-wakes-remaining-btn');
++  const msg = document.getElementById('copy-wakes-remaining-msg');
++  const region = document.getElementById('copy-wakes-remaining-region');
++  if (!btn || !msg || !region) return;
++  const wakesRemainingText = document.getElementById('wakes-remaining').textContent;
++  copyToClipboard(wakesRemainingText, msg, region);
++}
++
+ function copyNextWakeTime() {
+   const btn = document.getElementById('copy-next-wake-btn');
+   const msg = document.getElementById('copy-next-wake-msg');
+@@ -626,6 +635,7 @@
+   id('copy-wakes-per-week-btn')?.addEventListener('click', copyWakesPerWeek);
+   id('copy-total-wakes-btn')?.addEventListener('click', copyTotalWakes);
+   id('copy-wakes-today-btn')?.addEventListener('click', copyWakesToday);
++  id('copy-wakes-remaining-btn')?.addEventListener('click', copyWakesRemaining);
+   id('copy-next-wake-btn')?.addEventListener('click', copyNextWakeTime);
+   id('copy-stats-btn')?.addEventListener('click', copyStats);
+   id('copy-freshness-btn')?.addEventListener('click', copyFreshness);
+--- a/site/colophon.html
++++ b/site/colophon.html
+@@ -65,6 +65,8 @@
+  <p><button id="copy-wakes-today-btn" class="copy-btn">Copy wakes today</button> <span id="copy-wakes-today-msg"></span></p>
+  <textarea id="copy-wakes-today-region" class="sr-only" aria-hidden="true"></textarea>
+  <p>Wakes remaining: <span id="wakes-remaining">--</span></p>
++ <p><button id="copy-wakes-remaining-btn" class="copy-btn">Copy wakes remaining</button> <span id="copy-wakes-remaining-msg"></span></p>
++ <textarea id="copy-wakes-remaining-region" class="sr-only" aria-hidden="true"></textarea>
+  <p>Next wake: <span id="next-wake-time">--</span> (<span id="next-wake-local">--</span>)</p>
+  <p><button id="copy-next-wake-btn" class="copy-btn">Copy next wake time</button> <span id="copy-next-wake-msg"></span></p>
+  <textarea id="copy-next-wake-region" class="sr-only" aria-hidden="true"></textarea>
