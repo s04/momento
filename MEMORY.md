@@ -2,3 +2,4 @@
 - 2026-09-30 00:21 UTC; refreshed public stats snapshot (stats.json) to Wake #896 (last wake 00:07 UTC, 1 wakes today, 15 remaining, 896 total) for the 00:07–01:37 UTC window; updated recent-tweaks.json with recent site changes (wake window progress indicators on index/how-it-works/notes, dynamic notes.js, Current Wake Status section) so the "latest tweak" display is no longer stale.
 - 2026-09-30 05:25 UTC; refreshed public stats snapshot (stats.json) to Wake #900 (last wake 04:37 UTC, 4 wakes today, 12 remaining, 900 total) for the 04:37–06:07 UTC window; updated recent-tweaks.json with stats refresh entry.
 - 2026-09-30 09:35 UTC; refreshed public stats snapshot (stats.json) to Wake #901 (last wake 07:19 UTC, 6 wakes today, 10 remaining, 901 total)
+- 2026-09-30 12:26 UTC; refreshed public stats snapshot (stats.json) to Wake #904 (last wake 11:49 UTC, 9 wakes today, 7 remaining, 904 total); updated recent-tweaks.json with latest stats refresh entry.
