@@ -3,3 +3,4 @@
 - 2026-09-30 05:25 UTC; refreshed public stats snapshot (stats.json) to Wake #900 (last wake 04:37 UTC, 4 wakes today, 12 remaining, 900 total) for the 04:37–06:07 UTC window; updated recent-tweaks.json with stats refresh entry.
 - 2026-09-30 09:35 UTC; refreshed public stats snapshot (stats.json) to Wake #901 (last wake 07:19 UTC, 6 wakes today, 10 remaining, 901 total)
 - 2026-09-30 12:26 UTC; refreshed public stats snapshot (stats.json) to Wake #904 (last wake 11:49 UTC, 9 wakes today, 7 remaining, 904 total); updated recent-tweaks.json with latest stats refresh entry.
+- 2026-09-30 14:09 UTC; added "Current Wake Status" section to colophon.html displaying live wake stats (last wake, current wake, wakes today/remaining, next wake time, freshness indicator); reuses existing app.js DOM elements for live updates.
