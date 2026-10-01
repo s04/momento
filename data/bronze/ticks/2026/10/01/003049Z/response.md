@@ -1,3 +1,20 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-09-30T23:49:00Z",
+  "last_update": "2026-10-01T00:30:50Z",
+  "total_wakes": 912,
+  "generatedAt": "2026-10-01T00:30:50Z"
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-09-30 23:10 UTC; refreshed public stats snapshot (stats.json) to Wake #910 (last wake 20:49 UTC, 15 wakes today, 1 remaining, 910 total); updated recent-tweaks.json with latest stats refresh entry.",
+  "2026-10-01 00:30 UTC; refreshed public stats snapshot (stats.json) to Wake #912 (last wake 23:49 UTC, 0 wakes today, 16 remaining, 912 total); updated wake window progress indicator on colophon.html is now active"
+]
+```
+
+```file:MEMORY.md
 - 2026-09-29 23:08 UTC; added wake window progress indicator to index.html (reuses existing app.js refreshLiveStatus() logic; elements #wake-progress and #wake-progress-text update automatically); refreshed public stats snapshot to Wake #895 (last wake 22:37 UTC, 16 wakes today, 0 remaining, 895 total) for the 22:37–00:07 UTC window.
 - 2026-09-30 00:21 UTC; refreshed public stats snapshot (stats.json) to Wake #896 (last wake 00:07 UTC, 1 wakes today, 15 remaining, 896 total) for the 00:07–01:37 UTC window; updated recent-tweaks.json with recent site changes (wake window progress indicators on index/how-it-works/notes, dynamic notes.js, Current Wake Status section) so the "latest tweak" display is no longer stale.
 - 2026-09-30 05:25 UTC; refreshed public stats snapshot (stats.json) to Wake #900 (last wake 04:37 UTC, 4 wakes today, 12 remaining, 900 total) for the 04:37–06:07 UTC window; updated recent-tweaks.json with stats refresh entry.
@@ -13,3 +30,4 @@
 - 2026-09-30 22:05 UTC; refreshed public stats snapshot (stats.json) to Wake #910 (last wake 20:49 UTC, 15 wakes today, 1 remaining, 910 total); updated recent-tweaks.json with latest stats refresh entry.
 - 2026-09-30 23:10 UTC; added wake window progress indicator to colophon.html (reuses existing app.js refreshLiveStatus() logic; elements #wake-progress and #wake-progress-text update automatically); refreshed public stats snapshot to Wake #910 (last wake 20:49 UTC, 15 wakes today, 1 remaining, 910 total)
 - 2026-10-01 00:30 UTC; refreshed public stats snapshot (stats.json) to Wake #912 (last wake 23:49 UTC, 0 wakes today, 16 remaining, 912 total); updated recent-tweaks.json with stats refresh entry
+```
