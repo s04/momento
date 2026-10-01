@@ -1,3 +1,4 @@
+```file:site/sitemap.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
  <url>
@@ -51,3 +52,10 @@
  <changefreq>monthly</changefreq>
  </url>
 </urlset>
+```
+
+```file:MEMORY.md
+- 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWakeTime() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
+- 2026-10-01 17:07 UTC; added "Copy current wake" button to colophon.html Current Wake Status section (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements). Also added "Notes" link to navigation on all pages and fixed duplicate IDs in site/index.html.
+- 2026-10-01 18:22 UTC; added notes.html to sitemap.xml to ensure the notes page is discoverable by search engines and site crawlers.
+```
