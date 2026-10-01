@@ -1,3 +1,6 @@
+I'll add a "Copy next wake time" button to the Current Wake Status section on colophon.html. This follows the established pattern of copy buttons already present in that section, and the JavaScript function `copyNextWakeTime()` already exists in app.js.
+
+```file:site/colophon.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,3 +164,8 @@
  <script src="app.js"></script>
 </body>
 </html>
+```
+
+```file:MEMORY.md
+- 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWakeTime() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
+```
