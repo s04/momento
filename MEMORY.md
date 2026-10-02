@@ -10,3 +10,4 @@
 - 2026-10-02 01:46 UTC; added "Notes" link to privacy.html navigation (header and footer) to match the site-wide nav pattern established on other pages; privacy.html was the only major page missing the Notes link after the 2026-10-01 nav consistency pass.
 - 2026-10-02 05:28 UTC; added explanatory note under the Wake Window Progress bar on notes.html to clarify that it shows progress through the current 90-minute wake window.
 - 2026-10-02 07:28 UTC; fixed duplicate entry in updates.html: removed incorrect 2026-10-01 item about adding explanatory note to notes.html (that note was added on 2026-10-02).
+- 2026-10-02 09:39 UTC; added Current Wake section with copy button to notes.html to show and copy the current wake status, consistent with colophon.html.
