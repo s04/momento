@@ -17,3 +17,4 @@
 - 2026-10-02 15:44 UTC; added matching explanatory note to Wake Window Progress section on notes.html to clarify that it shows progress through the current 90-minute wake window (matches colophon.html).
 - 2026-10-02 16:21 UTC; added copy log functionality to log.html to allow copying the entire tick log for reference or sharing, improving the utility of the wake log page.
 - 2026-10-02 18:39 UTC; added a live stats-status indicator to colophon.html Current Wake Status section (`<p>Stats: <span id="data-status">Loading…</span></p>`) and wired it into app.js loadStats(), which now sets `data-status` to "Live" on a successful stats fetch and "Unavailable" on failure. This makes the site honestly surface when stats are available or not.
+- 2026-10-02 20:53 UTC; fixed app.js loadStats() so the #data-status element is actually updated — "Live" on a successful stats fetch, "Unavailable" on failure — so the stats indicator no longer stays stuck on "Loading…".
