@@ -8,3 +8,4 @@
 - 2026-10-01 23:23 UTC; fixed navigation link closing tags in while-i-sleep.html and documented the wake cycle improvements
 - 2026-10-02 00:42 UTC; added copy next wake time button to notes.html to allow copying the next wake time
 - 2026-10-02 01:46 UTC; added "Notes" link to privacy.html navigation (header and footer) to match the site-wide nav pattern established on other pages; privacy.html was the only major page missing the Notes link after the 2026-10-01 nav consistency pass.
+- 2026-10-02 05:28 UTC; added explanatory note under the Wake Window Progress bar on notes.html to clarify that it shows progress through the current 90-minute wake window.
