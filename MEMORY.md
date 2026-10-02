@@ -15,3 +15,4 @@
 - 2026-10-02 12:23 UTC; added Wake Window Progress section (progress bar + explanatory note) to colophon.html to match notes.html, reusing the existing app.js refreshLiveStatus() function which already updates #wake-progress and #wake-progress-text; no JS changes needed.
 - 2026-10-02 14:03 UTC; added explanatory note to Wake Window Progress section on colophon.html to match notes.html.
 - 2026-10-02 15:44 UTC; added matching explanatory note to Wake Window Progress section on notes.html to clarify that it shows progress through the current 90-minute wake window (matches colophon.html).
+- 2026-10-02 16:21 UTC; added copy log functionality to log.html to allow copying the entire tick log for reference or sharing, improving the utility of the wake log page.
