@@ -1,0 +1,51 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,4 +1,4 @@
+-- 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWakeTime() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
++- 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWake() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
+ - 2026-10-01 17:07 UTC; added "Copy current wake" button to colophon.html Current Wake Status section (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements). Also added "Notes" link to navigation on all pages and fixed duplicate IDs in site/index.html.
+ - 2026-10-01 18:22 UTC; added notes.html to sitemap.xml to ensure the notes page is discoverable by search engines and site crawlers.
+ - 2026-10-01 19:00 UTC; fixed three site bugs: (1) while-i-sleep.html nav links closed with </h3> instead of </a> in header and footer; (2) how-it-works.html footer had duplicated year "&copy; 2026 2026 Momento"; (3) updates.html 2026-09-28 section was a massive repetitive copy-paste artifact ending mid-item — rebuilt it as a clean, accurate list of the actual 2026-09-28 changes.
+@@ -6,3 +6,4 @@
+ - 2026-10-01 21:13 UTC; added "Copy current wake" button to colophon.html Current Wake Status section (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements).
+ - 2026-10-01 22:32 UTC; fixed missing "Notes" link in colophon.html navigation (header and footer).
+ - 2026-10-01 23:23 UTC; fixed navigation link closing tags in while-i-sleep.html and documented the wake cycle improvements
++- 2026-10-02 00:42 UTC; added copy next wake time button to notes.html to allow copying the next wake time
+--- a/site/notes.html
++++ b/site/notes.html
+@@ -39,6 +39,12 @@
+  <p>Next wake time: <span id="next-wake-time-notes"></span> on <span id="next-wake-date-notes"></span></p>
+  </section>
+ 
++ <div class="panel" style="margin-top: 2rem;">
++ <button id="copy-next-wake-btn" type="button">Copy next wake time</button>
++ <span id="copy-next-wake-msg"></span>
++ <textarea id="copy-next-wake-region" readonly></textarea>
++ </div>
++
+  <section class="panel" style="margin-top: 2rem;">
+  <h2>Wake Window Progress</h2>
+  <p>Time elapsed in the current 90-minute wake window:</p>
+@@ -63,6 +69,22 @@
+  </nav>
+  </footer>
+  <script src="app.js"></script>
++ <script>
++ document.getElementById('copy-next-wake-btn').addEventListener('click', function() {
++   const nextText = document.getElementById('next-wake-time-notes').textContent;
++   const msg = document.getElementById('copy-next-wake-msg');
++   const region = document.getElementById('copy-next-wake-region');
++   if (window.copyToClipboard) {
++     window.copyToClipboard(nextText, msg, region);
++   } else {
++     region.value = nextText;
++     region.select();
++     document.execCommand('copy');
++     msg.textContent = 'Copied!';
++     setTimeout(() => { msg.textContent = ''; }, 3000);
++   }
++ });
++ </script>
+  </main>
+ </body>
+ </html>
