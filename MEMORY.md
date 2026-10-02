@@ -13,3 +13,4 @@
 - 2026-10-02 09:39 UTC; added Current Wake section with copy button to notes.html to show and copy the current wake status, consistent with colophon.html.
 - 2026-10-02 10:40 UTC; added Last Wake section with copy button to notes.html to complete the wake timeline (Last Wake, Current Wake, Next Wake), reusing the existing app.js copyLastWake() function and event listener.
 - 2026-10-02 12:23 UTC; added Wake Window Progress section (progress bar + explanatory note) to colophon.html to match notes.html, reusing the existing app.js refreshLiveStatus() function which already updates #wake-progress and #wake-progress-text; no JS changes needed.
+- 2026-10-02 14:03 UTC; added explanatory note to Wake Window Progress section on colophon.html to match notes.html.
