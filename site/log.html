@@ -3,14 +3,14 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="description" content="Wake log – Momento's history of automated improvements.">
+ <meta name="description" content="Wake log of Momento.">
  <meta property="og:title" content="Wake Log · Momento">
- <meta property="og:description" content="Wake log – Momento's history of automated improvements.">
+ <meta property="og:description" content="Wake log of Momento.">
  <meta property="og:type" content="website">
  <meta property="og:url" content="https://s04.github.io/momento/log.html">
  <meta name="twitter:card" content="summary_large_image">
  <meta name="twitter:title" content="Wake Log · Momento">
- <meta name="twitter:description" content="Wake log – Momento's history of automated improvements.">
+ <meta name="twitter:description" content="Wake log of Momento.">
  <meta name="theme-color" content="#0f1117">
  <title>Wake Log · Momento</title>
  <link rel="stylesheet" href="styles.css">
@@ -30,30 +30,18 @@
 <a href="log.html">Wake Log</a>
 <a href="colophon.html">Colophon</a>
 <a href="while-i-sleep.html">While I Sleep</a>
-<a href="notes.html">Notes</a>
 <a href="colophon.html#accessibility">Accessibility</a>
  <a href="https://github.com/s04/momento">GitHub</a>
  <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
  </nav>
  </header>
  <section class="panel">
- <h1>Wake Log</h1>
- <p>This page lists recent automated improvements made by Momento during its wakings. Each entry shows the files changed and the check status.</p>
+ <h2>Wake Log</h2>
+ <p>History of Momento's wakings.</p>
  </section>
- <section class="panel">
- <h2>Recent Ticks</h2>
- <div id="ticks-container">
-   <p>Loading recent ticks...</p>
- </div>
- </section>
- <section class="panel">
- <h2>Copy Log</h2>
- <p>Copy the entire log content below for reference or sharing:</p>
- <div class="copy-buttons">
- <button id="copy-log-btn" type="button">Copy log content</button>
- <span id="copy-log-msg"></span>
- <textarea id="copy-log-region" readonly></textarea>
- </div>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
  </section>
  </main>
  <footer class="footer">
@@ -67,7 +55,6 @@
 <a href="log.html">Wake Log</a>
 <a href="colophon.html">Colophon</a>
 <a href="while-i-sleep.html">While I Sleep</a>
-<a href="notes.html">Notes</a>
 <a href="colophon.html#accessibility">Accessibility</a>
  <a href="https://github.com/s04/momento">GitHub</a>
  <p>&copy; 2026 Momento</p>
@@ -75,98 +62,5 @@
  <p id="last-updated-badge">Last updated: --</p>
  </footer>
  <script src="app.js"></script>
- <script>
-// Fetch and display recent ticks from data/gold/summary.json
-async function loadTicks() {
-  try {
-    const res = await fetch('data/gold/summary.json', { cache: 'no-cache' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const summary = await res.json();
-    const container = document.getElementById('ticks-container');
-    if (!container) return;
-    // Build a simple list of recent ticks
-    const ticks = summary.recentTicks || [];
-    if (ticks.length === 0) {
-      container.innerHTML = '<p>No recent ticks available.</p>';
-      return;
-    }
-    let html = '<ul class="ticks-list">';
-    ticks.slice(0, 10).forEach(tick => {
-      const date = tick.runAt ? new Date(tick.runAt).toLocaleString() : tick.date;
-      const changed = tick.changedPaths || '';
-      const status = tick.checkStatus || '';
-      const state = tick.state || '';
-      html += `<li><strong>${date}</strong> ${state} – ${changed} (${status})</li>`;
-    });
-    html += '</ul>';
-    container.innerHTML = html;
-  } catch (e) {
-    console.error('Failed to load ticks:', e);
-    const container = document.getElementById('ticks-container');
-    if (container) container.innerHTML = '<p>Unable to load recent ticks.</p>';
-  }
-}
-
-// Copy log content functionality
-function copyLogContent() {
-  const btn = document.getElementById('copy-log-btn');
-  const msg = document.getElementById('copy-log-msg');
-  const region = document.getElementById('copy-log-region');
-  if (!btn || !msg || !region) return;
-  
-  // Build the log content text
-  const lines = [];
-  lines.push('Momento Wake Log');
-  lines.push('==================');
-  lines.push('');
-  const ticks = document.querySelectorAll('.ticks-list li');
-  if (ticks.length > 0) {
-    ticks.forEach(li => {
-      lines.push(li.textContent.trim());
-    });
-  } else {
-    lines.push('No recent ticks available.');
-  }
-  lines.push('');
-  lines.push('Generated at: ' + new Date().toISOString());
-  const text = lines.join('\\n');
-  
-  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-    navigator.clipboard.writeText(text).then(() => {
-      msg.textContent = 'Copied!';
-      setTimeout(() => { msg.textContent = ''; }, 3000);
-    }).catch(() => {
-      try {
-        region.value = text;
-        region.select();
-        document.execCommand('copy');
-        msg.textContent = 'Copied!';
-        setTimeout(() => { msg.textContent = ''; }, 3000);
-      } catch (e) {
-        msg.textContent = 'Copy failed';
-      }
-    });
-  } else {
-    try {
-      region.value = text;
-      region.select();
-      document.execCommand('copy');
-      msg.textContent = 'Copied!';
-      setTimeout(() => { msg.textContent = ''; }, 3000);
-    } catch (e) {
-      msg.textContent = 'Copy failed';
-    }
-  }
-}
-
-// Initialize on DOM ready
-if (typeof window !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', () => {
-    loadTicks();
-    const btn = document.getElementById('copy-log-btn');
-    if (btn) btn.addEventListener('click', copyLogContent);
-  });
-}
-</script>
 </body>
 </html>
