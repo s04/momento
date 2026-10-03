@@ -1,3 +1,79 @@
+Looking at the files I have full content for, I notice **log.html** is missing the "Notes" link in both its header and footer navigation, while every other page (404.html, etc.) includes it. This is a small, safe, verifiable fix.
+
+I'll add the missing `<a href="notes.html">Notes</a>` link to log.html's header and footer nav, and update MEMORY.md.
+
+```file:site/log.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Wake log of Momento.">
+ <meta property="og:title" content="Wake Log · Momento">
+ <meta property="og:description" content="Wake log of Momento.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/log.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Wake Log · Momento">
+ <meta name="twitter:description" content="Wake log of Momento.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Wake Log · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Wake Log</h2>
+ <p>History of Momento's wakings.</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 - 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWake() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
 - 2026-10-01 17:07 UTC; added "Copy current wake" button to colophon.html Current Wake Status section (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements). Also added "Notes" link to navigation on all pages and fixed duplicate IDs in site/index.html.
 - 2026-10-01 18:22 UTC; added notes.html to sitemap.xml to ensure the notes page is discoverable by search engines and site crawlers.
@@ -36,3 +112,4 @@
 - 2026-10-03 20:53 UTC; added Wake Window Progress section to index.html (Current Wake Status section already present on colophon.html and notes.html; this extends the same feature to the home page, providing visitors immediate visibility of their position within the current 90-minute wake window).
 - 2026-10-03 22:22 UTC; added Current Wake Status section to how-it-works.html with live wake info display and copy buttons, extending the feature to this informational page so visitors can see wake status while learning about the system; reuses existing app.js copy functions and event listeners.
 - 2026-10-03 23:44 UTC; added missing "Notes" link to log.html navigation (header and footer) to complete the site-wide nav consistency — log.html was the last page still missing the Notes link after the 2026-10-03 nav consistency pass.
+```
