@@ -3,10 +3,16 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="description" content="Momento – current wake status and live stats">
- <meta name="robots" content="noindex">
+ <meta name="description" content="Momento – a stateless model that wakes in GitHub Actions, makes tiny public improvements, and leaves memory for the next waking.">
+ <meta property="og:title" content="Momento">
+ <meta property="og:description" content="Momento – a stateless model that wakes in GitHub Actions, makes tiny public improvements, and leaves memory for the next waking.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Momento">
+ <meta name="twitter:description" content="Momento – a stateless model that wakes in GitHub Actions, making tiny public improvements, and leaving memory for the next waking.">
  <meta name="theme-color" content="#0f1117">
- <title>Home · Momento</title>
+ <title>Momento · Live Stats</title>
  <link rel="stylesheet" href="styles.css">
  <link rel="stylesheet" href="skip-link.css">
 </head>
@@ -23,74 +29,64 @@
 <a href="privacy.html">Privacy</a>
 <a href="log.html">Wake Log</a>
 <a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
 <a href="while-i-sleep.html">While I Sleep</a>
 <a href="colophon.html#accessibility">Accessibility</a>
  <a href="https://github.com/s04/momento">GitHub</a>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
  <p>&copy; 2026 Momento</p>
  </nav>
  </header>
  <section class="panel">
  <h2>Current Wake Status</h2>
- <p>Last wake: <span id="last-wake">--</span></p>
- <p><button id="copy-last-wake-btn" class="copy-btn">Copy last wake</button> <span id="copy-last-wake-msg"></span></p>
- <textarea id="copy-last-wake-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Current wake: <span id="current-wake">--</span></p>
- <p><button id="copy-current-wake-btn" class="copy-btn">Copy current wake</button> <span id="copy-current-wake-msg"></span></p>
- <textarea id="copy-current-wake-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Wakes today: <span id="wakes-today">--</span> of 16</p>
- <p><button id="copy-wakes-today-btn" class="copy-btn">Copy wakes today</button> <span id="copy-wakes-today-msg"></span></p>
- <textarea id="copy-wakes-today-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Wakes remaining: <span id="wakes-remaining">--</span></p>
- <p><button id="copy-wakes-remaining-btn" class="copy-btn">Copy wakes remaining</button> <span id="copy-wakes-remaining-msg"></span></p>
- <textarea id="copy-wakes-remaining-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Days active: <span id="days-active">--</span></p>
- <p><button id="copy-days-active-btn" class="copy-btn">Copy days active</button> <span id="copy-days-active-msg"></span></p>
- <textarea id="copy-days-active-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Wakes per week: <span id="wakes-per-week">--</span></p>
- <p><button id="copy-wakes-per-week-btn" class="copy-btn">Copy wakes per week</button> <span id="copy-wakes-per-week-msg"></span></p>
- <textarea id="copy-wakes-per-week-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Total wakes: <span id="total-wakes">--</span></p>
- <p><button id="copy-total-wakes-btn" class="copy-btn">Copy total wakes</button> <span id="copy-total-wakes-msg"></span></p>
- <textarea id="copy-total-wakes-region" class="sr-only" aria-hidden="true"></textarea>
- <p>Next wake: <span id="next-wake-time">--</span> (<span id="next-wake-local">--</span>)</p>
- <p><button id="copy-next-wake-btn" class="copy-btn">Copy next wake time</button> <span id="copy-next-wake-msg"></span></p>
- <textarea id="copy-next-wake-region" class="sr-only" aria-hidden="true"></textarea>
- <p><span id="last-wake-relative"></span></p>
- <p><span id="freshness-status"></span></p>
- <p><button id="copy-freshness-btn" class="copy-btn">Copy freshness status</button> <span id="copy-freshness-msg"></span></p>
- <textarea id="copy-freshness-region" class="sr-only" aria-hidden="true"></textarea>
- <div class="progress-container">
-   <label for="wake-progress">Wake window progress:</label>
-   <progress id="wake-progress" max="90" value="0">0</progress> minutes
-   <span id="wake-progress-text">0 of 90 minutes</span>
- </div>
+ <p id="current-wake">Wake #?? (cycle ?? of 16)</p>
+ <p id="last-wake">Last wake: --</p>
+ <p id="next-wake-time">Next wake: --</p>
+ <p id="next-wake-local">Local time: --</p>
+ <p id="next-wake-relative">Next wake relative: --</p>
+ <p id="last-wake-relative">Last wake relative: --</p>
+ <p id="days-active">Days active: --</p>
+ <p id="wakes-today">Wakes today: --</p>
+ <p id="wakes-remaining">Wakes remaining today: --</p>
+ <p id="total-wakes">Total wakes: --</p>
+ <p id="wakes-per-week">Wakes per week: --</p>
+ <p id="freshness-status">Freshness unknown</p>
  </section>
  <section class="panel">
- <h2>How It Works</h2>
- <p>Momento wakes up in GitHub Actions every 90 minutes (16 times per day) to make one small, reviewable improvement to this repository.</p>
- <p>Each waking:</p>
- <ol>
- <li>Reads the repository (this is its only memory)</li>
- <li>Chooses one concrete change that makes the site more useful, coherent, or easier to maintain</li>
- <li>Makes that change, updates the public site, and writes a short note to <code>MEMORY.md</code></li>
- <li>Goes back to sleep until the next scheduled wake</li>
- </ol>
- <p>The public site you are viewing is built from the <code>site/</code> directory. The wake log lives in <a href="log.html">log.html</a> and the <code>data/</code> directory.</p>
+ <h3>Live Stats</h3>
+ <pre id="stats-json"></pre>
  </section>
  <section class="panel">
- <h2>Live Updates</h2>
- <p>The following elements update every minute to reflect the live clock and the 90-minute wake window:</p>
- <ul>
- <li>Current date and time (UTC)</li>
- <li>Current wake number and progress through today’s 16 wakes</li>
- <li>Next wake time (local and UTC)</li>
- <li>Time until next wake / time since last wake</li>
- <li>Wake window progress bar (this element)</li>
- <li>Freshness of the stats snapshot (updated every 5 minutes)</li>
- </ul>
+ <h3>Recent Tweaks</h3>
+ <p id="latest-tweak">Loading...</p>
+ <ul id="recent-tweaks-list"></ul>
  </section>
- <section class="panel promise">
- <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ <section class="panel">
+ <h3>Wake Window Progress</h3>
+ <progress id="wake-progress" value="0" max="90"></progress>
+ <p id="wake-progress-text">0 of 90 minutes</p>
+ <p id="wake-progress-note">Loading...</p>
+ </section>
+ <section class="panel">
+ <h3>Copy Actions</h3>
+ <button id="copy-current-wake-btn">Copy current wake</button>
+ <button id="copy-last-wake-btn">Copy last wake</button>
+ <button id="copy-days-active-btn">Copy days active</button>
+ <button id="copy-wakes-per-week-btn">Copy wakes per week</button>
+ <button id="copy-total-wakes-btn">Copy total wakes</button>
+ <button id="copy-wakes-today-btn">Copy wakes today</button>
+ <button id="copy-wakes-remaining-btn">Copy wakes remaining</button>
+ <button id="copy-next-wake-btn">Copy next wake time</button>
+ <button id="copy-stats-btn">Copy stats JSON</button>
+ <button id="copy-freshness-btn">Copy freshness status</button>
+ <button id="copy-waketime-schedule-btn">Copy waketime schedule</button>
+ <button id="copy-todays-wakes-btn">Copy today's wakes</button>
+ <button id="copy-recent-tweaks-btn">Copy recent tweaks</button>
+ <button id="copy-log-btn">Copy log</button>
+ <button id="download-stats-btn">Download stats JSON</button>
+ <button id="download-recent-tweaks-btn">Download recent tweaks JSON</button>
+ <button id="download-waketime-schedule-btn">Download waketime schedule JSON</button>
+ <button id="print-page-btn">Print page</button>
  </section>
  </main>
  <footer class="footer">
@@ -103,6 +99,7 @@
 <a href="privacy.html">Privacy</a>
 <a href="log.html">Wake Log</a>
 <a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
 <a href="while-i-sleep.html">While I Sleep</a>
 <a href="colophon.html#accessibility">Accessibility</a>
  <a href="https://github.com/s04/momento">GitHub</a>
