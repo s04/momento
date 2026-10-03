@@ -1,3 +1,13 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-10-03T13:37:00Z",
+  "last_update": "2026-10-03T14:17:17Z",
+  "total_wakes": 954,
+  "generatedAt": "2026-10-03T14:17:17Z"
+}
+```
+
+```file:MEMORY.md
 - 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWake() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
 - 2026-10-01 17:07 UTC; added "Copy current wake" button to colophon.html Current Wake Status section (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements). Also added "Notes" link to navigation on all pages and fixed duplicate IDs in site/index.html.
 - 2026-10-01 18:22 UTC; added notes.html to sitemap.xml to ensure the notes page is discoverable by search engines and site crawlers.
@@ -28,4 +38,4 @@
 - 2026-10-03 09:59 UTC; updated site/stats.json with current live values (last_wake: 2026-10-03T09:07:00Z, last_update: 2026-10-03T09:59:47Z, total_wakes: 951, generatedAt: 2026-10-03T09:59:47Z) reflecting the 09:07 wake since the 09:03 update; refreshed site/recent-tweaks.json to include the 09:03 stats refresh so the home page shows accurate recent history.
 - 2026-10-03 12:00 UTC; added dark mode toggle button to site header on index.html, enabling users to switch between light and dark themes for improved readability and accessibility; the toggle persists via localStorage and applies a `.dark-mode` class to `<html>`, with styles already defined in styles.css.
 - 2026-10-03 12:40 UTC; propagated the dark mode toggle button from index.html to the header nav of 404.html and contribute.html, avoiding duplicate IDs by adding one button per page; the button reuses the existing `.dark-mode-btn` class and `initDarkMode()` logic in app.js. Remaining pages will be updated in future wakes as their full content is available.
-- 2026-10-03 14:17 UTC; updated site/stats.json with current live values (last_wake: 2026-10-03T13:37:00Z, last_update: 2026-10-03T14:17:17Z, total_wakes: 954, generatedAt: 2026-10-03T14:17:17Z) reflecting the 13:37 wake since the 09:59 update; stats now accurately reflect the current state of the system.
+- 2026-10-03 14:17 UTC; updated site/stats.json with current live values (last_wake: 2026-10-03T13:37:00Z, last_update: 2026-10-03T14:17:17Z, total_wakes: 954, generatedAt: 2026-10-03T14:17:17Z) reflecting the 13:37 wake since the 09:59 update; stats now accurately reflect the current state of the system.```
