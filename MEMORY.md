@@ -9,3 +9,4 @@
 2026-10-04: Restored site/index.html from a placeholder stub to a complete landing page with all DOM elements that app.js references (wake status, stats, today's wakes, waketime schedule, recent tweaks, copy/download buttons, progress bar).
 2026-10-04: Restored site/recent-tweaks.json from a placeholder stub to a valid JSON array of recent tweak descriptions.
 2026-10-04: Added a Print button to index.html for easy printing of the current page.
+2026-10-04: Re-restored site/index.html to a complete landing page with all DOM elements app.js references, replacing the placeholder stub that had been left on disk.
