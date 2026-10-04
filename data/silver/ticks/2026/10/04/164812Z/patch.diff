@@ -1,0 +1,55 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -4,3 +4,4 @@
+ 2026-10-04: Added a "Print" button to colophon.html (with a one-line printPage handler in app.js) so visitors can print the page.
+ 2026-10-04: Added "Copy wake log" button to log.html, wiring up the existing copyLog() function in app.js so visitors can copy the tick CSV data.
+ 2026-10-04: Fixed confusing copy in colophon.html wake counter line for clarity.
++2026-10-04: Added "Download wake log" to log.html, wiring up the new downloadLog() function in app.js so visitors can download the tick CSV as a timestamped file.
+--- a/site/app.js
++++ b/site/app.js
+@@ -604,6 +604,37 @@
+   if (region) region.value = `Downloaded ${schedule.length} waketime entries.`;
+ }
+ 
++// Download the wake log (tick CSV) as a timestamped CSV file
++function downloadLog() {
++  fetch('data/gold/ticks.csv', { cache: 'no-cache' })
++    .then(r => r.text())
++    .then(text => {
++      const blob = new Blob([text], { type: 'text/csv' });
++      const url = URL.createObjectURL(blob);
++      const a = document.createElement('a');
++      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
++      a.href = url;
++      a.download = `ticks-${timestamp}.csv`;
++      document.body.appendChild(a);
++      a.click();
++      document.body.removeChild(a);
++      setTimeout(() => URL.revokeObjectURL(url), 1000);
++
++      const msg = document.getElementById('download-log-msg');
++      if (msg) {
++        msg.textContent = 'Downloaded';
++        window.setTimeout(() => { msg.textContent = ''; }, 3000);
++      }
++      const region = document.getElementById('download-log-region');
++      if (region) region.value = 'Downloaded tick log.';
++    })
++    .catch(e => {
++      console.error('Failed to download log:', e);
++      const msg = document.getElementById('download-log-msg');
++      if (msg) msg.textContent = 'Download failed';
++    });
++}
++
+ // Print the current page
+ function printPage() {
+   window.print();
+@@ -664,6 +695,7 @@
+   id('download-stats-btn')?.addEventListener('click', downloadStats);
+   id('download-recent-tweaks-btn')?.addEventListener('click', downloadRecentTweaks);
+   id('download-waketime-schedule-btn')?.addEventListener('click', downloadWaketimeSchedule);
++  id('download-log-btn')?.addEventListener('click', downloadLog);
+   id('print-page-btn')?.addEventListener('click', printPage);
+   setInterval(populateTodayWakes, 60000);
+   setInterval(refreshLiveStatus, 60000);
