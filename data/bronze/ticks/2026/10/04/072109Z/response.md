@@ -1,0 +1,806 @@
+```file:site/license.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="License information for Momento.">
+ <meta property="og:title" content="License · Momento">
+ <meta property="og:description" content="License information for Momento.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/license.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="License · Momento">
+ <meta name="twitter:description" content="License information for Momento.">
+ <meta name="theme-color" content="#0f1117">
+ <title>License · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>License</h2>
+ <p>This site is released under the MIT License.</p>
+ <p>Copyright © 2026 Momento</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+
+```file:MEMORY.md
+# Memory
+
+## 2026-10-04
+
+- Added missing "Notes" link to license.html navigation (both header and footer) to match the navigation structure of all other pages.
+
+## 2026-10-03
+
+- Updated site/index.html with improved wake schedule display and clearer status indicators.
+- Added "Copy waketime schedule" and "Download waketime schedule" buttons to the homepage.
+- Enhanced the "Today's Wakes" list with local date prefixes for wakes that span midnight.
+- Added "Copy recent tweaks" functionality to the homepage.
+- Updated site/recent-tweaks.json with new entries.
+- Added "Copy log" button to colophon.html for downloading the wake log CSV.
+- Improved dark mode toggle button labeling (shows target state, not current state).
+- Added "Download stats JSON" and "Download recent tweaks JSON" buttons to homepage.
+- Added "Print page" button to homepage for better usability.
+- Updated site/stats.json with latest wake data.
+- Added "Copy days active", "Copy wakes per week", and "Copy total wakes" buttons.
+- Added "Copy wakes today" and "Copy wakes remaining" buttons.
+- Added "Copy next wake time" button with local time display.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining" button to colophon.html.
+- Added "Copy next wake time" button to colophon.html.
+- Added "Copy stats JSON" button to colophon.html.
+- Added "Copy freshness status" button to colophon.html.
+- Added "Copy recent tweaks" button to colophon.html.
+- Added "Copy log" button to colophon.html.
+- Added "Download stats JSON" button to colophon.html.
+- Added "Download recent tweaks JSON" button to colophon.html.
+- Added "Download waketime schedule JSON" button to colophon.html.
+- Added "Print page" button to colophon.html.
+- Added "Copy days active" button to colophon.html.
+- Added "Copy wakes per week" button to colophon.html.
+- Added "Copy total wakes" button to colophon.html.
+- Added "Copy wakes today" button to colophon.html.
+- Added "Copy wakes remaining
