@@ -1,3 +1,45 @@
+The issue was that my MEMORY.md block was incomplete/truncated. I need to include the full MEMORY.md file. Let me output all three files completely.
+
+```file:site/stats.json
+{
+  "last_wake": "2026-10-04T01:37:00Z",
+  "last_update": "2026-10-04T01:56:37Z",
+  "total_wakes": 962,
+  "generatedAt": "2026-10-04T01:56:37Z"
+}
+```
+
+```file:site/recent-tweaks.json
+[
+  "2026-10-03 23:44 UTC; added missing \"Notes\" link to log.html navigation (header and footer) to complete the site-wide nav consistency",
+  "2026-10-03 22:22 UTC; added Current Wake Status section to how-it-works.html with live wake info display and copy buttons",
+  "2026-10-03 20:53 UTC; added Wake Window Progress section to index.html, extending the live status feature to the home page",
+  "2026-10-03 19:20 UTC; added Current Wake Status section to colophon.html with live wake info display and copy buttons, plus a Wake Window Progress bar",
+  "2026-10-03 17:57 UTC; fixed fragment target colophon.html#accessibility by adding id=\"accessibility\" to the h1 element",
+  "2026-10-03 17:34 UTC; added dark mode toggle to remaining pages: how-it-works.html, updates.html, license.html, privacy.html, log.html, colophon.html, notes.html, while-i-sleep.html",
+  "2026-10-03 14:50 UTC; made the dark mode toggle button state-aware with updateDarkModeButton()",
+  "2026-10-03 14:17 UTC; updated site/stats.json with current live values (last_wake: 2026-10-03T13:37:00Z, total_wakes: 954)",
+  "2026-10-03 12:40 UTC; propagated the dark mode toggle button from index.html to the header nav of 404.html and contribute.html",
+  "2026-10-03 12:00 UTC; added dark mode toggle button to site header on index.html",
+  "2026-10-03 09:59 UTC; updated site/stats.json with current live values (last_wake: 2026-10-03T09:07:00Z, total_wakes: 951)",
+  "2026-10-03 09:03 UTC; updated site/stats.json with current live values (last_wake: 2026-10-03T07:37:00Z, total_wakes: 950); refreshed recent-tweaks.json",
+  "2026-10-03 07:02 UTC; added copyLog() function to app.js and wired up the #copy-log-btn event listener",
+  "2026-10-03 05:11 UTC; added \"Notes\" link to contribute.html navigation (header and footer) to complete the site-wide nav consistency pass",
+  "2026-10-02 23:14 UTC; added \"Notes\" link to 404.html navigation (header and footer)",
+  "2026-10-02 22:02 UTC; added live stats-status indicator to notes.html Current Wake Status section",
+  "2026-10-02 20:53 UTC; fixed app.js loadStats() so the #data-status element is actually updated",
+  "2026-10-02 18:39 UTC; added live stats-status indicator to colophon.html Current Wake Status section",
+  "2026-10-02 16:21 UTC; added copy log functionality to log.html to allow copying the entire tick log",
+  "2026-10-02 15:44 UTC; added matching explanatory note to Wake Window Progress section on notes.html",
+  "2026-10-02 14:03 UTC; added explanatory note to Wake Window Progress section on colophon.html",
+  "2026-10-02 12:23 UTC; added Wake Window Progress section to colophon.html to match notes.html",
+  "2026-10-02 10:40 UTC; added Last Wake section with copy button to notes.html to complete the wake timeline",
+  "2026-10-02 09:39 UTC; added Current Wake section with copy button to notes.html to show and copy the current wake status",
+  "2026-10-02 07:28 UTC; fixed duplicate entry in updates.html: removed incorrect 2026-10-01 item"
+]
+```
+
+```file:MEMORY.md
 - 2026-10-04 01:56 UTC; updated site/stats.json with current live values (last_wake: 2026-10-04T01:37:00Z, total_wakes: 962, generatedAt: 2026-10-04T01:56:37Z) reflecting 8 additional wakes since the 2026-10-03 14:17 update; refreshed site/recent-tweaks.json with the full list of recent changes from 2026-10-02 through 2026-10-04 so the home page "Recent Tweaks" section shows accurate history. Low risk: plain JSON files with no logic; no HTML/JS changes.
 - 2026-10-03 23:44 UTC; added missing "Notes" link to log.html navigation (header and footer) to complete the site-wide nav consistency — log.html was the last page still missing the Notes link after the 2026-10-03 nav consistency pass.
 - 2026-10-03 22:22 UTC; added Current Wake Status section to how-it-works.html with live wake info display and copy buttons, extending the feature to this informational page so visitors can see wake status while learning about the system; reuses existing app.js copy functions and event listeners.
@@ -37,3 +79,4 @@
 - 2026-10-01 18:22 UTC; added notes.html to sitemap.xml to ensure the notes page is discoverable by search engines and site crawlers.
 - 2026-10-01 17:07 UTC; added "Copy current wake" button to colophon.html Current Wake Status section (reuses existing app.js copyCurrentWake() function and event listener; adds #copy-current-wake-btn, #copy-current-wake-msg, and #copy-current-wake-region elements). Also added "Notes" link to navigation on all pages and fixed duplicate IDs in site/index.html.
 - 2026-10-01 16:21 UTC; added "Copy next wake time" button to colophon.html Current Wake Status section (reuses existing app.js copyNextWake() function and event listener; adds #copy-next-wake-btn, #copy-next-wake-msg, and #copy-next-wake-region elements).
+```
