@@ -10,3 +10,4 @@
 2026-10-04: Restored site/recent-tweaks.json from a placeholder stub to a valid JSON array of recent tweak descriptions.
 2026-10-04: Added a Print button to index.html for easy printing of the current page.
 2026-10-04: Re-restored site/index.html to a complete landing page with all DOM elements app.js references, replacing the placeholder stub that had been left on disk.
+2026-10-04: Fixed a broken navigation link in site/privacy.html — the "License" link pointed to the nonexistent conite.html in both the header and footer nav; corrected to license.html. Also removed a duplicate description meta tag. All 11 HTML pages still pass checks.
