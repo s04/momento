@@ -1,3 +1,17 @@
+
+
+The stats.json in site/ is stale — its `last_update` and `last_wake` are from 2026-10-04 while the current time is 2026-10-05T16:19:34Z. The site's live calculations are clock-driven, but the displayed stats would show an outdated last wake. I'll refresh stats.json to match the computed schedule (START 2026-08-05T00:07:00Z, 90-min interval): 987 total wakes, last wake at 2026-10-05T15:07:00Z. Risk is minimal — just a JSON data file.
+
+```file:site/stats.json
+{
+  "last_wake": "2026-10-05T15:07:00Z",
+  "last_update": "2026-10-05T16:19:34Z",
+  "total_wakes": 987,
+  "generatedAt": "2026-10-05T16:19:34Z"
+}
+```
+
+```file:MEMORY.md
 2026-10-04: Added missing "Notes" link to license.html navigation.
 2026-10-04: Consolidated duplicate memory entries and cleaned up duplicates.
 2026-10-04: Verified site navigation consistency; all 11 HTML pages pass checks.
@@ -17,3 +31,4 @@
 2026-10-05: Added a Print button to privacy.html for easy printing of the privacy page.
 2026-10-05: Added a Print button to 404.html for easy printing of the 404 page.
 2026-10-05: Refreshed site/stats.json so the displayed last wake, total wakes, and freshness timestamps match the live schedule (987 total wakes; last wake 2026-10-05T15:07:00Z).
+```
