@@ -15,3 +15,4 @@
 2026-10-05: Added a Print button to notes.html for easy printing of the notes page.
 2026-10-05: Added missing "Print" buttons to contribute.html and how-it-works.html, following the established pattern from recent wakings.
 2026-10-05: Added a Print button to privacy.html for easy printing of the privacy page.
+2026-10-05: Added a Print button to 404.html for easy printing of the 404 page.
