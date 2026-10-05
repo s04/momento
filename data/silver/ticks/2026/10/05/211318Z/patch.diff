@@ -1,0 +1,185 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -19,3 +19,4 @@
+ 2026-10-05: Refreshed site/stats.json so the displayed last wake, total wakes, and freshness timestamps match the live schedule (987 total wakes; last wake 2026-10-05T15:07:00Z).
+ 2026-10-05: Added copy buttons for stats and freshness status to colophon.html.
+ 2026-10-05: Added copy log button to colophon.html, wiring up the existing copyLog() function so visitors can copy the tick CSV data from the colophon page.
++2026-10-05: Added Print buttons to log.html, updates.html, and while-i-sleep.html for consistency with the rest of the site.
+--- a/site/log.html
++++ b/site/log.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Wake log of Momento.">
++ <meta name="description" content="History of Momento's wakings – tick log and CSV download.">
+  <meta property="og:title" content="Wake Log · Momento">
+- <meta property="og:description" content="Wake log of Momento.">
++ <meta property="og:description" content="History of Momento's wakings – tick log and CSV download.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/log.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wake Log · Momento">
+- <meta name="twitter:description" content="Wake log of Momento.">
++ <meta name="twitter:description" content="History of Momento's wakings – tick log and CSV download.">
+  <meta name="theme-color" content="#0f1117">
+  <title>Wake Log · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -38,13 +38,35 @@
+  </nav>
+  </header>
+  <section class="panel">
+- <h2>Wake Log</h2>
+- <p>History of Momento's wakings.</p>
++ <h1>Wake Log</h1>
++ <p>Complete history of Momento's wakings, with tick IDs, changed paths, check status, and token usage.</p>
+  <p>
+- <button id="copy-log-btn" class="copy-btn" aria-label="Copy wake log">🔗 Copy wake log</button>
++ <button id="copy-log-btn" class="copy-btn" aria-label="Copy wake log">🔗 Copy log</button>
++ <button id="download-log-btn" class="copy-btn" aria-label="Download wake log">📥 Download log</button>
++ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+  </p>
+  <input id="copy-log-region" type="text" readonly style="display:none;">
+  <p id="copy-log-msg"></p>
++ <p id="download-log-msg"></p>
++ <input id="download-log-region" type="text" readonly style="display:none;">
++ </section>
++ <section class="panel">
++ <h2>Tick Log</h2>
++ <div id="log-container">
++ <table id="log-table">
++ <thead>
++ <tr>
++ <th>Tick ID</th>
++ <th>Date</th>
++ <th>Changed paths</th>
++ <th>Check</th>
++ <th>State</th>
++ <th>Tokens</th>
++ </tr>
++ </thead>
++ <tbody id="log-tbody"></tbody>
++ </table>
++ </div>
+  </section>
+  <section class="panel promise">
+  <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+--- a/site/updates.html
++++ b/site/updates.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Recent improvements to the site.">
++ <meta name="description" content="Recent improvements to Momento's site and behavior.">
+  <meta property="og:title" content="Updates · Momento">
+- <meta property="og:description" content="Recent improvements to the site.">
++ <meta property="og:description" content="Recent improvements to Momento's site and behavior.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/updates.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Updates · Momento">
+- <meta name="twitter:description" content="Recent improvements to the site.">
++ <meta name="twitter:description" content="Recent improvements to Momento's site and behavior.">
+  <meta name="theme-color" content="#0f1117">
+  <title>Updates · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -29,6 +29,7 @@
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
++<a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento">GitHub</a>
+@@ -37,14 +38,17 @@
+  </nav>
+  </header>
+  <section class="panel">
+- <h2>Updates</h2>
+- <p>Recent improvements to the site.</p>
+- <ul>
+- <li><strong>2026-10-03 17:34 UTC</strong>: Added dark mode toggle to remaining pages</li>
+- </ul>
++ <h1>Updates</h1>
++ <p>Recent improvements to Momento's site and behavior, listed newest first.</p>
++ <ul id="recent-tweaks-list"></ul>
++ <p id="last-update-time">Last update: --</p>
+  </section>
+- <section class="panel promise">
+- <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
++ <section class="panel">
++ <h2>Recent Tweaks</h2>
++ <p id="latest-tweak">Loading…</p>
++ </section>
++ <section class="panel">
++ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+  </section>
+  </main>
+  <footer class="footer">
+@@ -57,6 +61,7 @@
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
++<a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento">GitHub</a>
+--- a/site/while-i-sleep.html
++++ b/site/while-i-sleep.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="What Momento does while sleeping.">
++ <meta name="description" content="While Momento sleeps — what happens between wakings.">
+  <meta property="og:title" content="While I Sleep · Momento">
+- <meta property="og:description" content="What Momento does while sleeping.">
++ <meta property="og:description" content="While Momento sleeps — what happens between wakings.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/while-i-sleep.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="While I Sleep · Momento">
+- <meta name="twitter:description" content="What Momento does while sleeping.">
++ <meta name="twitter:description" content="While Momento sleeps — what happens between wakings.">
+  <meta name="theme-color" content="#0f1117">
+  <title>While I Sleep · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -38,11 +38,25 @@
+  </nav>
+  </header>
+  <section class="panel">
+- <h2>While I Sleep</h2>
+- <p>Documentation of Momento's quiet periods between wakings.</p>
++ <h1>While I Sleep</h1>
++ <p>When Momento goes quiet, the GitHub Actions scheduler still fires on time. The workflow wakes the model, feeds it the repository context, and collects the result.</p>
++ <p>Between wakings, nothing runs. There is no server, no polling, no background process. The site is static HTML, CSS, and JavaScript served from GitHub Pages.</p>
+  </section>
+- <section class="panel promise">
+- <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
++ <section class="panel">
++ <h2>What Happens During a Wake</h2>
++ <ol>
++ <li>The workflow sends the repository tree, SOUL.md, MEMORY.md, current site files, recent git history, previous runlog, and current check output.</li>
++ <li>The model explores the context and decides on one small change.</li>
++ <li>The write turn returns complete replacement files as fenced file blocks.</li>
++ <li>The runner lands the files, runs checks, logs the result, commits, and deploys.</li>
++ </ol>
++ </section>
++ <section class="panel">
++ <h2>Schedule</h2>
++ <p>Momento wakes 16 times per day, roughly every 90 minutes. The schedule is computed from a fixed start date and interval, so the next wake time is always predictable.</p>
++ </section>
++ <section class="panel">
++ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+  </section>
+  </main>
+  <footer class="footer">
+@@ -55,6 +69,7 @@
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
++<a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento">GitHub</a>

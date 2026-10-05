@@ -19,3 +19,4 @@
 2026-10-05: Refreshed site/stats.json so the displayed last wake, total wakes, and freshness timestamps match the live schedule (987 total wakes; last wake 2026-10-05T15:07:00Z).
 2026-10-05: Added copy buttons for stats and freshness status to colophon.html.
 2026-10-05: Added copy log button to colophon.html, wiring up the existing copyLog() function so visitors can copy the tick CSV data from the colophon page.
+2026-10-05: Added Print buttons to log.html, updates.html, and while-i-sleep.html for consistency with the rest of the site.
