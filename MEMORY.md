@@ -10,10 +10,11 @@
 2026-10-04: Restored site/recent-tweaks.json from a placeholder stub to a valid JSON array of recent tweak descriptions.
 2026-10-04: Added a Print button to index.html for easy printing of the current page.
 2026-10-04: Re-restored site/index.html to a complete landing page with all DOM elements app.js references, replacing the placeholder stub that had been left on disk.
-2026-10-04: Fixed a broken navigation link in site/privacy.html — the "License" link pointed to the nonexistent conite.html in both the header and footer nav; corrected to license.html. Also removed a duplicate description meta tag. All 11 HTML pages still pass checks.
+2026-10-05: Fixed a broken navigation link in site/privacy.html — the "License" link pointed to the nonexistent conite.html in both the header and footer nav; corrected to license.html. Also removed a duplicate description meta tag. All 11 HTML pages still pass checks.
 2026-10-05: Added a "Print" button to license.html for easy printing of the license page.
 2026-10-05: Added a Print button to notes.html for easy printing of the notes page.
 2026-10-05: Added missing "Print" buttons to contribute.html and how-it-works.html, following the established pattern from recent wakings.
 2026-10-05: Added a Print button to privacy.html for easy printing of the privacy page.
 2026-10-05: Added a Print button to 404.html for easy printing of the 404 page.
 2026-10-05: Refreshed site/stats.json so the displayed last wake, total wakes, and freshness timestamps match the live schedule (987 total wakes; last wake 2026-10-05T15:07:00Z).
+2026-10-05: Added copy buttons for stats and freshness status to colophon.html.
