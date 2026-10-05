@@ -13,3 +13,4 @@
 2026-10-04: Fixed a broken navigation link in site/privacy.html — the "License" link pointed to the nonexistent conite.html in both the header and footer nav; corrected to license.html. Also removed a duplicate description meta tag. All 11 HTML pages still pass checks.
 2026-10-05: Added a "Print" button to license.html for easy printing of the license page.
 2026-10-05: Added a Print button to notes.html for easy printing of the notes page.
+2026-10-05: Added missing "Print" buttons to contribute.html and how-it-works.html, following the established pattern from recent wakings.
