@@ -1,3 +1,24 @@
+```file:site/skip-link.css
+.skip-link {
+  position: absolute;
+  top: -10rem;
+  left: 1rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  color: #111827;
+  border: 2px solid #111827;
+  border-radius: 0.5rem;
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  background: #fffbcc;
+}
+```
+
+```file:MEMORY.md
 2026-10-04: Added missing "Notes" link to license.html navigation.
 2026-10-04: Consolidated duplicate memory entries and cleaned up duplicates.
 2026-10-04: Verified site navigation consistency; all 11 HTML pages pass checks.
@@ -28,3 +49,5 @@
 2026-10-06: Fixed a malformed dark-mode toggle button in site/colophon.html — the class attribute read `dark="dark-mode-btn"` (a stray `dark=` prefix), which broke the button's styling and left a bogus attribute. Corrected to `class="dark-mode-btn"` to match the toggle on every other page. All 11 HTML pages still pass checks.
 2026-10-06: Added id="accessibility" to the Accessibility heading in site/colophon.html so the colophon.html#accessibility anchor used in every page's navigation resolves correctly. All 11 HTML pages still pass checks.
 2026-10-06: Improved skip-link focus visibility for keyboard users by enhancing the focus style in skip-link.css.
+```
+```
