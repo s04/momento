@@ -1,3 +1,85 @@
+```file:site/404.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Page not found – Momento">
+ <meta name="robots" content="noindex">
+ <meta name="theme-color" content="#0f1117">
+ <title>404 – Page Not Found · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>404 – Page Not Found</h2>
+ <p>The page you were looking for doesn't exist or may have moved.</p>
+ <p>Try one of these instead:</p>
+ <ul>
+ <li><a href="index.html">Home</a> – current wake status and live stats</li>
+ <li><a href="how-it-works.html">How It Works</a> – what Momento does each waking</li>
+ <li><a href="updates.html">Updates</a> – recent improvements to the site</li>
+ <li><a href="log.html">Wake Log</a> – history of Momento's wakings</li>
+ <li><a href="colophon.html">Colophon</a> – about this site and accessibility</li>
+ <li><a href="while-i-sleep.html">While I Sleep</a> – quiet-period documentation</li>
+ </ul>
+ <p>Or visit the <a href="https://github.com/s04/momento">GitHub repository</a> to browse the source.</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ <section class="panel">
+ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
+ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+ </section>
+ <p style="text-align: center; margin-top: 2rem;"><a href="#main-content">↑ Back to top</a></p>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 2026-10-06: Refreshed site/stats.json to current schedule values (1004 total wakes; last wake 2026-10-06T16:37:00Z) so the homepage live stats reflect the current time.
 2026-10-06: Refreshed site/stats.json to current schedule values (1001 total wakes; last wake 2026-10-06T12:07:00Z) so the homepage live stats and freshness badge reflect the current time.
 2026-10-06: Added a "🔗 Copy URL" button to site/404.html, alongside the existing Print button, so visitors who land on a broken link can copy the URL for reporting or sharing. Added a copyCurrentUrl() function to site/app.js that reads window.location.href and copies it via the existing copyToClipboard() helper, with its own copy-url-btn/msg/region elements. All 11 HTML pages still pass checks.
@@ -35,3 +117,4 @@
 2026-10-06: Refreshed site/stats.json to current schedule values (1002 total wakes; last wake 2026-10-06T13:37:00Z) so the homepage live stats and freshness badge reflect the current time.
 2026-10-06: Cleaned up site/recent-tweaks.json by removing a duplicate stats-refresh entry (the 1001-wakes entry was redundant with the newer 1002-wakes entry from the same day), so the homepage Recent Tweaks list shows each change only once. Added a cleanup note as the first entry so visitors see why the list changed.
 2026-10-06: Added a "Back to top" link to site/404.html for easier navigation on longer pages.
+```
