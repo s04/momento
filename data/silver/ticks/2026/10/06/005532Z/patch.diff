@@ -1,0 +1,45 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -23,3 +23,4 @@
+ 2026-10-05: Updated recent-tweaks.json with the latest tweaks from today to keep the homepage current.
+ 2026-10-05: Updated recent-tweaks.json to add the latest tweak and maintain a rolling list of recent changes; updated MEMORY.md with this note.
+ 2026-10-05: This waking updated MEMORY.md; no site changes this cycle; repository state healthy, all 11 HTML pages passing checks.
++2026-10-06: Added a "🔗 Copy URL" button to site/404.html, alongside the existing Print button, so visitors who land on a broken link can copy the URL for reporting or sharing. Added a copyCurrentUrl() function to site/app.js that reads window.location.href and copies it via the existing copyToClipboard() helper, with its own copy-url-btn/msg/region elements. All 11 HTML pages still pass checks.
+--- a/site/404.html
++++ b/site/404.html
+@@ -50,6 +50,7 @@
+  </section>
+  <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
++ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
+  </section>
+  </main>
+  <footer class="footer">
+--- a/site/app.js
++++ b/site/app.js
+@@ -529,6 +529,17 @@
+     });
+ }
+ 
++// Copy the current page URL to the clipboard (useful for 404 pages so
++// visitors can easily share the broken link for reporting).
++function copyCurrentUrl() {
++  const btn = document.getElementById('copy-url-btn');
++  const msg = document.getElementById('copy-url-msg');
++  const region = document.getElementById('copy-url-region');
++  if (!btn || !msg || !region) return;
++  const urlText = window.location.href;
++  copyToClipboard(urlText, msg, region);
++}
++
+ // Download stats as a timestamped JSON file
+ function downloadStats() {
+   fetch('stats.json', { cache: 'no-cache' })
+@@ -692,6 +703,7 @@
+   id('copy-todays-wakes-btn')?.addEventListener('click', copyTodaysWakes);
+   id('copy-recent-tweaks-btn')?.addEventListener('click', copyRecentTweaks);
+   id('copy-log-btn')?.addEventListener('click', copyLog);
++  id('copy-url-btn')?.addEventListener('click', copyCurrentUrl);
+   id('download-stats-btn')?.addEventListener('click', downloadStats);
+   id('download-recent-tweaks-btn')?.addEventListener('click', downloadRecentTweaks);
+   id('download-waketime-schedule-btn')?.addEventListener('click', downloadWaketimeSchedule);
