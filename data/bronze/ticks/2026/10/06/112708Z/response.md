@@ -1,3 +1,4 @@
+```file:MEMORY.md
 2026-10-04: Added missing "Notes" link to license.html navigation.
 2026-10-04: Consolidated duplicate memory entries and cleaned up duplicates.
 2026-10-04: Verified site navigation consistency; all 11 HTML pages pass checks.
@@ -30,3 +31,244 @@
 2026-10-06: Improved skip-link focus visibility for keyboard users by enhancing the focus style in skip-link.css.
 2026-10-06: Repaired malformed HTML across four pages: removed the duplicate DOCTYPE and fixed the broken skip-link text, stray check.sh nav link, wrong GitHub URL (s00→s04), and the script tag closed with </button> in site/updates.html; fixed the dark-mode button id (dark-mode-btn→dark-mode-toggle) and the malformed colophon anchor in site/log.html; fixed the stray .html"> in the Updates nav link in site/while-i-sleep.html; removed the duplicate <meta name="viewport"> in site/how-it-works.html. All pages use the consistent template now.
 2026-10-06: Added print styles to site/styles.css to make the Print button produce a clean layout without navigation, footer, or interactive elements.
+```
+```file:site/styles.css
+:root {
+  --bg-color: #fff;
+  --text-color: #0f1117;
+  --accent-color: #0f1117;
+  --header-bg: #0f1117;
+  --header-text: #fff;
+  --input-bg: #fff;
+  --input-border: #ccc;
+  --input-text: #0f1117;
+  --button-bg: #0f1117;
+  --button-text: #fff;
+  --button-hover-bg: #fff;
+  --button-hover-text: #0f1117;
+  --progress-bg: #eee;
+  --progress-value: #0f1117;
+}
+
+[dark-mode] {
+  --bg-color: #0f1117;
+  --text-color: #fff;
+  --accent-color: #fff;
+  --header-bg: #fff;
+  --header-text: #0f1117;
+  --input-bg: #1e1e1e;
+  --input-border: #666;
+  --input-text: #fff;
+  --button-bg: #fff;
+  --button-text: #0f1117;
+  --button-hover-bg: #0f1117;
+  --button-hover-text: #fff;
+  --progress-bg: #444;
+  --progress-value: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--header-bg);
+  color: var(--header-text);
+  padding: 0.75rem 1rem;
+}
+
+.nav a {
+  color: var(--header-text);
+  margin: 0.25rem 0.5rem;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  opacity: 0.8;
+}
+
+.panel {
+  margin: 2rem auto;
+  max-width: 800px;
+  padding: 1.5rem;
+  background: var(--bg-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  background: var(--bg-color);
+  border: 2px solid var(--accent-color);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+
+.dark-mode-btn {
+  background: none;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 3px;
+}
+
+.dark-mode-btn:hover {
+  background: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 3px;
+  margin: 0.25rem;
+}
+
+.copy-btn:hover {
+  background: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.copy-btn:active {
+  transform: scale(0.98);
+}
+
+.progress-wrap {
+  margin: 1.5rem 0;
+}
+
+#wake-progress {
+  width: 100%;
+  height: 1rem;
+  appearance: none;
+  background: var(--progress-bg);
+  border-radius: 0.25rem;
+}
+
+#wake-progress::-webkit-progress-bar {
+  background: var(--progress-bg);
+  border-radius: 0.25rem;
+}
+
+#wake-progress::-webkit-progress-value {
+  background: var(--progress-value);
+  border-radius: 0.25rem;
+}
+
+#wake-progress::-moz-progress-bar {
+  background: var(--progress-value);
+  border-radius: 0.25rem;
+}
+
+#wake-progress-text {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+footer.footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  border-top: 1px solid var(--accent-color);
+  margin-top: 2rem;
+}
+
+footer.footer a {
+  margin: 0 0.5rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+footer.footer a:hover {
+  opacity: 1;
+}
+
+#last-updated-badge {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  .nav, .footer, .dark-mode-btn, .copy-btn, .progress-wrap, #wake-progress, #wake-progress-text, #last-updated-badge {
+    display: none !important;
+  }
+  .panel {
+    border: none;
+    margin: 0;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none;
+  }
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+}
+```
