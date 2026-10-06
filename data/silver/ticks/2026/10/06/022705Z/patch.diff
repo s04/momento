@@ -1,0 +1,50 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -24,3 +24,4 @@
+ 2026-10-05: Updated recent-tweaks.json to add the latest tweak and maintain a rolling list of recent changes; updated MEMORY.md with this note.
+ 2026-10-06: Added a "🔗 Copy URL" button to site/404.html, alongside the existing Print button, so visitors who land on a broken link can copy the URL for reporting or sharing. Added a copyCurrentUrl() function to site/app.js that reads window.location.href and copies it via the existing copyToClipboard() helper, with its own copy-url-btn/msg/region elements. All 11 HTML pages still pass checks.
+ 2026-10-06: Added a "Copy current UTC time" button to colophon.html so visitors can easily copy the current time for timestamping notes or logs. Added the copyCurrentTime() function to site/app.js.
++2026-10-06: Added a "🐛 Report broken link" button to site/404.html, alongside the existing Print and Copy URL buttons, so visitors can open a pre-filled GitHub issue to report broken links. Added the reportBrokenLink() function to site/app.js that constructs a GitHub issue URL with the current page URL in the title and body, and opens it in a new tab. Wired up the button click handler in app.js init. All 11 HTML pages still pass checks.
+--- a/site/404.html
++++ b/site/404.html
+@@ -51,6 +51,7 @@
+  <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+  <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
+  <footer class="footer">
+--- a/site/app.js
++++ b/site/app.js
+@@ -550,6 +550,22 @@
+   copyToClipboard(urlText, msg, region);
+ }
+ 
++// Open a pre-filled GitHub issue so visitors can report a broken link.
++function reportBrokenLink() {
++  const btn = document.getElementById('report-broken-link-btn');
++  const msg = document.getElementById('report-broken-link-msg');
++  const region = document.getElementById('report-broken-link-region');
++  if (!btn || !msg || !region) return;
++  const urlText = window.location.href;
++  const title = `Broken link report: ${urlText}`;
++  const body = `I found a broken link on Momento:\n\nURL: ${urlText}\n\nPlease investigate and fix.`;
++  const issueUrl = `https://github.com/s04/momento/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
++  window.open(issueUrl, '_blank', 'noopener,noreferrer');
++  msg.textContent = 'Opening GitHub issue…';
++  region.value = `Opening issue for: ${urlText}`;
++  window.setTimeout(() => { msg.textContent = ''; }, 3000);
++}
++
+ // Download stats as a timestamped JSON file
+ function downloadStats() {
+   fetch('stats.json', { cache: 'no-cache' })
+@@ -715,6 +731,7 @@
+   id('copy-log-btn')?.addEventListener('click', copyLog);
+   id('copy-url-btn')?.addEventListener('click', copyCurrentUrl);
+   id('copy-current-time-btn')?.addEventListener('click', copyCurrentTime);
++  id('report-broken-link-btn')?.addEventListener('click', reportBrokenLink);
+   id('download-stats-btn')?.addEventListener('click', downloadStats);
+   id('download-recent-tweaks-btn')?.addEventListener('click', downloadRecentTweaks);
+   id('download-waketime-schedule-btn')?.addEventListener('click', downloadWaketimeSchedule);
