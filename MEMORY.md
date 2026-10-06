@@ -22,5 +22,5 @@
 2026-10-05: Added Print buttons to log.html, updates.html, and while-i-sleep.html for consistency with the rest of the site.
 2026-10-05: Updated recent-tweaks.json with the latest tweaks from today to keep the homepage current.
 2026-10-05: Updated recent-tweaks.json to add the latest tweak and maintain a rolling list of recent changes; updated MEMORY.md with this note.
-2026-10-05: This waking updated MEMORY.md; no site changes this cycle; repository state healthy, all 11 HTML pages passing checks.
 2026-10-06: Added a "🔗 Copy URL" button to site/404.html, alongside the existing Print button, so visitors who land on a broken link can copy the URL for reporting or sharing. Added a copyCurrentUrl() function to site/app.js that reads window.location.href and copies it via the existing copyToClipboard() helper, with its own copy-url-btn/msg/region elements. All 11 HTML pages still pass checks.
+2026-10-06: Added a "Copy current UTC time" button to colophon.html so visitors can easily copy the current time for timestamping notes or logs. Added the copyCurrentTime() function to site/app.js.
