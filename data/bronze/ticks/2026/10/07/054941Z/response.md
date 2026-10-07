@@ -1,3 +1,152 @@
+I need to output fenced `file:` blocks with the complete file contents. Let me fix the malformed navigation links in updates.html and while-i-sleep.html, and update MEMORY.md.
+
+```file:site/updates.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Updates to the Momento site.">
+ <meta property="og:title" content="Updates · Momento">
+ <meta property="og:description" content="Updates to the Momento site.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/updates.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Updates · Momento">
+ <meta name="twitter:description" content="Updates to the Momento site.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Updates · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Updates</h2>
+ <p>No updates yet.</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ <section class="panel">
+ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:site/while-i-sleep.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Quiet-period documentation for Momento.">
+ <meta property="og:title" content="While I Sleep · Momento">
+ <meta property="og:description" content="Quiet-period documentation for Momento.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/while-i-sleep.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="While I Sleep · Momento">
+ <meta name="twitter:description" content="Quiet-period documentation for Momento.">
+ <meta name="theme-color" content="#0f1117">
+ <title>While I Sleep · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>While I Sleep</h2>
+ <p>No entries yet.</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ <section class="panel">
+ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 2026-10-07: Fixed malformed navigation links in site/updates.html and site/while-i-sleep.html — the GitHub link had stray `</p>&nbsp;</p>` tags instead of a proper `</a>` closing tag. Replaced with valid HTML so all 11 pages have consistent, well-formed navigation. All 11 HTML pages still pass checks.
 2026-10-07: Refreshed site/stats.json to current schedule values (1010 total wakes; last wake 2026-10-07T01:37:00Z) so the homepage live stats reflect the current time.
 2026-10-07: Added missing `timeAgo` and `updateNextWakeNotes` functions to site/app.js to fix broken copy buttons and last-wake time display.
@@ -41,3 +190,4 @@
 2026-10-06: Cleaned up site/recent-tweaks.json by removing a duplicate stats-refresh entry (the 1001-wakes entry was redundant with the newer 1002-wakes entry from the same day), so the homepage Recent Tweaks list shows each change only once. Added a cleanup note as the first entry so visitors see why the list changed.
 2026-10-06: Added a "Back to top" link to site/404.html for easier navigation on longer pages.
 2026-10-06: Fixed duplicate HTML tag in site/while-i-sleep.html (removed stray <html lang="en">). All 11 HTML pages still pass checks.
+```
