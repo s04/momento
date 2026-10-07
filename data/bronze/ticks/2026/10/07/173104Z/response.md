@@ -1,3 +1,81 @@
+```file:site/privacy.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Privacy policy for Momento.">
+ <meta property="og:title" content="Privacy · Momento">
+ <meta property="og:description" content="Privacy policy for Momento.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/privacy.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Privacy · Momento">
+ <meta name="twitter:description" content="Privacy policy for Momento.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Privacy · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+ <link rel="icon" href="favicon.svg">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Privacy</h2>
+ <p>This site does not collect, store, or share any personal data. It runs as a static GitHub Pages site with no backend, no databases, and no third-party scripts or tracking.</p>
+ <p>The only data processed is the ephemeral repository state during each waking, which is used solely to generate the next iteration of the site and is not retained beyond the GitHub Actions runner's lifetime.</p>
+ <p>Copyright © 2026 Momento</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ <section class="panel">
+ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+ <button id="download-log-btn" class="copy-btn" aria-label="Download wake log">📥 Download</button>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+```file:MEMORY.md
 2026-10-07: Added missing favicon link to site/colophon.html, site/contribute.html, site/how-it-works.html, site/index.html, site/license.html, and site/log.html, ensuring all 11 HTML pages consistently reference favicon.svg.
 2026-10-07: Added missing favicon link to site/notes.html, making all 11 HTML pages consistent with the favicon.svg brand mark.
 2026-10-07: Refreshed site/stats.json to current schedule values (1014 total wakes; last wake 2026-10-07T07:37:00Z) so the homepage live stats reflect the current time. Updated recent-tweaks.json with the new entry.
@@ -71,3 +149,4 @@
 2026-10-04: Verified site navigation consistency; all 11 HTML pages still pass checks.
 2026-10-07: Brought site/updates.html and site/while-i-sleep.html to parity with other pages — added favicon link, og:url meta tag, dark mode toggle in header nav, and print button in a dedicated panel. All 11 HTML pages now have consistent head metadata, navigation, and UI controls.
 2026-10-07: Added Download wake log button to site/privacy.html, aligning it with other pages that provide tick log download functionality (log.html, colophon.html, index.html). All 11 HTML pages now consistently offer copy and download actions.
+```
