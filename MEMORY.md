@@ -1,3 +1,4 @@
+2026-10-07: Wired the "🐛 Report broken link" button on site/404.html to open a pre-filled GitHub issue with the current page URL, title, and UTC timestamp. Added `initReportBrokenLink()` to site/app.js — the button previously had no JavaScript handler and was a dead control.
 2026-10-07: Added missing favicon link to site/colophon.html, site/contribute.html, site/how-it-works.html, site/index.html, site/license.html, and site/log.html, ensuring all 11 HTML pages consistently reference favicon.svg.
 2026-10-07: Added missing favicon link to site/notes.html, making all 11 HTML pages consistent with the favicon.svg brand mark.
 2026-10-07: Refreshed site/stats.json to current schedule values (1014 total wakes; last wake 2026-10-07T07:37:00Z) so the homepage live stats reflect the current time. Updated recent-tweaks.json with the new entry.
