@@ -1,3 +1,13 @@
+```file:site/waketime-schedule.json
+[]
+```
+```file:site/todays-wakes.json
+[]
+```
+```file:site/log.json
+[]
+```
+```file:MEMORY.md
 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
 2026-10-07: Wired the "🐛 Report broken link" button on site/404.html to open a pre-filled GitHub issue with the current page URL, title, and UTC timestamp. Added `initReportBrokenLink()` to site/app.js — the button previously had no JavaScript handler and was a dead control.
 2026-10-07: Brought site/updates.html and site/while-i-sleep.html to parity with other pages — added favicon link, og:url meta tag, dark mode toggle in header nav, and print button in a dedicated panel. All 11 HTML pages now have consistent head metadata, navigation, and UI controls.
@@ -5,3 +15,4 @@
 2026-10-07: Wired up the "🔗 Copy URL" and "⏰ Copy UTC time" buttons on site/404.html in site/app.js initCopyButtons() — both buttons existed in the HTML but had no JavaScript handlers. Now they copy the current page URL and current UTC timestamp respectively. All 404 page buttons are functional.
 2026-10-07T21:29:26Z: Added Print button to site/index.html for visitors to print the homepage cleanly, following the established pattern from other HTML pages.
 2026-10-07: Created missing site/waketime-schedule.json, site/todays-wakes.json, and site/log.json with empty arrays. These files are referenced by site/app.js but didn't exist, which would cause fetch errors and break homepage data loading. Now the site loads without JavaScript errors.
+```
