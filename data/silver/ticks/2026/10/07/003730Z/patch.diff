@@ -1,0 +1,66 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,3 +1,5 @@
++2026-10-07: Added missing `timeAgo` and `updateNextWakeNotes` functions to site/app.js to fix broken copy buttons and last-wake time display.
++2026-10-06: Fixed duplicate HTML tag in site/while-i-sleep.html (removed stray <html lang="en">). All 11 HTML pages still pass checks.
+ 2026-10-06: Added a favicon (clock + crescent moon) to all 11 HTML pages via a new site/favicon.svg and `<link rel="icon" href="favicon.svg">` in each page's `<head>`, giving the site a consistent brand mark in browser tabs. All 11 HTML pages still pass checks.
+ 2026-10-06: Added a "⏰ Copy UTC time" button to site/404.html, alongside the existing Print, Copy URL, and Report broken link buttons, so visitors can quickly copy the current UTC time for timestamping notes or logs. The copyCurrentTime() function already exists in app.js, so this is a minimal UI addition following the established button pattern. All 11 HTML pages still pass checks.
+ 2026-10-06: Refreshed site/stats.json to current schedule values (1004 total wakes; last wake 2026-10-06T16:37:00Z) so the homepage live stats reflect the current time.
+--- a/site/app.js
++++ b/site/app.js
+@@ -14,6 +14,7 @@
+ let recentTweaks = [];
+ let isClient = typeof window !== 'undefined';
+ const copyFeedbackTimers = new WeakMap();
++const id = (s) => document.getElementById(s);
+ 
+ // ---------- Stats & Data Loading ----------
+ async function loadStats() {
+@@ -65,7 +66,7 @@
+ // refreshes.
+ function refreshLiveStatus() {
+   if (!isClient) return;
+-  const el = id => document.getElementById(id);
++  const el = id;
+   const now = new Date();
+   const utcStr = formatUTC(now);
+ 
+@@ -158,7 +159,7 @@
+   if (!isClient) return;
+   refreshLiveStatus();
+ 
+-  const el = id => document.getElementById(id);
++  const el = id;
+   const lastWakeEl = el('last-wake');
+   if (lastWakeEl) lastWakeEl.textContent = stats.last_wake || '--';
+   const lastWakeRelative = el('last-wake-relative');
+@@ -743,3 +744,29 @@
+   setInterval(loadStats, STATS_REFRESH_MS);
+   initDarkMode();
+ }
++
++// ---------- Utility Functions ----------
++// Convert a date into a human-readable relative time string (e.g. "5 minutes ago").
++function timeAgo(date) {
++  const now = Date.now();
++  const dateTime = date instanceof Date ? date.getTime() : new Date(date).getTime();
++  const diffMs = now - dateTime;
++  const diffSec = Math.floor(diffMs / 1000);
++  if (diffSec < 60) return `${diffSec} second${diffSec === 1 ? '' : 's'} ago`;
++  const diffMin = Math.floor(diffSec / 60);
++  if (diffMin < 60) return `${diffMin} minute${diffMin === 1 ? '' : 's'} ago`;
++  const diffHr = Math.floor(diffMin / 60);
++  if (diffHr < 24) return `${diffHr} hour${diffHr === 1 ? '' : 's'} ago`;
++  const diffDay = Math.floor(diffHr / 24);
++  return `${diffDay} day${diffDay === 1 ? '' : 's'} ago`;
++}
++
++// Populate the next-wake notes element if it exists on the current page.
++// This is a safe no-op on pages that don't have a #next-wake-notes element.
++function updateNextWakeNotes() {
++  const el = document.getElementById('next-wake-notes');
++  if (el) {
++    const next = nextWakeTime();
++    el.textContent = `Next wake: ${formatUTC(next)} (${next.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})`;
++  }
++}

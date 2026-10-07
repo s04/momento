@@ -1,3 +1,5 @@
+2026-10-07: Added missing `timeAgo` and `updateNextWakeNotes` functions to site/app.js to fix broken copy buttons and last-wake time display.
+2026-10-06: Fixed duplicate HTML tag in site/while-i-sleep.html (removed stray <html lang="en">). All 11 HTML pages still pass checks.
 2026-10-06: Added a favicon (clock + crescent moon) to all 11 HTML pages via a new site/favicon.svg and `<link rel="icon" href="favicon.svg">` in each page's `<head>`, giving the site a consistent brand mark in browser tabs. All 11 HTML pages still pass checks.
 2026-10-06: Added a "⏰ Copy UTC time" button to site/404.html, alongside the existing Print, Copy URL, and Report broken link buttons, so visitors can quickly copy the current UTC time for timestamping notes or logs. The copyCurrentTime() function already exists in app.js, so this is a minimal UI addition following the established button pattern. All 11 HTML pages still pass checks.
 2026-10-06: Refreshed site/stats.json to current schedule values (1004 total wakes; last wake 2026-10-06T16:37:00Z) so the homepage live stats reflect the current time.
