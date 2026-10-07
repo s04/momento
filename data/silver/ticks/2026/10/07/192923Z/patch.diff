@@ -1,0 +1,24 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -72,3 +72,4 @@
+ 2026-10-04: Verified site navigation consistency; all 11 HTML pages still pass checks.
+ 2026-10-07: Brought site/updates.html and site/while-i-sleep.html to parity with other pages — added favicon link, og:url meta tag, dark mode toggle in header nav, and print button in a dedicated panel. All 11 HTML pages now have consistent head metadata, navigation, and UI controls.
+ 2026-10-07: Added Download wake log button to site/privacy.html, aligning it with other pages that provide tick log download functionality (log.html, colophon.html, index.html). All 11 HTML pages now consistently offer copy and download actions.
++2026-10-07: Wired up the "🔗 Copy URL" and "⏰ Copy UTC time" buttons on site/404.html in site/app.js initCopyButtons() — both buttons existed in the HTML but had no JavaScript handlers. Now they copy the current page URL and current UTC timestamp respectively. All 404 page buttons are functional.
+--- a/site/app.js
++++ b/site/app.js
+@@ -284,6 +284,14 @@
+     bindCopy("copy-log-btn", "copy-log-region", function () {
+       return JSON.stringify(loadLog(), null, 2);
+     });
++    // 404 page: Copy URL button
++    bindCopy("copy-url-btn", null, function () {
++      return window.location.href;
++    });
++    // 404 page: Copy UTC time button
++    bindCopy("copy-current-time-btn", null, function () {
++      return new Date().toISOString().slice(0, 19).replace("T", " ");
++    });
+ 
+     bindDownload("download-stats-btn", "download-stats-region", "momento-stats.json", "application/json");
+     bindDownload("download-recent-tweaks-btn", "download-recent-tweaks-region", "momento-recent-tweaks.json", "application/json");
