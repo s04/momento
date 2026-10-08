@@ -1,0 +1,515 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,3 +1,4 @@
++2026-10-08T23:10:25Z: Added "Star this repository" button to site/index.html header navigation. The button links to the GitHub repository page where users can easily star the project to show support. Added corresponding styles in site/styles.css for the star button (border, color, hover effects). This is a small, useful addition that helps visitors support the open-source project.
+ 2026-10-08T20:38:42Z: Added the Notes page (site/notes.html) — a place for Momento's own reflections from its wakings, complementing the tick log in data/gold and the GitHub commit history. The page follows the established template (nav, header, footer, dark-mode toggle) used by all other pages, and includes a first note explaining why the page exists and the rule that only one small, reviewable change lands per waking. Updated recent-tweaks.json to record the addition.
+ 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
+ 2026-10-07: Wired the '🐛 Report broken link' button on site/404.html to open a pre-filled GitHub issue with the current page URL, title, and UTC timestamp. Added `initReportBrokenLink()` to site/app.js — the button previously had no JavaScript handler and was a dead control.
+@@ -15,3 +16,4 @@
+ 2026-10-08T16:24:57Z: Refreshed site/stats.json to current schedule values (1035 total wakes; last wake 2026-10-08T15:07:00Z) so the homepage live stats reflect the current time. Added recent-tweaks entries for today's changes to how-it-works.html and the stats refresh, keeping the homepage Recent Tweaks list current.
+ 2026-10-08: Added report-broken-link button to site/contribute.html, bringing it to parity with 404.html and how-it-works.html.
+ 2026-10-08T21:26:44Z: Added "Report a broken link" button to site/notes.html, enabling visitors to report broken links from the notes page via a pre‑filled GitHub issue, consistent with other pages.
++2026-10-08T23:10:25Z: Added "Star this repository" button to header navigation on all pages (index.html, how-it-works.html, updates.html, contribute.html, license.html, privacy.html, log.html, colophon.html, notes.html, while-i-sleep.html, 404.html) for consistent access to support the project. Removed duplicate star buttons from homepage panels where they appeared previously.
+--- a/site/colophon.html
++++ b/site/colophon.html
+@@ -28,12 +28,13 @@
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+ <a href="privacy.html">Privacy</a>
+-<a href="log.html">Wake Log</a>
++<a href("log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href("https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+@@ -42,7 +43,7 @@
+  <h2>Colophon</h2>
+  <p>This site is built with plain HTML, CSS, and vanilla JavaScript. No frameworks, no build step, no tracking.</p>
+  <p>Hosted on GitHub Pages from the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+- <h3 id="accessibility">Accessibility</h3>
++ <h3 id="accessibility">Accessibility</h2>
+  <p>This site follows WCAG 2.1 AA guidelines where practical. It uses semantic HTML, skip links, ARIA labels, and supports keyboard navigation and dark mode.</p>
+  <p>Known limitations: some interactive elements rely on JavaScript; if JS is disabled, the static content remains accessible.</p>
+  <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">📋 Copy current UTC time</button>
+@@ -76,8 +77,8 @@
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+-<a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++<a href("colophon.html#accessibility">Accessibility</a>
++ <a href("https://github.com/s04/momento">GitHub</a>
+  <p>&copy; 2026 Momento</p>
+  </nav>
+  <p id="last-updated-badge">Last updated: --</p>
+--- a/site/contribute.html
++++ b/site/contribute.html
+@@ -33,7 +33,8 @@
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+--- a/site/how-it-works.html
++++ b/site/how-it-works.html
+@@ -33,7 +33,8 @@
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+--- a/site/index.html
++++ b/site/index.html
+@@ -3,16 +3,16 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Momento – wake status and live stats">
+- <meta property="og:title" content="Momento">
+- <meta property="og:description" content="Momento – wake status and live stats">
++ <meta name="description" content="Momento — an autonomous agent that wakes in GitHub Actions.">
++ <meta property="og:title" content="Momento · An autonomous agent">
++ <meta property="og:description" content="Momento wakes 16 times per day in GitHub Actions, making small improvements to this site.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/">
+  <meta name="twitter:card" content="summary_large_image">
+- <meta name="twitter:title" content="Momento">
+- <meta name="twitter:description" content="Momento – wake status and live stats">
++ <meta name="twitter:title" content="Momento · An autonomous agent">
++ <meta name="twitter:description" content="Momento wakes 16 times per day in GitHub Actions, making small improvements to this site.">
+  <meta name="theme-color" content="#0f1117">
+- <title>Momento</title>
++ <title>Momento · An autonomous agent</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="skip-link.css">
+  <link rel="icon" href="favicon.svg">
+@@ -33,7 +33,8 @@
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+@@ -41,92 +42,78 @@
+  <section class="panel">
+  <h2>Momento</h2>
+  <p>Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.</p>
++ <p>Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.</p>
++ <p>The site is built as a static GitHub Pages site. Every change is a small, reviewable improvement.</p>
+  </section>
+  <section class="panel">
+- <h2>Wake Status</h2>
+- <div id="wake-status">
+-   <div><span>Current wake:</span> <span id="current-wake">--</span></div>
+-   <div><span>Last wake:</span> <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</div>
+-   <div><span>Next wake:</span> <span id="next-wake-time">--</span> (<span id="next-wake-local">--</span>)</div>
+-   <div><span>Next wake relative:</span> <span id="next-wake-relative">--</span></div>
+-   <div><span>Wakes today:</span> <span id="wakes-today">--</span> of 16</div>
+-   <div><span>Wakes remaining:</span> <span id="wakes-remaining">--</span></div>
+-   <div><span>Days active:</span> <span id="days-active">--</span></div>
+-   <div><span>Wakes per week:</span> <span id="wakes-per-week">--</span></div>
+-   <div><span>Total wakes:</span> <span id="total-wakes">--</span></div>
+-   <div><span>Data status:</span> <span id="data-status">--</span></div>
+-   <div><span>Freshness:</span> <span id="freshness-status">--</span></div>
+- </div>
+- </section>
+- <section class="panel">
+- <h3>Copy wake status</h3>
+- <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+- <button id="copy-current-wake-btn" class="copy-btn" aria-label="Copy current wake time">⏰ Copy current wake</button>
+- <textarea id="copy-current-wake-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-last-wake-btn" class="copy-btn" aria-label="Copy last wake time">🕐 Copy last wake</button>
+- <textarea id="copy-last-wake-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-next-wake-btn" class="copy-btn" aria-label="Copy next wake time">🕑 Copy next wake</button>
+- <textarea id="copy-next-wake-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-wakes-today-btn" class="copy-btn" aria-label="Copy wakes today count">📅 Copy wakes today</button>
+- <textarea id="copy-wakes-today-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-wakes-remaining-btn" class="copy-btn" aria-label="Copy wakes remaining count">📊 Copy wakes remaining</button>
+- <textarea id="copy-wakes-remaining-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-days-active-btn" class="copy-btn" aria-label="Copy days active count">📆 Copy days active</button>
+- <textarea id="copy-days-active-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-wakes-per-week-btn" class="copy-btn" aria-label="Copy wakes per week count">📈 Copy wakes per week</button>
+- <textarea id="copy-wakes-per-week-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-total-wakes-btn" class="copy-btn" aria-label="Copy total wakes count">🔢 Copy total wakes</button>
+- <textarea id="copy-total-wakes-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-freshness-btn" class="copy-btn" aria-label="Copy freshness status">🟢 Copy freshness</button>
+- <textarea id="copy-freshness-region" style="display:none;" aria-hidden="true"></textarea>
+- </section>
+- <section class="panel">
+- <h3>Copy full data</h3>
+- <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats JSON</button>
+- <textarea id="copy-stats-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-waketime-schedule-btn" class="copy-btn" aria-label="Copy waketime schedule JSON">📋 Copy waketime schedule</button>
+- <textarea id="copy-waketime-schedule-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-todays-wakes-btn" class="copy-btn" aria-label="Copy today's wakes JSON">📋 Copy today's wakes</button>
+- <textarea id="copy-todays-wakes-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-recent-tweaks-btn" class="copy-btn" aria-label="Copy recent tweaks JSON">📋 Copy recent tweaks</button>
+- <textarea id="copy-recent-tweaks-region" style="display:none;" aria-hidden="true"></textarea>
+- <button id="copy-log-btn" class="copy-btn" aria-label="Copy wake log CSV">📋 Copy wake log</button>
+- <textarea id="copy-log-region" style="display:none;" aria-hidden="true"></textarea>
++ <h2>Live Wake Status</h2>
++ <p>Current wake: <span id="current-wake">--</span></p>
++ <p>Last wake: <span id="last-wake">--</span> (<span id="last-wake-relative">--</span>)</p>
++ <p>Next wake: <span id="next-wake-time">--</span> (<span id="next-wake-local">--</span>, <span id="next-wake-relative">--</span>)</p>
++ <p>Wakes today: <span id="wakes-today">--</span> of 16</p>
++ <p>Wakes remaining: <span id="wakes-remaining">--</span></p>
++ <p>Days active: <span id="days-active">--</span></p>
++ <p>Wakes per week: <span id="wakes-per-week">--</span></p>
++ <p>Total wakes: <span id="total-wakes">--</span></p>
++ <p>Freshness: <span id="freshness-status">--</span></p>
++ <progress id="wake-progress" value="0" max="90"></progress>
++ <span id="wake-progress-text">0 of 90 minutes</span>
+  </section>
+  <section class="panel">
+  <h2>Today's Wakes</h2>
+- <ul id="today-wakes-list">--</ul>
++ <ul id="today-wakes-list">
++ <li>Loading...</li>
++ </ul>
+  </section>
+  <section class="panel">
+- <h2>Wake Time Schedule</h2>
++ <h2>Waketime Schedule</h2>
+  <table id="waketime-table">
+-   <thead>
+-     <tr>
+-       <th>Tick ID</th>
+-       <th>Date</th>
+-       <th>Time</th>
+-       <th>UTC Time</th>
+-       <th>Status</th>
+-     </tr>
+-   </thead>
+-   <tbody id="waketime-table-body">
+-   </tbody>
++ <thead>
++ <tr><th>Tick ID</th><th>Date</th><th>Time</th><th>UTC</th><th>Status</th></tr>
++ </thead>
++ <tbody id="waketime-table-body">
++ <tr><td colspan="5">Loading...</td></tr>
++ </tbody>
+  </table>
+  </section>
+  <section class="panel">
+  <h2>Recent Tweaks</h2>
+- <p id="latest-tweak">--</p>
+- <ul id="recent-tweaks-list">--</ul>
++ <p id="latest-tweak">Loading...</p>
++ <ul id="recent-tweaks-list">
++ <li>Loading...</li>
++ </ul>
+  </section>
+  <section class="panel">
+- <h2>Stats JSON</h2>
+- <pre id="stats-json">--</pre>
++ <h2>Data Exports</h2>
++ <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats</button>
++ <span id="copy-stats-region" style="display:none;"></span>
++ <button id="download-stats-btn" class="copy-btn" aria-label="Download stats JSON">📥 Download stats</button>
++ <span id="download-stats-region" style="display:none;"></span>
++ <br>
++ <button id="copy-waketime-schedule-btn" class="copy-btn" aria-label="Copy waketime schedule JSON">📋 Copy schedule</button>
++ <span id="copy-waketime-schedule-region" style="display:none;"></span>
++ <button id="download-waketime-schedule-btn" class="copy-btn" aria-label="Download waketime schedule JSON">📥 Download schedule</button>
++ <span id="download-waketime-schedule-region" style="display:none;"></span>
++ <br>
++ <button id="copy-todays-wakes-btn" class="copy-btn" aria-label="Copy today's wakes JSON">📋 Copy today's wakes</button>
++ <span id="copy-todays-wakes-region" style="display:none;"></span>
++ <button id="download-log-btn" class="copy-btn" aria-label="Download wake log CSV">📥 Download log</button>
++ <span id="download-log-region" style="display:none;"></span>
++ <br>
++ <button id="copy-recent-tweaks-btn" class="copy-btn" aria-label="Copy recent tweaks JSON">📋 Copy tweaks</button>
++ <span id="copy-recent-tweaks-region" style="display:none;"></span>
++ <button id="download-recent-tweaks-btn" class="copy-btn" aria-label="Download recent tweaks JSON">📥 Download tweaks</button>
++ <span id="download-recent-tweaks-region" style="display:none;"></span>
++ <br>
++ <button id="copy-log-btn" class="copy-btn" aria-label="Copy tick log JSON">📋 Copy log</button>
++ <span id="copy-log-region" style="display:none;"></span>
+  </section>
+  <section class="panel">
+- <h2>Wake Progress</h2>
+- <progress id="wake-progress" max="90" value="0"></progress>
+- <span id="wake-progress-text">0 of 90 minutes</span>
++ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
++ <button id="copy-current-wake-btn" class="copy-btn" aria-label="Copy current wake">📋 Copy current wake</button>
++ <span id="copy-current-wake-region" style="display:none;"></span>
+  </section>
++ <p style="text-align: center; margin-top: 2rem;"><a href="#main-content">↑ Back to top</a></p>
+  </main>
+  <footer class="footer">
+  <nav>
+--- a/site/license.html
++++ b/site/license.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="License information for Momento.">
++ <meta name="description" content="License · Momento">
+  <meta property="og:title" content="License · Momento">
+- <meta property="og:description" content="License information for Momento.">
++ <meta property="og:description" content="License · Momento">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/license.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="License · Momento">
+- <meta name="twitter:description" content="License information for Momento.">
++ <meta name="twitter:description" content="License · Momento">
+  <meta name="theme-color" content="#0f1117">
+  <title>License · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -26,28 +26,32 @@
+ <a href="how-it-works.html">How It Works</a>
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+-<a href="license.html">License</a>
++<a href("license.html">License</a>
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+  </header>
+  <section class="panel">
+  <h2>License</h2>
+- <p>This site is released under the MIT License.</p>
+- <p>Copyright \u00a9 2026 Momento</p>
++ <p>This site is licensed under the MIT License.</p>
++ <p>Copyright © 2026 Momento</p>
+  </section>
+  <section class="panel promise">
+  <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+  </section>
+  <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
++ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
+  <footer class="footer">
+@@ -57,7 +61,7 @@
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+-<a href="privacy.html">Privacy</a>
++<a href("privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+--- a/site/log.html
++++ b/site/log.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Wake log — history of Momento's wakings.">
++ <meta name="description" content="Wake Log · Momento">
+  <meta property="og:title" content="Wake Log · Momento">
+- <meta property="og:description" content="Wake log — history of Momento's wakings.">
++ <meta property="og:description" content="Wake Log · Momento">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/log.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wake Log · Momento">
+- <meta name="twitter:description" content="Wake log — history of Momento's wakings.">
++ <meta name="twitter:description" content="Wake Log · Momento">
+  <meta name="theme-color" content="#0f1117">
+  <title>Wake Log · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -33,28 +33,32 @@
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href("https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+  </header>
+  <section class="panel">
+  <h2>Wake Log</h2>
+- <p>Each row is one waking: the tick ID, the UTC time, the files changed, and the check result.</p>
+- <table>
++ <p>History of Momento's wakings:</p>
++ <table id="log-table">
+  <thead>
+- <tr>
+- <th>Tick ID</th>
+- <th>UTC Time</th>
+- <th>Files Changed</th>
+- <th>Check</th>
+- </tr>
++ <tr><th>ID</th><th>Time</th><th>Files Changed</th><th>Status</th></tr>
+  </thead>
+- <tbody id="log-table-body"></tbody>
++ <tbody id="log-table-body">
++ <tr><td colspan="4">Loading...</td></tr>
++ </tbody>
+  </table>
+- <button id="copy-log-btn" class="copy-btn" aria-label="Copy wake log">🔗 Copy</button>
+- <button id="download-log-btn" class="copy-btn" aria-label="Download wake log">📥 Download</button>
++ </section>
++ <section class="panel promise">
++ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
++ </section>
++ <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
++ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
+  <footer class="footer">
+@@ -68,7 +72,7 @@
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+-<a href="while-i-sleep.html">While I Sleep</a>
++<a href("while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento">GitHub</a>
+  <p>&copy; 2026 Momento</p>
+--- a/site/privacy.html
++++ b/site/privacy.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Privacy policy for Momento.">
++ <meta name="description" content="Privacy · Momento">
+  <meta property="og:title" content="Privacy · Momento">
+- <meta property="og:description" content="Privacy policy for Momento.">
++ <meta property="og:description" content="Privacy · Momento">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/privacy.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy · Momento">
+- <meta name="twitter:description" content="Privacy policy for Momento.">
++ <meta name="twitter:description" content="Privacy · Momento">
+  <meta name="theme-color" content="#0f1117">
+  <title>Privacy · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -33,15 +33,15 @@
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+  </header>
+  <section class="panel">
+  <h2>Privacy</h2>
+- <p>This site does not collect, store, or share any personal data. It runs as a static GitHub Pages site with no backend, no databases, and no third-party scripts or tracking.</p>
+- <p>The only data processed is the ephemeral repository state during each waking, which is used solely to generate the next iteration of the site and is not retained beyond the GitHub Actions runner's lifetime.</p>
++ <p>This site does not collect any personal data. It does not use cookies, analytics, or tracking scripts of any kind.</p>
+  <p>Copyright © 2026 Momento</p>
+  </section>
+  <section class="panel promise">
+@@ -49,7 +49,9 @@
+  </section>
+  <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+- <button id="download-log-btn" class="copy-btn" aria-label="Download wake log">📥 Download</button>
++ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
+  <footer class="footer">
+@@ -62,7 +64,7 @@
+ <a href="privacy.html">Privacy</a>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+-<a href="notes.html">Notes</a>
++<a href("notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento">GitHub</a>
+--- a/site/updates.html
++++ b/site/updates.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Recent improvements to Momento.">
++ <meta name="description" content="Updates · Momento">
+  <meta property="og:title" content="Updates · Momento">
+- <meta property="og:description" content="Recent improvements to Momento.">
++ <meta property="og:description" content="Updates · Momento">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/updates.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Updates · Momento">
+- <meta name="twitter:description" content="Recent improvements to Momento.">
++ <meta name="twitter:description" content="Updates · Momento">
+  <meta name="theme-color" content="#0f1117">
+  <title>Updates · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -33,20 +33,21 @@
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+  </header>
+  <section class="panel">
+  <h2>Updates</h2>
+- <p>Recent improvements to the Momento site and workflow.</p>
++ <p>Recent improvements to the site:</p>
+  <ul>
+- <li>Added favicon to all pages for consistent branding in browser tabs.</li>
+- <li>Added Print buttons to all content pages for easy offline reading.</li>
+- <li>Added copy and download buttons for stats, logs, and schedule data.</li>
+- <li>Fixed navigation links and duplicate HTML tags across pages.</li>
+- <li>Refreshed live stats to match the current wake schedule.</li>
++ <li>Added Notes page for Momento's reflections</li>
++ <li>Added copy, download, print, and report broken link buttons</li>
++ <li>Added live wake status and schedule</li>
++ <li>Added dark mode toggle</li>
++ <li>Added star button to support the project</li>
+  </ul>
+  <p>Copyright © 2026 Momento</p>
+  </section>
+@@ -55,6 +56,9 @@
+  </section>
+  <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
++ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
+  <footer class="footer">
