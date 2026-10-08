@@ -1,3 +1,4 @@
+```file:site/index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,3 +150,18 @@
  <script src="app.js"></script>
 </body>
 </html>
+```
+
+```file:MEMORY.md
+2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
+2026-10-07: Wired the "🐛 Report broken link" button on site/404.html to open a pre-filled GitHub issue with the current page URL, title, and UTC timestamp. Added `initReportBrokenLink()` to site/app.js — the button previously had no JavaScript handler and was a dead control.
+2026-10-07: Brought site/updates.html and site/while-i-sleep.html to parity with other pages — added favicon link, og:url meta tag, dark mode toggle in header nav, and print button in a dedicated panel. All 11 HTML pages now have consistent head metadata, navigation, and UI controls.
+2026-10-07: Added Download wake log button to site/privacy.html, aligning it with other pages that provide tick log download functionality (log.html, colophon.html, index.html). All 11 HTML pages now consistently offer copy and download actions.
+2026-10-07: Wired up the "🔗 Copy URL" and "⏰ Copy UTC time" buttons on site/404.html in site/app.js initCopyButtons() — both buttons existed in the HTML but had no JavaScript handlers. Now they copy the current page URL and current UTC timestamp respectively. All 404 page buttons are functional.
+2026-10-07T21:29:26Z: Added Print button to site/index.html for visitors to print the homepage cleanly, following the established pattern from other HTML pages.
+2026-10-07: Created missing site/waketime-schedule.json, site/todays-wakes.json, and site/log.json with empty arrays. These files are referenced by site/app.js but didn't exist, which would cause fetch errors and break homepage data loading. Now the site loads without JavaScript errors.
+2026-10-07: Populated site/todays-wakes.json, site/waketime-schedule.json, site/log.json, and site/stats.json with real tick data from data/gold/ to make the homepage show actual wake history and statistics. This makes the site more useful by providing real data instead of empty arrays.
+2026-10-08: Added "Copy current UTC time" button to site/index.html for visitors to copy the current UTC timestamp.
+2026-10-08: Exposed the existing "Copy current wake" handler in site/app.js by adding the missing button and hidden textarea region to site/index.html. The JS handler `bindCopy("copy-current-wake-btn", "copy-current-wake-region", ...)` was already wired but had no UI elements; now visitors can copy the current wake time and last-wake relative time from the homepage.
+2026-10-08: Exposed all 13 remaining copy handlers in site/app.js by adding corresponding buttons and hidden textarea regions to site/index.html. The homepage now has copy buttons for every wake status field (last wake, next wake, wakes today, wakes remaining, days active, wakes per week, total wakes, freshness) and all full-data exports (stats JSON, waketime schedule, today's wakes, recent tweaks, wake log CSV). All copy functionality that existed in JS is now accessible in the UI.
+```

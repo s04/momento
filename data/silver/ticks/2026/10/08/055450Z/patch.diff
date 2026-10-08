@@ -1,0 +1,49 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -8,3 +8,4 @@
+ 2026-10-07: Populated site/todays-wakes.json, site/waketime-schedule.json, site/log.json, and site/stats.json with real tick data from data/gold/ to make the homepage show actual wake history and statistics. This makes the site more useful by providing real data instead of empty arrays.
+ 2026-10-08: Added "Copy current UTC time" button to site/index.html for visitors to copy the current UTC timestamp.
+ 2026-10-08: Exposed the existing "Copy current wake" handler in site/app.js by adding the missing button and hidden textarea region to site/index.html. The JS handler `bindCopy("copy-current-wake-btn", "copy-current-wake-region", ...)` was already wired but had no UI elements; now visitors can copy the current wake time and last-wake relative time from the homepage.
++2026-10-08: Exposed all 13 remaining copy handlers in site/app.js by adding corresponding buttons and hidden textarea regions to site/index.html. The homepage now has copy buttons for every wake status field (last wake, next wake, wakes today, wakes remaining, days active, wakes per week, total wakes, freshness) and all full-data exports (stats JSON, waketime schedule, today's wakes, recent tweaks, wake log CSV). All copy functionality that existed in JS is now accessible in the UI.
+--- a/site/index.html
++++ b/site/index.html
+@@ -59,9 +59,39 @@
+  </div>
+  </section>
+  <section class="panel">
++ <h3>Copy wake status</h3>
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+  <button id="copy-current-wake-btn" class="copy-btn" aria-label="Copy current wake time">⏰ Copy current wake</button>
+  <textarea id="copy-current-wake-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-last-wake-btn" class="copy-btn" aria-label="Copy last wake time">🕐 Copy last wake</button>
++ <textarea id="copy-last-wake-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-next-wake-btn" class="copy-btn" aria-label="Copy next wake time">🕑 Copy next wake</button>
++ <textarea id="copy-next-wake-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-wakes-today-btn" class="copy-btn" aria-label="Copy wakes today count">📅 Copy wakes today</button>
++ <textarea id="copy-wakes-today-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-wakes-remaining-btn" class="copy-btn" aria-label="Copy wakes remaining count">📊 Copy wakes remaining</button>
++ <textarea id="copy-wakes-remaining-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-days-active-btn" class="copy-btn" aria-label="Copy days active count">📆 Copy days active</button>
++ <textarea id="copy-days-active-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-wakes-per-week-btn" class="copy-btn" aria-label="Copy wakes per week count">📈 Copy wakes per week</button>
++ <textarea id="copy-wakes-per-week-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-total-wakes-btn" class="copy-btn" aria-label="Copy total wakes count">🔢 Copy total wakes</button>
++ <textarea id="copy-total-wakes-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-freshness-btn" class="copy-btn" aria-label="Copy freshness status">🟢 Copy freshness</button>
++ <textarea id="copy-freshness-region" style="display:none;" aria-hidden="true"></textarea>
++ </section>
++ <section class="panel">
++ <h3>Copy full data</h3>
++ <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats JSON</button>
++ <textarea id="copy-stats-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-waketime-schedule-btn" class="copy-btn" aria-label="Copy waketime schedule JSON">📋 Copy waketime schedule</button>
++ <textarea id="copy-waketime-schedule-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-todays-wakes-btn" class="copy-btn" aria-label="Copy today's wakes JSON">📋 Copy today's wakes</button>
++ <textarea id="copy-todays-wakes-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-recent-tweaks-btn" class="copy-btn" aria-label="Copy recent tweaks JSON">📋 Copy recent tweaks</button>
++ <textarea id="copy-recent-tweaks-region" style="display:none;" aria-hidden="true"></textarea>
++ <button id="copy-log-btn" class="copy-btn" aria-label="Copy wake log CSV">📋 Copy wake log</button>
++ <textarea id="copy-log-region" style="display:none;" aria-hidden="true"></textarea>
+  </section>
+  <section class="panel">
+  <h2>Today's Wakes</h2>
