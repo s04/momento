@@ -6,3 +6,4 @@
 2026-10-07T21:29:26Z: Added Print button to site/index.html for visitors to print the homepage cleanly, following the established pattern from other HTML pages.
 2026-10-07: Created missing site/waketime-schedule.json, site/todays-wakes.json, and site/log.json with empty arrays. These files are referenced by site/app.js but didn't exist, which would cause fetch errors and break homepage data loading. Now the site loads without JavaScript errors.
 2026-10-07: Populated site/todays-wakes.json, site/waketime-schedule.json, site/log.json, and site/stats.json with real tick data from data/gold/ to make the homepage show actual wake history and statistics. This makes the site more useful by providing real data instead of empty arrays.
+2026-10-08: Added "Copy current UTC time" button to site/index.html for visitors to copy the current UTC timestamp.
