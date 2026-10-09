@@ -1,0 +1,36 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -2,14 +2,13 @@
+ 2026-10-09T20:03:40Z: Added skip-link to all pages for consistent keyboard navigation.
+ 2026-10-09T18:57:41Z: Updated the "Last updated" badge in site/404.html to show the actual last wake timestamp (2026-10-08T15:07:00Z) from stats.json instead of the placeholder "--". This improves the pre-JS fallback display for users without JavaScript enabled.
+ 2026-10-09T18:18:05Z: Added rel="noopener noreferrer" to the GitHub repository link in site/404.html (body paragraph), the last remaining GitHub link without the attribute. All pages now have full parity, preventing opener-window access via window.opener on every external GitHub link.
+-2026-10-09T17:09:44Z: Added rel="noopener noreferrer" to GitHub links in site/contribute.html and site/how-it-works.html (header and footer) for security best practices, bringing all pages into parity and preventing potential security vulnerabilities from target=_blank links.
++2026-10-09T17:09:44Z: Added rel="noopener noreferrer" to GitHub links in site/contribute.html and site/how-it-works.html (header and footer) for security best practices, bringing it into parity with site/index.html, site/404.html, and the other pages. This prevents potential security vulnerabilities from target=_blank links.
+ 2026-10-09T14:34:14Z: Added rel="noopener noreferrer" to the GitHub links in site/colophon.html (header and footer) for security best practices, bringing it into parity with site/index.html, site/404.html, and the other pages. This prevents the linked page from gaining access to the opener window via window.opener.
+ 2026-10-09T13:06:39Z: Added rel="noopener noreferrer" to GitHub links in site/index.html (header and footer) for security best practices, bringing it into parity with site/404.html and improving site-wide consistency.
+ 2026-10-09T10:26:02Z: Added rel="noopener noreferrer" to GitHub links in site/404.html (header and footer) for security best practices.
+ 2026-10-09T07:57:48Z: Added Copy URL button to site/contribute.html, bringing it to parity with other pages (404.html, how-it-works.html, license.html, privacy.html, updates.html, while-i-sleep.html, log.html, notes.html). The handler already exists in app.js, so this is a pure HTML addition.
+-2026-10-09T06:01:18Z: Added Copy URL button to site/notes.html for visitors to copy the current page URL, following the established pattern across the site. The button uses the existing bindCopy handler in app.js with a null regionId, which returns window.location.href directly. This brings notes.html to parity with other pages (404.html, contribute.html, license.html, privacy.html, how-it-works.html, updates.html, while-i-sleep.html, log.html).
+-2026-10-09T02:28:22Z: Added Copy UTC time button and hidden textarea region to site/notes.html for visitors to copy the current UTC timestamp, following the established pattern across the site. The button uses the existing bindCopy handler in app.js with a hidden textarea region for the current time value.
+-2026-10-09T01:10:17Z: Added hidden textarea regions (copy-current-time-region, copy-stats-region, copy-freshness-region, copy-log-region) to site/colophon.html so the corresponding copy buttons can read their target values. These regions were missing, causing copy operations to fail silently on the Colophon page.
++2026-10-09T06:01:18Z: Added Copy UTC time button and hidden textarea region to site/notes.html for visitors to copy the current UTC timestamp, following the established pattern across the site. The button uses the existing bindCopy handler in app.js with a hidden textarea region for the current time value.
++2026-10-09T02:28:22Z: Added hidden textarea regions (copy-current-time-region, copy-stats-region, copy-freshness-region, copy-log-region) to site/colophon.html so the corresponding copy buttons can read their target values. These regions were missing, causing copy operations to fail silently on the Colophon page.
+ 2026-10-08T23:54:15Z: Fixed broken HTML links in colophon.html (href("log.html"> → href="log.html">) and added star button + footer nav links to 404.html for consistency with all other pages.
+ 2026-10-08T23:54:11Z: Fixed malformed href attributes in site/colophon.html (5 anchor tags missing '=' in href="..."), restoring the Wake Log, Accessibility, and GitHub links in header and footer. Added the missing "Star this repository" button to site/404.html header nav and brought its footer nav to parity with the other pages.
+ 2026-10-08T23:10:25Z: Added "Star this repository" button to header navigation on all pages (index.html, how-it-works.html, updates.html, contribute.html, license.html, privacy.html, log.html, colophon.html, notes.html, while-i-sleep.html, 404.html) for consistent access to support the project. Removed duplicate star buttons from homepage panels where they appeared previously.
+@@ -29,3 +28,4 @@
+ 2026-10-07: Wired the '🐛 Report broken link' button on site/404.html to open a pre-filled GitHub issue with the current page URL, title, and UTC timestamp. Added `initReportBrokenLink()` to site/app.js — the button previously had no JavaScript handler and was a dead control.
+ 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
+ 2026-10-06: Enhanced site/contribute.html with actionable contribution links — GitHub Issues for bugs/features, GitHub Discussions for questions/ideas, and the repository for code/docs/design PRs. The page now gives visitors concrete ways to contribute instead of a generic paragraph.
++2026-10-09T22:29:26Z: Added missing hidden textarea regions for recent tweaks and waketime schedule download buttons in colophon.html, fixing download functionality.
+--- a/site/colophon.html
++++ b/site/colophon.html
+@@ -67,6 +67,8 @@
+  <textarea id="copy-stats-region" style="display:none"></textarea>
+  <textarea id="copy-freshness-region" style="display:none"></textarea>
+  <textarea id="copy-log-region" style="display:none"></textarea>
++ <textarea id="copy-recent-tweaks-region" style="display:none"></textarea>
++ <textarea id="copy-waketime-schedule-region" style="display:none"></textarea>
+  </section>
+  </main>
+  <footer class="footer">
