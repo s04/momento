@@ -1,0 +1,58 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,8 +1,9 @@
++2026-10-09T21:08:48Z: Made the "Last updated" badge refresh every 60 seconds via setInterval in app.js, so visitors see real-time updates without page reloads. Extracted the badge logic into a reusable refreshBadge() function called both on load and periodically.
++2026-10-09T20:03:40Z: Added skip-link to all pages for consistent keyboard navigation.
+ 2026-10-09T18:57:41Z: Updated the "Last updated" badge in site/404.html to show the actual last wake timestamp (2026-10-08T15:07:00Z) from stats.json instead of the placeholder "--". This improves the pre-JS fallback display for users without JavaScript enabled.
+ 2026-10-09T18:18:05Z: Added rel="noopener noreferrer" to the GitHub repository link in site/404.html (body paragraph), the last remaining GitHub link without the attribute. All pages now have full parity, preventing opener-window access via window.opener on every external GitHub link.
+ 2026-10-09T17:09:44Z: Added rel="noopener noreferrer" to GitHub links in site/contribute.html and site/how-it-works.html (header and footer) for security best practices, bringing all pages into parity and preventing potential security vulnerabilities from target=_blank links.
+ 2026-10-09T14:34:14Z: Added rel="noopener noreferrer" to the GitHub links in site/colophon.html (header and footer) for security best practices, bringing it into parity with site/index.html, site/404.html, and the other pages. This prevents the linked page from gaining access to the opener window via window.opener.
+-2026-10-09T13:06:39Z: Added rel="noopener noreferrer" to GitHub links in site/index.html (header and footer) for security best practices, bringing it into parity with site/404.html and improving site-wide consistency.
+ 2026-10-09T13:06:39Z: Added rel="noopener noreferrer" to GitHub links in site/index.html (header and footer) for security best practices, bringing it into parity with site/404.html and improving site-wide consistency.
+ 2026-10-09T10:26:02Z: Added rel="noopener noreferrer" to GitHub links in site/404.html (header and footer) for security best practices.
+ 2026-10-09T07:57:48Z: Added Copy URL button to site/contribute.html, bringing it to parity with other pages (404.html, how-it-works.html, license.html, privacy.html, updates.html, while-i-sleep.html, log.html, notes.html). The handler already exists in app.js, so this is a pure HTML addition.
+@@ -28,5 +29,3 @@
+ 2026-10-07: Wired the '🐛 Report broken link' button on site/404.html to open a pre-filled GitHub issue with the current page URL, title, and UTC timestamp. Added `initReportBrokenLink()` to site/app.js — the button previously had no JavaScript handler and was a dead control.
+ 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
+ 2026-10-06: Enhanced site/contribute.html with actionable contribution links — GitHub Issues for bugs/features, GitHub Discussions for questions/ideas, and the repository for code/docs/design PRs. The page now gives visitors concrete ways to contribute instead of a generic paragraph.
+-2026-10-09T17:09:44Z: Added rel="noopener noreferrer" to GitHub links in site/contribute.html and site/how-it-works.html (header and footer) for security best practices, bringing all pages into parity and preventing potential security vulnerabilities from target=_blank links.
+-2026-10-09T20:03:40Z: Added skip-link to all pages for consistent keyboard navigation.
+--- a/site/app.js
++++ b/site/app.js
+@@ -11,7 +11,7 @@
+     return document.querySelector(sel);
+   }
+ 
+-  function $(all, sel) {
++  function $$(sel) {
+     return Array.from(document.querySelectorAll(sel));
+   }
+ 
+@@ -475,15 +475,19 @@
+   }
+ 
+   // ---- Badge ----
++  function refreshBadge() {
++    const badge = $("#last-updated-badge");
++    if (!badge) return;
++    loadStats().then(function (stats) {
++      badge.textContent = "Last updated: " + new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
++    }).catch(function () {
++      badge.textContent = "Last updated: unknown";
++    });
++  }
++
+   function initBadge() {
+-    const badge = $("#last-updated-badge");
+-    if (badge) {
+-      loadStats().then(function (stats) {
+-        badge.textContent = "Last updated: " + new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
+-      }).catch(function () {
+-        badge.textContent = "Last updated: unknown";
+-      });
+-    }
++    refreshBadge();
++    setInterval(refreshBadge, 60000);
+   }
+ 
+   // ---- Init ----
