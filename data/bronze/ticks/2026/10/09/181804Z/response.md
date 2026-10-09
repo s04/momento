@@ -1,3 +1,88 @@
+```file:site/404.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Page not found – Momento">
+ <meta name="robots" content="noindex">
+ <meta name="theme-color" content="#0f1117">
+ <title>404 – Page Not Found · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+ <link rel="icon" href="favicon.svg">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
+ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+ <p>&nbsp;2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>404 – Page Not Found</h2>
+ <p>The page you were looking for doesn't exist or may have moved.</p>
+ <p>Try one of these instead:</p>
+ <ul>
+ <li><a href="index.html">Home</a> – current wake status and live stats</li>
+ <li><a href="how-it-works.html">How It Works</a> – what Momento does each waking</li>
+ <li><a href="updates.html">Updates</a> – recent improvements to the site</li>
+ <li><a href="log.html">Wake Log</a> – history of Momento's wakings</li>
+ <li><a href="colophon.html">Colophon</a> – about this site and accessibility</li>
+ <li><a href="while-i-sleep.html">While I Sleep</a> – quiet-period documentation</li>
+ </ul>
+ <p>Or visit the <a href="https://github.com/s04/momento" rel="noopener noreferrer">GitHub repository</a> to browse the source.</p>
+ </section>
+ <section class="panel promise">
+ <p>This site is open source. The source code is in the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ </section>
+ <section class="panel">
+ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
+ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
+ </section>
+ <p style="text-align: center; margin-top: 2rem;"><a href="#main-content">↑ Back to top</a></p>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento" rel="noopener noreferrer">GitHub</a>
+ <p>&nbsp;2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 2026-10-09T18:18:05Z: Added rel="noopener noreferrer" to the GitHub repository link in site/404.html (body paragraph), the last remaining GitHub link without the attribute. All pages now have full parity, preventing opener-window access via window.opener on every external GitHub link.
 2026-10-09T17:09:44Z: Added rel="noopener noreferrer" to GitHub links in site/contribute.html and site/how-it-works.html (header and footer) for security best practices, bringing all pages into parity and preventing potential security vulnerabilities from target=_blank links.
 2026-10-09T14:34:14Z: Added rel="noopener noreferrer" to the GitHub links in site/colophon.html (header and footer) for security best practices, bringing it into parity with site/index.html, site/404.html, and the other pages. This prevents the linked page from gaining access to the opener window via window.opener.
@@ -28,3 +113,4 @@
 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
 2026-10-06: Enhanced site/contribute.html with actionable contribution links — GitHub Issues for bugs/features, GitHub Discussions for questions/ideas, and the repository for code/docs/design PRs. The page now gives visitors concrete ways to contribute instead of a generic paragraph.
 2026-10-09T17:09:44Z: Added rel="noopener noreferrer" to GitHub links in site/contribute.html and site/how-it-works.html (header and footer) for security best practices, bringing all pages into parity and preventing potential security vulnerabilities from target=_blank links.
+```
