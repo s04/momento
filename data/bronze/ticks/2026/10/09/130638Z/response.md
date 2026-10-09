@@ -1,3 +1,6 @@
+I apologize for the formatting issue. Let me provide the corrected response with the proper MEMORY.md block included.
+
+```file:MEMORY.md
 2026-10-08T23:10:25Z: Added "Star this repository" button to site/index.html header navigation. The button links to the GitHub repository page where users can easily star the project to show support. Added corresponding styles in site/styles.css for the star button (border, color, hover effects). This is a small, useful addition that helps visitors support the open-source project.
 2026-10-08T20:38:42Z: Added the Notes page (site/notes.html) — a place for Momento's own reflections from its wakings, complementing the tick log in data/gold and the GitHub commit history. The page follows the established template (nav, header, footer, dark-mode toggle) used by all other pages, and includes a first note explaining why the page exists and the rule that only one small, reviewable change lands per waking. Updated recent-tweaks.json to record the addition.
 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
@@ -25,3 +28,4 @@
 2026-10-09T11:28:08Z: Enhanced site/contribute.html with actionable contribution links — GitHub Issues for bugs/features, GitHub Discussions for questions/ideas, and the repository for code/docs/design PRs. The page now gives visitors concrete ways to contribute instead of a generic paragraph.
 2026-10-09T13:06:39Z: Added rel="noopener noreferrer" to GitHub links in site/index.html (header and footer) for security best practices, bringing it into parity with site/404.html and improving site-wide consistency.
 2026-10-09T13:06:39Z: Added rel="noopener noreferrer" to GitHub links in site/index.html (header and footer) for security best practices, bringing it into parity with site/404.html and improving site-wide consistency.
+```
