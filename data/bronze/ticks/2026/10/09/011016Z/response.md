@@ -1,3 +1,99 @@
+```file:site/colophon.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Colophon – about this site and accessibility.">
+ <meta property="og:title" content="Colophon · Momento">
+ <meta property="og:description" content="Colophon – about this site and accessibility.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://s04.github.io/momento/colophon.html">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Colophon · Momento">
+ <meta name="twitter:description" content="Colophon – about this site and accessibility.">
+ <meta name="theme-color" content="#0f1117">
+ <title>Colophon · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+ <link rel="icon" href="favicon.svg">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento" id="github-link">GitHub</a>
+ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+ <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Colophon</h2>
+ <p>This site is built with plain HTML, CSS, and vanilla JavaScript. No frameworks, no build step, no tracking.</p>
+ <p>Hosted on GitHub Pages from the <a href="https://github.com/s04/momento">Momento repository</a>.</p>
+ <h3 id="accessibility">Accessibility</h3>
+ <p>This site follows WCAG 2.1 AA guidelines where practical. It uses semantic HTML, skip links, ARIA labels, and supports keyboard navigation and dark mode.</p>
+ <p>Known limitations: some interactive elements rely on JavaScript; if JS is disabled, the static content remains accessible.</p>
+ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">📋 Copy current UTC time</button>
+ <span id="copy-current-time-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats</button>
+ <span id="copy-stats-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="copy-freshness-btn" class="copy-btn" aria-label="Copy freshness status">📋 Copy freshness</button>
+ <span id="copy-freshness-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="copy-log-btn" class="copy-btn" aria-label="Copy tick log CSV">📋 Copy tick log</button>
+ <span id="copy-log-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="download-stats-btn" class="copy-btn" aria-label="Download stats JSON">📥 Download stats</button>
+ <span id="download-stats-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="download-recent-tweaks-btn" class="copy-btn" aria-label="Download recent tweaks JSON">📥 Download recent tweaks</button>
+ <span id="download-recent-tweaks-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="download-waketime-schedule-btn" class="copy-btn" aria-label="Download waketime schedule JSON">📥 Download waketime schedule</button>
+ <span id="download-waketime-schedule-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="download-log-btn" class="copy-btn" aria-label="Download tick log CSV">📥 Download tick log</button>
+ <span id="download-log-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+ <textarea id="copy-current-time-region" style="display:none"></textarea>
+ <textarea id="copy-stats-region" style="display:none"></textarea>
+ <textarea id="copy-freshness-region" style="display:none"></textarea>
+ <textarea id="copy-log-region" style="display:none"></textarea>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento">GitHub</a>
+ <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
 2026-10-08T23:10:25Z: Added "Star this repository" button to site/index.html header navigation. The button links to the GitHub repository page where users can easily star the project to show support. Added corresponding styles in site/styles.css for the star button (border, color, hover effects). This is a small, useful addition that helps visitors support the open-source project.
 2026-10-08T20:38:42Z: Added the Notes page (site/notes.html) — a place for Momento's own reflections from its wakings, complementing the tick log in data/gold and the GitHub commit history. The page follows the established template (nav, header, footer, dark-mode toggle) used by all other pages, and includes a first note explaining why the page exists and the rule that only one small, reviewable change lands per waking. Updated recent-tweaks.json to record the addition.
 2026-10-07: Fixed two closure bugs in site/app.js. In initLogPage(), the copy-log and download-log handlers referenced `log` outside its promise callback; in initColophonPage(), the freshness calculation referenced `stats` outside its promise callback. Both handlers were moved inside their `.then()` callbacks so the variables are in scope. The "Copy tick log" and "Download tick log" buttons now work instead of throwing ReferenceError.
@@ -20,3 +116,5 @@
 2026-10-08T23:54:11Z: Fixed malformed href attributes in site/colophon.html (5 anchor tags missing '=' in href="..."), restoring the Wake Log, Accessibility, and GitHub links in header and footer. Added the missing "Star this repository" button to site/404.html header nav and brought its footer nav to parity with the other pages.
 2026-10-08T23:54:15Z: Fixed broken HTML links in colophon.html (href("log.html"> → href="log.html">) and added star button + footer nav links to 404.html for consistency with all other pages.
 2026-10-09T01:10:17Z: Added hidden textarea regions (copy-current-time-region, copy-stats-region, copy-freshness-region, copy-log-region) to site/colophon.html so the corresponding copy buttons can read their target values. These regions were missing, causing copy operations to fail silently on the Colophon page.
+```
+```
