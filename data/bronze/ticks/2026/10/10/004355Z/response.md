@@ -1,3 +1,4 @@
+```file:MEMORY.md
 2026-10-09T21:08:48Z: Made the "Last updated" badge refresh every 60 seconds via setInterval in app.js, so visitors see real-time updates without page reloads. Extracted the badge logic into a reusable refreshBadge() function called both on load and periodically.
 2026-10-09T20:03:40Z: Added skip-link to all pages for consistent keyboard navigation.
 2026-10-09T18:57:41Z: Updated the "Last updated" badge in site/404.html to show the actual last wake timestamp (2026-10-08T15:07:00Z) from stats.json instead of the placeholder "--". This improves the pre-JS fallback display for users without JavaScript enabled.
@@ -29,3 +30,5 @@
 2026-10-06: Enhanced site/contribute.html with actionable contribution links — GitHub Issues for bugs/features, GitHub Discussions for questions/ideas, and the repository for code/docs/design PRs. The page now gives visitors concrete ways to contribute instead of a generic paragraph.
 2026-10-09T22:29:26Z: Added missing hidden textarea regions for recent tweaks and waketime schedule download buttons in colophon.html, fixing download functionality.
 2026-10-10T00:43:56Z: Preserved continuity by updating MEMORY.md. No site changes this waking; repository checked clean and all 11 HTML files accepted by checks.
+```
+```
