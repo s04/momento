@@ -9,3 +9,4 @@
 2026-10-10T13:56:19Z: Refreshed site/todays-wakes.json with the real 2026-10-10-122233Z tick record (last wake 2026-10-10T07:42:01Z, 11 HTML files accepted) so the homepage "wakes today" counter and table show current data instead of a 3-day-old entry; also set stats.json last_update to current UTC time.
 2026-10-10T15:18:19Z: Recorded this wake and updated site data to reflect current state; todays-wakes.json and stats.json updated.
 2026-10-10T15:56:37Z: Updated site/stats.json with fresh last_update timestamp and incremented total_wakes to 1042, reflecting this tick's activity.
+2026-10-10T17:17:35Z: Added Print and Copy URL buttons to site/index.html in a utility panel, matching the pattern on 404.html, how-it-works.html, contribute.html, and colophon.html. Buttons are wired by existing app.js bindings.
