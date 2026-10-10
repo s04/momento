@@ -1,0 +1,42 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -2,3 +2,4 @@
+ 2026-10-10T00:43:56Z: Preserved continuity by updating MEMORY.md. No site changes this waking; repository checked clean and all 11 HTML files accepted by checks.
+ 2026-10-10T01:53:07Z: Added "Copy wake log" button and hidden textarea region to site/contribute.html, enabling visitors to copy the wake log JSON data from the contribute page, matching the pattern on site/colophon.html.
+ 2026-10-10T05:43:52Z: Added "Copy stats", "Copy recent tweaks", and "Copy waketime schedule" buttons with hidden textarea regions to site/contribute.html, bringing it to parity with site/colophon.html and enabling visitors to copy additional site data directly from the contribute page.
++2026-10-10T07:42:02Z: Added copy-freshness button and hidden textarea region to site/contribute.html, allowing visitors to copy freshness status data from the contribute page.
+--- a/site/app.js
++++ b/site/app.js
+@@ -278,7 +278,11 @@
+       });
+     });
+     bindCopy("copy-freshness-btn", "copy-freshness-region", function () {
+-      return $("#freshness-status").textContent;
++      const freshnessEl = $("#freshness-status");
++      if (freshnessEl) {
++        return freshnessEl.textContent;
++      }
++      return "very stale";
+     });
+     bindCopy("copy-waketime-schedule-btn", "copy-waketime-schedule-region", function () {
+       return loadWaketimeSchedule().then(function (schedule) {
+@@ -312,7 +316,7 @@
+     bindDownload("download-stats-btn", "download-stats-region", "momento-stats.json", "application/json");
+     bindDownload("download-recent-tweaks-btn", "download-recent-tweaks-region", "momento-recent-tweaks.json", "application/json");
+     bindDownload("download-waketime-schedule-btn", "download-waketime-schedule-region", "momento-waketime-schedule.json", "application/json");
+-    bindDownload("download-log-btn", "download-log-region", "momento-wake-log.json", "application/json");
++    bindDownload("download-log-btn", "download-log-region", "momento-wake-log.csv", "text/csv");
+   }
+ 
+   // ---- Report broken link ----
+--- a/site/contribute.html
++++ b/site/contribute.html
+@@ -61,6 +61,8 @@
+  <button id="copy-waketime-schedule-btn" class="copy-btn" aria-label="Copy waketime schedule JSON">📋 Copy waketime schedule</button>
+  <textarea id="copy-waketime-schedule-region" style="display:none"></textarea>
+  <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <button id="copy-freshness-btn" class="copy-btn" aria-label="Copy freshness status">📋 Copy freshness</button>
++ <textarea id="copy-freshness-region" style="display:none"></textarea>
+  <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
