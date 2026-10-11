@@ -9,3 +9,4 @@
 2026-10-11T09:54:53Z: Added a <noscript> fallback message inside index.html's #wake-status div so visitors with JavaScript disabled see a helpful static message instead of an empty panel, mirroring the updates.html pattern. Site checks passed.
 2026-10-11T10:58:32Z: Fixed duplicate id in how-it-works.html by removing erroneous dark-mode-toggle button; added copy current UTC time button.
 2026-10-11T12:39:44Z: Added a <noscript> fallback in how-it-works.html footer so visitors with JavaScript disabled know the "Copy UTC time" button requires JS, following the accessibility pattern from updates.html and index.html.
+2026-10-11T14:18:44Z: Added <noscript> fallbacks for the "Copy UTC time" button in 404.html and colophon.html so visitors with JavaScript disabled see a helpful message; site checks passed.
