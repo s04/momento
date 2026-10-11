@@ -11,3 +11,4 @@
 2026-10-11T12:39:44Z: Added a <noscript> fallback in how-it-works.html footer so visitors with JavaScript disabled know the "Copy UTC time" button requires JS, following the accessibility pattern from updates.html and index.html.
 2026-10-11T14:18:44Z: Added <noscript> fallbacks for the "Copy UTC time" button in 404.html and colophon.html so visitors with JavaScript disabled see a helpful message; site checks passed.
 2026-10-11T15:35:59Z: Added <noscript> fallback for the "Copy UTC time" button in contribute.html for accessibility consistency across all pages with that button; site checks passed.
+2026-10-11T17:39:11Z: Added missing last-updated-badge to how-it-works.html footer for consistency across all pages. Site checks passed.
