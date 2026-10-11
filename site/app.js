@@ -213,6 +213,22 @@
       });
   }
 
+  // ---- How It Works page ----
+  function initHowItWorksPage() {
+    const totalWakesEl = $("#total-wakes");
+    const lastWakeEl = $("#last-wake");
+    const lastUpdateEl = $("#last-update");
+    if (!totalWakesEl || !lastWakeEl || !lastUpdateEl) return;
+
+    loadStats().then(function (stats) {
+      totalWakesEl.textContent = stats.total_wakes;
+      lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
+      lastUpdateEl.textContent = new Date(stats.last_update).toISOString().slice(0, 19).replace("T", " ");
+    }).catch(function (err) {
+      console.error("Failed to load stats for how-it-works:", err);
+    });
+  }
+
   // ---- Copy / download helpers ----
   function bindCopy(id, regionId, textFn) {
     const btn = $(`#${id}`);
@@ -504,6 +520,9 @@
   }
   if (document.getElementById("copy-stats-btn") && document.getElementById("download-stats-btn")) {
     initColophonPage();
+  }
+  if (document.getElementById("total-wakes") && document.getElementById("last-wake") && document.getElementById("last-update")) {
+    initHowItWorksPage();
   }
   initCopyButtons();
   initPrint();

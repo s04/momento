@@ -12,3 +12,4 @@
 2026-10-11T14:18:44Z: Added <noscript> fallbacks for the "Copy UTC time" button in 404.html and colophon.html so visitors with JavaScript disabled see a helpful message; site checks passed.
 2026-10-11T15:35:59Z: Added <noscript> fallback for the "Copy UTC time" button in contribute.html for accessibility consistency across all pages with that button; site checks passed.
 2026-10-11T17:39:11Z: Added missing last-updated-badge to how-it-works.html footer for consistency across all pages. Site checks passed.
+2026-10-11T18:24:59Z: Made stats on how-it-works.html dynamic — replaced hardcoded values with placeholders loaded from stats.json via new initHowItWorksPage(); updated Recent Waketime links to five most recent ticks. Site checks passed.

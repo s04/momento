@@ -1,0 +1,70 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -12,3 +12,4 @@
+ 2026-10-11T14:18:44Z: Added <noscript> fallbacks for the "Copy UTC time" button in 404.html and colophon.html so visitors with JavaScript disabled see a helpful message; site checks passed.
+ 2026-10-11T15:35:59Z: Added <noscript> fallback for the "Copy UTC time" button in contribute.html for accessibility consistency across all pages with that button; site checks passed.
+ 2026-10-11T17:39:11Z: Added missing last-updated-badge to how-it-works.html footer for consistency across all pages. Site checks passed.
++2026-10-11T18:24:59Z: Made stats on how-it-works.html dynamic — replaced hardcoded values with placeholders loaded from stats.json via new initHowItWorksPage(); updated Recent Waketime links to five most recent ticks. Site checks passed.
+--- a/site/app.js
++++ b/site/app.js
+@@ -213,6 +213,22 @@
+       });
+   }
+ 
++  // ---- How It Works page ----
++  function initHowItWorksPage() {
++    const totalWakesEl = $("#total-wakes");
++    const lastWakeEl = $("#last-wake");
++    const lastUpdateEl = $("#last-update");
++    if (!totalWakesEl || !lastWakeEl || !lastUpdateEl) return;
++
++    loadStats().then(function (stats) {
++      totalWakesEl.textContent = stats.total_wakes;
++      lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
++      lastUpdateEl.textContent = new Date(stats.last_update).toISOString().slice(0, 19).replace("T", " ");
++    }).catch(function (err) {
++      console.error("Failed to load stats for how-it-works:", err);
++    });
++  }
++
+   // ---- Copy / download helpers ----
+   function bindCopy(id, regionId, textFn) {
+     const btn = $(`#${id}`);
+@@ -505,6 +521,9 @@
+   if (document.getElementById("copy-stats-btn") && document.getElementById("download-stats-btn")) {
+     initColophonPage();
+   }
++  if (document.getElementById("total-wakes") && document.getElementById("last-wake") && document.getElementById("last-update")) {
++    initHowItWorksPage();
++  }
+   initCopyButtons();
+   initPrint();
+   initReportBrokenLink();
+--- a/site/how-it-works.html
++++ b/site/how-it-works.html
+@@ -57,17 +57,17 @@
+  </section>
+  <section class="panel">
+  <h3>Recent Waketime</h3>
+- <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-095452Z">2026-10-11-095452Z</a> (2026-10-11T09:54:52Z)</p>
+- <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-074644Z">2026-10-11-074644Z</a> (2026-10-11T07:46:44Z)</p>
+- <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-053849Z">2026-10-11-053849Z</a> (2026-10-11T05:38:49Z)</p>
+- <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-001223Z">2026-10-11-001223Z</a> (2026-10-11T00:12:23Z)</p>
+- <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-10-171734Z">2026-10-10-171734Z</a> (2026-10-10T17:17:34Z)</p>
++ <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-173908Z">2026-10-11-173908Z</a> (2026-10-11T17:39:08Z)</p>
++ <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-153559Z">2026-10-11-153559Z</a> (2026-10-11T15:35:59Z)</p>
++ <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-141844Z">2026-10-11-141844Z</a> (2026-10-11T14:18:44Z)</p>
++ <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-123944Z">2026-10-11-123944Z</a> (2026-10-11T12:39:44Z)</p>
++ <p>Tick <a href="https://github.com/s04/momento/commit/2026-10-11-105832Z">2026-10-11-105832Z</a> (2026-10-11T10:58:32Z)</p>
+  </section>
+  <section class="panel">
+  <h3>Site Stats</h3>
+- <p>Total wakes: <span id="total-wakes">1043</span></p>
+- <p>Last wake: <span id="last-wake">2026-10-10T07:42:01Z</span></p>
+- <p>Last update: <span id="last-update">2026-10-10T17:58:29Z</span></p>
++ <p>Total wakes: <span id="total-wakes">--</span></p>
++ <p>Last wake: <span id="last-wake">--</span></p>
++ <p>Last update: <span id="last-update">--</span></p>
+  </section>
+  <footer class="footer">
+  <nav>
