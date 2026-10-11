@@ -7,3 +7,4 @@
 2026-10-11T05:38:49Z: Added a static fallback message in updates.html via <noscript> so visitors see content when JavaScript is disabled; minimal risk, improves accessibility.
 2026-10-11T07:46:44Z: Added a "Copy current UTC time" button to the footer of index.html for quick time copying. Site checks passed.
 2026-10-11T09:54:53Z: Added a <noscript> fallback message inside index.html's #wake-status div so visitors with JavaScript disabled see a helpful static message instead of an empty panel, mirroring the updates.html pattern. Site checks passed.
+2026-10-11T10:58:32Z: Fixed duplicate id in how-it-works.html by removing erroneous dark-mode-toggle button; added copy current UTC time button.
