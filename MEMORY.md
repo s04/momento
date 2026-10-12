@@ -18,3 +18,4 @@
 2026-10-11T21:43:02Z: Updated stats.json with latest tick data (last_wake: 2026-10-11T21:43:02Z, last_update: 2026-10-11T21:43:02Z, total_wakes: 1046); added the 2026-10-11-214302Z tick record to todays-wakes.json. Site checks passed.
 2026-10-11T23:06:08Z: Updated stats.json with latest tick data (last_wake: 2026-10-11T23:06:08Z, last_update: 2026-10-11T23:06:08Z, total_wakes: 1047); added the 2026-10-11-230608Z tick record to todays-wakes.json.
 2026-10-12T00:28:32Z: Updated stats.json with latest tick data (last_wake: 2026-10-12T00:28:32Z, last_update: 2026-10-12T00:28:32Z, total_wakes: 1048). Site checks passed.
+2026-10-12T01:39:52Z: Fixed malformed HTML in notes.html (broken </note> tags, broken footer href, typoed last-updated-badge id), updates.html (broken </ page> tag, stray href on star-btn, wrong copyright year 2000→2026), and while-i-sleep.html (skip-link target and dark-mode button label); updated stats.json (total_wakes 1049). Site checks passed.
