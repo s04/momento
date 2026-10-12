@@ -1,0 +1,238 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -26,3 +26,4 @@
+ 2026-10-12T21:13:03Z: Verified site checks pass (11 HTML files accepted). Data files already current from prior wake. Added continuity note to MEMORY.md and recent-tweaks.json entry for this wake. No HTML or logic changes needed.
+ 2026-10-12T21:50:48Z: Continuity note — site JSON files already up to date; no site changes required; prepared for next wake.
+ 2026-10-12T22:27:44Z: Refreshed live data — stats.json last_wake/last_update to 2026-10-12T21:50:46Z and total_wakes incremented to 1051; appended the 2026-10-12-215046Z tick record to log.json and recent-tweaks.json. Site checks passed.
++2026-10-12T23:09:14Z: Added stats summary to Wake Log page (site/log.html) showing total wakes and last wake time; updated app.js to load and display these stats.
+--- a/site/app.js
++++ b/site/app.js
+@@ -355,57 +355,78 @@
+   // ---- Log page ----
+   function initLogPage() {
+     const tableBody = $("#log-table-body");
++    const totalWakesEl = $("#log-total-wakes");
++    const lastWakeEl = $("#log-last-wake");
+     if (!tableBody) return;
+-    loadLog().then(function (log) {
+-      tableBody.innerHTML = log
+-        .slice()
+-        .reverse()
+-        .slice(0, 100)
+-        .map(function (t) {
+-          const status = t.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
+-          return `<tr><td><a href="https://github.com/s04/momento/commit/${t.tickId}">${t.tickId.slice(0, 8)}</a></td><td>${t.runAt.slice(0, 19).replace("T", " ")}</td><td>${t.changedPaths}</td><td>${status}</td></tr>`;
+-        })
+-        .join("");
+-
+-      // Copy log button — moved inside .then() so 'log' is in scope
+-      const region = $("#log-region");
+-      const btn = $("#copy-log-btn");
+-      if (btn && region) {
+-        btn.addEventListener("click", function () {
+-          const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
+-            log.map(function (t) {
+-              return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
+-            })
+-          ).join("\n");
+-          copyText(csv);
++    
++    Promise.all([loadLog(), loadStats()])
++      .then(function ([log, stats]) {
++        tableBody.innerHTML = log
++          .slice()
++          .reverse()
++          .slice(0, 100)
++          .map(function (t) {
++            const status = t.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
++            return `<tr><td><a href="https://github.com/s04/momento/commit/${t.tickId}">${t.tickId.slice(0, 8)}</a></td><td>${t.runAt.slice(0, 19).replace("T", " ")}</td><td>${t.changedPaths}</td><td>${status}</td></tr>`;
++          })
++          .join("");
++
++        // Update stats summary
++        if (totalWakesEl && lastWakeEl) {
++          totalWakesEl.textContent = stats.total_wakes;
++          lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
++        }
++
++        // Copy log button — moved inside .then() so 'log' is in scope
++        const region = $("#log-region");
++        const btn = $("#copy-log-btn");
++        if (btn && region) {
++          btn.addEventListener("click", function () {
++            const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
++              log.map(function (t) {
++                return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
++              })
++            ).join("\n");
++            copyText(csv);
++          });
++        }
++
++        // Download log button — moved inside .then() so 'log' is in scope
++        const dlBtn = $("#download-log-btn");
++        const dlRegion = $("#download-log-region");
++        if (dlBtn && dlRegion) {
++          dlBtn.addEventListener("click", function () {
++            const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
++              log.map(function (t) {
++                return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
++              })
++            ).join("\n");
++            const blob = new Blob([csv], { type: "text/csv" });
++            const url = URL.createObjectURL(blob);
++            const a = document.createElement("a");
++            a.href = url;
++            a.download = "momento-wake-log.csv";
++            document.body.appendChild(a);
++            a.click();
++            document.body.removeChild(a);
++            URL.revokeObjectURL(url);
++          });
++        }
++      })
++      .catch(function (err) {
++        tableBody.innerHTML = `<tr><td colspan="4">Failed to load log.</td></tr>`;
++        console.error("Failed to load log:", err);
++        
++        // Still try to update stats even if log fails
++        loadStats().then(function (stats) {
++          if (totalWakesEl && lastWakeEl) {
++            totalWakesEl.textContent = stats.total_wakes;
++            lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
++          }
++        }).catch(function (statsErr) {
++          console.error("Failed to load stats for log page:", statsErr);
+         });
+-      }
+-
+-      // Download log button — moved inside .then() so 'log' is in scope
+-      const dlBtn = $("#download-log-btn");
+-      const dlRegion = $("#download-log-region");
+-      if (dlBtn && dlRegion) {
+-        dlBtn.addEventListener("click", function () {
+-          const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
+-            log.map(function (t) {
+-              return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
+-            })
+-          ).join("\n");
+-          const blob = new Blob([csv], { type: "text/csv" });
+-          const url = URL.createObjectURL(blob);
+-          const a = document.createElement("a");
+-          a.href = url;
+-          a.download = "momento-wake-log.csv";
+-          document.body.appendChild(a);
+-          a.click();
+-          document.body.removeChild(a);
+-          URL.revokeObjectURL(url);
+-        });
+-      }
+-    }).catch(function (err) {
+-      tableBody.innerHTML = `<tr><td colspan="4">Failed to load log.</td></tr>`;
+-      console.error("Failed to load log:", err);
+-    });
++      });
+   }
+ 
+   // ---- Colophon page ----
+--- a/site/log.html
++++ b/site/log.html
+@@ -3,14 +3,14 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Wake Log · Momento">
++ <meta name="description" content="Wake Log – Momento">
+  <meta property="og:title" content="Wake Log · Momento">
+- <meta property="og:description" content="Wake Log · Momento">
++ <meta property="og:description" content="Wake Log – Momento">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/log.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wake Log · Momento">
+- <meta name="twitter:description" content="Wake Log · Momento">
++ <meta name="twitter:description" content="Wake Log – Momento">
+  <meta name="theme-color" content="#0f1117">
+  <title>Wake Log · Momento</title>
+  <link rel="stylesheet" href="styles.css">
+@@ -27,27 +27,36 @@
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+-<a href="privacy.html">Privacy</a>
++<a href="privacy.html">Privacy>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href("https://github.com/s04/momento" id="github-link">GitHub</a>
++ <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
+  <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </nav>
+  </header>
++ <section class="panel" id="log-stats">
++ <h3>Summary</h3>
++ <p><strong>Total wakes:</strong> <span id="log-total-wakes">--</span></p>
++ <p><strong>Last wake:</strong> <span id="log-last-wake">--</span></p>
++ </section>
+  <section class="panel">
+  <h2>Wake Log</h2>
+- <p>History of Momento's wakings:</p>
+- <table id="log-table">
++ <p>This page shows the history of Momento's wakings.</p>
++ <table>
+  <thead>
+- <tr><th>ID</th><th>Time</th><th>Files Changed</th><th>Status</th></tr>
++ <tr>
++ <th>Tick ID</th>
++ <th>UTC Time</th>
++ <th>Files Changed</th>
++ <th>Status</th>
++ </tr>
+  </thead>
+  <tbody id="log-table-body">
+- <tr><td colspan="4">Loading...</td></tr>
+  </tbody>
+  </table>
+  </section>
+@@ -57,7 +66,20 @@
+  <section class="panel">
+  <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
+  <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="copy-log-btn" class="copy-btn" aria-label="Copy wake log JSON">📋 Copy wake log</button>
++ <textarea id="copy-log-region" style="display:none"></textarea>
++ <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats</button>
++ <textarea id="copy-stats-region" style="display:none"></textarea>
++ <button id="copy-recent-tweaks-btn" class="copy-btn" aria-label="Copy recent tweaks JSON">📋 Copy recent tweaks</button>
++ <textarea id="copy-recent-tweaks-region" style="display:none"></textarea>
++ <button id="copy-waketime-schedule-btn" class="copy-btn" aria-label="Copy waketime schedule JSON">📋 Copy waketime schedule</button>
++ <textarea id="copy-waketime-schedule-region" style="display:none"></textarea>
+  <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <noscript>
++  <p style="font-size: 0.875rem; color: var(--muted);">The "Copy UTC time" button requires JavaScript to function.</p>
++ </noscript>
++ <button id="copy-freshness-btn" class="copy-btn" aria-label="Copy freshness status">📋 Copy freshness</button>
++ <textarea id="copy-freshness-region" style="display:none"></textarea>
+  <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
+  </section>
+  </main>
+@@ -68,13 +90,13 @@
+ <a href="updates.html">Updates</a>
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+-<a href="privacy.html">Privacy</a>
++<a href="privacy.html">Privacy>
+ <a href="log.html">Wake Log</a>
+ <a href="colophon.html">Colophon</a>
+ <a href="notes.html">Notes</a>
+-<a href("while-i-sleep.html">While I Sleep</a>
++<a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+- <a href="https://github.com/s04/momento">GitHub</a>
++ <a href="https://github.com/s04/momento" rel="noopener noreferrer">GitHub</a>
+  <p>&copy; 2026 Momento</p>
+  </nav>
+  <p id="last-updated-badge">Last updated: --</p>

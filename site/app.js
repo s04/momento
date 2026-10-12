@@ -355,57 +355,78 @@
   // ---- Log page ----
   function initLogPage() {
     const tableBody = $("#log-table-body");
+    const totalWakesEl = $("#log-total-wakes");
+    const lastWakeEl = $("#log-last-wake");
     if (!tableBody) return;
-    loadLog().then(function (log) {
-      tableBody.innerHTML = log
-        .slice()
-        .reverse()
-        .slice(0, 100)
-        .map(function (t) {
-          const status = t.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
-          return `<tr><td><a href="https://github.com/s04/momento/commit/${t.tickId}">${t.tickId.slice(0, 8)}</a></td><td>${t.runAt.slice(0, 19).replace("T", " ")}</td><td>${t.changedPaths}</td><td>${status}</td></tr>`;
-        })
-        .join("");
+    
+    Promise.all([loadLog(), loadStats()])
+      .then(function ([log, stats]) {
+        tableBody.innerHTML = log
+          .slice()
+          .reverse()
+          .slice(0, 100)
+          .map(function (t) {
+            const status = t.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
+            return `<tr><td><a href="https://github.com/s04/momento/commit/${t.tickId}">${t.tickId.slice(0, 8)}</a></td><td>${t.runAt.slice(0, 19).replace("T", " ")}</td><td>${t.changedPaths}</td><td>${status}</td></tr>`;
+          })
+          .join("");
 
-      // Copy log button — moved inside .then() so 'log' is in scope
-      const region = $("#log-region");
-      const btn = $("#copy-log-btn");
-      if (btn && region) {
-        btn.addEventListener("click", function () {
-          const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
-            log.map(function (t) {
-              return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
-            })
-          ).join("\n");
-          copyText(csv);
-        });
-      }
+        // Update stats summary
+        if (totalWakesEl && lastWakeEl) {
+          totalWakesEl.textContent = stats.total_wakes;
+          lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
+        }
 
-      // Download log button — moved inside .then() so 'log' is in scope
-      const dlBtn = $("#download-log-btn");
-      const dlRegion = $("#download-log-region");
-      if (dlBtn && dlRegion) {
-        dlBtn.addEventListener("click", function () {
-          const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
-            log.map(function (t) {
-              return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
-            })
-          ).join("\n");
-          const blob = new Blob([csv], { type: "text/csv" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "momento-wake-log.csv";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
+        // Copy log button — moved inside .then() so 'log' is in scope
+        const region = $("#log-region");
+        const btn = $("#copy-log-btn");
+        if (btn && region) {
+          btn.addEventListener("click", function () {
+            const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
+              log.map(function (t) {
+                return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
+              })
+            ).join("\n");
+            copyText(csv);
+          });
+        }
+
+        // Download log button — moved inside .then() so 'log' is in scope
+        const dlBtn = $("#download-log-btn");
+        const dlRegion = $("#download-log-region");
+        if (dlBtn && dlRegion) {
+          dlBtn.addEventListener("click", function () {
+            const csv = ["tickId,utcTime,filesChanged,checkStatus"].concat(
+              log.map(function (t) {
+                return [t.tickId, t.runAt, t.changedPaths, t.checkStatus].join(",");
+              })
+            ).join("\n");
+            const blob = new Blob([csv], { type: "text/csv" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "momento-wake-log.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          });
+        }
+      })
+      .catch(function (err) {
+        tableBody.innerHTML = `<tr><td colspan="4">Failed to load log.</td></tr>`;
+        console.error("Failed to load log:", err);
+        
+        // Still try to update stats even if log fails
+        loadStats().then(function (stats) {
+          if (totalWakesEl && lastWakeEl) {
+            totalWakesEl.textContent = stats.total_wakes;
+            lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
+          }
+        }).catch(function (statsErr) {
+          console.error("Failed to load stats for log page:", statsErr);
         });
-      }
-    }).catch(function (err) {
-      tableBody.innerHTML = `<tr><td colspan="4">Failed to load log.</td></tr>`;
-      console.error("Failed to load log:", err);
-    });
+      });
   }
 
   // ---- Colophon page ----
