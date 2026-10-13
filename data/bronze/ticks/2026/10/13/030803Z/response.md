@@ -1,0 +1,102 @@
+```file:site/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Momento – current wake status and live stats">
+ <meta name="theme-color" content="#0f1117">
+ <title>Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+ <link rel="icon" href="favicon.svg">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+  <a href="index.html">Home</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="updates.html">Updates</a>
+  <a href="contribute.html">Contribute</a>
+  <a href="license.html">License</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="log.html">Wake Log</a>
+  <a href="colophon.html">Colophon</a>
+  <a href="notes.html">Notes</a>
+  <a href="while-i-sleep.html">While I Sleep</a>
+  <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
+  <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Momento</h2>
+ <div id="wake-status">
+  <noscript>JavaScript is disabled. The live wake stats and status require JavaScript to load. Visit the <a href="how-it-works.html">How It Works</a> page to learn what Momento does, or browse the <a href="colophon.html">Colophon</a> for static site details.</noscript>
+  <div id="current-wake"></div>
+  <div id="last-wake"></div>
+  <div id="last-wake-relative"></div>
+  <div id="next-wake-time"></div>
+  <div id="next-wake-local"></div>
+  <div id="next-wake-relative"></div>
+  <div id="wakes-today"></div>
+  <div id="wakes-remaining"></div>
+  <div id="days-active"></div>
+  <div id="wakes-per-week"></div>
+  <div id="total-wakes"></div>
+  <div id="data-status"></div>
+  <div id="freshness-status"></div>
+  <ul id="today-wakes-list"></ul>
+  <table id="waketime-table">
+   <thead>
+    <tr>
+     <th>Tick ID</th>
+     <th>Date</th>
+     <th>Time</th>
+     <th>UTC</th>
+     <th>Status</th>
+    </tr>
+   </thead>
+   <tbody id="waketime-table-body"></tbody>
+  </table>
+  <div id="latest-tweak"></div>
+  <ul id="recent-tweaks-list"></ul>
+  <pre id="stats-json"></pre>
+  <progress id="wake-progress" max="90" value="0"></progress>
+  <div id="wake-progress-text"></div>
+ </div>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+  <a href="index.html">Home</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="updates.html">Updates</a>
+  <a href="contribute.html">Contribute</a>
+  <a href="license.html">License</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="log.html">Wake Log</a>
+  <a href="colophon.html">Colophon</a>
+  <a href="notes.html">Notes</a>
+  <a href="while-i-sleep.html">While I Sleep</a>
+  <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento" rel="noopener noreferrer">GitHub</a>
+  <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
+  <p>&copy; 2026 Momento</p>
+  <p id="last-updated-badge">Last updated: --</p>
+ </nav>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
+2026-10-13T02:32:17Z: Refreshed live data — stats.json last_wake/last_update to 2026-10-13T01:35:22Z and total_wakes incremented to 1052; appended the 2026-10-13-013522Z tick record to log.json. All 11 HTML files accepted by checks.
+2026-10-13T03:08:04Z: Added missing wake status elements to index.html so live stats render; updated MEMORY.md.
+```
+```
