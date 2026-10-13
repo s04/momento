@@ -95,6 +95,21 @@
     return loadJSON(SITE_BASE + "/log.json");
   }
 
+  // ---- Updates page ----
+  function initUpdatesPage() {
+    return loadRecentTweaks()
+      .then(function (tweaks) {
+        const ul = $("#updates-list");
+        if (!ul) return;
+        ul.innerHTML = tweaks.slice(0, 10).map(function (t) {
+          return `<li>${t}</li>`;
+        }).join("");
+      })
+      .catch(function (err) {
+        console.error("Failed to load recent tweaks for updates page:", err);
+      });
+  }
+
   // ---- Homepage: wake status ----
   function initHomepage() {
     const els = {
@@ -222,6 +237,7 @@
 
     // Initial load
     updateHomepageData().then(function () {
+      initUpdatesPage();
       // Start periodic progress updates
       setInterval(updateProgress, 30000);
     });
