@@ -119,7 +119,94 @@
       statsJson: $("#stats-json"),
       wakeProgress: $("#wake-progress"),
       wakeProgressText: $("#wake-progress-text"),
+      refreshBtn: $("#refresh-data-btn"),
     };
+
+    function updateHomepageData() {
+      return Promise.all([loadStats(), loadRecentTweaks(), loadWaketimeSchedule(), loadTodaysWakes(), loadLog()])
+        .then(function (results) {
+          const [stats, tweaks, schedule, todays, log] = results;
+          els.dataStatus.textContent = "OK";
+
+          const now = new Date();
+          const last = new Date(stats.last_wake);
+          const next = new Date(last.getTime() + 90 * 60 * 1000);
+
+          els.currentWake.textContent = now.toISOString().slice(0, 19).replace("T", " ");
+          els.lastWake.textContent = last.toISOString().slice(0, 19).replace("T", " ");
+          els.lastWakeRelative.textContent = timeAgo(stats.last_wake);
+          els.nextWakeTime.textContent = next.toISOString().slice(0, 19).replace("T", " ");
+          els.nextWakeLocal.textContent = next.toLocaleString();
+          els.nextWakeRelative.textContent = "in " + timeAgo(now);
+          els.totalWakes.textContent = stats.total_wakes;
+
+          const dayStart = new Date();
+          dayStart.setHours(0, 0, 0, 0);
+          const dayEnd = new Date(dayStart);
+          dayEnd.setDate(dayEnd.getDate() + 1);
+          const todaysCount = todays.filter(function (t) {
+            const d = new Date(t.runAt);
+            return d >= dayStart && d < dayEnd;
+          }).length;
+          els.wakesToday.textContent = todaysCount;
+          els.wakesRemaining.textContent = 16 - todaysCount;
+
+          const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          const weekCount = log.filter(function (t) {
+            const d = new Date(t.runAt);
+            return d >= weekAgo;
+          }).length;
+          els.wakesPerWeek.textContent = weekCount;
+
+          const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
+          els.daysActive.textContent = daysActive;
+
+          // freshness
+          const fresh = Math.floor((now.getTime() - new Date(stats.last_update).getTime()) / 1000);
+          let freshnessText = "--";
+          if (fresh < 900) freshnessText = "fresh";
+          else if (fresh < 3600) freshnessText = "stale";
+          else freshnessText = "very stale";
+          els.freshnessStatus.textContent = freshnessText;
+
+          // today's wakes list
+          els.todayWakesList.innerHTML = todays
+            .slice()
+            .reverse()
+            .slice(0, 8)
+            .map(function (t) {
+              const status = t.checkStatus === "accepted" ? "✅" : "❌";
+              return `<li><time datetime="${t.runAt}">${t.runAt.slice(0, 19).replace("T", " ")}</time> — ${t.changedPaths} <span>${status}</span></li>`;
+            })
+            .join("");
+
+          // waketime schedule table
+          els.waketimeTableBody.innerHTML = schedule
+            .slice()
+            .reverse()
+            .slice(0, 16)
+            .map(function (t) {
+              const d = new Date(t.runAt);
+              const status = t.checkStatus === "accepted" ? "✅" : "❌";
+              return `<tr><td>${t.tickId}</td><td>${d.toISOString().slice(0, 10)}</td><td>${d.toLocaleTimeString()}</td><td>${t.runAt.slice(0, 19).replace("T", " ")}</td><td>${status}</td></tr>`;
+            })
+            .join("");
+
+          // recent tweaks
+          els.latestTweak.textContent = tweaks.length ? tweaks[0].slice(0, 60) + "..." : "No recent updates";
+          els.recentTweaksList.innerHTML = tweaks.slice(0, 10).map(function (t) {
+            return `<li>${t}</li>`;
+          }).join("");
+
+          els.statsJson.textContent = JSON.stringify(stats, null, 2);
+
+          updateProgress();
+        })
+        .catch(function (err) {
+          els.dataStatus.textContent = "error";
+          console.error("Failed to load site data:", err);
+        });
+    }
 
     function updateProgress() {
       const now = Date.now();
@@ -133,90 +220,25 @@
       }
     }
 
-    Promise.all([loadStats(), loadRecentTweaks(), loadWaketimeSchedule(), loadTodaysWakes(), loadLog()])
-      .then(function (results) {
-        const [stats, tweaks, schedule, todays, log] = results;
-        els.dataStatus.textContent = "OK";
+    // Initial load
+    updateHomepageData().then(function () {
+      // Start periodic progress updates
+      setInterval(updateProgress, 30000);
+    });
 
-        const now = new Date();
-        const last = new Date(stats.last_wake);
-        const next = new Date(last.getTime() + 90 * 60 * 1000);
-
-        els.currentWake.textContent = now.toISOString().slice(0, 19).replace("T", " ");
-        els.lastWake.textContent = last.toISOString().slice(0, 19).replace("T", " ");
-        els.lastWakeRelative.textContent = timeAgo(stats.last_wake);
-        els.nextWakeTime.textContent = next.toISOString().slice(0, 19).replace("T", " ");
-        els.nextWakeLocal.textContent = next.toLocaleString();
-        els.nextWakeRelative.textContent = "in " + timeAgo(now);
-        els.totalWakes.textContent = stats.total_wakes;
-
-        const dayStart = new Date();
-        dayStart.setHours(0, 0, 0, 0);
-        const dayEnd = new Date(dayStart);
-        dayEnd.setDate(dayEnd.getDate() + 1);
-        const todaysCount = todays.filter(function (t) {
-          const d = new Date(t.runAt);
-          return d >= dayStart && d < dayEnd;
-        }).length;
-        els.wakesToday.textContent = todaysCount;
-        els.wakesRemaining.textContent = 16 - todaysCount;
-
-        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const weekCount = log.filter(function (t) {
-          const d = new Date(t.runAt);
-          return d >= weekAgo;
-        }).length;
-        els.wakesPerWeek.textContent = weekCount;
-
-        const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
-        els.daysActive.textContent = daysActive;
-
-        // freshness
-        const fresh = Math.floor((now.getTime() - new Date(stats.last_update).getTime()) / 1000);
-        let freshnessText = "--";
-        if (fresh < 900) freshnessText = "fresh";
-        else if (fresh < 3600) freshnessText = "stale";
-        else freshnessText = "very stale";
-        els.freshnessStatus.textContent = freshnessText;
-
-        // today's wakes list
-        els.todayWakesList.innerHTML = todays
-          .slice()
-          .reverse()
-          .slice(0, 8)
-          .map(function (t) {
-            const status = t.checkStatus === "accepted" ? "✅" : "❌";
-            return `<li><time datetime="${t.runAt}">${t.runAt.slice(0, 19).replace("T", " ")}</time> — ${t.changedPaths} <span>${status}</span></li>`;
-          })
-          .join("");
-
-        // waketime schedule table
-        els.waketimeTableBody.innerHTML = schedule
-          .slice()
-          .reverse()
-          .slice(0, 16)
-          .map(function (t) {
-            const d = new Date(t.runAt);
-            const status = t.checkStatus === "accepted" ? "✅" : "❌";
-            return `<tr><td>${t.tickId}</td><td>${d.toISOString().slice(0, 10)}</td><td>${d.toLocaleTimeString()}</td><td>${t.runAt.slice(0, 19).replace("T", " ")}</td><td>${status}</td></tr>`;
-          })
-          .join("");
-
-        // recent tweaks
-        els.latestTweak.textContent = tweaks.length ? tweaks[0].slice(0, 60) + "..." : "No recent updates";
-        els.recentTweaksList.innerHTML = tweaks.slice(0, 10).map(function (t) {
-          return `<li>${t}</li>`;
-        }).join("");
-
-        els.statsJson.textContent = JSON.stringify(stats, null, 2);
-
-        updateProgress();
-        setInterval(updateProgress, 30000);
-      })
-      .catch(function (err) {
-        els.dataStatus.textContent = "error";
-        console.error("Failed to load site data:", err);
+    // Refresh button handler
+    if (els.refreshBtn) {
+      els.refreshBtn.addEventListener("click", function () {
+        // Disable button during refresh to prevent multiple clicks
+        els.refreshBtn.disabled = true;
+        els.refreshBtn.textContent = "🔄 Refreshing...";
+        updateHomepageData()
+          .finally(function () {
+            els.refreshBtn.disabled = false;
+            els.refreshBtn.textContent = "🔄 Refresh";
+          });
       });
+    }
   }
 
   // ---- How It Works page ----
