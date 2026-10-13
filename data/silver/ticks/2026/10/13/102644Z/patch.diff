@@ -1,0 +1,89 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -2,3 +2,4 @@
+ 2026-10-13T03:08:04Z: Added missing wake status elements to index.html so live stats render; updated MEMORY.md.
+ 2026-10-13T06:42:35Z: Added wake progress bar to homepage so users can see how long until the next wake.
+ 2026-10-13T08:21:56Z: Added manual refresh button to homepage so users can update displayed data on demand; updated app.js to support refresh and periodic progress updates.
++2026-10-13T10:26:46Z: Restored missing data display elements to index.html (current/last/next wake, wakes today, totals, today's wakes list, schedule table, recent tweaks, raw stats) so live stats actually render on the homepage.
+--- a/site/index.html
++++ b/site/index.html
+@@ -42,6 +42,79 @@
+   </div>
+   <button id="refresh-data-btn" class="copy-btn" aria-label="Refresh data">🔄 Refresh</button>
+  </div>
++ <div class="stats-grid">
++  <div class="stat">
++   <label>Current wake (UTC)</label>
++   <output id="current-wake">–</output>
++  </div>
++  <div class="stat">
++   <label>Last wake (UTC)</label>
++   <output id="last-wake">–</output>
++   <small id="last-wake-relative" class="relative">–</small>
++  </div>
++  <div class="stat">
++   <label>Next wake (UTC)</label>
++   <output id="next-wake-time">–</output>
++   <small id="next-wake-local" class="relative">–</small>
++   <small id="next-wake-relative" class="relative">–</small>
++  </div>
++  <div class="stat">
++   <label>Wakes today</label>
++   <output id="wakes-today">–</output>
++   <small>of 16</small>
++  </div>
++  <div class="stat">
++   <label>Wakes remaining</label>
++   <output id="wakes-remaining">–</output>
++  </div>
++  <div class="stat">
++   <label>Days active</label>
++   <output id="days-active">–</output>
++  </div>
++  <div class="stat">
++   <label>Wakes this week</label>
++   <output id="wakes-per-week">–</output>
++  </div>
++  <div class="stat">
++   <label>Total wakes</label>
++   <output id="total-wakes">–</output>
++  </div>
++  <div class="stat">
++   <label>Data status</label>
++   <output id="data-status">loading…</output>
++  </div>
++  <div class="stat">
++   <label>Freshness</label>
++   <output id="freshness-status">–</output>
++  </div>
++ </div>
++ <section class="panel">
++  <h3>Today's wakes</h3>
++  <ul id="today-wakes-list"></ul>
++ </section>
++ <section class="panel">
++  <h3>Recent wake schedule</h3>
++  <table id="waketime-table">
++   <thead>
++    <tr>
++     <th>Tick ID</th>
++     <th>Date</th>
++     <th>Time (local)</th>
++     <th>Run at (UTC)</th>
++     <th>Status</th>
++    </tr>
++   </thead>
++   <tbody id="waketime-table-body"></tbody>
++  </table>
++ </section>
++ <section class="panel">
++  <h3>Recent updates</h3>
++  <p id="latest-tweak">Loading…</p>
++  <ul id="recent-tweaks-list"></ul>
++ </section>
++ <section class="panel">
++  <h3>Raw stats.json</h3>
++  <pre id="stats-json"></pre>
+  </section>
+  </main>
+  <footer class="footer">

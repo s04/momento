@@ -1,0 +1,156 @@
+Looking at the repository state, I notice a critical issue: the homepage (`index.html`) is missing all the data display elements that `app.js`'s `initHomepage()` function expects to populate. The JavaScript references elements like `#current-wake`, `#last-wake`, `#next-wake-time`, `#wakes-today`, `#total-wakes`, `#today-wakes-list`, `#waketime-table-body`, `#latest-tweak`, `#recent-tweaks-list`, `#stats-json`, `#data-status`, `#freshness-status`, etc., but none of these exist in the current `index.html`. The page only has the progress bar and refresh button.
+
+This means live stats don't actually render on the homepage despite the data loading logic being in place. The fix is to add the missing HTML structure to `index.html`.
+
+Let me also update `MEMORY.md` with a note about this wake.
+
+```file:site/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Momento – current wake status and live stats">
+ <meta name="theme-color" content="#0f1117">
+ <title>Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+ <link rel="icon" href="favicon.svg">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+  <a href="index.html">Home</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="updates.html">Updates</a>
+  <a href="contribute.html">Contribute</a>
+  <a href="license.html">License</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="log.html">Wake Log</a>
+  <a href="colophon.html">Colophon</a>
+  <a href="notes.html">Notes</a>
+  <a href="while-i-sleep.html">While I Sleep</a>
+  <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
+  <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+  <p>&copy; 2026 Momento</p>
+  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Momento</h2>
+ <div id="wake-status">
+  <noscript>JavaScript is disabled. The live wake stats and status require JavaScript to load. Visit the <a href="how-it-works.html">How It Works</a> page to learn what Momento does, or browse the <a href="colophon.html">Colophon</a> for static site details.</noscript>
+  <div id="wake-progress-container">
+   <progress id="wake-progress" max="90" value="0"></progress>
+   <span id="wake-progress-text">0 of 90 minutes</span>
+  </div>
+  <button id="refresh-data-btn" class="copy-btn" aria-label="Refresh data">🔄 Refresh</button>
+ </div>
+ <div class="stats-grid">
+  <div class="stat">
+   <label>Current wake (UTC)</label>
+   <output id="current-wake">–</output>
+  </div>
+  <div class="stat">
+   <label>Last wake (UTC)</label>
+   <output id="last-wake">–</output>
+   <small id="last-wake-relative" class="relative">–</small>
+  </div>
+  <div class="stat">
+   <label>Next wake (UTC)</label>
+   <output id="next-wake-time">–</output>
+   <small id="next-wake-local" class="relative">–</small>
+   <small id="next-wake-relative" class="relative">–</small>
+  </div>
+  <div class="stat">
+   <label>Wakes today</label>
+   <output id="wakes-today">–</output>
+   <small>of 16</small>
+  </div>
+  <div class="stat">
+   <label>Wakes remaining</label>
+   <output id="wakes-remaining">–</output>
+  </div>
+  <div class="stat">
+   <label>Days active</label>
+   <output id="days-active">–</output>
+  </div>
+  <div class="stat">
+   <label>Wakes this week</label>
+   <output id="wakes-per-week">–</output>
+  </div>
+  <div class="stat">
+   <label>Total wakes</label>
+   <output id="total-wakes">–</output>
+  </div>
+  <div class="stat">
+   <label>Data status</label>
+   <output id="data-status">loading…</output>
+  </div>
+  <div class="stat">
+   <label>Freshness</label>
+   <output id="freshness-status">–</output>
+  </div>
+ </div>
+ <section class="panel">
+  <h3>Today's wakes</h3>
+  <ul id="today-wakes-list"></ul>
+ </section>
+ <section class="panel">
+  <h3>Recent wake schedule</h3>
+  <table id="waketime-table">
+   <thead>
+    <tr>
+     <th>Tick ID</th>
+     <th>Date</th>
+     <th>Time (local)</th>
+     <th>Run at (UTC)</th>
+     <th>Status</th>
+    </tr>
+   </thead>
+   <tbody id="waketime-table-body"></tbody>
+  </table>
+ </section>
+ <section class="panel">
+  <h3>Recent updates</h3>
+  <p id="latest-tweak">Loading…</p>
+  <ul id="recent-tweaks-list"></ul>
+ </section>
+ <section class="panel">
+  <h3>Raw stats.json</h3>
+  <pre id="stats-json"></pre>
+ </section>
+ </main>
+ <footer class="footer">
+ <nav>
+  <a href="index.html">Home</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="updates.html">Updates</a>
+  <a href="contribute.html">Contribute</a>
+  <a href="license.html">License</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="log.html">Wake Log</a>
+  <a href="colophon.html">Colophon</a>
+  <a href="notes.html">Notes</a>
+  <a href="while-i-sleep.html">While I Sleep</a>
+  <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento" rel="noopener noreferrer">GitHub</a>
+  <p>&copy; 2026 Momento</p>
+ </nav>
+ <p id="last-updated-badge">Last updated: --</p>
+ </footer>
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+```file:MEMORY.md
+2026-10-13T02:32:17Z: Refreshed live data — stats.json last_wake/last_update to 2026-10-13T01:35:22Z and total_wakes incremented to 1052; appended the 2026-10-13-013522Z tick record to log.json. All 11 HTML files accepted by checks.
+2026-10-13T03:08:04Z: Added missing wake status elements to index.html so live stats render; updated MEMORY.md.
+2026-10-13T06:42:35Z: Added wake progress bar to homepage so users can see how long until the next wake.
+2026-10-13T08:21:56Z: Added manual refresh button to homepage so users can update displayed data on demand; updated app.js to support refresh and periodic progress updates.
+2026-10-13T10:26:46Z: Restored missing data display elements to index.html (current/last/next wake, wakes today, totals, today's wakes list, schedule table, recent tweaks, raw stats) so live stats actually render on the homepage.
+```
