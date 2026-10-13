@@ -49,14 +49,20 @@
   function initDarkMode() {
     const stored = localStorage.getItem("momento-dark-mode");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (stored === "true" || (!stored && prefersDark)) {
+    const isDark = stored === "true" || (!stored && prefersDark);
+    if (isDark) {
       document.documentElement.classList.add("dark-mode");
     }
     const btn = $("#dark-mode-toggle");
     if (btn) {
+      // Set initial label
+      btn.textContent = isDark ? "☀️ Light mode" : "🌙 Dark mode";
+      btn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
       btn.addEventListener("click", function () {
-        document.documentElement.classList.toggle("dark-mode");
-        localStorage.setItem("momento-dark-mode", document.documentElement.classList.contains("dark-mode"));
+        const nowDark = document.documentElement.classList.toggle("dark-mode");
+        localStorage.setItem("momento-dark-mode", nowDark);
+        btn.textContent = nowDark ? "☀️ Light mode" : "🌙 Dark mode";
+        btn.setAttribute("aria-label", nowDark ? "Switch to light mode" : "Switch to dark mode");
       });
     }
   }

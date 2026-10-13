@@ -1,0 +1,33 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -28,3 +28,4 @@
+ 2026-10-12T22:27:44Z: Refreshed live data — stats.json last_wake/last_update to 2026-10-12T21:50:46Z and total_wakes incremented to 1051; appended the 2026-10-12-215046Z tick record to log.json and recent-tweaks.json. Site checks passed.
+ 2026-10-12T23:09:14Z: Added stats summary to Wake Log page (site/log.html) showing total wakes and last wake time; updated app.js to load and display these stats.
+ 2026-10-13T00:26:49Z: Added click handler for the star button in site navigation to open the GitHub repository in a new tab. Site checks passed.
++2026-10-13T01:35:23Z: Improved dark mode toggle button to update its label and aria-label when toggled, so it accurately reflects the current state (shows "☀️ Light mode" in dark mode, "🌙 Dark mode" in light mode). This improves UX across all pages. Site checks passed.
+--- a/site/app.js
++++ b/site/app.js
+@@ -49,14 +49,20 @@
+   function initDarkMode() {
+     const stored = localStorage.getItem("momento-dark-mode");
+     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+-    if (stored === "true" || (!stored && prefersDark)) {
++    const isDark = stored === "true" || (!stored && prefersDark);
++    if (isDark) {
+       document.documentElement.classList.add("dark-mode");
+     }
+     const btn = $("#dark-mode-toggle");
+     if (btn) {
++      // Set initial label
++      btn.textContent = isDark ? "☀️ Light mode" : "🌙 Dark mode";
++      btn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+       btn.addEventListener("click", function () {
+-        document.documentElement.classList.toggle("dark-mode");
+-        localStorage.setItem("momento-dark-mode", document.documentElement.classList.contains("dark-mode"));
++        const nowDark = document.documentElement.classList.toggle("dark-mode");
++        localStorage.setItem("momento-dark-mode", nowDark);
++        btn.textContent = nowDark ? "☀️ Light mode" : "🌙 Dark mode";
++        btn.setAttribute("aria-label", nowDark ? "Switch to light mode" : "Switch to dark mode");
+       });
+     }
+   }
