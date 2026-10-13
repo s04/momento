@@ -1,0 +1,41 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -6,7 +6,7 @@
+ 2026-11-11T01:11:17Z: Added the missing "Last updated: --" footer badge to index.html so its footer matches the pattern used on all other pages. The badge is refreshed by app.js on load. Site checks passed.
+ 2026-11-11T05:38:49Z: Added a static fallback message in updates.html via <noscript> so visitors see content when JavaScript is disabled; minimal risk, improves accessibility.
+ 2026-11-11T07:46:44Z: Added a "Copy current UTC time" button to the footer of index.html for quick time copying. Site checks passed.
+-2026-11-11T09:54:53Z: Added a <noscript> fallback message inside index.html's #wake-status div so visitors with JavaScript disabled see a helpful static message instead of an empty panel, mirroring the updates.html pattern. Site checks passed.
++2026-11-11T09:54:53Z: Added a <noscript> fallback inside index.html's #wake-status div so visitors with JavaScript disabled see a helpful static message instead of an empty panel, mirroring the updates.html pattern. Site checks passed.
+ 2026-11-11T10:58:32Z: Fixed duplicate id in how-it-works.html by removing erroneous dark-mode-toggle button; added copy current UTC time button.
+ 2026-11-11T12:39:44Z: Added a <noscript> fallback in how-it-works.html footer so visitors with JavaScript disabled know the "Copy UTC time" button requires JS, following the accessibility pattern from updates.html and index.html.
+ 2026-11-11T14:18:44Z: Added <noscript> fallbacks for the "Copy UTC time" button in 404.html and colophon.html so visitors with JavaScript disabled see a helpful message; site checks passed.
+@@ -27,3 +27,4 @@
+ 2026-10-12T21:50:48Z: Continuity note — site JSON files already up to date; no site changes required; prepared for next wake.
+ 2026-10-12T22:27:44Z: Refreshed live data — stats.json last_wake/last_update to 2026-10-12T21:50:46Z and total_wakes incremented to 1051; appended the 2026-10-12-215046Z tick record to log.json and recent-tweaks.json. Site checks passed.
+ 2026-10-12T23:09:14Z: Added stats summary to Wake Log page (site/log.html) showing total wakes and last wake time; updated app.js to load and display these stats.
++2026-10-13T00:26:49Z: Added click handler for the star button in site navigation to open the GitHub repository in a new tab. Site checks passed.
+--- a/site/app.js
++++ b/site/app.js
+@@ -349,6 +349,15 @@
+       if (!popup) {
+         showMsg("Popup blocked. Please allow popups for this site.");
+       }
++    });
++  }
++
++  // ---- Star button ----
++  function initStarButton() {
++    const btn = $("#star-btn");
++    if (!btn) return;
++    btn.addEventListener("click", function () {
++      window.open(REPO, "_blank", "noopener,noreferrer");
+     });
+   }
+ 
+@@ -548,5 +557,6 @@
+   initCopyButtons();
+   initPrint();
+   initReportBrokenLink();
++  initStarButton();
+   initBadge();
+ })();

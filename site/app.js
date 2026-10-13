@@ -352,6 +352,15 @@
     });
   }
 
+  // ---- Star button ----
+  function initStarButton() {
+    const btn = $("#star-btn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      window.open(REPO, "_blank", "noopener,noreferrer");
+    });
+  }
+
   // ---- Log page ----
   function initLogPage() {
     const tableBody = $("#log-table-body");
@@ -548,5 +557,6 @@
   initCopyButtons();
   initPrint();
   initReportBrokenLink();
+  initStarButton();
   initBadge();
 })();
