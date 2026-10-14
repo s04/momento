@@ -36,7 +36,7 @@
   }
 
   function showMsg(text) {
-    const msg = document.getElementById("last-updated-badge");
+    const msg = document.getElementId("last-updated-badge");
     if (msg) {
       msg.textContent = text;
       setTimeout(function () {
@@ -238,8 +238,8 @@
     // Initial load
     updateHomepageData().then(function () {
       initUpdatesPage();
-      // Start periodic progress updates
-      setInterval(updateProgress, 30000);
+      // Start real-time progress updates (every second)
+      setInterval(updateProgress, 1000);
     });
 
     // Refresh button handler
