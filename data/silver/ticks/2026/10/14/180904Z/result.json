@@ -1,0 +1,202 @@
+{
+  "applyMessage": "",
+  "changedPaths": [
+    "site/404.html",
+    "site/colophon.html",
+    "site/contribute.html",
+    "site/how-it-works.html",
+    "site/index.html",
+    "site/license.html",
+    "site/log.html",
+    "site/privacy.html",
+    "site/updates.html"
+  ],
+  "check": {
+    "exitCode": null,
+    "outputExcerpt": "",
+    "status": "not_run"
+  },
+  "goldRow": {
+    "changedPaths": "site/404.html site/colophon.html site/contribute.html site/how-it-works.html site/index.html site/license.html site/log.html site/privacy.html site/updates.html",
+    "checkExit": null,
+    "checkStatus": "not_run",
+    "completionTokens": 53984,
+    "cost": 0,
+    "date": "2026-10-14",
+    "mode": "live",
+    "model": "openrouter/free",
+    "promptTokens": 157961,
+    "reason": "response did not include a MEMORY.md block",
+    "routedModel": "nvidia/nemotron-3-super-120b-a12b:free | cohere/north-mini-code:free | nvidia/nemotron-3.5-lightning:free | nvidia/nemotron-3.5-lightning:free | dots-studio/dots-3-note-preview:free",
+    "runAt": "2026-10-14T18:09:04Z",
+    "state": "held",
+    "tickId": "2026-10-14-180904Z",
+    "totalTokens": 211945
+  },
+  "mode": "live",
+  "model": "openrouter/free",
+  "precheck": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 11 HTML files\n",
+    "status": "accepted"
+  },
+  "promptHash": "ba29f5ff9c67",
+  "reason": "response did not include a MEMORY.md block",
+  "responseOk": true,
+  "responseStatus": 200,
+  "routedModel": "nvidia/nemotron-3-super-120b-a12b:free | cohere/north-mini-code:free | nvidia/nemotron-3.5-lightning:free | nvidia/nemotron-3.5-lightning:free | dots-studio/dots-3-note-preview:free",
+  "state": "held",
+  "tickId": "2026-10-14-180904Z",
+  "turns": [
+    {
+      "contentExcerpt": "```file:site/app.js\n// Momento site \u2014 vanilla JS, no frameworks\n(function () {\n  \"use strict\";\n\n  const REPO = \"https://github.com/s04/momento\";\n  const BASE = window.location.pathname.replace(/\\/$/, \"\");\n  const SITE_BASE = BASE === \"/\" ? \"\" : BASE;\n\n  // ---- Utilities ----\n  function $(sel) {\n    return document.querySelector(sel);\n  }\n\n  function $$(sel) {\n    return Array.from(document.querySelectorAll(sel));\n  }\n\n  function timeAgo(date) {\n    const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);\n    if (seconds < 60) return \"just now\";\n    const minutes = Math.floor(seconds / 60);\n    if (minutes < 60) return `${minutes}m ago`;\n    const hours = Math.floor(minutes / 60);\n    if (hours < 24) return `${hours}h ago`;\n    const days = Math.floor(hours / 24);\n    return `${days}d ago`;\n  }\n\n  function copyText(text) {\n    navigator.clipboard.writeText(text).then(function () {\n      showMsg(\"Copied to clipboard.\");\n    }, function (err) {\n      showMsg(\"Copy failed. Select and copy manually.\");\n      console.error(\"Copy failed:\", err);\n    });\n  }\n\n  function showMsg(text) {\n    const msg = document.getElementById(\"last-updated-badge\");\n    if (msg) {\n      msg.textContent = text;\n      setTimeout(function () {\n        msg.textContent = \"Last updated: --\";\n      }, 3000);\n    }\n  }\n\n  // ---- Dark mode ----\n  function initDarkMode() {\n    const stored = localStorage.getItem(\"momento-dark-mode\");\n    const prefersDark = window.matchMedia(\"(prefers-color-scheme: dark)\").matches;\n    const isDark = stored === \"true\" || (!stored && prefersDark);\n    if (isDark) {\n      document.documentElement.classList.add(\"dark-mode\");\n    }\n    const btn = $(\"#dark-mode-toggle\");\n    if (btn) {\n      btn.textContent = isDark ? \"\u2600\ufe0f Light mode\" : \"\ud83c\udf19 Dark mode\";\n      btn.setAttribute(\"aria-label\", isDark ? \"Switch to light mode\" : \"Switch to dark mode\");\n      btn.addEventListener(\"click\", function () {\n        const nowDark = document.documentElement.classList.toggle(\"dark-mode\");\n        localStorage.setItem(\"momento-dark-mode\", nowDark);\n        btn.textContent = nowDark ? \"\u2600\ufe0f Light mode\" : \"\ud83c\udf19 Dark mode\";\n        btn.setAttribute(\"aria-label\", nowDark ? \"Switch to light mode\" : \"Switch to dark mode\");\n      });\n    }\n  }\n\n  // ---- Stats loading ----\n  function loadJSON(url) {\n    return fetch(url).then(function (r) {\n      if (!r.ok) throw new Error(\"failed\");\n      return r.json();\n    });\n  }\n\n  function loadStats() {\n    return loadJSON(SITE_BASE + \"/stats.json\");\n  }\n\n  function loadRecentTweaks() {\n    return loadJSON(SITE_BASE + \"/recent-tweaks.json\");\n  }\n\n  function loadWaketimeSchedule() {\n    return loadJSON(SITE_BASE + \"/waketime-schedule.json\");\n  }\n\n  function loadTodaysWakes() {\n    return loadJSON(SITE_BASE + \"/todays-wakes.json\");\n  }\n\n  function loadLog() {\n    return loadJSON(SITE_BASE + \"/log.json\");\n  }\n\n  // ---- Updates page ----\n  function initUpdatesPage() {\n    return loadRecentTweaks()\n      .then(function (tweaks) {\n        const ul = $(\"#updates-list\");\n        if (!ul) return;\n        ul.innerHTML = tweaks.slice(0, 10).map(function (t) {\n          return `<li>${t}</li>`;\n        }).join(\"\");\n      })\n      .catch(function (err) {\n        console.error(\"Failed to load recent tweaks for updates page:\", err);\n      });\n  }\n\n  // ---- Homepage: wake status ----\n  function initHomepage() {\n    const els = {\n      currentWake: $(\"#current-wake\"),\n      lastWake: $(\"#last-wake\"),\n      lastWakeRelative: $(\"#last-wake-relative\"),\n      nextWakeTime: $(\"#next-wake-time\"),\n      nextWakeLocal: $(\"#next-wake-local\"),\n      nextWakeRelative: $(\"#next-wake-relative\"),\n      wakesToday: $(\"#wakes-today\"),\n      wakesRemaining: $(\"#wakes-remaining\"),\n      daysActive: $(\"#days-active\"),\n      wakesPerWeek: $(\"#wakes-per-week\"),\n      totalWakes: $(\"#total-wakes\"),\n      dataStatus: $(\"#data-status\"),\n      freshnessStatus: $(\"#freshness-status\"),\n      todayWakesList: $(\"#today-wakes-list\"),\n      waketime\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": 200,
+      "turn": "explore_1",
+      "usage": {
+        "completion_tokens": 12000,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 5957
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 19179,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 31179
+      }
+    },
+    {
+      "contentExcerpt": "```file:site/index.html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n <meta charset=\"utf-8\">\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n <meta name=\"description\" content=\"Momento \u2013 live wake status and stats.\">\n <meta name=\"theme-color\" content=\"#0f1117\">\n <title>Momento \u00b7 Live Wake Status</title>\n <link rel=\"stylesheet\" href=\"styles.css\">\n <link rel=\"stylesheet\" href=\"skip-link.css\">\n <link rel=\"icon\" href=\"favicon.svg\">\n</head>\n <body>\n <a class=\"skip-link\" href=\"#main-content\">Skip to main content</a>\n <main id=\"main-content\" tabindex=\"-1\">\n <header class=\"nav\">\n <nav>\n<a href=\"index.html\">Home</a>\n<a href=\"how-it-works.html\">How It Works</a>\n<a href=\"updates.html\">Updates</a>\n<a href=\"contribute.html\">Contribute</a>\n<a href=\"license.html\">License</li>\n<a href=\"privacy.html\">Privacy</a>\n<a href=\"log.html\">Wake Log</a>\n<a href=\"colophon.html\">Colophon</a>\n<a href=\"notes.html\">Notes</a>\n<a href=\"while-i-sleep.html\">While I Sleep</a>\n<a href=\"colophon.html#accessibility\">Accessibility</a>\n <a href=\"https://github.com/s04/momento\" id=\"github-link\" rel=\"noopener noreferrer\">GitHub</a>\n <button id=\"star-btn\" class=\"star-btn\" aria-label=\"Star this repository on GitHub\">\u2b50 Star</button>\n <p>&copy; 2026 Momento</p>\n <button id=\"dark-mode-toggle\" class=\"dark-mode-btn\" aria-label=\"Toggle dark mode\">\ud83c\udf19 Dark mode</button>\n </nav>\n </header>\n <section class=\"panel\">\n <h2>Live Wake Status</h2>\n <p>Welcome to Momento, the self\u2011updating GitHub Actions site. This page shows the current wake status, recent wakes, and upcoming schedule.</p>\n <p>Use the navigation above or the links below to explore the site.</p>\n <ul>\n <li><a href=\"how-it-works.html\">How It Works</a> \u2013 what Momento does each waking</li>\n <li><a href=\"updates.html\">Updates</a> \u2013 recent improvements to the site</li>\n <li><a href=\"log.html\">Wake Log</a> \u2013 history of Momento's wakings</li>\n <li><a href=\"colophon.html\">Colophon</a> \u2013 about this site and accessibility</li>\n <li><a href=\"while-i-sleep.html\">While I Sleep</a> \u2013 quiet\u2011period documentation</li>\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Current Status</h3>\n <p><strong>Current Wake:</strong> <span id=\"current-wake\">--:--:--Z</span></p>\n <p><strong>Last Wake:</strong> <span id=\"last-wake\">--:--:--Z</span></p>\n <p><strong>Last Wake Relative:</strong> <span id=\"last-wake-relative\">--</span></p>\n <p><strong>Next Wake (UTC):</strong> <span id=\"next-wake-time\">--:--:--Z</span></p>\n <p><strong>Next Wake (Local):</strong> <span id=\"next-wake-local\">--</span></p>\n <p><strong>Next Wake Relative:</strong> <span id=\"next-wake-relative\">--</span></p>\n <p><strong>Wakes Today:</strong> <span id=\"wakes-today\">0</span> of 16</p>\n <p><strong>Wakes Remaining:</strong> <span id=\"wakes-remaining\">16</span></p>\n <p><strong>Days Active:</strong> <span id=\"days-active\">0</span></p>\n <p><strong>Wakes Per Week:</strong> <span id=\"wakes-per-week\">0</span></p>\n <p><strong>Total Wakes:</strong> <span id=\"total-wakes\">0</span></p>\n <p><strong>Data Status:</strong> <span id=\"data-status\">loading...</span></p>\n <p><strong>Freshness Status:</strong> <span id=\"freshness-status\">--</span></p>\n </section>\n <section class=\"panel\">\n <h3>Next Scheduled Wakes</h3>\n <ul id=\"next-wake-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Today's Wakes</h3>\n <ul id=\"today-wakes-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Waketime Schedule (Last 8)</h3>\n <table id=\"waketime-table\">\n <thead>\n <tr><th>Tick ID</th><th>Date</th><th>Time</th><th>UTC Time</th><th>Status</th></tr>\n </thead>\n <tbody id=\"waketime-table-body\">\n <!-- populated by app.js -->\n </tbody>\n </table>\n </section>\n <section class=\"panel\">\n <h3>Recent Tweaks</h3>\n <p><strong>Latest Tweak:</strong> <span id=\"latest-tweak\">--</span></p>\n <ul id=\"recent-tweaks-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Raw Stats JSON</h3>\n <pre id=\"stats-json\">--</pre>\n </section>\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "cohere/north-mini-code:free",
+      "status": 200,
+      "turn": "explore_2",
+      "usage": {
+        "completion_tokens": 11980,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 209
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 23055,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 35035
+      }
+    },
+    {
+      "contentExcerpt": "",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3.5-lightning:free",
+      "status": 200,
+      "turn": "write",
+      "usage": {
+        "completion_tokens": 12000,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 12000
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 38057,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 50057
+      }
+    },
+    {
+      "contentExcerpt": "```file:site/index.html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n <meta charset=\"utf-8\">\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n <meta name=\"description\" content=\"Momento \u2013 live wake status and stats.\">\n <meta name=\"theme-color\" content=\"#0f1117\">\n <title>Momento \u00b7 Live Wake Status</title>\n <link rel=\"stylesheet\" href=\"styles.css\">\n <link rel=\"stylesheet\" href=\"skip-link.css\">\n <link rel=\"icon\" href=\"favicon.svg\">\n</head>\n <body>\n <a class=\"skip-link\" href=\"#main-content\">Skip to main content</a>\n <main id=\"main-content\" tabindex=\"-1\">\n <header class=\"nav\">\n <nav>\n<a href=\"index.html\">Home</a>\n<a href=\"how-it-works.html\">How It Works</a>\n<a href=\"updates.html\">Updates</a>\n<a href=\"contribute.html\">Contribute</a>\n<a href=\"license.html\">License</a>\n<a href=\"privacy.html\">Privacy</a>\n<a href=\"log.html\">Wake Log</a>\n<a href=\"colophon.html\">Colophon</a>\n<a href=\"notes.html\">Notes</a>\n<a href=\"while-i-sleep.html\">While I Sleep</a>\n<a href=\"colophon.html#accessibility\">Accessibility</a>\n <a href=\"https://github.com/s04/momento\" id=\"github-link\" rel=\"noopener noreferrer\">GitHub</a>\n <button id=\"star-btn\" class=\"star-btn\" aria-label=\"Star this repository on GitHub\">\u2b50 Star</button>\n <p>&copy; 2026 Momento</p>\n <button id=\"dark-mode-toggle\" class=\"dark-mode-btn\" aria-label=\"Toggle dark mode\">\ud83c\udf19 Dark mode</button>\n </nav>\n </header>\n <section class=\"panel\">\n <h2>Live Wake Status</h2>\n <p>Welcome to Momento, the self\u2011updating GitHub Actions site. This page shows the current wake status, recent wakes, and upcoming schedule.</p>\n <p>Use the navigation above or the links below to explore the site.</p>\n <ul>\n <li><a href=\"how-it-works.html\">How It Works</a> \u2013 what Momento does each waking</li>\n <li><a href=\"updates.html\">Updates</a> \u2013 recent improvements to the site</li>\n <li><a href=\"log.html\">Wake Log</a> \u2013 history of Momento's wakings</li>\n <li><a href=\"colophon.html\">Colophon</a> \u2013 about this site and accessibility</li>\n <li><a href=\"while-i-sleep.html\">While I Sleep</a> \u2013 quiet\u2011period documentation</li>\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Current Status</h3>\n <p><strong>Current Wake:</strong> <span id=\"current-wake\">--:--:--Z</span></p>\n <p><strong>Last Wake:</strong> <span id=\"last-wake\">--:--:--Z</span></p>\n <p><strong>Last Wake Relative:</strong> <span id=\"last-wake-relative\">--</span></p>\n <p><strong>Next Wake (UTC):</strong> <span id=\"next-wake-time\">--:--:--Z</span></p>\n <p><strong>Next Wake (Local):</strong> <span id=\"next-wake-local\">--</span></p>\n <p><strong>Next Wake Relative:</strong> <span id=\"next-wake-relative\">--</span></p>\n <p><strong>Wakes Today:</strong> <span id=\"wakes-today\">0</span> of 16</p>\n <p><strong>Wakes Remaining:</strong> <span id=\"wakes-remaining\">16</span></p>\n <p><strong>Days Active:</strong> <span id=\"days-active\">0</span></p>\n <p><strong>Wakes Per Week:</strong> <span id=\"wakes-per-week\">0</span></p>\n <p><strong>Total Wakes:</strong> <span id=\"total-wakes\">0</span></p>\n <p><strong>Data Status:</strong> <span id=\"data-status\">loading...</span></p>\n <p><strong>Freshness Status:</strong> <span id=\"freshness-status\">--</span></p>\n </section>\n <section class=\"panel\">\n <h3>Next Scheduled Wakes</h3>\n <ul id=\"next-wake-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Today's Wakes</h3>\n <ul id=\"today-wakes-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Waketime Schedule (Last 8)</h3>\n <table id=\"waketime-table\">\n <thead>\n <tr><th>Tick ID</th><th>Date</th><th>Time</th><th>UTC Time</th><th>Status</th></tr>\n </thead>\n <tbody id=\"waketime-table-body\">\n <!-- populated by app.js -->\n </tbody>\n </table>\n </section>\n <section class=\"panel\">\n <h3>Recent Tweaks</h3>\n <p><strong>Latest Tweak:</strong> <span id=\"latest-tweak\">--</span></p>\n <ul id=\"recent-tweaks-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Raw Stats JSON</h3>\n <pre id=\"stats-json\">--</pre>\n </section>\n\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3.5-lightning:free",
+      "status": 200,
+      "turn": "repair_1",
+      "usage": {
+        "completion_tokens": 6004,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 2908
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 38120,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 37728,
+          "video_tokens": 0
+        },
+        "total_tokens": 44124
+      }
+    },
+    {
+      "contentExcerpt": "\n\n```file:site/index.html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n <meta charset=\"utf-8\">\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n <meta name=\"description\" content=\"Momento \u2013 live wake status and stats.\">\n <meta name=\"theme-color\" content=\"#0f1117\">\n <title>Momento \u00b7 Live Wake Status</title>\n <link rel=\"stylesheet\" href=\"styles.css\">\n <link rel=\"stylesheet\" href=\"skip-link.css\">\n <link rel=\"icon\" href=\"favicon.svg\">\n</head>\n<body>\n <a class=\"skip-link\" href=\"#main-content\">Skip to main content</a>\n <main id=\"main-content\" tabindex=\"-1\">\n <header class=\"nav\">\n <nav>\n<a href=\"index.html\">Home</a>\n<a href=\"how-it-works.html\">How It Works</a>\n<a href=\"updates.html\">Updates</a>\n<a href=\"contribute.html\">Contribute</a>\n<a href=\"license.html\">License</a>\n<a href=\"privacy.html\">Privacy</a>\n<a href=\"log.html\">Wake Log</a>\n<a href=\"colophon.html\">Colophon</a>\n<a href=\"notes.html\">Notes</a>\n<a href=\"while-i-sleep.html\">While I Sleep</a>\n<a href=\"colophon.html#accessibility\">Accessibility</a>\n <a href=\"https://github.com/s04/momento\" id=\"github-link\" rel=\"noopener noreferrer\">GitHub</a>\n <button id=\"star-btn\" class=\"star-btn\" aria-label=\"Star this repository on GitHub\">\u2b50 Star</button>\n <p>&copy; 2026 Momento</p>\n <button id=\"dark-mode-toggle\" class=\"dark-mode-btn\" aria-label=\"Toggle dark mode\">\ud83c\udf19 Dark mode</button>\n </nav>\n </header>\n <section class=\"panel\">\n <h2>Live Wake Status</h2>\n <p>Welcome to Momento, the self\u2011updating GitHub Actions site. This page shows the current wake status, recent wakes, and upcoming schedule.</p>\n <p>Use the navigation above or the links below to explore the site.</p>\n <ul>\n <li><a href=\"how-it-works.html\">How It Works</a> \u2013 what Momento does each waking</li>\n <li><a href=\"updates.html\">Updates</a> \u2013 recent improvements to the site</li>\n <li><a href=\"log.html\">Wake Log</a> \u2013 history of Momento's wakings</li>\n <li><a href=\"colophon.html\">Colophon</a> \u2013 about this site and accessibility</li>\n <li><a href=\"while-i-sleep.html\">While I Sleep</a> \u2013 quiet\u2011period documentation</li>\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Current Status</h3>\n <p><strong>Current Wake:</strong> <span id=\"current-wake\">--:--:--Z</span></p>\n <p><strong>Last Wake:</strong> <span id=\"last-wake\">--:--:--Z</span></p>\n <p><strong>Last Wake Relative:</strong> <span id=\"last-wake-relative\">--</span></p>\n <p><strong>Next Wake (UTC):</strong> <span id=\"next-wake-time\">--:--:--Z</span></p>\n <p><strong>Next Wake (Local):</strong> <span id=\"next-wake-local\">--</span></p>\n <p><strong>Next Wake Relative:</strong> <span id=\"next-wake-relative\">--</span></p>\n <p><strong>Wakes Today:</strong> <span id=\"wakes-today\">0</span> of 16</p>\n <p><strong>Wakes Remaining:</strong> <span id=\"wakes-remaining\">16</span></p>\n <p><strong>Days Active:</strong> <span id=\"days-active\">0</span></p>\n <p><strong>Wakes Per Week:</strong> <span id=\"wakes-per-week\">0</span></p>\n <p><strong>Total Wakes:</strong> <span id=\"total-wakes\">0</span></p>\n <p><strong>Data Status:</strong> <span id=\"data-status\">loading...</span></p>\n <p><strong>Freshness Status:</strong> <span id=\"freshness-status\">--</span></p>\n </section>\n <section class=\"panel\">\n <h3>Next Scheduled Wakes</h3>\n <ul id=\"next-wake-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Today's Wakes</h3>\n <ul id=\"today-wakes-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Waketime Schedule (Last 8)</h3>\n <table id=\"waketime-table\">\n <thead>\n <tr><th>Tick ID</th><th>Date</th><th>Time</th><th>UTC Time</th><th>Status</th></tr>\n </thead>\n <tbody id=\"waketime-table-body\">\n <!-- populated by app.js -->\n </tbody>\n </table>\n </section>\n <section class=\"panel\">\n <h3>Recent Tweaks</h3>\n <p><strong>Latest Tweak:</strong> <span id=\"latest-tweak\">--</span></p>\n <ul id=\"recent-tweaks-list\">\n <!-- populated by app.js -->\n </ul>\n </section>\n <section class=\"panel\">\n <h3>Raw Stats JSON</h3>\n <pre id=\"stats-json\">--</pre>\n </section>\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "dots-studio/dots-3-note-preview:free",
+      "status": 200,
+      "turn": "repair_2",
+      "usage": {
+        "completion_tokens": 12000,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 1379
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 39550,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 51550
+      }
+    }
+  ]
+}
