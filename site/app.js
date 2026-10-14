@@ -36,7 +36,7 @@
   }
 
   function showMsg(text) {
-    const msg = document.getElementId("last-updated-badge");
+    const msg = document.getElementById("last-updated-badge");
     if (msg) {
       msg.textContent = text;
       setTimeout(function () {
@@ -137,10 +137,13 @@
       refreshBtn: $("#refresh-data-btn"),
     };
 
+    let currentStats = null;
+
     function updateHomepageData() {
       return Promise.all([loadStats(), loadRecentTweaks(), loadWaketimeSchedule(), loadTodaysWakes(), loadLog()])
         .then(function (results) {
           const [stats, tweaks, schedule, todays, log] = results;
+          currentStats = stats;
           els.dataStatus.textContent = "OK";
 
           const now = new Date();
@@ -224,12 +227,14 @@
     }
 
     function updateProgress() {
+      if (!currentStats) return;
       const now = Date.now();
-      const last = new Date(stats.last_wake).getTime();
+      const last = new Date(currentStats.last_wake).getTime();
       const elapsed = Math.floor((now - last) / 1000);
+      const remaining = Math.max(0, 90 - elapsed);
       const progress = Math.min(elapsed, 90) * 100 / 90;
       els.wakeProgress.value = Math.min(elapsed, 90);
-      els.wakeProgressText.textContent = `${Math.min(elapsed, 90)} of 90 minutes`;
+      els.wakeProgressText.textContent = remaining + " minute" + (remaining === 1 ? "" : "s") + " remaining";
       if (elapsed >= 90) {
         els.wakeProgressText.textContent = "Wake window full — waiting for next trigger";
       }
