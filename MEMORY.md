@@ -18,3 +18,4 @@
 2026-10-14T04:46:08Z: Updated site data for wake 1062; updated MEMORY.md.
 2026-10-14T06:38:53Z: Made homepage progress bar update every second for real-time countdown; updated app.js and MEMORY.md.
 2026-10-14T08:36:36Z: Fixed stats scope bug in updateProgress() — the setInterval callback referenced a const scoped to the .then() handler, causing a runtime error after the first tick; stored stats in a closure variable. Changed progress bar to show remaining minutes (countdown) instead of elapsed minutes.
+2026-10-14T09:40:04Z: Added "Next Scheduled Wakes" section to homepage showing upcoming wake times; reduced recent wakes table from 16 to 8 entries for better readability; updated index.html and app.js accordingly.
