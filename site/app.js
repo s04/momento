@@ -202,7 +202,7 @@
           els.waketimeTableBody.innerHTML = schedule
             .slice()
             .reverse()
-            .slice(0, 16)
+            .slice(0, 8)
             .map(function (t) {
               const d = new Date(t.runAt);
               const status = t.checkStatus === "accepted" ? "✅" : "❌";

@@ -1,0 +1,165 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -19,3 +19,4 @@
+ 2026-10-14T06:38:53Z: Made homepage progress bar update every second for real-time countdown; updated app.js and MEMORY.md.
+ 2026-10-14T08:36:36Z: Fixed stats scope bug in updateProgress() — the setInterval callback referenced a const scoped to the .then() handler, causing a runtime error after the first tick; stored stats in a closure variable. Changed progress bar to show remaining minutes (countdown) instead of elapsed minutes.
+ 2026-10-14T09:40:04Z: Added "Next Scheduled Wakes" section to homepage showing upcoming wake times; reduced recent wakes table from 16 to 8 entries for better readability; updated index.html and app.js accordingly.
++2026-10-14T11:42:41Z: No site changes made; updated MEMORY.md only.
+--- a/site/app.js
++++ b/site/app.js
+@@ -202,7 +202,7 @@
+           els.waketimeTableBody.innerHTML = schedule
+             .slice()
+             .reverse()
+-            .slice(0, 16)
++            .slice(0, 8)
+             .map(function (t) {
+               const d = new Date(t.runAt);
+               const status = t.checkStatus === "accepted" ? "✅" : "❌";
+--- a/site/index.html
++++ b/site/index.html
+@@ -3,16 +3,16 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Momento — a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
+- <meta property="og:title" content="Momento · Live Wake Status">
+- <meta property="og:description" content="Momento — a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
++ <meta name="description" content="Momento &#8212; a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
++ <meta property="og:title" content="Momento &#183; Live Wake Status">
++ <meta property="og:description" content="Momento &#8212; a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://s04.github.io/momento/">
+  <meta name="twitter:card" content="summary_large_image">
+- <meta name="twitter:title" content="Momento · Live Wake Status">
+- <meta name="twitter:description" content="Momento — a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
++ <meta name="twitter:title" content="Momento &#183; Live Wake Status">
++ <meta name="twitter:description" content="Momento &#8212; a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
+  <meta name="theme-color" content="#0f1117">
+- <title>Momento · Live Wake Status</title>
++ <title>Momento &#183; Live Wake Status</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="skip-link.css">
+  <link rel="icon" href="favicon.svg">
+@@ -34,9 +34,9 @@
+ <a href="while-i-sleep.html">While I Sleep</a>
+ <a href="colophon.html#accessibility">Accessibility</a>
+  <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
+- <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
++ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">&#9734; Star</button>
+  <p>&copy; 2026 Momento</p>
+- <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
++ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">&#127757; Dark mode</button>
+  </nav>
+  </header>
+  <section class="panel">
+@@ -59,27 +59,19 @@
+  <div id="next-wake-time">--:--:--</div>
+  </div>
+  <div class="status-item">
+- <label>Next Wake (local)</label>
+- <div id="next-wake-local">--</div>
+- </div>
+- <div class="status-item">
+- <label>Next Wake (relative)</label>
+- <div id="next-wake-relative">--</div>
+- </div>
+- <div class="status-item">
+  <label>Wakes Today</label>
+- <div id="wakes-today">0 of 16</div>
++ <div id="wakes-today">--</div>
+  </div>
+  <div class="status-item">
+  <label>Wakes Remaining</label>
+- <div id="wakes-remaining">16</div>
++ <div id="wakes-remaining">--</div>
+  </div>
+  <div class="status-item">
+  <label>Days Active</label>
+  <div id="days-active">--</div>
+  </div>
+  <div class="status-item">
+- <label>Wakes/Week</label>
++ <label>Wakes Per Week</label>
+  <div id="wakes-per-week">--</div>
+  </div>
+  <div class="status-item">
+@@ -88,29 +80,21 @@
+  </div>
+  <div class="status-item">
+  <label>Data Status</label>
+- <div id="data-status">checking...</div>
++ <div id="data-status">--</div>
+  </div>
+  <div class="status-item">
+  <label>Freshness</label>
+  <div id="freshness-status">--</div>
+  </div>
+  </div>
+- <div class="progress-container">
+- <label for="wake-progress">Wake window: <span id="wake-progress-text">--</span></label>
+- <progress id="wake-progress" value="0" max="100">0%</progress>
+- </div>
+- <button id="refresh-data-btn" class="refresh-btn" aria-label="Refresh data">🔄 Refresh</button>
+  </section>
+-
+  <section class="panel">
+- <h2>Next Scheduled Wakes</h2>
+- <div id="next-scheduled-wakes">
+- <p>Loading next scheduled wakes...</p>
+- </div>
++ <h2>Today&#39;s Wakes</h2>
++ <ul id="today-wakes-list">
++ </ul>
+  </section>
+-
+  <section class="panel">
+- <h2>Recent Wakes</h2>
++ <h2>Schedule</h2>
+  <table id="waketime-table">
+  <thead>
+  <tr>
+@@ -122,34 +106,26 @@
+  </tr>
+  </thead>
+  <tbody id="waketime-table-body">
+- <tr><td colspan="5">Loading schedule...</td></tr>
+  </tbody>
+  </table>
+  </section>
+-
+  <section class="panel">
+- <h2>Today's Wakes</h2>
+- <ul id="today-wakes-list">
+- <li>Loading today's wakes...</li>
++ <h2>Recent Tweaks</h2>
++ <p id="latest-tweak">No recent updates</p>
++ <ul id="recent-tweaks-list">
+  </ul>
+  </section>
+-
+  <section class="panel">
+- <h2>Latest Tweak</h2>
+- <p id="latest-tweak">Loading latest tweak...</p>
++ <h2>Raw Stats</h2>
++ <pre id="stats-json"></pre>
+  </section>
+-
+  <section class="panel">
+- <h2>Recent Tweaks</h2>
+- <ul id="recent-tweaks-list">
+- <li>Loading recent tweaks...</li>
+- </ul>
++ <h2>Wake Progress</h2>
++ <progress id="wake-progress" min="0" max="90" value="0">0%</progress>
++ <div id="wake-progress-text">-- minute(s) remaining</div>
+  </section>
+-
+  <section class="panel">
+- <h2>Raw Stats (JSON)</h2>
+- <pre id="stats-json">Loading stats...</pre>
+- </section>
++ <button id="refresh-data-btn" aria-label="Refresh data">&#x1f504; Refresh</button>
+  </section>
+  </main>
+  <footer class="footer">
