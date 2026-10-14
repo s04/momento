@@ -55,7 +55,6 @@
     }
     const btn = $("#dark-mode-toggle");
     if (btn) {
-      // Set initial label
       btn.textContent = isDark ? "☀️ Light mode" : "🌙 Dark mode";
       btn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
       btn.addEventListener("click", function () {
@@ -135,6 +134,7 @@
       wakeProgress: $("#wake-progress"),
       wakeProgressText: $("#wake-progress-text"),
       refreshBtn: $("#refresh-data-btn"),
+      nextWakeList: $("#next-wake-list"),
     };
 
     let currentStats = null;
@@ -210,6 +210,23 @@
             })
             .join("");
 
+          // next scheduled wakes list
+          const nowTime = new Date();
+          const upcoming = schedule
+            .filter(function (t) {
+              const d = new Date(t.runAt);
+              return d > nowTime;
+            })
+            .slice(0, 5);
+          if (upcoming.length > 0) {
+            els.nextWakeList.innerHTML = upcoming.map(function (t) {
+              const d = new Date(t.runAt);
+              return `<li><time datetime="${t.runAt}">${d.toISOString().slice(0, 19).replace("T", " ")}</time> — ${d.toLocaleString()}</li>`;
+            }).join("");
+          } else {
+            els.nextWakeList.innerHTML = "<li>No upcoming wakes found in schedule.</li>";
+          }
+
           // recent tweaks
           els.latestTweak.textContent = tweaks.length ? tweaks[0].slice(0, 60) + "..." : "No recent updates";
           els.recentTweaksList.innerHTML = tweaks.slice(0, 10).map(function (t) {
@@ -250,7 +267,6 @@
     // Refresh button handler
     if (els.refreshBtn) {
       els.refreshBtn.addEventListener("click", function () {
-        // Disable button during refresh to prevent multiple clicks
         els.refreshBtn.disabled = true;
         els.refreshBtn.textContent = "🔄 Refreshing...";
         updateHomepageData()
@@ -416,7 +432,7 @@
     const totalWakesEl = $("#log-total-wakes");
     const lastWakeEl = $("#log-last-wake");
     if (!tableBody) return;
-    
+
     Promise.all([loadLog(), loadStats()])
       .then(function ([log, stats]) {
         tableBody.innerHTML = log
@@ -429,13 +445,11 @@
           })
           .join("");
 
-        // Update stats summary
         if (totalWakesEl && lastWakeEl) {
           totalWakesEl.textContent = stats.total_wakes;
           lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
         }
 
-        // Copy log button — moved inside .then() so 'log' is in scope
         const region = $("#log-region");
         const btn = $("#copy-log-btn");
         if (btn && region) {
@@ -449,7 +463,6 @@
           });
         }
 
-        // Download log button — moved inside .then() so 'log' is in scope
         const dlBtn = $("#download-log-btn");
         const dlRegion = $("#download-log-region");
         if (dlBtn && dlRegion) {
@@ -474,8 +487,7 @@
       .catch(function (err) {
         tableBody.innerHTML = `<tr><td colspan="4">Failed to load log.</td></tr>`;
         console.error("Failed to load log:", err);
-        
-        // Still try to update stats even if log fails
+
         loadStats().then(function (stats) {
           if (totalWakesEl && lastWakeEl) {
             totalWakesEl.textContent = stats.total_wakes;
@@ -492,7 +504,6 @@
     loadStats().then(function (stats) {
       $("#copy-stats-region").value = JSON.stringify(stats, null, 2);
 
-      // Freshness calculation moved inside .then() so 'stats' is in scope
       const freshness = Math.floor((Date.now() - new Date(stats.last_update).getTime()) / 1000);
       let freshnessText = "--";
       if (freshness < 900) freshnessText = "fresh";
@@ -521,7 +532,6 @@
     const now = new Date();
     $("#copy-current-time-region").value = now.toISOString().slice(0, 19).replace("T", " ");
 
-    // bind copy buttons
     const copyBtns = [
       ["copy-current-time-btn", "copy-current-time-region"],
       ["copy-stats-btn", "copy-stats-region"],
@@ -538,7 +548,6 @@
       }
     });
 
-    // bind download buttons
     const downloadBtns = [
       ["download-stats-btn", "copy-stats-region", "momento-stats.json", "application/json"],
       ["download-recent-tweaks-btn", "copy-recent-tweaks-region", "momento-recent-tweaks.json", "application/json"],
