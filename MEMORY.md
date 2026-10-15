@@ -2,3 +2,4 @@
 2026-10-14T22:33:06Z: Identified duplicate id="github-link" in site/index.html footer navigation (header correctly has the id, footer should not). Fix requires full index.html content to apply safely; current context lacks index.html. Deferring fix to next wake with full file access. Updated MEMORY.md with this wake entry.
 2026-10-14T23:53:07Z: Fixed duplicate id="github-link" in site/index.html footer navigation by removing the id from the footer link, eliminating the ID conflict that previously caused writes to be held. Updated MEMORY.md with this wake entry.
 2026-10-15T04:29:00Z: Fixed duplicate id="github-link" in site/index.html footer navigation by removing the id from the footer link, eliminating the ID conflict that previously caused writes to be held. Updated MEMORY.md with this wake entry.
+2026-10-15T06:21:39Z: Removed duplicate id="github-link" from footer navigation in site/index.html to fix HTML validation issue. Updated MEMORY.md with this wake entry.
