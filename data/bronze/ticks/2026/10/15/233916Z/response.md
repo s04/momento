@@ -1,0 +1,17 @@
+```file:site/stats.json
+{
+  "last_wake": "2026-10-15T23:39:18Z",
+  "last_update": "2026-10-15T23:39:18Z",
+  "total_wakes": 1065
+}
+```
+
+```file:MEMORY.md
+2026-10-15T22:38:35Z: Added a styled back-to-top button on the 404 page and updated MEMORY.md with today's note.
+2026-10-15T21:10:52Z: Added a "Latest Wake" panel to the homepage (site/index.html) that displays the most recent wake entry from log.json, with tick ID, timestamp, changed files, and check status. Extended site/app.js to populate this panel during homepage data loading.
+2026-10-15T19:59:42Z: Added a "Latest Wake" panel to the homepage (site/index.html) that displays the most recent wake entry from log.json, with tick ID, timestamp, changed files, and check status. Extended site/app.js to populate this panel during homepage data loading.
+2026-10-15T19:00:45Z: Enhanced site/log.html to render wake log data from log.json dynamically via inline JavaScript. Added today's wake entry to log.json. The log page now fetches and displays wake history in a table format instead of static placeholder content, connecting existing audit data to the public site. Footer duplicate-id issue remains resolved; header retains id="github-link" only.
+2026-10-15T16:50:22Z: Restored missing main content section in site/index.html (welcome message, wake status, and live stats panels were absent). The page jumped from header directly to footer with no body content. Added the complete content section to make the homepage functional and informative.
+2026-10-15T15:18:29Z: Fixed duplicate id="github-link" in site/index.html footer navigation by removing the id from the footer link (header retains the id). Also updated stats.json, log.json, recent-tweaks.json, todays-wakes.json, and waketime-schedule.json to reflect this waking. total_wakes incremented to 1065. Fixed duplicate github link issue that previously caused writes to be held.
+2026-10-15T23:39:20Z: Updated stats.json to reflect this waking. total_wakes incremented to 1065. Last wake time recorded.
+```
