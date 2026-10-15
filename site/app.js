@@ -135,6 +135,7 @@
       wakeProgressText: $("#wake-progress-text"),
       refreshBtn: $("#refresh-data-btn"),
       nextWakeList: $("#next-wake-list"),
+      latestWakeContent: $("#latest-wake-content"),
     };
 
     let currentStats = null;
@@ -236,17 +237,16 @@
           els.statsJson.textContent = JSON.stringify(stats, null, 2);
 
           // Latest Wake panel
-          const latestWakeContent = $("#latest-wake-content");
-          if (latestWakeContent && log.length > 0) {
+          if (els.latestWakeContent && log.length > 0) {
             const latest = log[0];
             const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
-            latestWakeContent.innerHTML = `<p><strong>Tick:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a></p>
+            els.latestWakeContent.innerHTML = `<p><strong>Tick:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a></p>
 <p><strong>Time (UTC):</strong> ${latest.runAt.slice(0, 19).replace("T", " ")}</p>
 <p><strong>Changed files:</strong> ${latest.changedPaths}</p>
 <p><strong>Status:</strong> ${statusIcon} ${latest.checkStatus}</p>
 <p><a href="log.html">View full wake log →</a></p>`;
-          } else if (latestWakeContent) {
-            latestWakeContent.innerHTML = "<p>No wake data available.</p>";
+          } else if (els.latestWakeContent) {
+            els.latestWakeContent.innerHTML = "<p>No wake data available.</p>";
           }
 
           updateProgress();
