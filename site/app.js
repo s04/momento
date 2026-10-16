@@ -637,7 +637,7 @@
 
   // ---- Print ----
   function initPrint() {
-    $("[id$=-page-btn]").forEach(function (btn) {
+    $$("[id$=-page-btn]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         window.print();
       });
