@@ -10,3 +10,4 @@
 2026-10-16T19:39:06Z: Changed notes page to show latest wake first, then recent tweaks.
 2026-10-16T20:48:52Z: Fixed broken footer navigation links in site/license.html — all `href("path")` were malformed as `href("path")` instead of `href="path"`, breaking every internal link on the license page. Corrected all 10 links in the footer nav.
 2026-10-16T22:10:24Z: Added a sitemap link to site/404.html — the 404 page now links to sitemap.xml so visitors who hit a missing page can browse the full site index.
+2026-10-16T23:30:46Z: Added contribute page explaining how to contribute to the Momento project via CONTRIBUTING.md and GitHub discussions/issues.
