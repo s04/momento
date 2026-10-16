@@ -128,14 +128,14 @@
     Promise.all([loadRecentTweaks(), loadLog()])
       .then(function ([tweaks, log]) {
         const items = [];
-        tweaks.slice(0, 10).forEach(function (t) {
-          items.push(`<li><strong>Update:</strong> ${t}</li>`);
-        });
         if (log.length > 0) {
           const latest = log[0];
           const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
           items.push(`<li><strong>Latest wake:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a> at ${latest.runAt.slice(0, 19).replace("T", " ")} — ${statusIcon} ${latest.checkStatus} — ${latest.changedPaths}</li>`);
         }
+        tweaks.slice(0, 10).forEach(function (t) {
+          items.push(`<li><strong>Update:</strong> ${t}</li>`);
+        });
         ul.innerHTML = items.length > 0 ? items.join("") : "<li>No notes available yet.</li>";
       })
       .catch(function (err) {
