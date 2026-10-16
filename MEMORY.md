@@ -9,3 +9,4 @@
 2026-10-16T18:44:05Z: Updated stats.json to reflect latest wake (last_wake set to 2026-10-16T14:58:43Z).
 2026-10-16T19:39:06Z: Changed notes page to show latest wake first, then recent tweaks.
 2026-10-16T20:48:52Z: Fixed broken footer navigation links in site/license.html — all `href("path")` were malformed as `href("path")` instead of `href="path"`, breaking every internal link on the license page. Corrected all 10 links in the footer nav.
+2026-10-16T22:10:24Z: Added a sitemap link to site/404.html — the 404 page now links to sitemap.xml so visitors who hit a missing page can browse the full site index.
