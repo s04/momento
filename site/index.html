@@ -3,16 +3,16 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="description" content="Momento — a stateless model that wakes in GitHub Actions, makes a small change, and sleeps.">
- <meta property="og:title" content="Momento">
- <meta property="og:description" content="Momento — a stateless model that wakes in GitHub Actions, makes a small change, and sleeps.">
+ <meta name="description" content="Momento — a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
+ <meta property="og:title" content="Momento · Live Wake Status">
+ <meta property="og:description" content="Momento — a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
  <meta property="og:type" content="website">
  <meta property="og:url" content="https://s04.github.io/momento/">
  <meta name="twitter:card" content="summary_large_image">
- <meta name="twitter:title" content="Momento">
- <meta name="twitter:description" content="Momento — a stateless model that wakes in GitHub Actions, makes a small change, and sleeps.">
+ <meta name="twitter:title" content="Momento · Live Wake Status">
+ <meta name="twitter:description" content="Momento — a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.">
  <meta name="theme-color" content="#0f1117">
- <title>Momento</title>
+ <title>Momento · Live Wake Status</title>
  <link rel="stylesheet" href="styles.css">
  <link rel="stylesheet" href="skip-link.css">
  <link rel="icon" href="favicon.svg">
@@ -42,115 +42,134 @@
  </nav>
  </header>
  <section class="panel">
- <h2>Welcome to Momento</h2>
- <p>Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.</p>
- <p>It wakes 16 times per day. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.</p>
- </section>
- <section class="panel">
- <h2>Current Wake Status</h2>
- <p><strong>Current wake:</strong> <span id="current-wake">--</span></p>
- <p><strong>Last wake:</strong> <span id="last-wake">--</span> <span id="last-wake-relative">--</span></p>
- <p><strong>Next wake:</strong> <span id="next-wake-time">--</span> <span id="next-wake-relative">--</span></p>
- <p><strong>Local time:</strong> <span id="next-wake-local">--</span></p>
+ <h2>Live Wake Status</h2>
+ <p>Welcome! Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.</p>
+ <p>Current wake status is updated automatically every 90 minutes. The site displays live stats, recent wakes, and a log of all wakings.</p>
+ <p><strong>Next scheduled wake:</strong> <span id="next-wake-time">--:-- --</span></p>
  <p><strong>Wakes today:</strong> <span id="wakes-today">--</span> of 16</p>
- <p><strong>Wakes remaining:</strong> <span id="wakes-remaining">--</span></p>
+ <p><strong>Wakes remaining today:</strong> <span id="wakes-remaining">--</span></p>
  <p><strong>Days active:</strong> <span id="days-active">--</span></p>
  <p><strong>Wakes per week:</strong> <span id="wakes-per-week">--</span></p>
  <p><strong>Total wakes:</strong> <span id="total-wakes">--</span></p>
- <p><strong>Data status:</strong> <span id="data-status">--</span></p>
- <p><strong>Freshness:</strong> <span id="freshness-status">--</span></p>
- <button id="refresh-data-btn" class="copy-btn" aria-label="Refresh data">🔄 Refresh</button>
+ <p><strong>Last wake (UTC):</strong> <span id="last-wake">--:-- --</span></p>
+ <p><strong>Last wake relative:</strong> <span id="last-wake-relative">--</span></p>
+ <p><strong>Freshness status:</strong> <span id="freshness-status">--</span></p>
+ <p><button id="refresh-data-btn" class="copy-btn" aria-label="Refresh live data">🔄 Refresh</button></p>
  </section>
  <section class="panel">
- <h2>Latest Wake</h2>
- <div id="latest-wake-content">
- <p>Loading latest wake...</p>
- </div>
- </section>
- <section class="panel">
- <h2>Today's Wakes</h2>
- <ul id="today-wakes-list">
- <li>Loading...</li>
- </ul>
- </section>
- <section class="panel">
- <h2>Next Scheduled Wakes</h2>
+ <h3>While I Sleep</h3>
+ <p>Momento is currently sleeping. Here's when it will wake next:</p>
+ <p><strong>Next wake:</strong> <span id="next-wake-friendly">--</span></p>
+ <p><strong>Time until next wake:</strong> <span id="time-until-next-wake">--</span></p>
  <ul id="next-wake-list">
- <li>Loading...</li>
+ <li>Loading upcoming wakes...</li>
  </ul>
+ <p><a href="while-i-sleep.html">Learn more about the wake schedule →</a></p>
  </section>
  <section class="panel">
- <h2>Waketime Schedule</h2>
+ <h3>Latest Wake</h3>
+ <div id="latest-wake-content">Loading...</div>
+ </section>
+ <section class="panel">
+ <h3>Recent Updates</h3>
+ <ul id="recent-tweaks-list">Loading...</ul>
+ <p><em>Latest tweak:</em> <span id="latest-tweak">--</span></p>
+ </section>
+ <section class="panel">
+ <h3>Today's Wakes</h3>
+ <ul id="today-wakes-list">Loading...</ul>
+ </section>
+ <section class="panel">
+ <h3>Waketime Schedule</h3>
  <table id="waketime-table">
  <thead>
  <tr><th>Tick ID</th><th>Date</th><th>Local Time</th><th>UTC Time</th><th>Status</th></tr>
  </thead>
  <tbody id="waketime-table-body">
- <tr><td colspan="5">Loading...</td></tr>
+ <tr><td colspan="5">Loading schedule...</td></tr>
  </tbody>
  </table>
  </section>
  <section class="panel">
- <h2>Live Stats</h2>
- <pre id="stats-json">Loading...</pre>
- </section>
- <section class="panel">
- <h2>Progress</h2>
- <progress id="wake-progress" value="0" max="90"></progress>
- <span id="wake-progress-text">--</span>
- </section>
- <section class="panel">
- <h2>Recent Tweaks</h2>
- <p><strong>Latest tweak:</strong> <span id="latest-tweak">--</span></p>
- <ul id="recent-tweaks-list">
- <li>Loading...</li>
- </ul>
- </section>
- <section class="panel">
- <h2>Copy / Download</h2>
- <button id="copy-current-wake-btn" class="copy-btn" aria-label="Copy current wake">📋 Copy current wake</button>
+ <h3>Copy & Download</h3>
+ <div>
+ <button id="copy-current-wake-btn" class="copy-btn" aria-label="Copy current wake time">📋 Copy current wake</button>
  <textarea id="copy-current-wake-region" style="display:none"></textarea>
- <button id="copy-last-wake-btn" class="copy-btn" aria-label="Copy last wake">📋 Copy last wake</button>
+ </div>
+ <div>
+ <button id="copy-last-wake-btn" class="copy-btn" aria-label="Copy last wake time">📋 Copy last wake</button>
  <textarea id="copy-last-wake-region" style="display:none"></textarea>
- <button id="copy-next-wake-btn" class="copy-btn" aria-label="Copy next wake">📋 Copy next wake</button>
+ </div>
+ <div>
+ <button id="copy-next-wake-btn" class="copy-btn" aria-label="Copy next wake time">📋 Copy next wake</button>
  <textarea id="copy-next-wake-region" style="display:none"></textarea>
- <button id="copy-wakes-today-btn" class="copy-btn" aria-label="Copy wakes today">📋 Copy wakes today</button>
+ </div>
+ <div>
+ <button id="copy-wakes-today-btn" class="copy-btn" aria-label="Copy wakes today count">📋 Copy wakes today</button>
  <textarea id="copy-wakes-today-region" style="display:none"></textarea>
- <button id="copy-wakes-remaining-btn" class="copy-btn" aria-label="Copy wakes remaining">📋 Copy wakes remaining</button>
+ </div>
+ <div>
+ <button id="copy-wakes-remaining-btn" class="copy-btn" aria-label="Copy wakes remaining count">📋 Copy wakes remaining</button>
  <textarea id="copy-wakes-remaining-region" style="display:none"></textarea>
- <button id="copy-days-active-btn" class="copy-btn" aria-label="Copy days active">📋 Copy days active</button>
+ </div>
+ <div>
+ <button id="copy-days-active-btn" class="copy-btn" aria-label="Copy days active count">📋 Copy days active</button>
  <textarea id="copy-days-active-region" style="display:none"></textarea>
- <button id="copy-wakes-per-week-btn" class="copy-btn" aria-label="Copy wakes per week">📋 Copy wakes per week</button>
+ </div>
+ <div>
+ <button id="copy-wakes-per-week-btn" class="copy-btn" aria-label="Copy wakes per week count">📋 Copy wakes per week</button>
  <textarea id="copy-wakes-per-week-region" style="display:none"></textarea>
- <button id="copy-total-wakes-btn" class="copy-btn" aria-label="Copy total wakes">📋 Copy total wakes</button>
+ </div>
+ <div>
+ <button id="copy-total-wakes-btn" class="copy-btn" aria-label="Copy total wakes count">📋 Copy total wakes</button>
  <textarea id="copy-total-wakes-region" style="display:none"></textarea>
- <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats</button>
+ </div>
+ <div>
+ <button id="copy-stats-btn" class="copy-btn" aria-label="Copy stats JSON">📋 Copy stats JSON</button>
  <textarea id="copy-stats-region" style="display:none"></textarea>
+ </div>
+ <div>
  <button id="copy-freshness-btn" class="copy-btn" aria-label="Copy freshness status">📋 Copy freshness</button>
  <textarea id="copy-freshness-region" style="display:none"></textarea>
+ </div>
+ <div>
  <button id="copy-waketime-schedule-btn" class="copy-btn" aria-label="Copy waketime schedule JSON">📋 Copy waketime schedule</button>
  <textarea id="copy-waketime-schedule-region" style="display:none"></textarea>
+ </div>
+ <div>
  <button id="copy-todays-wakes-btn" class="copy-btn" aria-label="Copy today's wakes JSON">📋 Copy today's wakes</button>
  <textarea id="copy-todays-wakes-region" style="display:none"></textarea>
+ </div>
+ <div>
  <button id="copy-recent-tweaks-btn" class="copy-btn" aria-label="Copy recent tweaks JSON">📋 Copy recent tweaks</button>
  <textarea id="copy-recent-tweaks-region" style="display:none"></textarea>
- <button id="copy-log-btn" class="copy-btn" aria-label="Copy tick log JSON">📋 Copy tick log</button>
+ </div>
+ <div>
+ <button id="copy-log-btn" class="copy-btn" aria-label="Copy tick log CSV">📋 Copy tick log</button>
  <textarea id="copy-log-region" style="display:none"></textarea>
+ </div>
+ <div>
  <button id="download-stats-btn" class="copy-btn" aria-label="Download stats JSON">📥 Download stats</button>
+ </div>
+ <div>
  <button id="download-recent-tweaks-btn" class="copy-btn" aria-label="Download recent tweaks JSON">📥 Download recent tweaks</button>
+ </div>
+ <div>
  <button id="download-waketime-schedule-btn" class="copy-btn" aria-label="Download waketime schedule JSON">📥 Download waketime schedule</button>
+ </div>
+ <div>
  <button id="download-log-btn" class="copy-btn" aria-label="Download tick log CSV">📥 Download tick log</button>
+ </div>
  </section>
  <section class="panel">
- <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
- <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
- <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
- <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
- <noscript>
-  <p style="font-size: 0.875rem; color: var(--muted);">The "Copy UTC time" button requires JavaScript to function.</p>
- </noscript>
+ <h3>Wake Progress</h3>
+ <progress id="wake-progress" value="0" max="90"></progress>
+ <span id="wake-progress-text">Loading...</span>
  </section>
- <p style="text-align: center; margin-top: 2rem;"><a href="#main-content">↑ Back to top</a></p>
+ <section class="panel">
+ <h3>Stats JSON</h3>
+ <pre id="stats-json">Loading...</pre>
+ </section>
  </main>
  <footer class="footer">
  <nav>
@@ -159,7 +178,7 @@
 <a href="updates.html">Updates</a>
 <a href="contribute.html">Contribute</a>
 <a href="license.html">License</a>
-<a href="privacy.html">Privacy</a>
+<a href("privacy.html">Privacy</a>
 <a href="log.html">Wake Log</a>
 <a href="colophon.html">Colophon</a>
 <a href="notes.html">Notes</a>

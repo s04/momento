@@ -26,6 +26,18 @@
     return `${days}d ago`;
   }
 
+  function timeUntil(date) {
+    const seconds = Math.floor((new Date(date).getTime() - Date.now()) / 1000);
+    if (seconds < 0) return "now";
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ${seconds % 60}s`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ${minutes % 60}m`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ${hours % 24}h`;
+  }
+
   function copyText(text) {
     navigator.clipboard.writeText(text).then(function () {
       showMsg("Copied to clipboard.");
@@ -116,11 +128,9 @@
     Promise.all([loadRecentTweaks(), loadLog()])
       .then(function ([tweaks, log]) {
         const items = [];
-        // Recent tweaks as notes
         tweaks.slice(0, 10).forEach(function (t) {
           items.push(`<li><strong>Update:</strong> ${t}</li>`);
         });
-        // Latest wake as a note
         if (log.length > 0) {
           const latest = log[0];
           const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
@@ -161,6 +171,8 @@
       refreshBtn: $("#refresh-data-btn"),
       nextWakeList: $("#next-wake-list"),
       latestWakeContent: $("#latest-wake-content"),
+      nextWakeFriendly: $("#next-wake-friendly"),
+      timeUntilNextWake: $("#time-until-next-wake"),
     };
 
     let currentStats = null;
@@ -205,7 +217,6 @@
           const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
           els.daysActive.textContent = daysActive;
 
-          // freshness
           const fresh = Math.floor((now.getTime() - new Date(stats.last_update).getTime()) / 1000);
           let freshnessText = "--";
           if (fresh < 900) freshnessText = "fresh";
@@ -213,7 +224,6 @@
           else freshnessText = "very stale";
           els.freshnessStatus.textContent = freshnessText;
 
-          // today's wakes list
           els.todayWakesList.innerHTML = todays
             .slice()
             .reverse()
@@ -224,7 +234,6 @@
             })
             .join("");
 
-          // waketime schedule table
           els.waketimeTableBody.innerHTML = schedule
             .slice()
             .reverse()
@@ -236,7 +245,6 @@
             })
             .join("");
 
-          // next scheduled wakes list
           const nowTime = new Date();
           const upcoming = schedule
             .filter(function (t) {
@@ -253,7 +261,15 @@
             els.nextWakeList.innerHTML = "<li>No upcoming wakes found in schedule.</li>";
           }
 
-          // recent tweaks
+          if (upcoming.length > 0) {
+            const nextWake = new Date(upcoming[0].runAt);
+            els.nextWakeFriendly.textContent = nextWake.toLocaleString();
+            els.timeUntilNextWake.textContent = timeUntil(upcoming[0].runAt);
+          } else {
+            els.nextWakeFriendly.textContent = "No upcoming wakes scheduled";
+            els.timeUntilNextWake.textContent = "--";
+          }
+
           els.latestTweak.textContent = tweaks.length ? tweaks[0].slice(0, 60) + "..." : "No recent updates";
           els.recentTweaksList.innerHTML = tweaks.slice(0, 10).map(function (t) {
             return `<li>${t}</li>`;
@@ -261,7 +277,6 @@
 
           els.statsJson.textContent = JSON.stringify(stats, null, 2);
 
-          // Latest Wake panel
           if (els.latestWakeContent && log.length > 0) {
             const latest = log[0];
             const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
@@ -288,7 +303,6 @@
       const last = new Date(currentStats.last_wake).getTime();
       const elapsed = Math.floor((now - last) / 1000);
       const remaining = Math.max(0, 90 - elapsed);
-      const progress = Math.min(elapsed, 90) * 100 / 90;
       els.wakeProgress.value = Math.min(elapsed, 90);
       els.wakeProgressText.textContent = remaining + " minute" + (remaining === 1 ? "" : "s") + " remaining";
       if (elapsed >= 90) {
@@ -296,14 +310,11 @@
       }
     }
 
-    // Initial load
     updateHomepageData().then(function () {
       initUpdatesPage();
-      // Start real-time progress updates (every second)
       setInterval(updateProgress, 1000);
     });
 
-    // Refresh button handler
     if (els.refreshBtn) {
       els.refreshBtn.addEventListener("click", function () {
         els.refreshBtn.disabled = true;
@@ -424,11 +435,9 @@
         return JSON.stringify(log, null, 2);
       });
     });
-    // 404 page: Copy URL button
     bindCopy("copy-url-btn", null, function () {
       return window.location.href;
     });
-    // 404 page: Copy UTC time button
     bindCopy("copy-current-time-btn", null, function () {
       return new Date().toISOString().slice(0, 19).replace("T", " ");
     });
