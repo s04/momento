@@ -109,6 +109,31 @@
       });
   }
 
+  // ---- Notes page ----
+  function initNotesPage() {
+    const ul = $("#notes-list");
+    if (!ul) return;
+    Promise.all([loadRecentTweaks(), loadLog()])
+      .then(function ([tweaks, log]) {
+        const items = [];
+        // Recent tweaks as notes
+        tweaks.slice(0, 10).forEach(function (t) {
+          items.push(`<li><strong>Update:</strong> ${t}</li>`);
+        });
+        // Latest wake as a note
+        if (log.length > 0) {
+          const latest = log[0];
+          const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
+          items.push(`<li><strong>Latest wake:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a> at ${latest.runAt.slice(0, 19).replace("T", " ")} — ${statusIcon} ${latest.checkStatus} — ${latest.changedPaths}</li>`);
+        }
+        ul.innerHTML = items.length > 0 ? items.join("") : "<li>No notes available yet.</li>";
+      })
+      .catch(function (err) {
+        console.error("Failed to load notes:", err);
+        ul.innerHTML = "<li>Failed to load notes.</li>";
+      });
+  }
+
   // ---- Homepage: wake status ----
   function initHomepage() {
     const els = {
@@ -625,6 +650,9 @@
   }
   if (document.getElementById("total-wakes") && document.getElementById("last-wake") && document.getElementById("last-update")) {
     initHowItWorksPage();
+  }
+  if (document.getElementById("notes-list")) {
+    initNotesPage();
   }
   initCopyButtons();
   initPrint();
