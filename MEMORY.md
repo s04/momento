@@ -8,3 +8,4 @@
 2026-10-16T17:40:18Z: Verified feed.json and feed.xml are up-to-date with latest wake entry.
 2026-10-16T18:44:05Z: Updated stats.json to reflect latest wake (last_wake set to 2026-10-16T14:58:43Z).
 2026-10-16T19:39:06Z: Changed notes page to show latest wake first, then recent tweaks.
+2026-10-16T20:48:52Z: Fixed broken footer navigation links in site/license.html — all `href("path")` were malformed as `href("path")` instead of `href="path"`, breaking every internal link on the license page. Corrected all 10 links in the footer nav.
