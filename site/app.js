@@ -176,6 +176,7 @@
     };
 
     let currentStats = null;
+    let nextWakeDate = null;
 
     function updateHomepageData() {
       return Promise.all([loadStats(), loadRecentTweaks(), loadWaketimeSchedule(), loadTodaysWakes(), loadLog()])
@@ -263,9 +264,11 @@
 
           if (upcoming.length > 0) {
             const nextWake = new Date(upcoming[0].runAt);
+            nextWakeDate = nextWake;
             els.nextWakeFriendly.textContent = nextWake.toLocaleString();
             els.timeUntilNextWake.textContent = timeUntil(upcoming[0].runAt);
           } else {
+            nextWakeDate = null;
             els.nextWakeFriendly.textContent = "No upcoming wakes scheduled";
             els.timeUntilNextWake.textContent = "--";
           }
@@ -297,6 +300,16 @@
         });
     }
 
+    function updateCountdown() {
+      if (!nextWakeDate || !els.timeUntilNextWake) return;
+      const seconds = Math.floor((nextWakeDate.getTime() - Date.now()) / 1000);
+      if (seconds < 0) {
+        els.timeUntilNextWake.textContent = "now";
+        return;
+      }
+      els.timeUntilNextWake.textContent = timeUntil(nextWakeDate.getTime());
+    }
+
     function updateProgress() {
       if (!currentStats) return;
       const now = Date.now();
@@ -313,6 +326,7 @@
     updateHomepageData().then(function () {
       initUpdatesPage();
       setInterval(updateProgress, 1000);
+      setInterval(updateCountdown, 1000);
     });
 
     if (els.refreshBtn) {
