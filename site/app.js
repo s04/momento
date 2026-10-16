@@ -144,6 +144,115 @@
       });
   }
 
+  // ---- While I Sleep page ----
+  function initWhileISleepPage() {
+    const els = {
+      nextWakeFriendly: $("#next-wake-friendly"),
+      timeUntilNextWake: $("#time-until-next-wake"),
+      todayWakesList: $("#today-wakes-list"),
+      wakesToday: $("#wakes-today"),
+      wakesRemaining: $("#wakes-remaining"),
+      totalWakes: $("#total-wakes"),
+      daysActive: $("#days-active"),
+      nextWakeDate: null,
+    };
+
+    function updateWhileISleep() {
+      return Promise.all([loadStats(), loadWaketimeSchedule(), loadTodaysWakes()])
+        .then(function (results) {
+          const [stats, schedule, todays] = results;
+
+          const now = new Date();
+          const last = new Date(stats.last_wake);
+          const next = new Date(last.getTime() + 90 * 60 * 1000);
+          els.nextWakeDate = next;
+
+          if (els.nextWakeFriendly) {
+            els.nextWakeFriendly.textContent = next.toLocaleString();
+          }
+          if (els.timeUntilNextWake) {
+            els.timeUntilNextWake.textContent = timeUntil(next.getTime());
+          }
+
+          if (els.todayWakesList) {
+            const todaysCount = todays.length;
+            els.todayWakesList.innerHTML = todays
+              .slice()
+              .reverse()
+              .map(function (t) {
+                const d = new Date(t.runAt);
+                const status = t.checkStatus === "accepted" ? "✅" : "❌";
+                return `<li><time datetime="${t.runAt}">${t.runAt.slice(0, 19).replace("T", " ")}</time> — ${t.changedPaths} <span>${status}</span></li>`;
+              })
+              .join("");
+          }
+
+          if (els.wakesToday) {
+            els.wakesToday.textContent = todays.length;
+          }
+          if (els.wakesRemaining) {
+            els.wakesRemaining.textContent = 16 - todays.length;
+          }
+          if (els.totalWakes) {
+            els.totalWakes.textContent = stats.total_wakes;
+          }
+          if (els.daysActive) {
+            const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
+            els.daysActive.textContent = daysActive;
+          }
+        })
+        .catch(function (err) {
+          console.error("Failed to load data for while-i-sleep page:", err);
+        });
+    }
+
+    function updateCountdown() {
+      if (!els.nextWakeDate || !els.timeUntilNextWake) return;
+      const seconds = Math.floor((els.nextWakeDate.getTime() - Date.now()) / 1000);
+      if (seconds < 0) {
+        els.timeUntilNextWake.textContent = "now";
+        return;
+      }
+      els.timeUntilNextWake.textContent = timeUntil(els.nextWakeDate.getTime());
+    }
+
+    // Bind copy buttons
+    const copyNextWakeBtn = $("#copy-next-wake-btn");
+    const copyNextWakeRegion = $("#copy-next-wake-region");
+    if (copyNextWakeBtn && copyNextWakeRegion) {
+      copyNextWakeBtn.addEventListener("click", function () {
+        if (els.nextWakeDate) {
+          copyText(els.nextWakeDate.toISOString());
+        }
+      });
+    }
+
+    const copyScheduleBtn = $("#copy-schedule-btn");
+    const copyScheduleRegion = $("#copy-schedule-region");
+    if (copyScheduleBtn && copyScheduleRegion) {
+      copyScheduleBtn.addEventListener("click", function () {
+        loadTodaysWakes().then(function (todays) {
+          copyText(JSON.stringify(todays, null, 2));
+        }).catch(function () {
+          copyText("[]");
+        });
+      });
+    }
+
+    const copyCurrentTimeBtn = $("#copy-current-time-btn");
+    const copyCurrentTimeRegion = $("#copy-current-time-region");
+    if (copyCurrentTimeBtn && copyCurrentTimeRegion) {
+      copyCurrentTimeBtn.addEventListener("click", function () {
+        const now = new Date();
+        copyText(now.toISOString().slice(0, 19).replace("T", " "));
+      });
+    }
+
+    updateWhileISleep().then(function () {
+      setInterval(updateCountdown, 1000);
+    });
+  }
+
   // ---- Homepage: wake status ----
   function initHomepage() {
     const els = {
@@ -676,6 +785,9 @@
   }
   if (document.getElementById("notes-list")) {
     initNotesPage();
+  }
+  if (document.getElementById("next-wake-friendly")) {
+    initWhileISleepPage();
   }
   initCopyButtons();
   initPrint();
