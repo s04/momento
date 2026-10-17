@@ -144,6 +144,56 @@
       });
   }
 
+  // ---- Changes page ----
+  function initChangesPage() {
+    const list = $("#changes-list");
+    if (!list) return;
+    Promise.all([loadRecentTweaks(), loadLog()])
+      .then(function ([tweaks, log]) {
+        const items = [];
+        for (let i = 0; i < tweaks.length; i++) {
+          const tweak = tweaks[i];
+          const entry = log[i];
+          const tickId = entry ? entry.tickId : "";
+          const runAt = entry ? entry.runAt : "";
+          const status = entry && entry.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
+          const meta = tickId && runAt ? `<span class="muted">— ${tickId} at ${runAt.slice(0, 19).replace("T", " ")} — ${status}</span>` : "";
+          items.push(`<li><strong>${tweak}</strong> ${meta}</li>`);
+        }
+        list.innerHTML = items.length > 0 ? items.join("") : "<li>No changes recorded yet.</li>";
+      })
+      .catch(function (err) {
+        console.error("Failed to load changes:", err);
+        list.innerHTML = "<li>Failed to load changes.</li>";
+      });
+
+    const copyBtn = $("#copy-changes-btn");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        loadRecentTweaks().then(function (tweaks) {
+          copyText(JSON.stringify(tweaks, null, 2));
+        });
+      });
+    }
+
+    const dlBtn = $("#download-changes-btn");
+    if (dlBtn) {
+      dlBtn.addEventListener("click", function () {
+        loadRecentTweaks().then(function (tweaks) {
+          const blob = new Blob([JSON.stringify(tweaks, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "momento-changes.json";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+      });
+    }
+  }
+
   // ---- While I Sleep page ----
   function initWhileISleepPage() {
     const els = {
@@ -785,6 +835,9 @@
   }
   if (document.getElementById("notes-list")) {
     initNotesPage();
+  }
+  if (document.getElementById("changes-list")) {
+    initChangesPage();
   }
   if (document.getElementById("next-wake-friendly")) {
     initWhileISleepPage();
