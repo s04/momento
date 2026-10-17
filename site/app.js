@@ -507,15 +507,44 @@
     const totalWakesEl = $("#total-wakes");
     const lastWakeEl = $("#last-wake");
     const lastUpdateEl = $("#last-update");
+    const freshnessEl = $("#freshness-status");
     if (!totalWakesEl || !lastWakeEl || !lastUpdateEl) return;
 
-    loadStats().then(function (stats) {
-      totalWakesEl.textContent = stats.total_wakes;
-      lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
-      lastUpdateEl.textContent = new Date(stats.last_update).toISOString().slice(0, 19).replace("T", " ");
-    }).catch(function (err) {
-      console.error("Failed to load stats for how-it-works:", err);
-    });
+    Promise.all([loadStats(), loadLog()])
+      .then(function ([stats, log]) {
+        totalWakesEl.textContent = stats.total_wakes;
+        lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
+        lastUpdateEl.textContent = new Date(stats.last_update).toISOString().slice(0, 19).replace("T", " ");
+
+        const freshness = Math.floor((Date.now() - new Date(stats.last_update).getTime()) / 1000);
+        let freshnessText = "--";
+        if (freshness < 900) freshnessText = "fresh";
+        else if (freshness < 3600) freshnessText = "stale";
+        else freshnessText = "very stale";
+        if (freshnessEl) freshnessEl.textContent = freshnessText;
+
+        if (log.length > 0) {
+          const latest = log[0];
+          const latestWakeIdEl = $("#latest-wake-id");
+          const latestWakeTimeEl = $("#latest-wake-time");
+          const latestWakeFilesEl = $("#latest-wake-files");
+          const latestWakeStatusEl = $("#latest-wake-status");
+          if (latestWakeIdEl) latestWakeIdEl.textContent = latest.tickId;
+          if (latestWakeTimeEl) latestWakeTimeEl.textContent = latest.runAt.slice(0, 19).replace("T", " ");
+          if (latestWakeFilesEl) latestWakeFilesEl.textContent = latest.changedPaths;
+          if (latestWakeStatusEl) latestWakeStatusEl.textContent = latest.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
+        }
+
+        const nextWake = new Date(stats.last_wake);
+        nextWake.setMinutes(nextWake.getMinutes() + 90);
+        const nextWakeFriendlyEl = $("#next-wake-friendly");
+        const nextWakeCountdownEl = $("#next-wake-countdown");
+        if (nextWakeFriendlyEl) nextWakeFriendlyEl.textContent = nextWake.toLocaleString();
+        if (nextWakeCountdownEl) nextWakeCountdownEl.textContent = timeUntil(nextWake.getTime());
+      })
+      .catch(function (err) {
+        console.error("Failed to load stats for how-it-works:", err);
+      });
   }
 
   // ---- Copy / download helpers ----

@@ -1,1 +1,2 @@
 2026-10-17T12:55:02Z: Added a <noscript> notice to site/how-it-works.html explaining that the live status and countdown require JavaScript, improving accessibility for visitors with JS disabled.
+2026-10-17T13:53:35Z: Added a data freshness indicator to site/how-it-works.html and enhanced initHowItWorksPage() in site/app.js to populate freshness status, latest wake details, and next wake countdown on the How It Works page.
