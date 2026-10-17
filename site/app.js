@@ -48,11 +48,11 @@
   }
 
   function showMsg(text) {
-    const msg = document.getElementById("last-updated-badge");
-    if (msg) {
-      msg.textContent = text;
+    const badge = $("#last-updated-badge");
+    if (badge) {
+      badge.textContent = text;
       setTimeout(function () {
-        msg.textContent = "Last updated: --";
+        refreshBadge();
       }, 3000);
     }
   }
@@ -161,6 +161,32 @@
           items.push(`<li><strong>${tweak}</strong> ${meta}</li>`);
         }
         list.innerHTML = items.length > 0 ? items.join("") : "<li>No changes recorded yet.</li>";
+
+        const copyBtn = $("#copy-changes-btn");
+        if (copyBtn) {
+          copyBtn.addEventListener("click", function () {
+            loadRecentTweaks().then(function (tweaks) {
+              copyText(JSON.stringify(tweaks, null, 2));
+            });
+          });
+        }
+
+        const dlBtn = $("#download-changes-btn");
+        if (dlBtn) {
+          dlBtn.addEventListener("click", function () {
+            loadRecentTweaks().then(function (tweaks) {
+              const blob = new Blob([JSON.stringify(tweaks, null, 2)], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "momento-changes.json";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            });
+          });
+        }
       })
       .catch(function (err) {
         console.error("Failed to load changes:", err);

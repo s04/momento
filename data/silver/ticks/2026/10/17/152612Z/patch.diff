@@ -1,0 +1,57 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,2 +1,3 @@
+ 2026-10-17T12:55:02Z: Added a <noscript> notice to site/how-it-works.html explaining that the live status and countdown require JavaScript, improving accessibility for visitors with JS disabled.
+ 2026-10-17T13:53:35Z: Added a data freshness indicator to site/how-it-works.html and enhanced initHowItWorksPage() in site/app.js to populate freshness status, latest wake details, and next wake countdown on the How It Works page.
++2026-10-17T15:26:13Z: Fixed the `showMsg` function in site/app.js so the footer badge restores its actual "Last updated" timestamp after temporary copy messages, ensuring the site's footer stays accurate.
+--- a/site/app.js
++++ b/site/app.js
+@@ -48,11 +48,11 @@
+   }
+ 
+   function showMsg(text) {
+-    const msg = document.getElementById("last-updated-badge");
+-    if (msg) {
+-      msg.textContent = text;
++    const badge = $("#last-updated-badge");
++    if (badge) {
++      badge.textContent = text;
+       setTimeout(function () {
+-        msg.textContent = "Last updated: --";
++        refreshBadge();
+       }, 3000);
+     }
+   }
+@@ -161,6 +161,32 @@
+           items.push(`<li><strong>${tweak}</strong> ${meta}</li>`);
+         }
+         list.innerHTML = items.length > 0 ? items.join("") : "<li>No changes recorded yet.</li>";
++
++        const copyBtn = $("#copy-changes-btn");
++        if (copyBtn) {
++          copyBtn.addEventListener("click", function () {
++            loadRecentTweaks().then(function (tweaks) {
++              copyText(JSON.stringify(tweaks, null, 2));
++            });
++          });
++        }
++
++        const dlBtn = $("#download-changes-btn");
++        if (dlBtn) {
++          dlBtn.addEventListener("click", function () {
++            loadRecentTweaks().then(function (tweaks) {
++              const blob = new Blob([JSON.stringify(tweaks, null, 2)], { type: "application/json" });
++              const url = URL.createObjectURL(blob);
++              const a = document.createElement("a");
++              a.href = url;
++              a.download = "momento-changes.json";
++              document.body.appendChild(a);
++              a.click();
++              document.body.removeChild(a);
++              URL.revokeObjectURL(url);
++            });
++          });
++        }
+       })
+       .catch(function (err) {
+         console.error("Failed to load changes:", err);
