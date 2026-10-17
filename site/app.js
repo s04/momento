@@ -131,7 +131,7 @@
         if (log.length > 0) {
           const latest = log[0];
           const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
-          items.push(`<li><strong>Latest wake:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a> at ${latest.runAt.slice(0, 19).replace("T", " ")} — ${statusIcon} ${latest.checkStatus} — ${latest.changedPaths}</li>`);
+          items.push(`<li><strong>Latest wake:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a> at ${latest.runAt.slice(0, 19).replace("T", " ")} — ${statusIcon} ${latest.changedPaths}</li>`);
         }
         tweaks.slice(0, 10).forEach(function (t) {
           items.push(`<li><strong>Update:</strong> ${t}</li>`);
@@ -208,9 +208,9 @@
     };
 
     function updateWhileISleep() {
-      return Promise.all([loadStats(), loadWaketimeSchedule(), loadTodaysWakes()])
+      return Promise.all([loadStats(), loadWaketimeSchedule(), loadTodaysWakes(), loadLog()])
         .then(function (results) {
-          const [stats, schedule, todays] = results;
+          const [stats, schedule, todays, log] = results;
 
           const now = new Date();
           const last = new Date(stats.last_wake);
@@ -225,7 +225,6 @@
           }
 
           if (els.todayWakesList) {
-            const todaysCount = todays.length;
             els.todayWakesList.innerHTML = todays
               .slice()
               .reverse()
@@ -247,7 +246,8 @@
             els.totalWakes.textContent = stats.total_wakes;
           }
           if (els.daysActive) {
-            const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
+            const startDate = log.length > 0 ? new Date(log[0].runAt) : new Date("2026-10-04T00:00:00Z");
+            const daysActive = Math.floor((now.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)) + 1;
             els.daysActive.textContent = daysActive;
           }
         })
@@ -374,7 +374,8 @@
           }).length;
           els.wakesPerWeek.textContent = weekCount;
 
-          const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
+          const startDate = log.length > 0 ? new Date(log[0].runAt) : new Date("2026-10-04T00:00:00Z");
+          const daysActive = Math.floor((now.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)) + 1;
           els.daysActive.textContent = daysActive;
 
           const fresh = Math.floor((now.getTime() - new Date(stats.last_update).getTime()) / 1000);
@@ -415,7 +416,7 @@
           if (upcoming.length > 0) {
             els.nextWakeList.innerHTML = upcoming.map(function (t) {
               const d = new Date(t.runAt);
-              return `<li><time datetime="${t.runAt}">${d.toISOString().slice(0, 19).replace("T", " ")}</time> — ${d.toLocaleString()}</li>`;
+              return `<li><time datetime="${t.runAt}">${d.toISOString().slice(0, 19).replace("T", " ")}</li>`;
             }).join("");
           } else {
             els.nextWakeList.innerHTML = "<li>No upcoming wakes found in schedule.</li>";

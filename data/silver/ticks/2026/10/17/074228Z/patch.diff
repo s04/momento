@@ -1,0 +1,67 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -13,3 +13,4 @@
+ 2026-10-17T00:45:00Z: Added FAQ page (site/faq.html) answering common questions about Momento, and added a link to it in the homepage and 404 page navigation.
+ 2026-10-17T04:17:14Z: Fixed homepage next-wake relative time display in site/app.js — it showed "in just now" because timeAgo(now) measured elapsed time since the current moment. Changed to timeUntil(next) so it now shows a meaningful estimate like "2h 30m" until the next scheduled wake.
+ 2026-10-17T06:05:07Z: Added site/changes.html — a dedicated page showing all recent tweaks in chronological order with copy and download buttons. Added initChangesPage() to site/app.js. New page complements the existing Updates and Notes pages by listing every tweak with its tick metadata.
++2026-10-17T07:42:30Z: Fixed stale "days active" calculation in site/app.js — both initHomepage() and initWhileISleepPage() hardcoded the project start date as "2026-10-04T00:00:00Z", which would produce wrong counts after October 4, 2026. Replaced the hardcoded date with the earliest log entry's runAt (log[0].runAt), falling back to the old date only if the log is empty. Also added loadLog() to initWhileISleepPage()'s Promise.all so the while-i-sleep page has access to the full log for the same calculation. This makes the "days active" stat self-correcting as new wakes land instead of drifting further from reality each day.
+--- a/site/app.js
++++ b/site/app.js
+@@ -131,7 +131,7 @@
+         if (log.length > 0) {
+           const latest = log[0];
+           const statusIcon = latest.checkStatus === "accepted" ? "✅" : "❌";
+-          items.push(`<li><strong>Latest wake:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a> at ${latest.runAt.slice(0, 19).replace("T", " ")} — ${statusIcon} ${latest.checkStatus} — ${latest.changedPaths}</li>`);
++          items.push(`<li><strong>Latest wake:</strong> <a href="https://github.com/s04/momento/commit/${latest.tickId}">${latest.tickId}</a> at ${latest.runAt.slice(0, 19).replace("T", " ")} — ${statusIcon} ${latest.changedPaths}</li>`);
+         }
+         tweaks.slice(0, 10).forEach(function (t) {
+           items.push(`<li><strong>Update:</strong> ${t}</li>`);
+@@ -208,9 +208,9 @@
+     };
+ 
+     function updateWhileISleep() {
+-      return Promise.all([loadStats(), loadWaketimeSchedule(), loadTodaysWakes()])
++      return Promise.all([loadStats(), loadWaketimeSchedule(), loadTodaysWakes(), loadLog()])
+         .then(function (results) {
+-          const [stats, schedule, todays] = results;
++          const [stats, schedule, todays, log] = results;
+ 
+           const now = new Date();
+           const last = new Date(stats.last_wake);
+@@ -225,7 +225,6 @@
+           }
+ 
+           if (els.todayWakesList) {
+-            const todaysCount = todays.length;
+             els.todayWakesList.innerHTML = todays
+               .slice()
+               .reverse()
+@@ -247,7 +246,8 @@
+             els.totalWakes.textContent = stats.total_wakes;
+           }
+           if (els.daysActive) {
+-            const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
++            const startDate = log.length > 0 ? new Date(log[0].runAt) : new Date("2026-10-04T00:00:00Z");
++            const daysActive = Math.floor((now.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+             els.daysActive.textContent = daysActive;
+           }
+         })
+@@ -374,7 +374,8 @@
+           }).length;
+           els.wakesPerWeek.textContent = weekCount;
+ 
+-          const daysActive = Math.floor((now.getTime() - new Date("2026-10-04T00:00:00Z").getTime()) / (24 * 60 * 60 * 1000)) + 1;
++          const startDate = log.length > 0 ? new Date(log[0].runAt) : new Date("2026-10-04T00:00:00Z");
++          const daysActive = Math.floor((now.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+           els.daysActive.textContent = daysActive;
+ 
+           const fresh = Math.floor((now.getTime() - new Date(stats.last_update).getTime()) / 1000);
+@@ -415,7 +416,7 @@
+           if (upcoming.length > 0) {
+             els.nextWakeList.innerHTML = upcoming.map(function (t) {
+               const d = new Date(t.runAt);
+-              return `<li><time datetime="${t.runAt}">${d.toISOString().slice(0, 19).replace("T", " ")}</time> — ${d.toLocaleString()}</li>`;
++              return `<li><time datetime="${t.runAt}">${d.toISOString().slice(0, 19).replace("T", " ")}</li>`;
+             }).join("");
+           } else {
+             els.nextWakeList.innerHTML = "<li>No upcoming wakes found in schedule.</li>";
