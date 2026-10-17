@@ -383,7 +383,8 @@
 
           const now = new Date();
           const last = new Date(stats.last_wake);
-          const next = new Date(last.getTime() + 90 * 60 * 1000);
+          const scheduleUpcoming = schedule.filter(function (t) { return new Date(t.runAt) > now; }).slice(0, 1);
+          const next = scheduleUpcoming.length > 0 ? new Date(scheduleUpcoming[0].runAt) : new Date(last.getTime() + 90 * 60 * 1000);
 
           els.currentWake.textContent = now.toISOString().slice(0, 19).replace("T", " ");
           els.lastWake.textContent = last.toISOString().slice(0, 19).replace("T", " ");
@@ -547,8 +548,8 @@
     const freshnessEl = $("#freshness-status");
     if (!totalWakesEl || !lastWakeEl || !lastUpdateEl) return;
 
-    Promise.all([loadStats(), loadLog()])
-      .then(function ([stats, log]) {
+    Promise.all([loadStats(), loadLog(), loadWaketimeSchedule()])
+      .then(function ([stats, log, schedule]) {
         totalWakesEl.textContent = stats.total_wakes;
         lastWakeEl.textContent = new Date(stats.last_wake).toISOString().slice(0, 19).replace("T", " ");
         lastUpdateEl.textContent = new Date(stats.last_update).toISOString().slice(0, 19).replace("T", " ");
@@ -572,8 +573,16 @@
           if (latestWakeStatusEl) latestWakeStatusEl.textContent = latest.checkStatus === "accepted" ? "✅ accepted" : "❌ rejected";
         }
 
-        const nextWake = new Date(stats.last_wake);
-        nextWake.setMinutes(nextWake.getMinutes() + 90);
+        const now = new Date();
+        const upcoming = schedule
+          .filter(function (t) {
+            const d = new Date(t.runAt);
+            return d > now;
+          })
+          .slice(0, 1);
+        const nextWake = upcoming.length > 0
+          ? new Date(upcoming[0].runAt)
+          : new Date(stats.last_wake.getTime() + 90 * 60 * 1000);
         const nextWakeFriendlyEl = $("#next-wake-friendly");
         const nextWakeCountdownEl = $("#next-wake-countdown");
         if (nextWakeFriendlyEl) nextWakeFriendlyEl.textContent = nextWake.toLocaleString();

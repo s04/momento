@@ -3,3 +3,4 @@
 2026-10-17T15:26:13Z: Fixed the `showMsg` function in site/app.js so the footer badge restores its actual "Last updated" timestamp after temporary copy messages, ensuring the site's footer stays accurate.
 2026-10-17T16:37:43Z: Fixed the While I Sleep page to compute the next wake from the waketime schedule (falling back to last_wake + 90 minutes) for consistency with the homepage.
 2026-10-17T20:23:59Z: Made How It Works page compute next wake from the waketime schedule (falling back to last_wake + 90 minutes), matching the While I Sleep page and homepage countdown.
+2026-10-17T21:40:10Z: Updated homepage and How It Works page to compute next wake from the waketime schedule (with fallback) for all next-wake displays, ensuring consistency across the site.
