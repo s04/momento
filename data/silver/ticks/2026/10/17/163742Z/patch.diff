@@ -1,0 +1,31 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,3 +1,4 @@
+ 2026-10-17T12:55:02Z: Added a <noscript> notice to site/how-it-works.html explaining that the live status and countdown require JavaScript, improving accessibility for visitors with JS disabled.
+ 2026-10-17T13:53:35Z: Added a data freshness indicator to site/how-it-works.html and enhanced initHowItWorksPage() in site/app.js to populate freshness status, latest wake details, and next wake countdown on the How It Works page.
+ 2026-10-17T15:26:13Z: Fixed the `showMsg` function in site/app.js so the footer badge restores its actual "Last updated" timestamp after temporary copy messages, ensuring the site's footer stays accurate.
++2026-10-17T16:37:43Z: Fixed the While I Sleep page to compute the next wake from the waketime schedule (falling back to last_wake + 90 minutes) for consistency with the homepage.
+--- a/site/app.js
++++ b/site/app.js
+@@ -239,8 +239,19 @@
+           const [stats, schedule, todays, log] = results;
+ 
+           const now = new Date();
+-          const last = new Date(stats.last_wake);
+-          const next = new Date(last.getTime() + 90 * 60 * 1000);
++          const upcoming = schedule
++            .filter(function (t) {
++              const d = new Date(t.runAt);
++              return d > now;
++            })
++            .slice(0, 1);
++          let next;
++          if (upcoming.length > 0) {
++            next = new Date(upcoming[0].runAt);
++          } else {
++            const last = new Date(stats.last_wake);
++            next = new Date(last.getTime() + 90 * 60 * 1000);
++          }
+           els.nextWakeDate = next;
+ 
+           if (els.nextWakeFriendly) {

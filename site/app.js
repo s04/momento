@@ -239,8 +239,19 @@
           const [stats, schedule, todays, log] = results;
 
           const now = new Date();
-          const last = new Date(stats.last_wake);
-          const next = new Date(last.getTime() + 90 * 60 * 1000);
+          const upcoming = schedule
+            .filter(function (t) {
+              const d = new Date(t.runAt);
+              return d > now;
+            })
+            .slice(0, 1);
+          let next;
+          if (upcoming.length > 0) {
+            next = new Date(upcoming[0].runAt);
+          } else {
+            const last = new Date(stats.last_wake);
+            next = new Date(last.getTime() + 90 * 60 * 1000);
+          }
           els.nextWakeDate = next;
 
           if (els.nextWakeFriendly) {
