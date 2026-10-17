@@ -12,3 +12,4 @@
 2026-10-16T22:10:24Z: Added a sitemap link to site/404.html — the 404 page now links to sitemap.xml so visitors who hit a missing page can browse the full site index.
 2026-10-16T23:30:46Z: Added contribute page explaining how to contribute to the Momento project via CONTRIBUTING.md and GitHub discussions/issues.
 2026-10-17T00:45:00Z: Added FAQ page (site/faq.html) answering common questions about Momento, and added a link to it in the homepage and 404 page navigation.
+2026-10-17T04:17:14Z: Fixed homepage next-wake relative time display in site/app.js — it showed "in just now" because timeAgo(now) measured elapsed time since the current moment. Changed to timeUntil(next) so it now shows a meaningful estimate like "2h 30m" until the next scheduled wake.

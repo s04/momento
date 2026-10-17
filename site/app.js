@@ -303,7 +303,7 @@
           els.lastWakeRelative.textContent = timeAgo(stats.last_wake);
           els.nextWakeTime.textContent = next.toISOString().slice(0, 19).replace("T", " ");
           els.nextWakeLocal.textContent = next.toLocaleString();
-          els.nextWakeRelative.textContent = "in " + timeAgo(now);
+          els.nextWakeRelative.textContent = timeUntil(next);
           els.totalWakes.textContent = stats.total_wakes;
 
           const dayStart = new Date();
