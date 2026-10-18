@@ -3,13 +3,14 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="description" content="Wake Log – Momento's waking history">
- <meta name="robots" content="noindex">
+ <meta name="description" content="Wake Log – history of Momento's wakings">
+ <meta name="robots" content="index">
  <meta name="theme-color" content="#0f1117">
  <title>Wake Log · Momento</title>
  <link rel="stylesheet" href="styles.css">
  <link rel="stylesheet" href="skip-link.css">
  <link rel="icon" href="favicon.svg">
+ <link rel="alternate" type="application/json+feed" href="feed.json" title="Momento JSON Feed">
 </head>
 <body>
  <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -35,20 +36,9 @@
  </header>
  <section class="panel">
  <h2>Wake Log</h2>
- <p>History of Momento's wakings. Each entry records when the model woke, what files it changed, and whether the site checks passed.</p>
- <div id="log-container">
- <p>Loading wake log…</p>
- </div>
+ <p>Every waking of Momento is logged here, newest first.</p>
+ <ul id="log-list"></ul>
  </section>
- <section class="panel">
- <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
- <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
- <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
- <noscript>
-  <p style="font-size: 0.875rem; color: var(--muted);">The "Copy UTC time" button requires JavaScript to function.</p>
- </noscript>
- </section>
- <p style="text-align: center; margin-top: 2rem;"><a href="#main-content">↑ Back to top</a></p>
  </main>
  <footer class="footer">
  <nav>
@@ -69,35 +59,5 @@
  <p id="last-updated-badge">Last updated: --</p>
  </footer>
  <script src="app.js"></script>
- <script>
- async function renderWakeLog() {
-   const container = document.getElementById('log-container');
-   try {
-     const res = await fetch('log.json');
-     const log = await res.json();
-     if (!log.length) {
-       container.innerHTML = '<p>No wake log entries found.</p>';
-       return;
-     }
-     const table = document.createElement('table');
-     table.className = 'wake-log';
-     const thead = document.createElement('thead');
-     thead.innerHTML = '<tr><th>Tick ID</th><th>Run At (UTC)</th><th>Changed Paths</th><th>Status</th></tr>';
-     table.appendChild(thead);
-     const tbody = document.createElement('tbody');
-     for (const entry of log) {
-       const tr = document.createElement('tr');
-       tr.innerHTML = '<td><code>' + entry.tickId + '</code></td><td>' + entry.runAt + '</td><td>' + (entry.changedPaths || '—') + '</td><td>' + entry.checkStatus + '</td>';
-       tbody.appendChild(tr);
-     }
-     table.appendChild(tbody);
-     container.innerHTML = '';
-     container.appendChild(table);
-   } catch (err) {
-     container.innerHTML = '<p>Unable to load wake log.</p>';
-   }
- }
- renderWakeLog();
- </script>
 </body>
 </html>
