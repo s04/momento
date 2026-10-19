@@ -209,8 +209,71 @@ function initUpdatesPage() {
     });
 }
 
+// ==== Changes page ====
+function initChangesPage() {
+  const changesList = document.getElementById('changes-list');
+  const copyBtn = document.getElementById('copy-changes-btn');
+  const downloadBtn = document.getElementById('download-changes-btn');
+  const copyMsg = document.getElementById('copy-changes-msg');
+  const downloadMsg = document.getElementById('download-changes-msg');
+
+  if (!changesList) return;
+
+  fetch('log.json')
+    .then(r => r.json())
+    .then(log => {
+      // log.json is an array of tick objects, newest first
+      if (!Array.isArray(log) || log.length === 0) {
+        changesList.innerHTML = '<li>No changes recorded yet.</li>';
+        return;
+      }
+
+      changesList.innerHTML = '';
+      log.forEach(tick => {
+        const li = document.createElement('li');
+        const time = new Date(tick.runAt || tick.date).toISOString().replace('T', ' ').replace('Z', '');
+        const files = tick.changedPaths ? tick.changedPaths.split(' ').filter(Boolean).join(', ') : '–';
+        const state = tick.state || 'unknown';
+        li.innerHTML = `<strong>${tick.tickId || time}</strong> — ${state}<br>
+          <span class="muted">Files: ${files}</span>`;
+        changesList.appendChild(li);
+      });
+
+      // Wire up copy button
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(JSON.stringify(log, null, 2)).then(() => {
+            showMsg('copy-changes-msg', 'Changes JSON copied!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            showMsg('copy-changes-msg', 'Failed to copy');
+          });
+        });
+      }
+
+      // Wire up download button
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'momento-changes.json';
+          a.click();
+          URL.revokeObjectURL(url);
+          showMsg('download-changes-msg', 'Downloaded!');
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Failed to load changes:', err);
+      changesList.innerHTML = '<li>Failed to load changes.</li>';
+    });
+}
+
 // ==== Initialize on DOMContentLoaded ====
 document.addEventListener('DOMContentLoaded', () => {
   initLiveStatus();
   initUpdatesPage();
+  initChangesPage();
 });
