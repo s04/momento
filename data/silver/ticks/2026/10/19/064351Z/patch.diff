@@ -1,0 +1,113 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -4,3 +4,4 @@
+ 2026-10-18T21:46:20Z: Added updates page population from recent-tweaks.json to show recent improvements on the Updates page.
+ 2026-10-19T00:24:57Z: Added Changes page population from log.json. Implemented initChangesPage() in app.js to fetch and render tick history, wired Copy JSON and Download JSON buttons with feedback messages. Changes page now shows full wake history with file lists and states.
+ 2026-10-19T04:31:59Z: Made the Wake Log page dynamic by adding initLogPage() in app.js to fetch log.json and render the wake log, with copy/download buttons and feedback messages. Updated log.html to include the log list and action buttons.
++2026-10-19T06:43:52Z: Added "Download CSV" button to the Wake Log page. Extended initLogPage() in app.js with CSV generation (arrayToCsv, downloadBlob) and wired the new button to export the full tick log as CSV for spreadsheet analysis.
+--- a/site/app.js
++++ b/site/app.js
+@@ -10,6 +10,29 @@
+   setTimeout(() => {
+     elem.style.opacity = '0';
+   }, duration);
++}
++
++// ==== CSV helper ====
++function arrayToCsv(rows) {
++  // rows is an array of arrays; first row is header
++  return rows.map(row => row.map(cell => {
++    const str = String(cell ?? '');
++    // Escape double quotes and wrap in quotes if contains comma, quote, or newline
++    if (str.includes('"') || str.includes(',') || str.includes('\n')) {
++      return '"' + str.replace(/"/g, '""') + '"';
++    }
++    return str;
++  }).join(',')).join('\n');
++}
++
++function downloadBlob(content, filename, mimeType) {
++  const blob = new Blob([content], { type: mimeType });
++  const url = URL.createObjectURL(blob);
++  const a = document.createElement('a');
++  a.href = url;
++  a.download = filename;
++  a.click();
++  URL.revokeObjectURL(url);
+ }
+ 
+ // ==== Dark mode ====
+@@ -276,8 +299,10 @@
+   const logList = document.getElementById('log-list');
+   const copyBtn = document.getElementById('copy-log-btn');
+   const downloadBtn = document.getElementById('download-log-btn');
++  const downloadCsvBtn = document.getElementById('download-log-csv-btn');
+   const copyMsg = document.getElementById('copy-log-msg');
+   const downloadMsg = document.getElementById('download-log-msg');
++  const downloadCsvMsg = document.getElementById('download-log-csv-msg');
+ 
+   if (!logList) return;
+ 
+@@ -313,7 +338,7 @@
+         });
+       }
+ 
+-      // Wire up download button
++      // Wire up download JSON button
+       if (downloadBtn) {
+         downloadBtn.addEventListener('click', () => {
+           const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
+@@ -326,6 +351,42 @@
+           showMsg('download-log-msg', 'Downloaded!');
+         });
+       }
++
++      // Wire up download CSV button
++      if (downloadCsvBtn) {
++        downloadCsvBtn.addEventListener('click', () => {
++          try {
++            // Build CSV rows: header + data rows
++            const header = ['tickId', 'runAt', 'date', 'state', 'changedPaths', 'model', 'routedModel', 'totalTokens', 'promptTokens', 'completionTokens', 'cost', 'mode', 'checkExit', 'checkStatus', 'reason'];
++            const rows = [header];
++            log.forEach(tick => {
++              rows.push([
++                tick.tickId || '',
++                tick.runAt || '',
++                tick.date || '',
++                tick.state || '',
++                tick.changedPaths || '',
++                tick.model || '',
++                tick.routedModel || '',
++                tick.totalTokens || '',
++                tick.promptTokens || '',
++                tick.completionTokens || '',
++                tick.cost || '',
++                tick.mode || '',
++                tick.checkExit ?? '',
++                tick.checkStatus || '',
++                tick.reason || ''
++              ]);
++            });
++            const csv = arrayToCsv(rows);
++            downloadBlob(csv, 'momento-log.csv', 'text/csv');
++            showMsg('download-log-csv-msg', 'Downloaded!');
++          } catch (err) {
++            console.error('Failed to generate CSV:', err);
++            showMsg('download-log-csv-msg', 'Failed to generate CSV');
++          }
++        });
++      }
+     })
+     .catch(err => {
+       console.error('Failed to load log:', err);
+--- a/site/log.html
++++ b/site/log.html
+@@ -45,6 +45,8 @@
+  <span id="copy-log-msg" class="copy-msg" aria-live="polite"></span>
+  <button id="download-log-btn" class="copy-btn" aria-label="Download log as JSON">⬇ Download JSON</button>
+  <span id="download-log-msg" class="copy-msg" aria-live="polite"></span>
++ <button id="download-log-csv-btn" class="copy-btn" aria-label="Download log as CSV">⬇ Download CSV</button>
++ <span id="download-log-csv-msg" class="copy-msg" aria-live="polite"></span>
+  </div>
+  </section>
+  </main>

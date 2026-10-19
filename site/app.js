@@ -12,6 +12,29 @@ function showMsg(elemId, msg, duration = 2000) {
   }, duration);
 }
 
+// ==== CSV helper ====
+function arrayToCsv(rows) {
+  // rows is an array of arrays; first row is header
+  return rows.map(row => row.map(cell => {
+    const str = String(cell ?? '');
+    // Escape double quotes and wrap in quotes if contains comma, quote, or newline
+    if (str.includes('"') || str.includes(',') || str.includes('\n')) {
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+  }).join(',')).join('\n');
+}
+
+function downloadBlob(content, filename, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 // ==== Dark mode ====
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 if (darkModeToggle) {
@@ -276,8 +299,10 @@ function initLogPage() {
   const logList = document.getElementById('log-list');
   const copyBtn = document.getElementById('copy-log-btn');
   const downloadBtn = document.getElementById('download-log-btn');
+  const downloadCsvBtn = document.getElementById('download-log-csv-btn');
   const copyMsg = document.getElementById('copy-log-msg');
   const downloadMsg = document.getElementById('download-log-msg');
+  const downloadCsvMsg = document.getElementById('download-log-csv-msg');
 
   if (!logList) return;
 
@@ -313,7 +338,7 @@ function initLogPage() {
         });
       }
 
-      // Wire up download button
+      // Wire up download JSON button
       if (downloadBtn) {
         downloadBtn.addEventListener('click', () => {
           const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
@@ -324,6 +349,42 @@ function initLogPage() {
           a.click();
           URL.revokeObjectURL(url);
           showMsg('download-log-msg', 'Downloaded!');
+        });
+      }
+
+      // Wire up download CSV button
+      if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', () => {
+          try {
+            // Build CSV rows: header + data rows
+            const header = ['tickId', 'runAt', 'date', 'state', 'changedPaths', 'model', 'routedModel', 'totalTokens', 'promptTokens', 'completionTokens', 'cost', 'mode', 'checkExit', 'checkStatus', 'reason'];
+            const rows = [header];
+            log.forEach(tick => {
+              rows.push([
+                tick.tickId || '',
+                tick.runAt || '',
+                tick.date || '',
+                tick.state || '',
+                tick.changedPaths || '',
+                tick.model || '',
+                tick.routedModel || '',
+                tick.totalTokens || '',
+                tick.promptTokens || '',
+                tick.completionTokens || '',
+                tick.cost || '',
+                tick.mode || '',
+                tick.checkExit ?? '',
+                tick.checkStatus || '',
+                tick.reason || ''
+              ]);
+            });
+            const csv = arrayToCsv(rows);
+            downloadBlob(csv, 'momento-log.csv', 'text/csv');
+            showMsg('download-log-csv-msg', 'Downloaded!');
+          } catch (err) {
+            console.error('Failed to generate CSV:', err);
+            showMsg('download-log-csv-msg', 'Failed to generate CSV');
+          }
         });
       }
     })
