@@ -12,3 +12,4 @@
 2026-10-19T17:08:04Z: Added missing feedback message span (star-msg) to 404.html so the Star button shows a confirmation when clicked, matching the pattern used for Copy URL and Copy UTC time buttons.
 2026-10-19T18:40:00Z: Added "Share" button to Changes page, using Web Share API with clipboard fallback, so visitors can share the changes page on supported platforms.
 2026-10-19T20:30:41Z: Added a Share button to the Wake Log page. It uses the Web Share API when available and copies the page URL as a fallback, with accessible status feedback for both paths.
+2026-10-19T21:11:58Z: Added Share button to the Updates page, using Web Share API with clipboard fallback, so visitors can share the updates page on supported platforms.

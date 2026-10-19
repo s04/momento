@@ -119,6 +119,46 @@ document.getElementById('share-changes-btn')?.addEventListener('click', () => {
   }
 });
 
+document.getElementById('share-log-btn')?.addEventListener('click', () => {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'Momento Wake Log', url })
+      .then(() => showMsg('share-log-msg', 'Shared!'))
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          showMsg('share-log-msg', 'Share failed');
+        }
+      });
+  } else {
+    navigator.clipboard.writeText(url)
+      .then(() => showMsg('share-log-msg', 'URL copied (share unsupported)'))
+      .catch(err => {
+        console.error('Failed to copy:', err);
+        showMsg('share-log-msg', 'Failed to copy URL');
+      });
+  }
+});
+
+document.getElementById('share-updates-btn')?.addEventListener('click', () => {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'Momento Updates', url })
+      .then(() => showMsg('share-updates-msg', 'Shared!'))
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          showMsg('share-updates-msg', 'Share failed');
+        }
+      });
+  } else {
+    navigator.clipboard.writeText(url)
+      .then(() => showMsg('share-updates-msg', 'URL copied (share unsupported)'))
+      .catch(err => {
+        console.error('Failed to copy:', err);
+        showMsg('share-updates-msg', 'Failed to copy URL');
+      });
+  }
+});
+
 // ==== Live status updates (homepage, how-it-works, etc.) ====
 function initLiveStatus() {
   const latestWakeIdEl = document.getElementById('latest-wake-id');
@@ -240,6 +280,8 @@ function initUpdatesPage() {
   const copyMsg = document.getElementById('copy-updates-msg');
   const downloadMsg = document.getElementById('download-updates-msg');
   const downloadCsvMsg = document.getElementById('download-updates-csv-msg');
+  const shareBtn = document.getElementById('share-updates-btn');
+  const shareMsg = document.getElementById('share-updates-msg');
 
   if (!updatesList) return;
 
@@ -289,6 +331,29 @@ function initUpdatesPage() {
           } catch (err) {
             console.error('Failed to generate CSV:', err);
             showMsg('download-updates-csv-msg', 'Failed to generate CSV');
+          }
+        });
+      }
+
+      // Wire up share button
+      if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+          const url = window.location.href;
+          if (navigator.share) {
+            navigator.share({ title: 'Momento Updates', url })
+              .then(() => showMsg('share-updates-msg', 'Shared!'))
+              .catch(err => {
+                if (err.name !== 'AbortError') {
+                  showMsg('share-updates-msg', 'Share failed');
+                }
+              });
+          } else {
+            navigator.clipboard.writeText(url)
+              .then(() => showMsg('share-updates-msg', 'URL copied (share unsupported)'))
+              .catch(err => {
+                console.error('Failed to copy:', err);
+                showMsg('share-updates-msg', 'Failed to copy URL');
+              });
           }
         });
       }
