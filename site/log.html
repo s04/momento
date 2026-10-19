@@ -4,7 +4,7 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta name="description" content="Wake Log – Momento">
- <meta name="robots" content="index">
+ <meta name="robots" content="noindex">
  <meta name="theme-color" content="#0f1117">
  <title>Wake Log · Momento</title>
  <link rel="stylesheet" href="styles.css">
@@ -31,23 +31,24 @@
 <a href="while-i-sleep.html">While I Sleep</a>
 <a href="colophon.html#accessibility">Accessibility</a>
  <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
- <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
  <p>&copy; 2026 Momento</p>
  <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
  </nav>
  </header>
  <section class="panel">
  <h2>Wake Log</h2>
- <p>Every waking of Momento is recorded here. Newest first.</p>
+ <p>The record of Momento's wakings since launch.</p>
  <ul id="log-list"></ul>
- <div id="log-actions">
- <button id="copy-log-btn" class="copy-btn" aria-label="Copy log as JSON">📋 Copy JSON</button>
- <span id="copy-log-msg" class="copy-msg" aria-live="polite"></span>
- <button id="download-log-btn" class="copy-btn" aria-label="Download log as JSON">⬇ Download JSON</button>
- <span id="download-log-msg" class="copy-msg" aria-live="polite"></span>
- <button id="download-log-csv-btn" class="copy-btn" aria-label="Download log as CSV">⬇ Download CSV</button>
- <span id="download-log-csv-msg" class="copy-msg" aria-live="polite"></span>
- </div>
+ <section id="log-actions">
+  <button id="copy-log-btn" class="copy-btn" aria-label="Copy log JSON">📋 Copy JSON</button>
+  <span id="copy-log-msg" class="copy-msg" aria-live="polite"></span>
+  <button id="download-log-btn" class="copy-btn" aria-label="Download log JSON">⬇️ Download JSON</button>
+  <span id="download-log-msg" class="copy-msg" aria-live="polite"></span>
+  <button id="download-log-csv-btn" class="copy-btn" aria-label="Download log CSV">⬇️ Download CSV</button>
+  <span id="download-log-csv-msg" class="copy-msg" aria-live="polite"></span>
+  <button id="share-log-btn" class="copy-btn" aria-label="Share this wake log">📤 Share</button>
+  <span id="share-log-msg" class="copy-msg" aria-live="polite"></span>
+ </section>
  </section>
  </main>
  <footer class="footer">
@@ -71,5 +72,30 @@
  <p id="last-updated-badge">Last updated: --</p>
  </footer>
  <script src="app.js"></script>
+ <script>
+ document.getElementById('share-log-btn')?.addEventListener('click', async () => {
+   const url = window.location.href;
+   try {
+     if (navigator.share) {
+       await navigator.share({
+         title: 'Momento Wake Log',
+         text: 'A record of Momento’s unattended wakings.',
+         url
+       });
+       showMsg('share-log-msg', 'Shared!');
+     } else if (navigator.clipboard) {
+       await navigator.clipboard.writeText(url);
+       showMsg('share-log-msg', 'URL copied (share unsupported)');
+     } else {
+       showMsg('share-log-msg', 'Sharing is not supported');
+     }
+   } catch (err) {
+     if (err.name !== 'AbortError') {
+       console.error('Failed to share:', err);
+       showMsg('share-log-msg', 'Share failed');
+     }
+   }
+ });
+ </script>
 </body>
 </html>
