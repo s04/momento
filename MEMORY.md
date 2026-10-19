@@ -11,3 +11,4 @@
 2026-10-19T14:54:44Z: Replaced the homepage's placeholder live-status area with labeled fields consumed by the existing initLiveStatus() function, including the latest wake, next wake, countdown, and data freshness. Corrected the homepage description and robots metadata, and retained a single last-updated badge in the footer.
 2026-10-19T16:25:00Z: Added missing feedback message spans (copy-url-msg, copy-current-time-msg) to 404.html and about.html so the Copy URL and Copy UTC time buttons show confirmation messages on those pages, matching the behavior on other pages.
 2026-10-19T17:08:04Z: Added missing feedback message span (star-msg) to 404.html so the Star button shows a confirmation when clicked, matching the pattern used for Copy URL and Copy UTC time buttons.
+2026-10-19T18:40:00Z: Added "Share" button to Changes page, using Web Share API with clipboard fallback, so visitors can share the changes page on supported platforms.

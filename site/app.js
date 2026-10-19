@@ -98,6 +98,27 @@ document.getElementById('report-broken-link-btn')?.addEventListener('click', () 
   window.location.href = mailto;
 });
 
+// ==== Share button ====
+document.getElementById('share-changes-btn')?.addEventListener('click', () => {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'Momento Changes', url })
+      .then(() => showMsg('share-changes-msg', 'Shared!'))
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          showMsg('share-changes-msg', 'Share failed');
+        }
+      });
+  } else {
+    navigator.clipboard.writeText(url)
+      .then(() => showMsg('share-changes-msg', 'URL copied (share unsupported)'))
+      .catch(err => {
+        console.error('Failed to copy:', err);
+        showMsg('share-changes-msg', 'Failed to copy URL');
+      });
+  }
+});
+
 // ==== Live status updates (homepage, how-it-works, etc.) ====
 function initLiveStatus() {
   const latestWakeIdEl = document.getElementById('latest-wake-id');

@@ -1,0 +1,48 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -11,3 +11,4 @@
+ 2026-10-19T14:54:44Z: Replaced the homepage's placeholder live-status area with labeled fields consumed by the existing initLiveStatus() function, including the latest wake, next wake, countdown, and data freshness. Corrected the homepage description and robots metadata, and retained a single last-updated badge in the footer.
+ 2026-10-19T16:25:00Z: Added missing feedback message spans (copy-url-msg, copy-current-time-msg) to 404.html and about.html so the Copy URL and Copy UTC time buttons show confirmation messages on those pages, matching the behavior on other pages.
+ 2026-10-19T17:08:04Z: Added missing feedback message span (star-msg) to 404.html so the Star button shows a confirmation when clicked, matching the pattern used for Copy URL and Copy UTC time buttons.
++2026-10-19T18:40:00Z: Added "Share" button to Changes page, using Web Share API with clipboard fallback, so visitors can share the changes page on supported platforms.
+--- a/site/app.js
++++ b/site/app.js
+@@ -96,6 +96,27 @@
+   const body = `I found a potentially broken link on ${url}\n\nPlease investigate when you can.`;
+   const mailto = `mailto:s04+momento@github.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+   window.location.href = mailto;
++});
++
++// ==== Share button ====
++document.getElementById('share-changes-btn')?.addEventListener('click', () => {
++  const url = window.location.href;
++  if (navigator.share) {
++    navigator.share({ title: 'Momento Changes', url })
++      .then(() => showMsg('share-changes-msg', 'Shared!'))
++      .catch(err => {
++        if (err.name !== 'AbortError') {
++          showMsg('share-changes-msg', 'Share failed');
++        }
++      });
++  } else {
++    navigator.clipboard.writeText(url)
++      .then(() => showMsg('share-changes-msg', 'URL copied (share unsupported)'))
++      .catch(err => {
++        console.error('Failed to copy:', err);
++        showMsg('share-changes-msg', 'Failed to copy URL');
++      });
++  }
+ });
+ 
+ // ==== Live status updates (homepage, how-it-works, etc.) ====
+--- a/site/changes.html
++++ b/site/changes.html
+@@ -47,6 +47,8 @@
+  <span id="download-changes-msg" class="copy-msg" aria-live="polite"></span>
+  <button id="download-changes-csv-btn" class="copy-btn" aria-label="Download changes as CSV">📥 Download CSV</button>
+  <span id="download-changes-csv-msg" class="copy-msg" aria-live="polite"></span>
++ <button id="share-changes-btn" class="copy-btn" aria-label="Share this page">🔗 Share</button>
++ <span id="share-changes-msg" class="copy-msg" aria-live="polite"></span>
+  </div>
+  </section>
+  </main>
