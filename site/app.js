@@ -394,10 +394,203 @@ function initLogPage() {
     });
 }
 
+// ==== Colophon page — data tools ====
+function initColophonPage() {
+  const copyStatsBtn = document.getElementById('copy-stats-btn');
+  const copyFreshnessBtn = document.getElementById('copy-freshness-btn');
+  const copyLogBtn = document.getElementById('copy-log-btn');
+  const downloadStatsBtn = document.getElementById('download-stats-btn');
+  const downloadRecentTweaksBtn = document.getElementById('download-recent-tweaks-btn');
+  const downloadWaketimeScheduleBtn = document.getElementById('download-waketime-schedule-btn');
+  const downloadLogBtn = document.getElementById('download-log-btn');
+  const copyStatsMsg = document.getElementById('copy-stats-msg');
+  const copyFreshnessMsg = document.getElementById('copy-freshness-msg');
+  const copyLogMsg = document.getElementById('copy-log-msg');
+  const downloadStatsMsg = document.getElementById('download-stats-msg');
+  const downloadRecentTweaksMsg = document.getElementById('download-recent-tweaks-msg');
+  const downloadWaketimeScheduleMsg = document.getElementById('download-waketime-schedule-msg');
+  const downloadLogMsg = document.getElementById('download-log-msg');
+
+  // Only act if at least one colophon button exists
+  if (!copyStatsBtn && !copyFreshnessBtn && !copyLogBtn &&
+      !downloadStatsBtn && !downloadRecentTweaksBtn &&
+      !downloadWaketimeScheduleBtn && !downloadLogBtn) {
+    return;
+  }
+
+  // Helper: build CSV from log data
+  function buildLogCsv(log) {
+    const header = ['tickId', 'runAt', 'date', 'state', 'changedPaths', 'model', 'routedModel', 'totalTokens', 'promptTokens', 'completionTokens', 'cost', 'mode', 'checkExit', 'checkStatus', 'reason'];
+    const rows = [header];
+    log.forEach(tick => {
+      rows.push([
+        tick.tickId || '',
+        tick.runAt || '',
+        tick.date || '',
+        tick.state || '',
+        tick.changedPaths || '',
+        tick.model || '',
+        tick.routedModel || '',
+        tick.totalTokens || '',
+        tick.promptTokens || '',
+        tick.completionTokens || '',
+        tick.cost || '',
+        tick.mode || '',
+        tick.checkExit ?? '',
+        tick.checkStatus || '',
+        tick.reason || ''
+      ]);
+    });
+    return arrayToCsv(rows);
+  }
+
+  // Copy stats JSON
+  if (copyStatsBtn) {
+    copyStatsBtn.addEventListener('click', () => {
+      fetch('stats.json')
+        .then(r => r.json())
+        .then(stats => {
+          navigator.clipboard.writeText(JSON.stringify(stats, null, 2)).then(() => {
+            showMsg('copy-stats-msg', 'Stats copied!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            showMsg('copy-stats-msg', 'Failed to copy');
+          });
+        })
+        .catch(err => {
+          console.error('Failed to fetch stats:', err);
+          showMsg('copy-stats-msg', 'Failed to load stats');
+        });
+    });
+  }
+
+  // Copy freshness status
+  if (copyFreshnessBtn) {
+    copyFreshnessBtn.addEventListener('click', () => {
+      fetch('stats.json')
+        .then(r => r.json())
+        .then(stats => {
+          const lastUpdate = new Date(stats.last_update);
+          const ageMinutes = (new Date() - lastUpdate) / (1000 * 60);
+          let status;
+          if (ageMinutes < 5) status = 'fresh';
+          else if (ageMinutes < 60) status = 'recent';
+          else status = 'stale';
+          const text = `Status: ${status}\nLast update: ${lastUpdate.toISOString().replace('T', ' ').replace('Z', '')}\nAge: ${Math.round(ageMinutes)} minutes`;
+          navigator.clipboard.writeText(text).then(() => {
+            showMsg('copy-freshness-msg', 'Freshness copied!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            showMsg('copy-freshness-msg', 'Failed to copy');
+          });
+        })
+        .catch(err => {
+          console.error('Failed to fetch stats:', err);
+          showMsg('copy-freshness-msg', 'Failed to load freshness');
+        });
+    });
+  }
+
+  // Copy tick log as CSV
+  if (copyLogBtn) {
+    copyLogBtn.addEventListener('click', () => {
+      fetch('log.json')
+        .then(r => r.json())
+        .then(log => {
+          if (!Array.isArray(log) || log.length === 0) {
+            showMsg('copy-log-msg', 'No log entries to copy');
+            return;
+          }
+          const csv = buildLogCsv(log);
+          navigator.clipboard.writeText(csv).then(() => {
+            showMsg('copy-log-msg', 'Log CSV copied!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            showMsg('copy-log-msg', 'Failed to copy');
+          });
+        })
+        .catch(err => {
+          console.error('Failed to fetch log:', err);
+          showMsg('copy-log-msg', 'Failed to load log');
+        });
+    });
+  }
+
+  // Download stats JSON
+  if (downloadStatsBtn) {
+    downloadStatsBtn.addEventListener('click', () => {
+      fetch('stats.json')
+        .then(r => r.json())
+        .then(stats => {
+          downloadBlob(JSON.stringify(stats, null, 2), 'momento-stats.json', 'application/json');
+          showMsg('download-stats-msg', 'Downloaded!');
+        })
+        .catch(err => {
+          console.error('Failed to fetch stats:', err);
+          showMsg('download-stats-msg', 'Failed to download');
+        });
+    });
+  }
+
+  // Download recent tweaks JSON
+  if (downloadRecentTweaksBtn) {
+    downloadRecentTweaksBtn.addEventListener('click', () => {
+      fetch('recent-tweaks.json')
+        .then(r => r.json())
+        .then(tweaks => {
+          downloadBlob(JSON.stringify(tweaks, null, 2), 'momento-recent-tweaks.json', 'application/json');
+          showMsg('download-recent-tweaks-msg', 'Downloaded!');
+        })
+        .catch(err => {
+          console.error('Failed to fetch recent tweaks:', err);
+          showMsg('download-recent-tweaks-msg', 'Failed to download');
+        });
+    });
+  }
+
+  // Download waketime schedule JSON
+  if (downloadWaketimeScheduleBtn) {
+    downloadWaketimeScheduleBtn.addEventListener('click', () => {
+      fetch('waketime-schedule.json')
+        .then(r => r.json())
+        .then(schedule => {
+          downloadBlob(JSON.stringify(schedule, null, 2), 'momento-waketime-schedule.json', 'application/json');
+          showMsg('download-waketime-schedule-msg', 'Downloaded!');
+        })
+        .catch(err => {
+          console.error('Failed to fetch waketime schedule:', err);
+          showMsg('download-waketime-schedule-msg', 'Failed to download');
+        });
+    });
+  }
+
+  // Download tick log as CSV
+  if (downloadLogBtn) {
+    downloadLogBtn.addEventListener('click', () => {
+      fetch('log.json')
+        .then(r => r.json())
+        .then(log => {
+          if (!Array.isArray(log) || log.length === 0) {
+            showMsg('download-log-msg', 'No log entries to download');
+            return;
+          }
+          const csv = buildLogCsv(log);
+          downloadBlob(csv, 'momento-log.csv', 'text/csv');
+          showMsg('download-log-msg', 'Downloaded!');
+        })
+        .catch(err => {
+          console.error('Failed to fetch log:', err);
+          showMsg('download-log-msg', 'Failed to download');
+        });
+    });
+  }
+}
+
 // ==== Initialize on DOMContentLoaded ====
 document.addEventListener('DOMContentLoaded', () => {
   initLiveStatus();
   initUpdatesPage();
   initChangesPage();
   initLogPage();
+  initColophonPage();
 });
