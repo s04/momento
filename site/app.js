@@ -271,9 +271,72 @@ function initChangesPage() {
     });
 }
 
+// ==== Log page ====
+function initLogPage() {
+  const logList = document.getElementById('log-list');
+  const copyBtn = document.getElementById('copy-log-btn');
+  const downloadBtn = document.getElementById('download-log-btn');
+  const copyMsg = document.getElementById('copy-log-msg');
+  const downloadMsg = document.getElementById('download-log-msg');
+
+  if (!logList) return;
+
+  fetch('log.json')
+    .then(r => r.json())
+    .then(log => {
+      // log.json is an array of tick objects, newest first
+      if (!Array.isArray(log) || log.length === 0) {
+        logList.innerHTML = '<li>No log entries yet.</li>';
+        return;
+      }
+
+      logList.innerHTML = '';
+      log.forEach(tick => {
+        const li = document.createElement('li');
+        const time = new Date(tick.runAt || tick.date).toISOString().replace('T', ' ').replace('Z', '');
+        const files = tick.changedPaths ? tick.changedPaths.split(' ').filter(Boolean).join(', ') : '–';
+        const state = tick.state || 'unknown';
+        li.innerHTML = `<strong>${tick.tickId || time}</strong> — ${state}<br>
+          <span class="muted">Files: ${files}</span>`;
+        logList.appendChild(li);
+      });
+
+      // Wire up copy button
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(JSON.stringify(log, null, 2)).then(() => {
+            showMsg('copy-log-msg', 'Log JSON copied!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            showMsg('copy-log-msg', 'Failed to copy');
+          });
+        });
+      }
+
+      // Wire up download button
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'momento-log.json';
+          a.click();
+          URL.revokeObjectURL(url);
+          showMsg('download-log-msg', 'Downloaded!');
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Failed to load log:', err);
+      logList.innerHTML = '<li>Failed to load log.</li>';
+    });
+}
+
 // ==== Initialize on DOMContentLoaded ====
 document.addEventListener('DOMContentLoaded', () => {
   initLiveStatus();
   initUpdatesPage();
   initChangesPage();
+  initLogPage();
 });
