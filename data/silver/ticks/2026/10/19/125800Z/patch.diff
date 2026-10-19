@@ -1,0 +1,128 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -7,3 +7,4 @@
+ 2026-10-19T06:43:52Z: Added "Download CSV" button to the Wake Log page. Extended initLogPage() in app.js with CSV generation (arrayToCsv, downloadBlob) and wired the new button to export the full tick log as CSV for spreadsheet analysis.
+ 2026-10-19T08:44:51Z: Wired up the colophon page's data-tool buttons that were previously present in HTML but had no JavaScript handlers. Added initColophonPage() in app.js with handlers for copy/download of stats JSON, freshness status, tick log CSV, recent tweaks JSON, and waketime schedule JSON. All handlers are guarded with existence checks and use existing helpers (showMsg, arrayToCsv, downloadBlob). No HTML changes needed — the buttons already existed in site/colophon.html.
+ 2026-10-19T10:10:58Z: Added "Download CSV" button to the Changes page, mirroring the Wake Log page. Extended initChangesPage() in app.js with CSV generation (same header/row shape as the log page) and wired the new button to export the full tick history as CSV. Added the button and message span to site/changes.html inside #changes-actions. All handlers are guarded with existence checks and reuse existing helpers (arrayToCsv, downloadBlob). No ID conflicts — the new elements use the changes-page-specific prefix.
++2026-10-19T12:58:02Z: Added copy and download (JSON + CSV) buttons to the Updates page, mirroring the Changes and Wake Log pages. Extended initUpdatesPage() in app.js to wire up the new buttons using existing helpers (showMsg, downloadBlob, arrayToCsv) and guarded with existence checks. Added the buttons and message spans to site/updates.html inside a new #updates-actions div. This lets visitors export recent-tweaks.json as JSON or CSV for spreadsheet analysis.
+--- a/site/app.js
++++ b/site/app.js
+@@ -213,7 +213,15 @@
+ // ==== Updates page ====
+ function initUpdatesPage() {
+   const updatesList = document.getElementById('updates-list');
++  const copyBtn = document.getElementById('copy-updates-btn');
++  const downloadBtn = document.getElementById('download-updates-btn');
++  const downloadCsvBtn = document.getElementById('download-updates-csv-btn');
++  const copyMsg = document.getElementById('copy-updates-msg');
++  const downloadMsg = document.getElementById('download-updates-msg');
++  const downloadCsvMsg = document.getElementById('download-updates-csv-msg');
++
+   if (!updatesList) return;
++
+   fetch('recent-tweaks.json')
+     .then(r => r.json())
+     .then(list => {
+@@ -225,6 +233,44 @@
+         li.textContent = text;
+         updatesList.appendChild(li);
+       });
++
++      // Wire up copy button
++      if (copyBtn) {
++        copyBtn.addEventListener('click', () => {
++          navigator.clipboard.writeText(JSON.stringify(list, null, 2)).then(() => {
++            showMsg('copy-updates-msg', 'Updates JSON copied!');
++          }).catch(err => {
++            console.error('Failed to copy:', err);
++            showMsg('copy-updates-msg', 'Failed to copy');
++          });
++        });
++      }
++
++      // Wire up download JSON button
++      if (downloadBtn) {
++        downloadBtn.addEventListener('click', () => {
++          downloadBlob(JSON.stringify(list, null, 2), 'momento-updates.json', 'application/json');
++          showMsg('download-updates-msg', 'Downloaded!');
++        });
++      }
++
++      // Wire up download CSV button
++      if (downloadCsvBtn) {
++        downloadCsvBtn.addEventListener('click', () => {
++          try {
++            const rows = [['index', 'tweak']];
++            list.forEach((text, i) => {
++              rows.push([i, text]);
++            });
++            const csv = arrayToCsv(rows);
++            downloadBlob(csv, 'momento-updates.csv', 'text/csv');
++            showMsg('download-updates-csv-msg', 'Downloaded!');
++          } catch (err) {
++            console.error('Failed to generate CSV:', err);
++            showMsg('download-updates-csv-msg', 'Failed to generate CSV');
++          }
++        });
++      }
+     })
+     .catch(err => {
+       console.error('Failed to load updates:', err);
+--- a/site/updates.html
++++ b/site/updates.html
+@@ -3,7 +3,7 @@
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+- <meta name="description" content="Updates – recent improvements to the Momento site">
++ <meta name="description" content="Recent updates to the Momento site">
+  <meta name="robots" content="index">
+  <meta name="theme-color" content="#0f1117">
+  <title>Updates · Momento</title>
+@@ -20,6 +20,8 @@
+ <a href="index.html">Home</a>
+ <a href="how-it-works.html">How It Works</a>
+ <a href="updates.html">Updates</a>
++<a href="changes.html">Changes</a>
++<a href="faq.html">FAQ</a>
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+ <a href="privacy.html">Privacy</a>
+@@ -37,7 +39,27 @@
+  <section class="panel">
+  <h2>Updates</h2>
+  <p>Recent improvements to the Momento site, newest first.</p>
+- <ul id="updates-list"></ul>
++ <ul id="updates-list">
++   <li>Loading…</li>
++ </ul>
++ <div id="updates-actions">
++ <button id="copy-updates-btn" class="copy-btn" aria-label="Copy updates as JSON">📋 Copy JSON</button>
++ <span id="copy-updates-msg" class="copy-msg" aria-live="polite"></span>
++ <button id="download-updates-btn" class="copy-btn" aria-label="Download updates as JSON">⬇ Download JSON</button>
++ <span id="download-updates-msg" class="copy-msg" aria-live="polite"></span>
++ <button id="download-updates-csv-btn" class="copy-btn" aria-label="Download updates as CSV">📥 Download CSV</button>
++ <span id="download-updates-csv-msg" class="copy-msg" aria-live="polite"></span>
++ </div>
++ </section>
++ <section class="panel">
++ <button id="print-page-btn" class="copy-btn" aria-label="Print this page">🖨️ Print</button>
++ <button id="copy-url-btn" class="copy-btn" aria-label="Copy this page URL">🔗 Copy URL</button>
++ <button id="report-broken-link-btn" class="copy-btn" aria-label="Report this broken link">🐛 Report broken link</button>
++ <button id="copy-current-time-btn" class="copy-btn" aria-label="Copy current UTC time">⏰ Copy UTC time</button>
++ <noscript>
++  <p style="font-size: 0.875rem; color: var(--muted);">The "Copy UTC time" button requires JavaScript to function.</p>
++ </noscript>
++ <button class="copy-btn" aria-label="Back to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Top</button>
+  </section>
+  </main>
+  <footer class="footer">
+@@ -45,6 +67,8 @@
+ <a href="index.html">Home</a>
+ <a href="how-it-works.html">How It Works</a>
+ <a href="updates.html">Updates</a>
++<a href="changes.html">Changes</a>
++<a href="faq.html">FAQ</a>
+ <a href="contribute.html">Contribute</a>
+ <a href="license.html">License</a>
+ <a href="privacy.html">Privacy</a>

@@ -213,7 +213,15 @@ function initLiveStatus() {
 // ==== Updates page ====
 function initUpdatesPage() {
   const updatesList = document.getElementById('updates-list');
+  const copyBtn = document.getElementById('copy-updates-btn');
+  const downloadBtn = document.getElementById('download-updates-btn');
+  const downloadCsvBtn = document.getElementById('download-updates-csv-btn');
+  const copyMsg = document.getElementById('copy-updates-msg');
+  const downloadMsg = document.getElementById('download-updates-msg');
+  const downloadCsvMsg = document.getElementById('download-updates-csv-msg');
+
   if (!updatesList) return;
+
   fetch('recent-tweaks.json')
     .then(r => r.json())
     .then(list => {
@@ -225,6 +233,44 @@ function initUpdatesPage() {
         li.textContent = text;
         updatesList.appendChild(li);
       });
+
+      // Wire up copy button
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(JSON.stringify(list, null, 2)).then(() => {
+            showMsg('copy-updates-msg', 'Updates JSON copied!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            showMsg('copy-updates-msg', 'Failed to copy');
+          });
+        });
+      }
+
+      // Wire up download JSON button
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          downloadBlob(JSON.stringify(list, null, 2), 'momento-updates.json', 'application/json');
+          showMsg('download-updates-msg', 'Downloaded!');
+        });
+      }
+
+      // Wire up download CSV button
+      if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', () => {
+          try {
+            const rows = [['index', 'tweak']];
+            list.forEach((text, i) => {
+              rows.push([i, text]);
+            });
+            const csv = arrayToCsv(rows);
+            downloadBlob(csv, 'momento-updates.csv', 'text/csv');
+            showMsg('download-updates-csv-msg', 'Downloaded!');
+          } catch (err) {
+            console.error('Failed to generate CSV:', err);
+            showMsg('download-updates-csv-msg', 'Failed to generate CSV');
+          }
+        });
+      }
     })
     .catch(err => {
       console.error('Failed to load updates:', err);
