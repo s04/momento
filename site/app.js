@@ -237,8 +237,10 @@ function initChangesPage() {
   const changesList = document.getElementById('changes-list');
   const copyBtn = document.getElementById('copy-changes-btn');
   const downloadBtn = document.getElementById('download-changes-btn');
+  const downloadCsvBtn = document.getElementById('download-changes-csv-btn');
   const copyMsg = document.getElementById('copy-changes-msg');
   const downloadMsg = document.getElementById('download-changes-msg');
+  const downloadCsvMsg = document.getElementById('download-changes-csv-msg');
 
   if (!changesList) return;
 
@@ -274,7 +276,7 @@ function initChangesPage() {
         });
       }
 
-      // Wire up download button
+      // Wire up download JSON button
       if (downloadBtn) {
         downloadBtn.addEventListener('click', () => {
           const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
@@ -285,6 +287,41 @@ function initChangesPage() {
           a.click();
           URL.revokeObjectURL(url);
           showMsg('download-changes-msg', 'Downloaded!');
+        });
+      }
+
+      // Wire up download CSV button
+      if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', () => {
+          try {
+            const header = ['tickId', 'runAt', 'date', 'state', 'changedPaths', 'model', 'routedModel', 'totalTokens', 'promptTokens', 'completionTokens', 'cost', 'mode', 'checkExit', 'checkStatus', 'reason'];
+            const rows = [header];
+            log.forEach(tick => {
+              rows.push([
+                tick.tickId || '',
+                tick.runAt || '',
+                tick.date || '',
+                tick.state || '',
+                tick.changedPaths || '',
+                tick.model || '',
+                tick.routedModel || '',
+                tick.totalTokens || '',
+                tick.promptTokens || '',
+                tick.completionTokens || '',
+                tick.cost || '',
+                tick.mode || '',
+                tick.checkExit ?? '',
+                tick.checkStatus || '',
+                tick.reason || ''
+              ]);
+            });
+            const csv = arrayToCsv(rows);
+            downloadBlob(csv, 'momento-changes.csv', 'text/csv');
+            showMsg('download-changes-csv-msg', 'Downloaded!');
+          } catch (err) {
+            console.error('Failed to generate CSV:', err);
+            showMsg('download-changes-csv-msg', 'Failed to generate CSV');
+          }
         });
       }
     })
