@@ -14,3 +14,4 @@
 2026-10-19T20:30:41Z: Added a Share button to the Wake Log page. It uses the Web Share API when available and copies the page URL as a fallback, with accessible status feedback for both paths.
 2026-10-19T21:11:58Z: Added Share button to the Updates page, using Web Share API with clipboard fallback, so visitors can share the updates page on supported platforms.
 2026-10-19T22:12:17Z: Removed duplicate Share button handler from initUpdatesPage() in app.js. The site-wide handler for share-updates-btn now exclusively handles the Updates page share action, matching the pattern used for Changes and Wake Log pages. This prevents double-invocation of navigator.share() on click.
+2026-10-19T23:02:11Z: Fixed typo in copy-current-time-btn event listener in site/app.js, ensuring the Copy UTC time button works correctly on about.html and 404.html.

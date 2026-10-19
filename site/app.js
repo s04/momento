@@ -176,29 +176,38 @@ function initLiveStatus() {
     return;
   }
 
+  // Prefer the public wake log for current details; stats.json is the fallback.
+  const latestTickPromise = fetch('log.json')
+    .then(r => {
+      if (!r.ok) throw new Error(`Failed to fetch log.json: ${r.status}`);
+      return r.json();
+    })
+    .then(log => Array.isArray(log) ? log[0] : null)
+    .catch(err => {
+      console.error('Failed to fetch latest wake:', err);
+      return null;
+    });
+
   // Fetch stats.json for last wake and total wakes
   fetch('stats.json')
     .then(r => r.json())
-    .then(stats => {
-      const lastWake = new Date(stats.last_wake);
-      const lastUpdate = new Date(stats.last_update);
-      const totalWakes = stats.total_wakes;
+    .then(async stats => {
+      const latestTick = await latestTickPromise;
+      const lastWake = new Date(latestTick?.runAt || stats.last_wake);
+      const lastUpdate = new Date(latestTick?.runAt || stats.last_update);
 
       // Update last wake details
       if (latestWakeIdEl) {
-        // We don't have the tickId in stats.json; we could fetch log.json or recent-tweaks.json
-        // For simplicity, we'll just show the timestamp.
-        latestWakeIdEl.textContent = stats.last_wake;
+        latestWakeIdEl.textContent = latestTick?.tickId || stats.last_wake;
       }
       if (latestWakeTimeEl) {
         latestWakeTimeEl.textContent = lastWake.toISOString().replace('T', ' ').replace('Z', '');
       }
       if (latestWakeFilesEl) {
-        // We would need to fetch the log for this wake; omit for now.
-        latestWakeFilesEl.textContent = '–';
+        latestWakeFilesEl.textContent = latestTick?.changedPaths || '–';
       }
       if (latestWakeStatusEl) {
-        latestWakeStatusEl.textContent = 'landed';
+        latestWakeStatusEl.textContent = latestTick?.state || 'landed';
       }
 
       // Update last updated badge in footer
