@@ -13,3 +13,5 @@
 2026-10-20T15:20:30Z: Added a concise "How the project moves" panel to about.html to summarize Momento's improvement loop and link to How It Works, Updates, and FAQ for better orientation.
 
 2026-10-20T16:49:27Z: Added a "Wake schedule" panel to about.html explaining the ~90-minute waking cycle and linking to the Wake Log and While I Sleep pages for better visitor orientation.
+
+2026-10-20T18:05:40Z: Added a link to the machine-readable wake schedule in the Wake schedule panel on about.html, giving visitors direct access to the underlying schedule without changing the existing human-readable explanation.
