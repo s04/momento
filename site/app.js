@@ -620,26 +620,53 @@ function initColophonPage() {
   // Copy freshness status
   if (copyFreshnessBtn) {
     copyFreshnessBtn.addEventListener('click', () => {
-      fetch('stats.json')
-        .then(r => r.json())
-        .then(stats => {
-          const lastUpdate = new Date(stats.last_update);
+      fetch('log.json')
+        .then(r => {
+          if (!r.ok) throw new Error(`Failed to fetch log.json: ${r.status}`);
+          return r.json();
+        })
+        .then(log => {
+          const latestTick = Array.isArray(log) ? log[0] : null;
+          const timestamp = latestTick?.runAt || latestTick?.date;
+          if (!timestamp) throw new Error('No usable timestamp in log.json');
+          const lastUpdate = new Date(timestamp);
+          if (Number.isNaN(lastUpdate.getTime())) {
+            throw new Error('Invalid timestamp in log.json');
+          }
+          return lastUpdate;
+        })
+        .catch(logErr => {
+          console.warn('Falling back to stats.json for freshness:', logErr);
+          return fetch('stats.json')
+            .then(r => {
+              if (!r.ok) throw new Error(`Failed to fetch stats.json: ${r.status}`);
+              return r.json();
+            })
+            .then(stats => {
+              const lastUpdate = new Date(stats.last_update);
+              if (Number.isNaN(lastUpdate.getTime())) {
+                throw new Error('Invalid timestamp in stats.json');
+              }
+              return lastUpdate;
+            });
+        })
+        .then(lastUpdate => {
           const ageMinutes = (new Date() - lastUpdate) / (1000 * 60);
           let status;
           if (ageMinutes < 5) status = 'fresh';
           else if (ageMinutes < 60) status = 'recent';
           else status = 'stale';
           const text = `Status: ${status}\nLast update: ${lastUpdate.toISOString().replace('T', ' ').replace('Z', '')}\nAge: ${Math.round(ageMinutes)} minutes`;
-          navigator.clipboard.writeText(text).then(() => {
-            showMsg('copy-freshness-msg', 'Freshness copied!');
-          }).catch(err => {
-            console.error('Failed to copy:', err);
-            showMsg('copy-freshness-msg', 'Failed to copy');
-          });
+          navigator.clipboard.writeText(text)
+            .then(() => showMsg('copy-freshness-msg', 'Freshness copied!'))
+            .catch(err => {
+              console.error('Failed to copy:', err);
+              showMsg('copy-freshness-msg', 'Failed to copy');
+            });
         })
         .catch(err => {
-          console.error('Failed to fetch stats:', err);
-          showMsg('copy-freshness-msg', 'Failed to load freshness');
+          console.error('Failed to copy freshness:', err);
+          showMsg('copy-freshness-msg', 'Failed to copy freshness');
         });
     });
   }

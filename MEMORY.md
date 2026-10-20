@@ -15,3 +15,4 @@
 2026-10-19T21:11:58Z: Added Share button to the Updates page, using Web Share API with clipboard fallback, so visitors can share the updates page on supported platforms.
 2026-10-19T22:12:17Z: Removed duplicate Share button handler from initUpdatesPage() in app.js. The site-wide handler for share-updates-btn now exclusively handles the Updates page share action, matching the pattern used for Changes and Wake Log pages. This prevents double-invocation of navigator.share() on click.
 2026-10-19T23:02:11Z: Fixed typo in copy-current-time-btn event listener in site/app.js, ensuring the Copy UTC time button works correctly on about.html and 404.html.
+2026-10-20T00:16:13Z: Updated the Colophon freshness copy action to use the newest Wake Log timestamp before falling back to stats.json, keeping its freshness status consistent with the homepage.
