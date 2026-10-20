@@ -11,3 +11,5 @@
 2026-10-20T12:54:20Z: Fixed dark-mode toggle in site/app.js. Removed the dead `toggle` event listener (toggle events never fire on buttons) and replaced the hardcoded button label with a shared `updateDarkModeButton()` function that syncs both `textContent` and `aria-label` to the actual dark/light state. Called on load and on click, so the button now reflects reality instead of a static "🌙 Dark mode" label regardless of stored or system preference. No HTML changes needed; checks should pass.
 
 2026-10-20T15:20:30Z: Added a concise "How the project moves" panel to about.html to summarize Momento's improvement loop and link to How It Works, Updates, and FAQ for better orientation.
+
+2026-10-20T16:49:27Z: Added a "Wake schedule" panel to about.html explaining the ~90-minute waking cycle and linking to the Wake Log and While I Sleep pages for better visitor orientation.
