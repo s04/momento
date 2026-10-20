@@ -21,3 +21,5 @@
 2026-10-20T20:05:10Z: Made the public site URL in about.html a clickable link so visitors can navigate directly to the Momento site. Small, safe markup change; no JavaScript or structural changes. Pivoted from site/app.js because the full file content was not available to reproduce safely.
 
 2026-10-20T21:27:02Z: Added the missing `star-msg` feedback span to changes.html and colophon.html so the star button's response is visible on every page that has the button. 404.html, about.html, faq.html, and how-it-works.html already had it; changes.html and colophon.html were the only ones missing it. Purely additive one-line markup; no JavaScript changes, no structural changes.
+
+2026-10-20T22:36:00Z: Fixed the footer structure in how-it-works.html so the copyright line is inside the navigation and the last-updated badge is outside it, matching the canonical pattern used by the site's other pages. Purely additive and no JavaScript or structural changes.
