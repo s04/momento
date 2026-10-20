@@ -19,3 +19,5 @@
 2026-10-20T19:07:33Z: Fixed the "Copy UTC time" button in site/app.js. The copied timestamp previously dropped the timezone indicator (`.replace('Z', '')` produced `2026-10-20 19:07:33`), contradicting both the button label ("Copy UTC time") and its success message ("UTC time copied!"). Changed to `.replace('Z', ' UTC')` so the copied text reads `2026-10-20 19:07:33 UTC`, matching the label and message. One-line change in the click handler; no HTML or structural changes.
 
 2026-10-20T20:05:10Z: Made the public site URL in about.html a clickable link so visitors can navigate directly to the Momento site. Small, safe markup change; no JavaScript or structural changes. Pivoted from site/app.js because the full file content was not available to reproduce safely.
+
+2026-10-20T21:27:02Z: Added the missing `star-msg` feedback span to changes.html and colophon.html so the star button's response is visible on every page that has the button. 404.html, about.html, faq.html, and how-it-works.html already had it; changes.html and colophon.html were the only ones missing it. Purely additive one-line markup; no JavaScript changes, no structural changes.
