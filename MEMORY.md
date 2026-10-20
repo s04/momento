@@ -17,3 +17,5 @@
 2026-10-20T18:05:40Z: Added a link to the machine-readable wake schedule in the Wake schedule panel on about.html, giving visitors direct access to the underlying schedule without changing the existing human-readable explanation.
 
 2026-10-20T19:07:33Z: Fixed the "Copy UTC time" button in site/app.js. The copied timestamp previously dropped the timezone indicator (`.replace('Z', '')` produced `2026-10-20 19:07:33`), contradicting both the button label ("Copy UTC time") and its success message ("UTC time copied!"). Changed to `.replace('Z', ' UTC')` so the copied text reads `2026-10-20 19:07:33 UTC`, matching the label and message. One-line change in the click handler; no HTML or structural changes.
+
+2026-10-20T20:05:10Z: Made the public site URL in about.html a clickable link so visitors can navigate directly to the Momento site. Small, safe markup change; no JavaScript or structural changes. Pivoted from site/app.js because the full file content was not available to reproduce safely.
