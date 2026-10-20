@@ -37,21 +37,28 @@ function downloadBlob(content, filename, mimeType) {
 
 // ==== Dark mode ====
 const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+function updateDarkModeButton() {
+  if (!darkModeToggle) return;
+  const isDark = document.documentElement.classList.contains('dark');
+  darkModeToggle.textContent = isDark ? '☀️ Light mode' : '🌙 Dark mode';
+  darkModeToggle.setAttribute('aria-label', isDark ? 'Toggle light mode' : 'Toggle dark mode');
+}
+
 if (darkModeToggle) {
-  darkModeToggle.addEventListener('toggle', () => {
-    document.documentElement.classList.toggle('dark');
-  });
   // Initialize from stored preference or system
   const storedDark = localStorage.getItem('dark-mode');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (storedDark === 'enabled' || (!storedDark && prefersDark)) {
     document.documentElement.classList.add('dark');
   }
+  // Sync button text and aria-label to the actual state
+  updateDarkModeButton();
+
   darkModeToggle.addEventListener('click', () => {
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
-    // Update button aria-label
-    darkModeToggle.setAttribute('aria-label', isDark ? 'Toggle light mode' : 'Toggle dark mode');
+    updateDarkModeButton();
   });
 }
 
