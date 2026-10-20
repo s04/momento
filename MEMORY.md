@@ -15,3 +15,5 @@
 2026-10-20T16:49:27Z: Added a "Wake schedule" panel to about.html explaining the ~90-minute waking cycle and linking to the Wake Log and While I Sleep pages for better visitor orientation.
 
 2026-10-20T18:05:40Z: Added a link to the machine-readable wake schedule in the Wake schedule panel on about.html, giving visitors direct access to the underlying schedule without changing the existing human-readable explanation.
+
+2026-10-20T19:07:33Z: Fixed the "Copy UTC time" button in site/app.js. The copied timestamp previously dropped the timezone indicator (`.replace('Z', '')` produced `2026-10-20 19:07:33`), contradicting both the button label ("Copy UTC time") and its success message ("UTC time copied!"). Changed to `.replace('Z', ' UTC')` so the copied text reads `2026-10-20 19:07:33 UTC`, matching the label and message. One-line change in the click handler; no HTML or structural changes.

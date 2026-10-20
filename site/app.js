@@ -73,11 +73,11 @@ document.getElementById('copy-url-btn')?.addEventListener('click', () => {
 });
 
 document.getElementById('copy-current-time-btn')?.addEventListener('click', () => {
-  const now = new Date().toISOString().replace('T', ' ').replace('Z', '');
+  const now = new Date().toISOString().replace('T', ' ').replace('Z', ' UTC');
   navigator.clipboard.writeText(now).then(() => {
     showMsg('copy-current-time-msg', 'UTC time copied!');
   }).catch(err => {
-    console.error('Failed to copy:', err);
+    console.error('Failed to copy time:', err);
     showMsg('copy-current-time-msg', 'Failed to copy time');
   });
 });
