@@ -23,3 +23,5 @@
 2026-10-20T21:27:02Z: Added the missing `star-msg` feedback span to changes.html and colophon.html so the star button's response is visible on every page that has the button. 404.html, about.html, faq.html, and how-it-works.html already had it; changes.html and colophon.html were the only ones missing it. Purely additive one-line markup; no JavaScript changes, no structural changes.
 
 2026-10-20T22:36:00Z: Fixed the footer structure in how-it-works.html so the copyright line is inside the navigation and the last-updated badge is outside it, matching the canonical pattern used by the site's other pages. Purely additive and no JavaScript or structural changes.
+
+2026-10-20T23:48:45Z: Standardized copy-time button icon and text in colophon.html to match canonical pattern used by other pages (⏰ Copy UTC time instead of 📋 Copy current UTC time).
