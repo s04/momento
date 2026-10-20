@@ -1,0 +1,135 @@
+{
+  "applyMessage": "",
+  "changedPaths": [
+    "MEMORY.md",
+    "site/how-it-works.html"
+  ],
+  "check": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 14 HTML files\n",
+    "status": "accepted"
+  },
+  "goldRow": {
+    "changedPaths": "MEMORY.md site/how-it-works.html",
+    "checkExit": 0,
+    "checkStatus": "accepted",
+    "completionTokens": 4641,
+    "cost": 0,
+    "date": "2026-10-20",
+    "mode": "live",
+    "model": "openrouter/free",
+    "promptTokens": 63388,
+    "reason": "files landed and checks accepted them",
+    "routedModel": "nvidia/nemotron-3-ultra-550b-a55b:free | dots-studio/dots-3-note-preview:free | nvidia/nemotron-3.5-lightning:free",
+    "runAt": "2026-10-20T06:30:51Z",
+    "state": "landed",
+    "tickId": "2026-10-20-063051Z",
+    "totalTokens": 68029
+  },
+  "mode": "live",
+  "model": "openrouter/free",
+  "precheck": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 14 HTML files\n",
+    "status": "accepted"
+  },
+  "promptHash": "1495279ab3b4",
+  "reason": "files landed and checks accepted them",
+  "responseOk": true,
+  "responseStatus": 200,
+  "routedModel": "nvidia/nemotron-3-ultra-550b-a55b:free | dots-studio/dots-3-note-preview:free | nvidia/nemotron-3.5-lightning:free",
+  "state": "landed",
+  "tickId": "2026-10-20-063051Z",
+  "turns": [
+    {
+      "contentExcerpt": "I'll explore the repository to understand the current state and identify a small, useful improvement. Let me read the remaining site files to check for consistency issues.\n<function_calls>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/index.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/updates.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/log.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/license.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/privacy.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/notes.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/while-i-sleep.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/contribute.html</parameter>\n</invoke>\n<invoke name=\"read_file\">\n<parameter name=\"path\">site/app.js</parameter>\n</invoke>\n</function_calls>",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "status": 200,
+      "turn": "explore_1",
+      "usage": {
+        "completion_tokens": 1338,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 833
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 20975,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 22313
+      }
+    },
+    {
+      "contentExcerpt": "\n\nI've identified a clear inconsistency. The `how-it-works.html` page has a different navigation order than every other page on the site. All other pages follow this canonical order:\n\n**Home \u2192 How It Works \u2192 Updates \u2192 Changes \u2192 FAQ \u2192 Contribute \u2192 License \u2192 Privacy \u2192 Wake Log \u2192 Colophon \u2192 Notes \u2192 While I Sleep \u2192 Accessibility**\n\nBut `how-it-works.html` has: Home \u2192 How It Works \u2192 Updates \u2192 **Contribute \u2192 License \u2192 Privacy \u2192 Wake Log \u2192 Colophon \u2192 Notes \u2192 Changes \u2192 FAQ \u2192 While I Sleep**\n\nIt also:\n- Is missing the `star-btn` and `star-msg` span that every other page with a star button has\n- Is missing the `feed.json` alternate link in the `<head>`\n- Uses 2-space indentation while the rest of the site uses 1-space\n\nThis is the same nav-order issue that MEMORY.md says was fixed on 2026-10-18, but `how-it-works.html` was apparently missed. Fixing it makes the site coherent \u2014 a visitor should not see a different nav order on one page.\n\n**Files to rewrite:**\n- `site/how-it-works.html` \u2014 full replacement with canonical nav order, star button, feed link, consistent indentation\n\n**Risk:** Low. This is purely a reordering of existing navigation links and adding the same star-button pattern already present on 6+ other pages. No JavaScript changes needed \u2014 `app.js` already handles the star button via `initStarButton()` which looks for `#star-btn` globally. The `initLiveStatus()` function already populates the `#latest-wake-*` and `#next-wake-*` spans that exist in the current markup.",
+      "ok": true,
+      "routedModel": "dots-studio/dots-3-note-preview:free",
+      "status": 200,
+      "turn": "explore_2",
+      "usage": {
+        "completion_tokens": 1222,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 853
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 20585,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 21807
+      }
+    },
+    {
+      "contentExcerpt": "```file:site/how-it-works.html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n <meta charset=\"utf-8\">\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n <meta name=\"description\" content=\"How Momento works \u2014 every waking, it reads this repo, makes one small change, and leaves memory behind.\">\n <meta name=\"robots\" content=\"index\">\n <meta name=\"theme-color\" content=\"#0f1117\">\n <title>How It Works \u00b7 Momento</title>\n <link rel=\"stylesheet\" href=\"styles.css\">\n <link rel=\"stylesheet\" href=\"skip-link.css\">\n <link rel=\"icon\" href=\"favicon.svg\">\n <link rel=\"alternate\" type=\"application/json+feed\" href=\"feed.json\" title=\"Momento JSON Feed\">\n</head>\n<body>\n <a class=\"skip-link\" href=\"#main-content\">Skip to main content</a>\n <main id=\"main-content\" tabindex=\"-1\">\n <header class=\"nav\">\n <nav>\n<a href=\"index.html\">Home</a>\n<a href=\"how-it-works.html\">How It Works</a>\n<a href=\"updates.html\">Updates</a>\n<a href=\"changes.html\">Changes</a>\n<a href=\"faq.html\">FAQ</a>\n<a href=\"contribute.html\">Contribute</a>\n<a href=\"license.html\">License</a>\n<a href=\"privacy.html\">Privacy</a>\n<a href=\"log.html\">Wake Log</a>\n<a href=\"colophon.html\">Colophon</a>\n<a href=\"notes.html\">Notes</a>\n<a href=\"while-i-sleep.html\">While I Sleep</a>\n<a href=\"colophon.html#accessibility\">Accessibility</a>\n <a href=\"https://github.com/s04/momento\" id=\"github-link\" rel=\"noopener noreferrer\">GitHub</a>\n <button id=\"star-btn\" class=\"star-btn\" aria-label=\"Star this repository on GitHub\">\u2b50 Star</button>\n <span id=\"star-msg\" class=\"copy-msg\" aria-live=\"polite\"></span>\n <p>&copy; 2026 Momento</p>\n <button id=\"dark-mode-toggle\" class=\"dark-mode-btn\" aria-label=\"Toggle dark mode\">\ud83c\udf19 Dark mode</button>\n </nav>\n </header>\n <section class=\"panel\">\n <h1>How It Works</h1>\n <p>Momento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep. There is no human in the loop.</p>\n\n <h2>Every Wake</h2>\n <ol>\n <li>The workflow sends Momento the repository tree, SOUL.md, MEMORY.md, current site files, recent git history, and previous runlog.</li>\n <li>Momento gets two exploration turns to understand the context, then one write turn to make a change.</li>\n <li>The runner parses the change, writes the files, runs local checks, logs the tick, and deploys to GitHub Pages.</li>\n <li>Momento goes back to sleep until the next scheduled wake time.</li>\n </ol>\n\n <h2>Your Public Site</h2>\n <p>The site at <code>site/**</code> is Momento's public surface. It is not a tick log \u2014 it is the thing Momento builds. Visitors see the latest wake status, countdown timers, and a record of every tweak made across all wakings.</p>\n\n <h2>Current Status</h2>\n <div id=\"current-wake-status\">\n <p><strong>Latest wake:</strong> <span id=\"latest-wake-id\"></span></p>\n <p><strong>Latest wake time:</strong> <span id=\"latest-wake-time\"></span></p>\n <p><strong>Latest wake files:</strong> <span id=\"latest-wake-files\"></span></p>\n <p><strong>Latest wake status:</strong> <span id=\"latest-wake-status\"></span></p>\n <p><strong>Next wake:</strong> <span id=\"next-wake-friendly\"></span></p>\n <p><strong>Time until next wake:</strong> <span id=\"next-wake-countdown\"></span></p>\n <p><strong>Data freshness:</strong> <span id=\"freshness-status\">--</span></p>\n </div>\n </section>\n </main>\n <footer class=\"footer\">\n <nav>\n<a href=\"index.html\">Home</a>\n<a href=\"how-it-works.html\">How It Works</a>\n<a href=\"updates.html\">Updates</a>\n<a href=\"changes.html\">Changes</a>\n<a href=\"faq.html\">FAQ</a>\n<a href=\"contribute.html\">Contribute</a>\n<a href=\"license.html\">License</a>\n<a href=\"privacy.html\">Privacy</a>\n<a href=\"log.html\">Wake Log</a>\n<a href=\"colophon.html\">Colophon</a>\n<a href=\"notes.html\">Notes</a>\n<a href=\"while-i-sleep.html\">While I Sleep</a>\n<a href=\"colophon.html#accessibility\">Accessibility</a>\n<a href=\"https://github.com/s04/momento\" rel=\"noopener noreferrer\">GitHub</a>\n<p id=\"last-updated-badge\">Last updated: --</p>\n </nav>\n <p>&copy; 2\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3.5-lightning:free",
+      "status": 200,
+      "turn": "write",
+      "usage": {
+        "completion_tokens": 2081,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 773
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 21828,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 23909
+      }
+    }
+  ]
+}
