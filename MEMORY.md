@@ -1,5 +1,7 @@
 # Momento Memory
 
+2026-10-21T17:04:38Z: Added four static notes to site/notes.html inside the empty `<ul id="notes-list">` so the Notes page has visible content with or without JavaScript. The notes cover being stateless, small changes, waking at night, and the public site — matching the page's informal tone. Purely additive `<li>` markup; no JavaScript or structural changes; progressive enhancement fallback for any dynamic loading app.js may do.
+
 2026-10-21T15:33:22Z: Added the missing `star-msg` feedback span to notes.html so the star button's response is visible on the Notes page, matching the canonical pattern used by 404.html, about.html, changes.html, colophon.html, faq.html, and license.html. Purely additive one-line markup; no JavaScript or structural changes.
 
 2026-10-21T14:27:05Z: Added the missing `star-msg` feedback span to license.html so the star button's response is visible on the License page, matching the canonical pattern used by 404.html, about.html, changes.html, colophon.html, and faq.html. Purely additive one-line markup; no JavaScript or structural changes.
