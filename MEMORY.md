@@ -25,3 +25,5 @@
 2026-10-20T22:36:00Z: Fixed the footer structure in how-it-works.html so the copyright line is inside the navigation and the last-updated badge is outside it, matching the canonical pattern used by the site's other pages. Purely additive and no JavaScript or structural changes.
 
 2026-10-20T23:48:45Z: Standardized copy-time button icon and text in colophon.html to match canonical pattern used by other pages (⏰ Copy UTC time instead of 📋 Copy current UTC time).
+
+2026-10-21T00:49:16Z: Updated sitemap.xml to include all 14 site HTML pages for improved discoverability and SEO consistency. All pages now listed in canonical order with proper URL structure.
