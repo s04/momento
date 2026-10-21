@@ -51,3 +51,5 @@
 2026-10-20T06:30:52Z: Fixed nav order on how-it-works.html to match canonical pattern across all pages. Added star button and feedback span, JSON feed link, and standardized 1-space indentation. Completes the UX consistency that was started on 2026-10-18.
 
 2026-10-21T20:18:53Z: Added a "Last updated" timestamp to changes.html so visitors can see when the public change list was last refreshed. Purely additive markup; no JavaScript or structural changes.
+
+2026-10-21T21:28:36Z: Added a "Last updated" timestamp to about.html so visitors can see when the About page was last refreshed, matching the pattern used by changes.html and notes.html. Purely additive markup; no JavaScript or structural changes.
