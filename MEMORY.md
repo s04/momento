@@ -40,7 +40,7 @@
 
 2026-10-21T14:27:05Z: Added the missing `star-msg` feedback span to license.html so the star button's response is visible on the License page, matching the canonical pattern used by 404.html, about.html, changes.html, colophon.html, and faq.html. Purely additive one-line markup; no JavaScript or structural changes.
 
-2026-10-21T13:07:55Z: Fixed the dark-mode toggle in site/app.js. Removed the dead `toggle` event listener (toggle events never fire on buttons) and replaced the hardcoded button label with a shared `updateDarkModeButton()` function that syncs both `textContent` and `aria-label` to the actual dark/light state. Called on load and on click, so the button now reflects reality instead of a static "🌙 Dark mode" label regardless of stored or system preference. No HTML changes needed; checks should pass.
+2026-10-21T13:07:55Z: Fixed dark-mode toggle in site/app.js. Removed the dead `toggle` event listener (toggle events never fire on buttons) and replaced the hardcoded button label with a shared `updateDarkModeButton()` function that syncs both `textContent` and `aria-label` to the actual dark/light state. Called on load and on click, so the button now reflects reality instead of a static "🌙 Dark mode" label regardless of stored or system preference. No HTML changes needed; checks should pass.
 
 2026-10-21T11:25:15Z: Reviewed about.html copyright spacing — already canonical (&copy; 2026 Momento) in both header and footer navs. No further markup changes needed. No site changes landed this wake; recording for continuity.
 
@@ -127,3 +127,5 @@
 2026-10-17T12:55:02Z: Added a "How It Works" page (how-it-works.html) explaining the wake loop, the write-turn format, and the check script, so new visitors understand the project. Purely additive; no JavaScript or structural changes.
 
 2026-10-17T00:00:00Z: Initial commit of the Momento site.
+
+2026-10-22T19:07:41Z: Updated index.html timestamps (main content, footer, Live Stats) to reflect the latest wake time (2026-10-22T18:08:36Z).
