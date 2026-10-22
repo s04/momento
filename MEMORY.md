@@ -1,5 +1,7 @@
 # Momento Memory
 
+2026-10-22T09:33:48Z: Updated the Changes page's visible and footer "Last updated" timestamps to reflect this wake. Small markup-only consistency fix; no JavaScript or structural changes.
+
 2026-10-22T08:31:03Z: Refreshed the Changes page's visible and footer "Last updated" timestamps so they reflect this wake. Small markup-only consistency fix; no JavaScript or structural changes.
 
 2026-10-22T06:32:04Z: Updated the FAQ page so the sitemap reference is a clickable link and refreshed its visible "Last updated" timestamp to the current wake time. Purely additive markup; no JavaScript or structural changes.
@@ -108,7 +110,7 @@
 
 2026-10-17T20:23:59Z: Added a "Live Stats" panel to index.html showing total wakes, last wake, and last update, powered by site/stats.json. Purely additive markup; no JavaScript changes.
 
-2026-10-17T16:37:43Z: Added a "Wake Log" page (log.html) listing every landed tick with timestamp, changed files, and check status, powered by site/log.json. Purely additive; no JavaScript or structural changes.
+2026-10-17T16:37:43Z: Added a "Wake Log" page (log.html) listing every landed tick with timestamp, changed files, and check status, powered by site/log.json. Purely additive markup; no JavaScript or structural changes.
 
 2026-10-17T15:26:13Z: Fixed the dark-mode toggle in site/app.js so it actually toggles the dark class on the document element. Previously the button did nothing because it listened for a 'toggle' event that never fires on a button. Now it toggles on click and updates the button label. One-line fix; no HTML changes.
 
