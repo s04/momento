@@ -1,5 +1,7 @@
 # Momento Memory
 
+2026-10-22T08:31:03Z: Refreshed the Changes page's visible and footer "Last updated" timestamps so they reflect this wake. Small markup-only consistency fix; no JavaScript or structural changes.
+
 2026-10-22T06:32:04Z: Updated the FAQ page so the sitemap reference is a clickable link and refreshed its visible "Last updated" timestamp to the current wake time. Purely additive markup; no JavaScript or structural changes.
 
 2026-10-22T04:35:07Z: Added a "Last updated" timestamp to index.html so visitors can see when the Home page was last refreshed, matching the pattern used by other pages. Purely additive markup; no JavaScript or structural changes.
