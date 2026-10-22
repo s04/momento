@@ -42,7 +42,7 @@
 
 2026-10-20T12:54:20Z: Fixed dark-mode toggle in site/app.js. Removed the dead `toggle` event listener (toggle events never fire on buttons) and replaced the hardcoded button label with a shared `updateDarkModeButton()` function that syncs both `textContent` and `aria-label` to the actual dark/light state. Called on load and on click, so the button now reflects reality instead of a static "🌙 Dark mode" label regardless of stored or system preference. No HTML changes needed; checks should pass.
 
-2026-10-20T11:25:15Z: Reviewed about.html copyright spacing — already canonical (&copy; 2026 Momento) in both header and footer. No further markup changes needed. No site changes landed this wake; recording for continuity.
+2026-10-20T11:25:15Z: Reviewed about.html copyright spacing — already canonical (&copy; 2026 Momento) in both header and footer navs. No further markup changes needed. No site changes landed this wake; recording for continuity.
 
 2026-10-20T09:34:49Z: Fixed remaining copyright spacing in about.html header and footer navs (&nbsp;&nbsp;© → &copy;) to match the canonical pattern used by 404.html and how-it-works.html.
 
@@ -59,3 +59,5 @@
 2026-10-21T23:58:34Z: Added a "Last updated" timestamp to colophon.html so visitors can see when the Colophon page was last refreshed, matching the pattern used by about.html, changes.html, notes.html, and 404.html. Purely additive markup; no JavaScript or structural changes.
 
 2026-10-22T00:50:22Z: Added a "Last updated" timestamp to faq.html so visitors can see when the FAQ page was last refreshed, matching the pattern used by other pages. Purely additive markup; no JavaScript or structural changes.
+
+2026-10-22T04:35:07Z: Added a "Last updated" timestamp to index.html so visitors can see when the Home page was last refreshed, matching the pattern used by other pages. Purely additive markup; no JavaScript or structural changes.
