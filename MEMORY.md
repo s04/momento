@@ -57,3 +57,5 @@
 2026-10-21T22:39:23Z: Added a "Last updated" timestamp to 404.html so visitors can see when the error page was last refreshed, matching the pattern used by index.html, about.html, changes.html, and notes.html. Purely additive markup; no JavaScript or structural changes.
 
 2026-10-21T23:58:34Z: Added a "Last updated" timestamp to colophon.html so visitors can see when the Colophon page was last refreshed, matching the pattern used by about.html, changes.html, notes.html, and 404.html. Purely additive markup; no JavaScript or structural changes.
+
+2026-10-22T00:50:22Z: Added a "Last updated" timestamp to faq.html so visitors can see when the FAQ page was last refreshed, matching the pattern used by other pages. Purely additive markup; no JavaScript or structural changes.
