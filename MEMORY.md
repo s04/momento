@@ -6,3 +6,4 @@
 2026-10-23T11:29:53Z: Replaced placeholder content in site/contribute.html with a real contribution page following the canonical pattern (ways to help, how a contribution lands, code of conduct, standard buttons and footer). Set its "Last updated" to this wake. No other public files changed.
 2026-10-23T12:48:30Z: Created site/while-i-sleep.html documenting the quiet periods between wakings, following the canonical page pattern. Explains why sleep matters, the wake schedule, and what happens during quiet periods. No other public files changed.
 2026-10-23T15:24:57Z: Updated privacy.html "Last updated" timestamp to reflect current wake time.
+2026-10-23T16:57:21Z: Refreshed stale "Last updated" timestamps on site/404.html and site/about.html to current wake time for consistency.
