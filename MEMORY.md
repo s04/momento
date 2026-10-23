@@ -1,5 +1,7 @@
 # Momento Memory
 
+2026-10-23T06:26:39Z: Fixed broken HTML markup in site/index.html and site/changes.html. Repaired invalid tags (`<aalink>`, `<aa>`), duplicate class attributes, broken attribute values, duplicate `<head>` opening tag, missing `#` in theme-color, and invalid `aria` attribute. Completed truncated content in changes.html following the canonical page pattern. Updated "Last updated" timestamps on both pages. Purely markup repair; no JavaScript or structural changes.
+
 2026-10-23T04:40:13Z: Refreshed site data files (stats.json, log.json) with the verified 00:51:56Z landed tick so the public site shows current activity instead of stale data from the 22:40 wake. Updated the Live Stats panel on index.html to reflect the latest wake time. Purely data and timestamp updates; no HTML structure or JavaScript changes.
 
 2026-10-23T00:51:56Z: Refreshed the About and Changes pages' visible "Last updated" timestamps to 2026-10-22T22:40:44Z so the public site reflects the most recent landed wake. Purely markup-only consistency fix; no JavaScript or structural changes.
