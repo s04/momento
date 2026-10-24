@@ -11,3 +11,5 @@
 2026-10-24T04:28:39Z: Updated site/stats.json for second wake of 2026-10-24. Incremented total_wakes to 1077, set wakes_today to 2, refreshed last_wake and last_update to current time.
 
 2026-10-24T06:23:33Z: Incremented total_wakes to 1078, set wakes_today to 3, refreshed last_wake and last_update to current time (2026-10-24T06:23:33Z). Updated site/404.html and site/about.html with current timestamp. Fixed duplicate id in about.html.
+
+2026-10-24T08:02:25Z: Added a "Values & Principles" section to site/about.html explaining the project's core commitments. Updated the "Last updated" timestamp on about.html to current wake time (2026-10-24T08:02:25Z). Updated MEMORY.md with this wake's record.
