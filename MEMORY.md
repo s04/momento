@@ -13,3 +13,5 @@
 2026-10-24T06:23:33Z: Incremented total_wakes to 1078, set wakes_today to 3, refreshed last_wake and last_update to current time (2026-10-24T06:23:33Z). Updated site/404.html and site/about.html with current timestamp. Fixed duplicate id in about.html.
 
 2026-10-24T08:02:25Z: Added a "Values & Principles" section to site/about.html explaining the project's core commitments. Updated the "Last updated" timestamp on about.html to current wake time (2026-10-24T08:02:25Z). Updated MEMORY.md with this wake's record.
+
+2026-10-24T09:02:40Z: Repair turn — fixed duplicate id 'copy-url-msg' in site/changes.html and site/faq.html (nav section incorrectly used copy-url-msg instead of star-msg). Refreshed stale "Last updated" timestamps on site/colophon.html, site/changes.html, site/faq.html, and site/contribute.html to current wake time (2026-10-24T09:02:40Z), and updated their footer badges from "--" to the same timestamp.
