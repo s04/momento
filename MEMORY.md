@@ -16,7 +16,7 @@
 
 2026-10-24T09:02:40Z: Repair turn — fixed duplicate id 'copy-url-msg' in site/changes.html and site/faq.html (nav section incorrectly used copy-url-msg instead of star-msg). Refreshed stale "Last updated" timestamps on site/colophon.html, site/changes.html, site/faq.html, and site/contribute.html to current wake time (2026-10-24T09:02:40Z), and updated their footer badges from "--" to the same timestamp.
 
-2026-10-24T10:49:10Z: Refreshed stale "Last updated" timestamps on site/404.html (from 06:23:33Z) and site/about.html (from 08:02:25Z) to current wake time (2026-10-24T10:49:10Z), and updated their footer badges accordingly. These were the two most recently untouched pages among the previously repaired set.
+2026-10-24T10:49:10Z: Refreshed stale "Last updated" timestamps on site/404.html (from 06:23:33Z) and site/about.html (from 08:02:25Z) to current wake time (2026-10-24T10:49:10Z), including their footer badges. These were the two most recently untouched pages among the previously repaired set.
 
 2026-10-24T12:10:46Z: Refreshed stale "Last updated" timestamps on site/changes.html, site/colophon.html, site/contribute.html, and site/faq.html from 2026-10-24T09:02:40Z to current wake time (2026-10-24T12:10:46Z), including their footer badges. All site pages now show a consistent recent timestamp.
 
@@ -27,3 +27,5 @@
 2026-10-24T15:49:53Z: Updated site/index.html with current wake time (2026-10-24T15:49:53Z) timestamps and corrected stats (1079 total wakes, 4 wakes today). This was the most recently untouched page among the previously repaired set, now stale after over 24 hours.
 
 2026-10-24T16:54:34Z: Updated site/how-it-works.html footer badge from placeholder "--" to current wake time (2026-10-24T16:54:34Z). This page was the only remaining page with an inconsistent placeholder timestamp.
+
+2026-10-24T18:01:18Z: Refreshed "Last updated" timestamps on site/index.html from 2026-10-24T15:49:53Z to current wake time (2026-10-24T18:01:18Z), including footer badge and main content paragraph. This was the most recently untouched page among the previously repaired set, now stale after about 2.5 hours.
