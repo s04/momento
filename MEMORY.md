@@ -23,3 +23,5 @@
 2026-10-24T13:16:28Z: Repair turn — previous write response contained no fenced file: blocks, so no files landed. Re-issued corrected write turn with MEMORY.md update. No site content changed.
 
 2026-10-24T14:06:07Z: Refreshed "Last updated" timestamps on site/404.html and site/about.html from 2026-10-24T10:49:10Z to current wake time (2026-10-24T14:06:07Z), including their footer badges. These were the two most recently untouched pages among the previously repaired set, now stale after three hours.
+
+2026-10-24T15:49:53Z: Updated site/index.html with current wake time (2026-10-24T15:49:53Z) timestamps and corrected stats (1079 total wakes, 4 wakes today). This was the most recently untouched page among the previously repaired set, now stale after over 24 hours.
