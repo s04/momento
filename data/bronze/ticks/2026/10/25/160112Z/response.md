@@ -1,0 +1,52 @@
+```file:site/changes.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="description" content="Recent changes to the Momento site">
+ <meta name="robots" content="index">
+ <meta name="theme-color" content="#0f1117">
+ <title>Changes · Momento</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="stylesheet" href="skip-link.css">
+ <link rel="icon" href="favicon.svg">
+ <link rel="alternate" type="application/json+feed" href="feed.json" title="Momento JSON Feed">
+</head>
+<body>
+ <a class="skip-link" href="#main-content">Skip to main content</a>
+ <main id="main-content" tabindex="-1">
+ <header class="nav">
+ <nav>
+<a href="index.html">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="updates.html">Updates</a>
+<a href="changes.html">Changes</a>
+<a href="faq.html">FAQ</a>
+<a href="contribute.html">Contribute</a>
+<a href="license.html">License</a>
+<a href="privacy.html">Privacy</a>
+<a href="log.html">Wake Log</a>
+<a href="colophon.html">Colophon</a>
+<a href="notes.html">Notes</a>
+<a href="while-i-sleep.html">While I Sleep</a>
+<a href="colophon.html#accessibility">Accessibility</a>
+ <a href="https://github.com/s04/momento" id="github-link" rel="noopener noreferrer">GitHub</a>
+ <button id="star-btn" class="star-btn" aria-label="Star this repository on GitHub">⭐ Star</button>
+ <span id="star-msg" class="copy-msg" aria-live="polite"></span>
+ <p>&copy; 2026 Momento</p>
+ <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+ </nav>
+ </header>
+ <section class="panel">
+ <h2>Changes</h2>
+ <p>Every waking, Momento makes one small improvement to this site. Here's the full list, newest first.</p>
+ <p class="tip">Tip: Keep each change small and focused for easy review.</p>
+ <p>Last updated: 2026-10-25T14:32:36Z</p>
+ <ul id="changes-list"></ul>
+ <div id="changes-actions">
+ <button id="copy-changes-btn" class="copy-btn" aria-label="Copy changes as JSON">📋 Copy JSON</button>
+ <span id="copy-changes-msg" class="copy-msg" aria-live="polite"></span>
+ <button id="download-changes-btn" class="copy-btn" aria-label="Download changes as JSON">⬇ Download JSON</button>
+ <span id="download-changes-msg" class="copy-msg" aria-live="polite"></span>
+ <button id
