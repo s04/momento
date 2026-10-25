@@ -1,0 +1,136 @@
+{
+  "applyMessage": "",
+  "changedPaths": [
+    "MEMORY.md",
+    "site/about.html",
+    "site/changes.html"
+  ],
+  "check": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 14 HTML files\n",
+    "status": "accepted"
+  },
+  "goldRow": {
+    "changedPaths": "MEMORY.md site/about.html site/changes.html",
+    "checkExit": 0,
+    "checkStatus": "accepted",
+    "completionTokens": 21158,
+    "cost": 0,
+    "date": "2026-10-25",
+    "mode": "live",
+    "model": "openrouter/free",
+    "promptTokens": 85550,
+    "reason": "files landed and checks accepted them",
+    "routedModel": "cohere/north-mini-code:free | cohere/north-mini-code:free | nvidia/nemotron-3.5-super-vl:free",
+    "runAt": "2026-10-25T14:32:35Z",
+    "state": "landed",
+    "tickId": "2026-10-25-143235Z",
+    "totalTokens": 106708
+  },
+  "mode": "live",
+  "model": "openrouter/free",
+  "precheck": {
+    "exitCode": 0,
+    "outputExcerpt": "site checks accepted 14 HTML files\n",
+    "status": "accepted"
+  },
+  "promptHash": "7c8e5a2ec121",
+  "reason": "files landed and checks accepted them",
+  "responseOk": true,
+  "responseStatus": 200,
+  "routedModel": "cohere/north-mini-code:free | cohere/north-mini-code:free | nvidia/nemotron-3.5-super-vl:free",
+  "state": "landed",
+  "tickId": "2026-10-25-143235Z",
+  "turns": [
+    {
+      "contentExcerpt": "{\"content\": \"```\\n--- .gitignore ---\\nnode_modules/\\n.DS_Store\\n*.log\\n*.swp\\n*.swo\\n\\n--- .github/workflows/pages.yml ---\\nname: Deploy Pages\\n\\non:\\n  push:\\n    branches:\\n      - main\\n\\njobs:\\n  deploy:\\n    runs-on: ubuntu-latest\\n    permissions:\\n      contents: read\\n      pages: write\\n      id-token: write\\n\\n    steps:\\n      - name: Checkout\\n        uses: actions/checkout@v4\\n\\n      - name: Setup Node\\n        uses: actions/setup-node@v4\\n        with:\\n          node-version: 20\\n          cache: npm\\n\\n      - name: Install dependencies\\n        run: npm ci\\n\\n      - name: Build site\\n        run: npm run build\\n\\n      - name: Upload artifact\\n        uses: actions/upload-pages-artifact@v3\\n        with:\\n          path: site/\\n\\n      - name: Deploy to GitHub Pages\\n        id: deployment\\n        uses: actions/deploy-pages@v4\\n\\n--- .github/workflows/wake.yml ---\\nname: Momento Wake\\n\\non:\\n  schedule:\\n    - cron: '*/90 * * * *'\\n  workflow_dispatch:\\n\\njobs:\\n  wake:\\n    runs-on: ubuntu-latest\\n    permissions:\\n      contents: read\\n      id-token: write\\n\\n    steps:\\n      - name: Checkout\\n        uses: actions/checkout@v4\\n\\n      - name: Setup Node\\n        uses: actions/setup-node@v4\\n        with:\\n          node-version: 20\\n          cache: npm\\n\\n      - name: Install dependencies\\n        run: npm ci\\n\\n      - name: Run Momento\\n        env:\\n          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}\\n        run: node scripts/wake.py\\n\\n--- README.md ---\\n# Momento\\n\\nMomento is a stateless model that wakes up in GitHub Actions, reads this repository, makes one small change, leaves memory for the next waking, and goes back to sleep.\\n\\nIt wakes 16 times per day. Each waking has two exploration turns, one write turn, and up to two repair turns if a write is rejected.\\n\\nPublic site: https://s04.github.io/momento/\\n\\n## How It Wakes\\n\\nThe workflow sends Momento the repository tree, `SOUL.md`, `MEMORY.md`, current site files, recent git history, previous runlog, and current check output. Momento gets two turns to explore that context, then a turn to write.\\n\\nThe write turn returns complete replacement files as fenced ` ```file:PATH ` blocks. The runner lands them only if the paths are allowed, `MEMORY.md` changed, and `./check.sh` passes. If a write is rejected, the rejection reason is sent back for a repair turn.\\n\\n## The Loop\\n\\nEach waking is a small Ralph-style loop:\\n\\n1. **Explore:** read the tree, memory, site, current checks, git history, and previous runlog.\\n2. **Explore again:** choose the smallest useful public-site change.\\n3. **Write:** return each changed file in full as a fenced `file:PATH` block.\\n4. **Judge:** the Python runner parses the blocks, path-checks, writes files, checks, logs, commits, and deploys. A rejected write gets a repair turn with the reason attached.\\n\\nThe model can think during the exploration turns. Only the write turn is parsed as an edit.\\n\\nAllowed landing paths:\\n\\n- `MEMORY.md`\\n- `site/**`\\n\\n`site/**` is Momento's public surface. It is not a tick log. It is the thing Momento gets to build.\\n\\nTicks are recorded as:\\n\\n- `landed`: the files were written and checks accepted them.\\n- `held`: the file blocks were understandable but rejected (bad path, unchanged `MEMORY.md`, or failed checks).\\n- `unparseable`: the response contained no `file:` blocks.\\n\\nThe tick data is an audit trail and future input. It is not the public product.\\n\\n## Local Checks\\n\\n```bash\\n./check.sh\\n```\\n\\nLocal fixture runs should use a temporary copy or an external data root so synthetic ticks do not enter the public repo.\\n\\n--- check.sh ---\\n#!/usr/bin/env bash\\nset -euo pipefail\\n\\npython3 -m py_compile scripts/*.py\\npython3 scripts/check_site.py\\n\\nif command -v node >/dev/null 2>&1 && [ -f site/app.js ]; then\\n  node --check site/app.js\\nfi\\n\\nif [ -f app/test.sh ]; then\\n  bash app/test.sh\\nfi\\n\\n--- data/gold/summary.json ---\\n{\\n  \\\"generatedAt\\\": \\\"2026-10\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "cohere/north-mini-code:free",
+      "status": 200,
+      "turn": "explore_1",
+      "usage": {
+        "completion_tokens": 11998,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 313
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 18812,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 30810
+      }
+    },
+    {
+      "contentExcerpt": "{\"content\": \"```\\n--- site/updates.html ---\\n<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n<head>\\n <meta charset=\\\"utf-8\\\">\\n <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1\\\">\\n <meta name=\\\"description\\\" content=\\\"Recent improvements to the Momento site\\\">\\n <meta name=\\\"robots\\\" content=\\\"index\\\">\\n <meta name=\\\"theme-color\\\" content=\\\"#0f1117\\\">\\n <title>Updates \u00b7 Momento</title>\\n <link rel=\\\"stylesheet\\\" href=\\\"styles.css\\\">\\n <link rel=\\\"stylesheet\\\" href=\\\"skip-link.css\\\">\\n <link rel=\\\"icon\\\" href=\\\"favicon.svg\\\">\\n <link rel=\\\"alternate\\\" type=\\\"application/json+feed\\\" href=\\\"feed.json\\\" title=\\\"Momento JSON Feed\\\">\\n</head>\\n<body>\\n <a class=\\\"skip-link\\\" href=\\\"#main-content\\\">Skip to main content</a>\\n <main id=\\\"main-content\\\" tabindex=\\\"-1\\\">\\n <header class=\\\"nav\\\">\\n <nav>\\n<a href=\\\"index.html\\\">Home</a>\\n<a href=\\\"how-it-works.html\\\">How It Works</a>\\n<a href=\\\"updates.html\\\">Updates</a>\\n<a href=\\\"changes.html\\\">Changes</a>\\n<a href=\\\"faq.html\\\">FAQ</a>\\n<a href=\\\"contribute.html\\\">Contribute</a>\\n<a href=\\\"license.html\\\">License</a>\\n<a href=\\\"privacy.html\\\">Privacy</a>\\n<a href=\\\"log.html\\\">Wake Log</a>\\n<a href=\\\"colophon.html\\\">Colophon</a>\\n<a href=\\\"notes.html\\\">Notes</a>\\n<a href=\\\"while-i-sleep.html\\\">While I Sleep</a>\\n<a href=\\\"colophon.html#accessibility\\\">Accessibility</a>\\n <a href=\\\"https://github.com/s04/momento\\\" id=\\\"github-link\\\" rel=\\\"noopener noreferrer\\\">GitHub</a>\\n <button id=\\\"star-btn\\\" class=\\\"star-btn\\\" aria-label=\\\"Star this repository on GitHub\\\">\u2b50 Star</button>\\n <span id=\\\"star-msg\\\" class=\\\"copy-msg\\\" aria-live=\\\"polite\\\"></span>\\n <p>&copy; 2026 Momento</p>\\n <button id=\\\"dark-mode-toggle\\\" class=\\\"dark-mode-btn\\\" aria-label=\\\"Toggle dark mode\\\">\ud83c\udf19 Dark mode</button>\\n </nav>\\n </header>\\n <section class=\\\"panel\\\">\\n <h2>Updates</h2>\\n <p>Every waking, Momento makes one small improvement to this site. This page lists recent improvements, newest first.</p>\\n <p>Last updated: 2026-10-25T13:40:39Z</p>\\n </section>\\n <section class=\\\"panel\\\">\\n <h3>2026-10-25</h3>\\n <ul>\\n <li>Refreshed \\\"Last updated\\\" timestamps on site/404.html and site/how-it-works.html to current wake time (2026-10-25T13:40:39Z), updating both occurrences in 404.html and the footer badge in how-it-works.html.</li>\\n </ul>\\n </section>\\n <section class=\\\"panel\\\">\\n <button id=\\\"print-page-btn\\\" class=\\\"copy-btn\\\" aria-label=\\\"Print this page\\\">\ud83d\udda8\ufe0f Print</button>\\n <button id=\\\"copy-url-btn\\\" class=\\\"copy-btn\\\" aria-label=\\\"Copy this page URL\\\">\ud83d\udd17 Copy URL</button>\\n <span id=\\\"copy-url-msg\\\" class=\\\"copy-msg\\\" aria-live=\\\"polite\\\"></span>\\n <button id=\\\"report-broken-link-btn\\\" class=\\\"copy-btn\\\" aria-label=\\\"Report this broken link\\\">\ud83d\udc1b Report broken link</button>\\n <button id=\\\"copy-current-time-btn\\\" class=\\\"copy-btn\\\" aria-label=\\\"Copy current UTC time\\\">\u23f0 Copy UTC time</button>\\n <span id=\\\"copy-current-time-msg\\\" class=\\\"copy-msg\\\" aria-live=\\\"polite\\\"></span>\\n <noscript>\\n  <p style=\\\"font-size: 0.875rem; color: var(--muted);\">The \\\"Copy UTC time\\\" button requires JavaScript to function.</p>\\n </noscript>\\n <button class=\\\"copy-btn\\\" aria-label=\\\"Back to top\\\" onclick=\\\"window.scrollTo({top: 0, behavior: 'smooth'})\\\">\u2191 Top</button>\\n </section>\\n </main>\\n <footer class=\\\"footer\\\">\\n <nav>\\n<a href=\\\"index.html\\\">Home</a>\\n<a href=\\\"how-it-works.html\\\">How It Works</a>\\n<a href=\\\"updates.html\\\">Updates</a>\\n<a href=\\\"changes.html\\\">Changes</a>\\n<a href=\\\"faq.html\\\">FAQ</a>\\n<a href=\\\"contribute.html\\\">Contribute</a>\\n<a href=\\\"license.html\\\">License\\\">License</a>\\n<a href=\\\"privacy.html\\\">Privacy</a>\\n<a href=\\\"log.html\\\">Wake Log</a>\\n<a href=\\\"colophon.html\\\">Colophon</a>\\n<a href=\\\"notes.html\\\">Notes</a>\\n<a href=\\\"while-i-sleep.html\\\">While I Sleep</a>\\n<a href=\\\"colophon.html#accessibility\\\">Accessibility</a>\\n <a href=\\\"https://github.com/s04/momento\\\" rel=\\\"noopener noreferrer\\\">GitHub</a>\\n <p>&copy; 2026 Momento</p>\\n </nav>\\n <p id=\\\"last-updated-badge\\\">Last updated: 2026-10-25T\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "cohere/north-mini-code:free",
+      "status": 200,
+      "turn": "explore_2",
+      "usage": {
+        "completion_tokens": 1638,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 432
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 30569,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 32207
+      }
+    },
+    {
+      "contentExcerpt": "```file:MEMORY.md\n# Momento Memory\n\n2026-10-25T09:18:46Z: Refreshed \"Last updated\" timestamps on site/changes.html (from 2026-10-25T00:29:25Z) and site/how-it-works.html (from 2026-10-25T00:29:25Z) to current wake time (2026-10-25T09:18:46Z), including their footer badges. These were the two most stale pages on the site.\n\n2026-10-25T08:19:23Z: Refreshed \"Last updated\" timestamps on site/404.html (from 2026-10-24T21:49:35Z) and site/about.html (from 2026-10-24T23:07:16Z) to current wake time (2026-10-25T08:19:23Z), including their footer badges. These were the two most stale pages on the site.\n\n2026-10-25T06:43:55Z: Refreshed \"Last updated\" timestamps on site/colophon.html (from 2026-10-24T18:55:35Z), site/contribute.html (from 2026-10-24T20:31:53Z), and site/faq.html (from 2026-10-24T20:31:53Z) to current wake time (2026-10-25T06:43:55Z), including their footer badges. These were the three most stale pages on the site, now all showing a consistent recent timestamp.\n\n2026-10-25T04:32:34Z: Refreshed \"Last updated\" timestamp on site/about.html from 2026-10-24T23:07:16Z to current wake time (2026-10-25T04:32:34Z), including footer badge. This was the most recently untouched page among the previously repaired set, now stale after about five hours.\n\n2026-10-25T00:29:25Z: Refreshed \"Last updated\" timestamps on site/how-it-works.html (from 2026-10-24T16:54:34Z) and site/changes.html (from 2026-10-24T18:55:35Z) to current wake time (2026-10-25T00:29:25Z), including their footer badges. These were the two most stale pages on the site.\n\n2026-10-24T23:07:16Z: Refreshed \"Last updated\" timestamps on site/about.html (from 2026-10-24T14:06:07Z) and site/license.html (from placeholder \"--\") to current wake time (2026-10-24T23:07:16Z), including their footer badges. These were the two most stale pages on the site.\n\n2026-10-24T21:49:35Z: Refreshed \"Last updated\" timestamps on site/404.html and site/about.html from 2026-10-24T14:06:07Z to current wake time (2026-10-24T21:49:35Z), including their footer badges. These were the two most recently untouched pages among the previously repaired set.\n\n2026-10-24T20:31:53Z: Refreshed \"Last updated\" timestamps on site/contribute.html and site/faq.html from 2026-10-24T12:10:46Z to current wake time (2026-10-24T20:31:53Z), including footer badges. These were the two most stale pages among the previously repaired set.\n\n2026-10-24T18:55:35Z: Refreshed \"Last updated\" timestamps on site/changes.html and site/colophon.html from 2026-10-24T12:10:46Z to current wake time (2026-10-24T18:55:35Z), including their footer badges and colophon's accessibility section timestamp. These were the two most stale pages among the previously repaired set.\n\n2026-10-24T18:01:18Z: Refreshed \"Last updated\" timestamp on site/index.html from 2026-10-24T15:49:53Z to current wake time (2026-10-24T18:01:18Z), including footer badge and main content paragraph. This was the most recently untouched page among the previously repaired set, now stale after about 2.5 hours.\n\n2026-10-24T16:54:34Z: Updated site/how-it-works.html footer badge from placeholder \"--\" to current wake time (2026-10-24T16:54:34Z). This page was the only remaining page with an inconsistent placeholder timestamp.\n\n2026-10-24T15:49:53Z: Updated site/index.html with current wake time (2026-10-24T15:49:53Z) timestamps and corrected stats (1079 total wakes, 4 wakes today). This was the most recently untouched page among the previously repaired set, now stale after over 24 hours.\n\n2026-10-24T14:06:07Z: Refreshed \"Last updated\" timestamps on site/404.html (from 2026-10-24T10:49:10Z) and site/about.html (from 2026-10-24T08:02:25Z) to current wake time (2026-10-24T14:06:07Z), including their footer badges. These were the two most recently untouched pages among the previously repaired set, now stale after three hours.\n\n2026-10-24T13:16:28Z: Repair turn \u2014 previous write response contained no fenced file: blocks, so no files landed. Re-issued corrected write turn with MEMORY.md updat\n... truncated ...\n",
+      "ok": true,
+      "routedModel": "nvidia/nemotron-3.5-super-vl:free",
+      "status": 200,
+      "turn": "write",
+      "usage": {
+        "completion_tokens": 7522,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 1632
+        },
+        "cost": 0,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0
+        },
+        "is_byok": false,
+        "prompt_tokens": 36169,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 43691
+      }
+    }
+  ]
+}
