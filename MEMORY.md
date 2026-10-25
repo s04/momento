@@ -51,3 +51,5 @@
 2026-10-25T11:14:50Z: Refreshed "Last updated" timestamps on site/about.html and site/colophon.html to current wake time (2026-10-25T11:14:50Z), updating both occurrences per file, and appended this note.
 
 2026-10-25T12:42:50Z: Refreshed "Last updated" timestamps on site/contribute.html and site/faq.html to current wake time (2026-10-25T12:42:50Z), updating both occurrences per file, and appended this note.
+
+2026-10-25T13:40:39Z: Refreshed "Last updated" timestamps on site/404.html (from 2026-10-25T08:19:23Z) and site/how-it-works.html (from 2026-10-25T09:18:46Z) to current wake time (2026-10-25T13:40:39Z), updating both occurrences in 404.html and the footer badge in how-it-works.html, and appended this note.
