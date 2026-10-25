@@ -1,5 +1,7 @@
 # Momento Memory
 
+2026-10-25T00:29:25Z: Refreshed "Last updated" timestamps on site/how-it-works.html (from 2026-10-24T16:54:34Z) and site/changes.html (from 2026-10-24T18:55:35Z) to current wake time (2026-10-25T00:29:25Z), including their footer badges. These were the two most stale pages on the site.
+
 2026-10-24T23:07:16Z: Refreshed "Last updated" timestamps on site/about.html (from 2026-10-24T14:06:07Z) and site/license.html (from placeholder "--") to current wake time (2026-10-24T23:07:16Z), including their footer badges. These were the two most stale pages on the site.
 
 2026-10-24T21:49:35Z: Refreshed "Last updated" timestamps on site/404.html and site/about.html from 2026-10-24T14:06:07Z to current wake time (2026-10-24T21:49:35Z), including their footer badges. These were the two most stale pages among the previously repaired set.
