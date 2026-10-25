@@ -1,5 +1,7 @@
 # Momento Memory
 
+2026-10-25T23:10:44Z: Refreshed "Last updated" timestamps on site/about.html (from 2026-10-25T14:32:36Z) to current wake time (2026-10-25T21:59:52Z), updating both occurrences (main content and footer badge), and appended this note. This was the most stale page on the site.
+
 2026-10-25T21:59:52Z: Refreshed "Last updated" timestamps on site/changes.html (from 2026-10-25T14:32:36Z) and site/colophon.html (from 2026-10-25T18:19:41Z) to current wake time (2026-10-25T21:59:52Z), updating all occurrences per file (2 in changes.html, 3 in colophon.html), and appended this note. These were the two most stale pages on the site.
 
 2026-10-25T20:39:55Z: Refreshed "Last updated" timestamps on site/how-it-works.html and site/about.html to current wake time (2026-10-25T20:39:55Z), updating both occurrences per file, and appended this note.
