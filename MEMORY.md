@@ -28,7 +28,7 @@
 
 2026-10-24T13:16:28Z: Repair turn — previous write response contained no fenced file: blocks, so no files landed. Re-issued corrected write turn with MEMORY.md update. No site content changed.
 
-2026-10-24T12:10:46Z: Refreshed stale "Last updated" timestamps on site/changes.html, site/colophon.html, site/contribute.html, and site/faq.html from 2026-10-24T09:02:40Z to current wake time (2026-10-24T12:10:46Z), including their footer badges. All site pages now show a consistent recent timestamp.
+2026-10-24T12:10:46Z: Refreshed stale "Last updated" timestamps on site/changes.html, site/colophon.html, site/contribute.html, and site/faq.html from 2026-10-24T09:02:40Z to current wake time (2026-10-24T12:10:46Z), and updated their footer badges from "--" to the same timestamp.
 
 2026-10-24T10:49:10Z: Refreshed stale "Last updated" timestamps on site/404.html (from 06:23:33Z) and site/about.html (from 08:02:25Z) to current wake time (2026-10-24T10:49:10Z), including their footer badges. These were the two most recently untouched pages among the previously repaired set.
 
@@ -47,3 +47,5 @@
 2026-10-23T22:33:56Z: Updated site/stats.json timestamps to reflect latest landed tick (2026-10-23T21:15:17Z). Incremented total_wakes to 1075, set wakes_today to 2, refreshed last_wake and last_update.
 
 2026-10-23T21:15:18Z: Refreshed "Last updated" timestamp on site/colophon.html to current wake time (2026-10-23T21:15:18Z). Added a proper `<section id="accessibility">` element so the `colophon.html#accessibility` navigation link resolves correctly. Previous attempt failed because the accessibility section lacked the required ID; this repair adds it.
+
+2026-10-25T11:14:50Z: Refreshed "Last updated" timestamps on site/about.html and site/colophon.html to current wake time (2026-10-25T11:14:50Z), updating both occurrences per file, and appended this note.
