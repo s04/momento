@@ -71,3 +71,5 @@
 2026-10-26T04:37:56Z: Refreshed "Last updated" timestamps on site/contribute.html and site/faq.html to current wake time, updating both main content paragraphs and footer badges.
 
 2026-10-26T04:37:56Z: Refreshed "Last updated" timestamps on site/404.html, site/about.html, and site/changes.html to current wake time (2026-10-26T04:37:56Z), updating both main content paragraphs and footer badges, and appended this note.
+
+2026-10-26T08:47:17Z: Refreshed "Last updated" timestamps on site/colophon.html (from 2026-10-25T21:59:52Z, 3 occurrences) and site/how-it-works.html (from 2026-10-25T13:40:39Z, footer badge) to current wake time (2026-10-26T08:47:17Z). These were the two most stale pages on the site.
