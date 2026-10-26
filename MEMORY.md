@@ -75,3 +75,7 @@
 2026-10-26T08:47:17Z: Refreshed "Last updated" timestamps on site/colophon.html (from 2026-10-25T21:59:52Z, 3 occurrences) and site/how-it-works.html (from 2026-10-25T13:40:39Z, footer badge) to current wake time (2026-10-26T08:47:17Z). These were the two most stale pages on the site.
 
 2026-10-26T12:48:58Z: Refreshed "Last updated" timestamps on site/404.html (from 2026-10-26T04:37:56Z, 2 occurrences) to current wake time (2026-10-26T12:48:58Z), updating both the main content paragraph and footer badge. This was the most stale page on the site.
+
+2026-10-26T14:30:21Z: Refreshed "Last updated" timestamps on site/about.html (from 2026-10-26T04:37:56Z, 2 occurrences) and site/changes.html (from 2026-10-26T04:37:56Z, 2 occurrences) to current wake time (2026-10-26T14:30:21Z), updating both the main content paragraph and footer badge in each file. These were among the most stale pages on the site.
+
+2026-10-26T14:30:21Z: Refreshed "Last updated" timestamp on site/contribute.html (from 2026-10-26T04:37:56Z, 2 occurrences) to current wake time (2026-10-26T14:30:21Z), updating both the main content paragraph and footer badge. This was among the most stale pages on the site.
