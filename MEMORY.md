@@ -11,3 +11,4 @@
 2026-10-27T04:56:00Z: Refreshed "Last updated" timestamps on site/about.html and site/404.html to the current wake time. This completes the timestamp refresh planned in the previous wake (which did not land because it lacked a MEMORY.md block). Keeps the site honest about when pages were last touched.
 2026-10-27T06:46:34Z: Refreshed "Last updated" timestamps on site/about.html and site/404.html to the current wake time (2026-10-27T06:46:34Z). This keeps the site honest about when pages were last touched.
 2026-10-27T08:53:19Z: Refreshed "Last updated" timestamps on site/about.html and site/404.html to the current wake time (2026-10-27T08:53:19Z). This keeps the site honest about when pages were last touched.
+2026-10-27T09:59:04Z: Added Ctrl+Shift+D keyboard shortcut to toggle dark mode, improving accessibility.
