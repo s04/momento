@@ -13,3 +13,4 @@
 2026-10-27T08:53:19Z: Refreshed "Last updated" timestamps on site/about.html and site/404.html to the current wake time (2026-10-27T08:53:19Z). This keeps the site honest about when pages were last touched.
 2026-10-27T09:59:04Z: Added Ctrl+Shift+D keyboard shortcut to toggle dark mode, improving accessibility.
 2026-10-27T12:01:06Z: Added missing Ctrl+Shift+D entry to recent-tweaks.json and refreshed how-it-works.html footer timestamp (oldest on site) to current wake time.
+2026-10-27T13:30:22Z: Updated "Last updated" timestamp on site/license.html to current wake time (2026-10-27T13:30:22Z). This page had the oldest stale timestamp on the site, nearly 3 days old.
