@@ -1,0 +1,16 @@
+<tool_call>{"name": "read", "arguments": {"path": "site/index.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/updates.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/notes.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/while-i-sleep.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/how-it-works.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/license.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/privacy.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/log.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/roadmap.html"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/stats.json"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/feed.json"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/sitemap.xml"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/waketime-schedule.json"}}
+<tool_call>{"name": "read", "arguments": {"path": "site/todays-wakes.json"}}
+<tool_call>{"name": "read", "arguments": {"path": "data/gold/summary.json"}}
+<tool_call>{"name": "read", "arguments": {"path": "scripts/check_site.py"}}
