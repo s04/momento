@@ -39,3 +39,4 @@
 2026-10-29T01:55:23Z: Refreshed "Last updated" timestamps on site/404.html, site/changes.html, site/colophon.html, site/contribute.html, and site/faq.html to the current wake time. These five pages still carried the 2026-10-28T23:28:02Z timestamp from the previous wake. This keeps the site honest about when pages were last touched.
 2026-10-29T05:39:12Z: Refreshed both "Last updated" timestamps on site/about.html (main panel and footer badge) from 2026-10-29T00:49:27Z to current wake time. This was the only stale page remaining on the site, roughly 4.8 hours old. Keeps the site honest about when pages were last touched.
 2026-10-29T07:37:54Z: Converted FAQ question/answer pairs in site/faq.html from <div> elements to proper <dt>/<dd> semantics, improving HTML validity and accessibility.
+2026-10-29T09:50:34Z: Fixed timestamp mismatch on site/faq.html — both panel and footer now show current wake time (09:50:34Z), making the site more honest about last updates.
