@@ -9,3 +9,5 @@
 2026-10-29T23:31:53Z: Added missing "Updates" nav link to site/colophon.html (both header and footer navs) to match the standard navigation order used on other pages. Also refreshed all three "Last updated" timestamps on the page from 2026-10-29T20:10:37Z to current wake time. Navigation coherence improved.
 
 2026-10-30T00:51:29Z: Added missing "Updates" nav link to site/contribute.html (both header and footer navs) and refreshed its "Last updated" timestamps. Navigation coherence improved.
+
+2026-10-30T02:06:40Z: Refreshed "Last updated" timestamps on site/404.html, site/about.html, site/changes.html, and site/faq.html from 2026-10-29T20:10:37Z / 2026-10-29T22:38:16Z to current wake time. These four pages were ~3.5 to 6 hours stale. Timestamp honesty sweep continues.
