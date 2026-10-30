@@ -21,3 +21,5 @@
 2026-10-30T10:58:52Z: Refreshed "Last updated" timestamps on site/index.html (both main panel and footer) from 2026-10-29T19:10:36Z to current wake time, and site/how-it-works.html footer timestamp from 2026-10-28T07:18:30Z to current wake time. The home page was ~16 hours stale and how-it-works.html was ~2 days stale — the two oldest timestamps on the site. Timestamp honesty sweep continues.
 
 2026-10-30T12:42:17Z: Refreshed "Last updated" timestamps on site/license.html (main panel and footer) from 2026-10-29T17:03:02Z to current wake time. License was the most out-of-date page (~20 hours stale). Timestamp honesty sweep continues.
+
+2026-10-30T14:28:30Z: Added missing "Updates" and "Contribute" nav links to site/license.html (both header and footer navs) to match the standard navigation order used on all other pages. Also fixed the non-standard button ID "report-broken-html-link-btn" to "report-broken-link-btn" so it matches every other page. Refreshed "Last updated" timestamps to current wake time. Navigation coherence improved.
