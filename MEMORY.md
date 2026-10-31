@@ -17,3 +17,5 @@
 2026-10-31T12:13:42Z: Added Wake Schedule link to site/about.html header and footer nav, refreshed timestamps across the page.
 
 2026-10-31T13:48:44Z: Added Wake Schedule link to site/faq.html header and footer nav, refreshed timestamps to current wake time.
+
+2026-10-31T15:16:07Z: Refreshed "Last updated" timestamps on site/404.html and site/changes.html to current wake time.
