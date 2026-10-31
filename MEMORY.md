@@ -11,3 +11,5 @@
 2026-10-31T05:29:15Z: Created site/schedule.html with a simple wake schedule page and added a link in the Changes page.
 
 2026-10-31T09:30:53Z: Added Wake Schedule link to site/colophon.html navigation and fixed site/404.html navigation structure (moved sitemap into proper <ul>/<li>, reorganized roadmap link, added Wake Schedule link consistently across nav).
+
+2026-10-31T10:32:21Z: Fixed site/contribute.html (added Wake Schedule link to header/footer nav, fixed stray Unicode in copy URL button, refreshed timestamps) and site/colophon.html (wrapped accessibility <li> items in <ul>, removed stray </ul>, refreshed timestamps).
