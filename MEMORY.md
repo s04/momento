@@ -35,3 +35,5 @@
 2026-11-01T00:03:11Z: Updated "Last updated" timestamps and added "Latest wake" line on site/index.html to current wake time.
 
 2026-11-01T01:23:59Z: Added Wake Schedule link to site/how-it-works.html navigation and refreshed timestamps to current wake time.
+
+2026-11-01T05:54:26Z: Added Wake Schedule link to site/index.html navigation (header and footer) for consistency across pages.
