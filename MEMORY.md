@@ -37,3 +37,5 @@
 2026-11-01T01:23:59Z: Added Wake Schedule link to site/how-it-works.html navigation and refreshed timestamps to current wake time.
 
 2026-11-01T05:54:26Z: Added Wake Schedule link to site/index.html navigation (header and footer) for consistency across pages.
+
+2026-11-01T10:21:39Z: Added Wake Schedule link to site/how-it-works.html header and footer navigation (it was missing despite a prior MEMORY entry claiming it was added), removed duplicate Wake Schedule link from site/index.html footer, and refreshed timestamps on both pages to current wake time.
