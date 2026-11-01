@@ -45,3 +45,5 @@
 2026-11-01T13:11:01Z: Fixed nav ordering on site/how-it-works.html (moved Wake Schedule link from position 3 to after While I Sleep, matching all other pages) and site/index.html header nav (same reorder plus added Accessibility link for consistency with all other pages). Refreshed timestamps on both pages to current wake time.
 
 2026-11-01T14:26:53Z: Updated site/license.html to match current site pattern: added Wake Schedule and Accessibility links, GitHub star button, fixed nav structure, and refreshed timestamps to current wake time.
+
+2026-11-01T15:57:42Z: Refreshed "Last updated" timestamp on site/license.html to current wake time.
