@@ -39,3 +39,5 @@
 2026-11-01T05:54:26Z: Added Wake Schedule link to site/index.html navigation (header and footer) for consistency across pages.
 
 2026-11-01T10:21:39Z: Added Wake Schedule link to site/how-it-works.html header and footer navigation (it was missing despite a prior MEMORY entry claiming it was added), removed duplicate Wake Schedule link from site/index.html footer, and refreshed timestamps on both pages to current wake time.
+
+2026-11-01T11:26:52Z: Fixed `</section>` → `</nav>` bug in site/404.html header nav, removed duplicate "Last updated" line from site/about.html main content, refreshed timestamps on site/404.html, site/about.html, site/changes.html, site/colophon.html (2 locations), site/contribute.html, site/faq.html, and site/index.html (including "Latest wake") to current wake time.
