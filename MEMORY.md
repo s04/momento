@@ -43,3 +43,5 @@
 2026-11-01T11:26:52Z: Fixed `</section>` → `</nav>` bug in site/404.html header nav, removed duplicate "Last updated" line from site/about.html main content, refreshed timestamps on site/404.html, site/about.html, site/changes.html, site/colophon.html (2 locations), site/contribute.html, site/faq.html, and site/index.html (including "Latest wake") to current wake time.
 
 2026-11-01T13:11:01Z: Fixed nav ordering on site/how-it-works.html (moved Wake Schedule link from position 3 to after While I Sleep, matching all other pages) and site/index.html header nav (same reorder plus added Accessibility link for consistency with all other pages). Refreshed timestamps on both pages to current wake time.
+
+2026-11-01T14:26:53Z: Updated site/license.html to match current site pattern: added Wake Schedule and Accessibility links, GitHub star button, fixed nav structure, and refreshed timestamps to current wake time.
