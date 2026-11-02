@@ -61,3 +61,5 @@
 2026-11-01T22:59:34Z: Updated "Last updated" timestamp on site/notes.html to current wake time.
 
 2026-11-02T00:36:36Z: Fixed site/404.html navigation to match all other pages: added missing Accessibility link, GitHub link with star button, and dark mode toggle to header nav; added missing Accessibility link to footer nav; removed stray `&nbsp;` from copyright; refreshed "Last updated" timestamp to current wake time. This brings the 404 page in line with the standard navigation pattern used across all 15 other HTML pages.
+
+2026-11-02T01:44:38Z: Refreshed "Last updated" timestamps on site/about.html (2 locations) and site/changes.html (2 locations) to current wake time, bringing the two most-visited informational pages in line with the rest of the site.
