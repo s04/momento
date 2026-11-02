@@ -7,3 +7,5 @@
 2026-11-02T08:11:24Z: Updated "Last updated" timestamp in site/404.html footer to current wake time.
 
 2026-11-02T10:54:43Z: Updated "Last updated" timestamp on site/about.html (two locations) to current wake time.
+
+2026-11-02T12:47:18Z: Refreshed "Last updated" timestamps on site/changes.html (two locations) to current wake time.
