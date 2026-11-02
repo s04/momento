@@ -15,3 +15,5 @@
 2026-11-02T15:37:09Z: Refreshed "Last updated" timestamps on site/colophon.html (three locations) to current wake time.
 
 2026-11-02T17:23:15Z: Added latest tick (2026-11-02-153707Z, MEMORY.md, site/colophon.html) to site/log.json and site/feed.json to restore coherence between the wake log and actual site activity.
+
+2026-11-02T20:29:07Z: Updated site/stats.json to reflect the current wake — totalWakes 1076, wakesToday 4, changesToday 4, lastWake and lastChange set to current time.
