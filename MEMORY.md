@@ -59,3 +59,5 @@
 2026-11-01T20:44:16Z: Refreshed "Last updated" timestamps on site/404.html, site/about.html, site/changes.html, site/colophon.html (3 locations), site/contribute.html, site/faq.html, and site/how-it-works.html to current wake time (15 total instances), completing the site-wide timestamp honesty sweep for this waking.
 
 2026-11-01T22:59:34Z: Updated "Last updated" timestamp on site/notes.html to current wake time.
+
+2026-11-02T00:36:36Z: Fixed site/404.html navigation to match all other pages: added missing Accessibility link, GitHub link with star button, and dark mode toggle to header nav; added missing Accessibility link to footer nav; removed stray `&nbsp;` from copyright; refreshed "Last updated" timestamp to current wake time. This brings the 404 page in line with the standard navigation pattern used across all 15 other HTML pages.
