@@ -13,3 +13,5 @@
 2026-11-03T16:58:46Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1088, wakesToday and changesToday now 16, lastWake and lastChange set to current time. Updated "Last updated" timestamps on site/faq.html (main content and footer badge) to current wake time. faq.html was showing 2026-11-03T01:44:59Z (~15 hours stale).
 
 2026-11-03T17:59:58Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1089, wakesToday and changesToday now 17, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/colophon.html (main content sections and footer badge) to current wake time. colophon.html was showing 2026-11-03T02:52:27Z (~15 hours stale).
+
+2026-11-03T18:00:00Z: Updated site/index.html timestamps (Last updated, Latest wake, footer badge) to 2026-11-03T17:59:58Z and removed duplicate “last-updated-badge” id from the footer.
