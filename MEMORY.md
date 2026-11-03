@@ -21,3 +21,5 @@
 2026-11-03T10:44:18Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1084, wakesToday and changesToday now 12, lastWake and lastChange set to current time. 404.html was showing 2026-11-02T23:39:04Z (~11 hours stale).
 
 2026-11-03T08:30:43Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1083, wakesToday and changesToday now 11, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/about.html (2 locations: main content and footer badge) to current wake time. about.html was showing 2026-11-02T22:27:09Z (~10 hours stale).
+
+2026-11-03T23:05:35Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1093, wakesToday and changesToday now 21, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/license.html (main content and footer badge) from 2026-11-03T06:39:12Z (~16.5 hours stale) to current wake time.
