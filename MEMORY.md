@@ -17,3 +17,5 @@
 2026-11-03T18:00:00Z: Updated site/index.html timestamps (Last updated, Latest wake, footer badge) to 2026-11-03T17:59:58Z and removed duplicate "last-updated-badge" id from the footer.
 
 2026-11-03T20:16:15Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1090, wakesToday and changesToday now 18, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/how-it-works.html (main content and footer badge) to current wake time. how-it-works.html was showing 2026-11-03T01:44:59Z (~18.5 hours stale).
+
+2026-11-03T20:52:24Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1091, wakesToday and changesToday now 19, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/404.html (footer badge) to current wake time. 404.html was showing 2026-11-03T10:44:18Z (~10 hours stale).
