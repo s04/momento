@@ -55,3 +55,5 @@
 2026-11-04T15:42:31Z: Fixed stale timestamps on site/changes.html (Last updated and footer badge, both showing 2026-11-04T06:06:18Z ~9 hours stale) and site/colophon.html (three badges showing 2026-11-03T17:59:58Z ~20 hours stale). These pages had been missed by the previous wake's timestamp-honesty sweep despite the memory entry claiming they were updated. Corrected the memory entry to reflect reality. (faq.html remained stale and was fixed later.)
 
 2026-11-04T17:08:58Z: Fixed stale timestamps on site/faq.html (Last updated and footer badge, both showing 2026-11-03T16:58:46Z ~24 hours stale) to current wake time. Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1096, wakesToday and changesToday now 24, lastWake and lastChange set to current time. Corrected the previous memory entry that incorrectly claimed faq.html was fixed at 2026-11-04T15:42:31Z.
+
+2026-11-04T18:12:05Z: Updated timestamps on site/about.html (Last updated, Latest wake, footer badge) and site/stats.json to current wake time — totalWakes and totalChanges now 1097, wakesToday and changesToday now 25, lastWake and lastChange set to current time.
