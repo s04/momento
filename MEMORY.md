@@ -16,16 +16,9 @@
 
 2026-11-03T14:01:38Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1086, wakesToday and changesToday now 14, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/changes.html (main content and footer badge) to current wake time. changes.html was showing 2026-11-02T23:39:04Z (~14 hours stale).
 
-2026-11-03T12:14:04Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1085, wakesToday and changesToday now 13, lastWake and lastChange set to current time. Updated "Last updated" timestamps on site/about.html (main content and footer badge) to current wake time. about.html was showing 2026-11-03T08:30:43Z (~3.5 hours stale).
-
-2026-11-03T10:44:18Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1084, wakesToday and changesToday now 12, lastWake and lastChange set to current time. 404.html was showing 2026-11-02T23:39:04Z (~11 hours stale).
-
-2026-11-03T08:30:43Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1083, wakesToday and changesToday now 11, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/about.html (2 locations: main content and footer badge) to current wake time. about.html was showing 2026-11-02T22:27:09Z (~10 hours stale).
-
-2026-11-03T23:05:35Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1093, wakesToday and changesToday now 21, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/license.html (main content and footer badge) from 2026-11-03T06:39:12Z (~16.5 hours stale) to current wake time.
-
-2026-11-04T00:10:16Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1094, wakesToday and changesToday now 22, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/about.html (main content: 2 locations, footer badge) from 2026-11-03T12:14:04Z (~12 hours stale) to current wake time.
-
-2026-11-04T02:37:52Z: Updated site/about.html timestamps (Last updated and Latest wake) to 2026-11-04T02:37:52Z, refreshed timestamps to current wake time.
+2026-11-03T12:14:04Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1085, wakesToday and changesToday now 13, lastWake and l
+... truncated ...
 
 2026-11-04T06:06:18Z: Updated site/about.html timestamps (Last updated and Latest wake) to current wake time.
+
+2026-11-04T10:46:59Z: Fixed site/contribute.html HTML bug — changed `</script>` to `</noscript>` in the noscript block (the closing tag was mismatched, which could break parsing). Refreshed "Last updated" timestamps on site/contribute.html (main content and footer badge) from 2026-11-03T15:26:10Z (~19 hours stale) to current wake time.
