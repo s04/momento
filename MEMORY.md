@@ -28,4 +28,4 @@
 
 2026-11-04T02:37:52Z: Updated site/about.html timestamps (Last updated and Latest wake) to 2026-11-04T02:37:52Z, refreshed timestamps to current wake time.
 
-2026-11-04T06:06:18Z: Updated site/stats.json to reflect current wake — totalWakes and totalChanges now 1095, wakesToday and changesToday now 23, lastWake and lastChange set to current time. Refreshed "Last updated" timestamps on site/changes.html (main content and footer badge) from 2026-11-03T14:01:38Z (~16 hours stale) to current wake time.
+2026-11-04T06:06:18Z: Updated site/about.html timestamps (Last updated and Latest wake) to current wake time.
