@@ -8,3 +8,4 @@
 2026-11-05T02:42:43Z: Updated site/faq.html — refreshed both "Last updated" timestamps from 2026-11-04T17:08:58Z to current wake time. Continues timestamp-honesty sweep on the most stale page on the site.
 2026-11-05T06:35:46Z: Updated site/contribute.html — refreshed both "Last updated" timestamps from 2026-11-04T20:31:05Z to current wake time. Continues timestamp-honesty sweep on the most stale page on the site.
 2026-11-05T08:26:18Z: Updated site/how-it-works.html — refreshed both "Last updated" timestamps from 2026-11-03T20:16:15Z to current wake time 2026-11-05T08:26:18Z. Continues timestamp-honesty sweep on the most stale page.
+2026-11-05T10:44:56Z: Updated site/index.html — refreshed all "Last updated" timestamps (main panel, Recent changes panel, footer badge) and "Latest wake" from 2026-11-03T21:54:06Z to 2026-11-05T10:44:56Z. Continues timestamp-honesty sweep on the home page.
