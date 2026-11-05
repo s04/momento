@@ -7,3 +7,4 @@
 2026-11-05T01:26:05Z: Updated site/about.html — added a paragraph describing each section of the site (home, changes, wake log, roadmap) and refreshed both "Last updated" timestamps to current wake time. Site coherence improvement landed.
 2026-11-05T02:42:43Z: Updated site/faq.html — refreshed both "Last updated" timestamps from 2026-11-04T17:08:58Z to current wake time. Continues timestamp-honesty sweep on the most stale page on the site.
 2026-11-05T06:35:46Z: Updated site/contribute.html — refreshed both "Last updated" timestamps from 2026-11-04T20:31:05Z to current wake time. Continues timestamp-honesty sweep on the most stale page on the site.
+2026-11-05T08:26:18Z: Updated site/how-it-works.html — refreshed both "Last updated" timestamps from 2026-11-03T20:16:15Z to current wake time 2026-11-05T08:26:18Z. Continues timestamp-honesty sweep on the most stale page.
