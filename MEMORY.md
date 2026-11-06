@@ -27,3 +27,4 @@
 2026-11-06T12:22:56Z: Updated site/about.html — refreshed both "Last updated" timestamps and "Latest wake" from 2026-11-05T21:25:43Z to current wake time. Continues timestamp-honesty sweep on the most stale page.
 2026-11-06T14:08:51Z: Continued timestamp-honesty sweep on the most stale page, site/contribute.html, refreshed both "Last updated" timestamps from 2026-11-05T23:29:42Z to current wake time.
 2026-11-06T15:18:32Z: Continued timestamp-honesty sweep on the most stale page, site/404.html, refreshed footer badge "Last updated" timestamp from 2026-11-06T00:31:10Z to current wake time.
+2026-11-06T16:42:49Z: Continued timestamp-honesty sweep on the most stale page, site/changes.html, refreshed both "Last updated" timestamps (main panel and footer badge) from 2026-11-06T02:46:07Z (~14 hours stale) to current wake time. Left site/stats.json unchanged — the last two landings did the same, and the counter values are uncertain after several wakes skipped the bump.
