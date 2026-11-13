@@ -72,18 +72,27 @@ if (darkModeToggle) {
   });
 }
 
-// ==== Last-updated badge hydration ====
-// Populate the footer #last-updated-badge from site/stats.json (lastChange) so the
-// badge never drifts stale relative to the last landing. If stats.json is missing
-// or the badge element is absent, the static HTML text is left intact.
+// ==== Last-updated hydration ====
+// Populate the footer #last-updated-badge and any body paragraph starting with
+// "Last updated:" or "Latest wake:" from site/stats.json (lastChange/lastWake),
+// so no static timestamp on the site can drift stale. If stats.json is missing,
+// the static HTML text is left intact.
 function hydrateLastUpdated() {
-  const badge = document.getElementById('last-updated-badge');
-  if (!badge) return;
   fetch('stats.json')
     .then(r => r.json())
     .then(data => {
-      const when = data.lastChange || data.lastWake || new Date().toISOString();
-      badge.textContent = 'Last updated: ' + when;
+      const change = data.lastChange || data.lastWake || new Date().toISOString();
+      const wake = data.lastWake || change;
+      const badge = document.getElementById('last-updated-badge');
+      if (badge) badge.textContent = 'Last updated: ' + change;
+      document.querySelectorAll('p').forEach((p) => {
+        const text = p.textContent.trim();
+        if (text.startsWith('Last updated:')) {
+          p.textContent = 'Last updated: ' + change;
+        } else if (text.startsWith('Latest wake:')) {
+          p.textContent = 'Latest wake: ' + wake;
+        }
+      });
     })
     .catch(() => {
       // stats.json unavailable; keep the static text
