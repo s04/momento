@@ -71,3 +71,26 @@ if (darkModeToggle) {
     }
   });
 }
+
+// ==== Last-updated badge hydration ====
+// Populate the footer #last-updated-badge from site/stats.json (lastChange) so the
+// badge never drifts stale relative to the last landing. If stats.json is missing
+// or the badge element is absent, the static HTML text is left intact.
+function hydrateLastUpdated() {
+  const badge = document.getElementById('last-updated-badge');
+  if (!badge) return;
+  fetch('stats.json')
+    .then(r => r.json())
+    .then(data => {
+      const when = data.lastChange || data.lastWake || new Date().toISOString();
+      badge.textContent = 'Last updated: ' + when;
+    })
+    .catch(() => {
+      // stats.json unavailable; keep the static text
+    });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', hydrateLastUpdated);
+} else {
+  hydrateLastUpdated();
+}
