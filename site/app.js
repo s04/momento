@@ -103,3 +103,125 @@ if (document.readyState === 'loading') {
 } else {
   hydrateLastUpdated();
 }
+
+// ==== Copy helper ====
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise((resolve, reject) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      if (document.execCommand('copy')) resolve();
+      else reject(new Error('copy failed'));
+    } catch (err) {
+      reject(err);
+    }
+    document.body.removeChild(ta);
+  });
+}
+
+// ==== Page action buttons ====
+// Handlers for the print / copy-URL / report-broken-link / copy-UTC-time /
+// star buttons present on every page, and the changes-page export buttons.
+// All are guarded so pages without a given button are unaffected.
+const printBtn = document.getElementById('print-page-btn');
+if (printBtn) {
+  printBtn.addEventListener('click', () => window.print());
+}
+
+const copyUrlBtn = document.getElementById('copy-url-btn');
+if (copyUrlBtn) {
+  copyUrlBtn.addEventListener('click', () => {
+    copyText(window.location.href)
+      .then(() => showMsg('copy-url-msg', 'URL copied'))
+      .catch(() => showMsg('copy-url-msg', 'Copy failed'));
+  });
+}
+
+const reportBtn = document.getElementById('report-broken-link-btn');
+if (reportBtn) {
+  reportBtn.addEventListener('click', () => {
+    const page = window.location.href;
+    const title = encodeURIComponent('Broken link: ' + page);
+    const body = encodeURIComponent('Page: ' + page + '\n\nWhat were you trying to find?');
+    window.open(
+      'https://github.com/s04/momento/issues/new?title=' + title + '&body=' + body,
+      '_blank',
+      'noopener,noreferrer'
+    );
+  });
+}
+
+const timeBtn = document.getElementById('copy-current-time-btn');
+if (timeBtn) {
+  timeBtn.addEventListener('click', () => {
+    const now = new Date().toISOString();
+    copyText(now)
+      .then(() => showMsg('copy-current-time-msg', 'Time copied: ' + now))
+      .catch(() => showMsg('copy-current-time-msg', 'Copy failed'));
+  });
+}
+
+const starBtn = document.getElementById('star-btn');
+if (starBtn) {
+  starBtn.addEventListener('click', () => {
+    window.open('https://github.com/s04/momento', '_blank', 'noopener,noreferrer');
+    showMsg('star-msg', 'Opened GitHub — thanks for the star!');
+  });
+}
+
+function changesRows() {
+  const list = document.getElementById('changes-list');
+  if (!list) return [];
+  return Array.from(list.querySelectorAll('li')).map((li) => li.textContent.trim());
+}
+
+const copyChangesBtn = document.getElementById('copy-changes-btn');
+if (copyChangesBtn) {
+  copyChangesBtn.addEventListener('click', () => {
+    copyText(JSON.stringify(changesRows(), null, 2))
+      .then(() => showMsg('copy-changes-msg', 'Changes copied as JSON'))
+      .catch(() => showMsg('copy-changes-msg', 'Copy failed'));
+  });
+}
+
+const downloadChangesBtn = document.getElementById('download-changes-btn');
+if (downloadChangesBtn) {
+  downloadChangesBtn.addEventListener('click', () => {
+    const rows = changesRows();
+    if (!rows.length) {
+      showMsg('download-changes-msg', 'No changes loaded yet');
+      return;
+    }
+    downloadBlob(JSON.stringify(rows, null, 2), 'momento-changes.json', 'application/json');
+    showMsg('download-changes-msg', 'JSON downloaded');
+  });
+}
+
+const downloadCsvBtn = document.getElementById('download-changes-csv-btn');
+if (downloadCsvBtn) {
+  downloadCsvBtn.addEventListener('click', () => {
+    const rows = changesRows();
+    if (!rows.length) {
+      showMsg('download-changes-csv-msg', 'No changes loaded yet');
+      return;
+    }
+    downloadBlob(arrayToCsv([['change']].concat(rows.map((r) => [r]))), 'momento-changes.csv', 'text/csv');
+    showMsg('download-changes-csv-msg', 'CSV downloaded');
+  });
+}
+
+const shareChangesBtn = document.getElementById('share-changes-btn');
+if (shareChangesBtn) {
+  shareChangesBtn.addEventListener('click', () => {
+    copyText(window.location.href)
+      .then(() => showMsg('share-changes-msg', 'Page URL copied'))
+      .catch(() => showMsg('share-changes-msg', 'Copy failed'));
+  });
+}
