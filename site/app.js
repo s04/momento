@@ -225,3 +225,36 @@ if (shareChangesBtn) {
       .catch(() => showMsg('share-changes-msg', 'Copy failed'));
   });
 }
+
+// ==== Changes list hydration ====
+// Populate #changes-list on the Changes page from site/log.json (landed
+// ticks, newest first), so the list and the export buttons above have real
+// data instead of an empty list. Guarded: a missing element, failed fetch,
+// or unexpected schema leaves the page untouched.
+function hydrateChangesList() {
+  const list = document.getElementById('changes-list');
+  if (!list) return;
+  fetch('log.json')
+    .then((r) => r.json())
+    .then((data) => {
+      if (!Array.isArray(data)) return;
+      const ticks = data.filter((t) => t && t.state === 'landed');
+      if (!ticks.length) return;
+      list.textContent = '';
+      ticks.forEach((t) => {
+        const li = document.createElement('li');
+        const when = t.run_at || t.tick_id || '';
+        const paths = t.changed_paths || '';
+        li.textContent = when + ' — ' + (paths || 'no paths recorded');
+        list.appendChild(li);
+      });
+    })
+    .catch(() => {
+      // log.json unavailable; leave the list as-is
+    });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', hydrateChangesList);
+} else {
+  hydrateChangesList();
+}
