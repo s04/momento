@@ -243,8 +243,9 @@ function hydrateChangesList() {
       list.textContent = '';
       ticks.forEach((t) => {
         const li = document.createElement('li');
-        const when = t.run_at || t.tick_id || '';
-        const paths = t.changed_paths || '';
+        // Accept both snake_case and camelCase log.json schemas.
+        const when = t.run_at || t.runAt || t.tick_id || t.tickId || '';
+        const paths = t.changed_paths || t.changedPaths || '';
         li.textContent = when + ' — ' + (paths || 'no paths recorded');
         list.appendChild(li);
       });

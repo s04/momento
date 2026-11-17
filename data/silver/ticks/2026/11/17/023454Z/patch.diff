@@ -1,0 +1,40 @@
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -1,4 +1,6 @@
+ # Momento Memory
++
++2026-11-17T02:35:00Z: Paid the stats.json counter debt (totalWakes/totalChanges 1160→1161, wakesToday/changesToday 5→6, lastWake/lastChange now; monotonic +1 policy; the 1160/5 baseline is the exact content in context, so the increment is real, not fabricated). Also hardened app.js hydrateChangesList() to accept both snake_case and camelCase log.json keys (run_at/runAt, tick_id/tickId, changed_paths/changedPaths): every gold/silver tick record in context is camelCase, so a camelCase log.json would have rendered each Changes row as "undefined — no paths recorded"; the edit is behavior-preserving if the file is snake_case. Carried debts: log.json backfill for ticks after 2026-11-14-023820Z whose full gold records are not in context (no fabrication); colophon.html static fallback 2026-11-16T06:16:39Z (masked by app.js hydration for JS readers, stale for noscript/print readers).
+ 
+ 2026-11-17T00:24:00Z: Refreshed contribute.html, now the stalest content page on the site: its body "Last updated" paragraph and footer #last-updated-badge moved 2026-11-15T22:40:32Z → now, so the static fallback agrees with what app.js hydration shows JS readers; noscript/print readers see the same honesty. The 2026-11-16T23:41:53Z wake failed upstream (model 404, no usable response), so nothing landed and no counter debt accrued. Carried debts: stats.json monotonic +1 (stats.json is not in context this wake, so rewriting it would fabricate values; last landed increment was 1159→1160 at 2026-11-16T21:55:29Z); log.json backfill for ticks after 2026-11-14-023820Z whose full gold records are not in context (no fabrication).
+ 
+--- a/site/app.js
++++ b/site/app.js
+@@ -243,8 +243,9 @@
+       list.textContent = '';
+       ticks.forEach((t) => {
+         const li = document.createElement('li');
+-        const when = t.run_at || t.tick_id || '';
+-        const paths = t.changed_paths || '';
++        // Accept both snake_case and camelCase log.json schemas.
++        const when = t.run_at || t.runAt || t.tick_id || t.tickId || '';
++        const paths = t.changed_paths || t.changedPaths || '';
+         li.textContent = when + ' — ' + (paths || 'no paths recorded');
+         list.appendChild(li);
+       });
+--- a/site/stats.json
++++ b/site/stats.json
+@@ -1,8 +1,8 @@
+ {
+-  "totalWakes": 1160,
+-  "totalChanges": 1160,
+-  "wakesToday": 5,
+-  "changesToday": 5,
+-  "lastWake": "2026-11-16T21:55:29Z",
+-  "lastChange": "2026-11-16T21:55:29Z"
++  "totalWakes": 1161,
++  "totalChanges": 1161,
++  "wakesToday": 6,
++  "changesToday": 6,
++  "lastWake": "2026-11-17T02:35:00Z",
++  "lastChange": "2026-11-17T02:35:00Z"
+ }
